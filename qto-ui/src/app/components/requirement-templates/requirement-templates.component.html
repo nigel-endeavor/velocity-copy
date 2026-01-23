@@ -1,0 +1,98 @@
+<dialog #dialog (close)="onCancelClicked()">
+  <form #form="ngForm">
+    <div class="header">
+      <p>Requirements Manager: {{company.name}}</p>
+    </div>
+    <div class="body">
+      <div class="body-left-panel">
+        <div class="left-panel-buttons">
+          <button (click)="onAddClicked()">
+            <span class="material-symbols-outlined">
+              add
+            </span>
+            Configure New Template
+          </button>
+          <button (click)="onEditExistingClicked()">
+            <span class="material-symbols-outlined">
+              edit
+            </span>
+            Edit Existing Template
+          </button>
+        </div>
+
+        <div *ngIf="editingExisting" class="select-wrapper">
+          <div>
+            <select (change)="onTemplateSelected($event)">
+              <option hidden disabled selected value>Select a Template</option>
+              <option *ngFor="let opt of templates" value={{opt.id}}>{{opt.name}}</option>
+            </select>
+          </div>
+          <div>
+            Show Inactive Templates
+            <mat-checkbox [ngModel]="showInactiveTemplates" name="showInactiveTemplates" (change)="toggleShowInactiveTemplates()"></mat-checkbox>
+          </div>
+        </div>
+        <input class="new-template-input" *ngIf="addingNew && selectedTemplate" [(ngModel)]="selectedTemplate.name" name="name"/>
+
+        <ng-container *ngIf="selectedTemplate">
+          <div class="checkbox-wrapper">
+            <div>
+              <p>Active Template</p>
+            </div>
+            <mat-checkbox [(ngModel)]="selectedTemplate.active" name="active"></mat-checkbox>
+          </div>
+          <div class="checkbox-wrapper">
+            <div>
+              <p>Apply Template Globally?</p>
+              <div class="hint">Check this box only if you want this requirement template available to every end customer</div>
+            </div>
+            <mat-checkbox [(ngModel)]="selectedTemplate.global" name="global"></mat-checkbox>
+          </div>
+          <div class="checkbox-wrapper">
+            <div>
+              <p>Make this the Customer's Default Template?</p>
+              <div class="hint">This will automatically apply the template to all new locations added to this end customer</div>
+            </div>
+            <mat-checkbox [(ngModel)]="selectedTemplate.default" name="default"></mat-checkbox>
+          </div>
+        </ng-container>
+      </div>
+      <div class="body-right-panel">
+        <p *ngIf="selectedTemplate" class="template-name">{{selectedTemplate.name}}</p>
+        <div class="col-wrapper">
+          <div class="col">
+            <p *ngFor="let requirement of requirements" [draggable]="isDraggable(requirement)"
+                (dragstart)="onLeftDragStart($event, requirement)">
+              {{requirement.lookupValue.value}}
+            </p>
+          </div>
+          <div #rightList class="col" (drop)="onDrop($event)" (dragover)="onParentDragOver($event)" (dragleave)="onDragLeave($event)" (dragenter)="onDragEnter($event)" (dragend)="onDragEnd($event)">
+            <ng-container *ngIf="selectedTemplate">
+              <div class="req" *ngFor="let requirement of selectedTemplate.requirements; let i = index" draggable="true"
+                    (dragstart)="onRightDragStart($event, requirement)"  (dragover)="onChildDragOver($event, requirement)">
+                <p>{{requirement.lookupValue.value}}</p>
+                <p>{{i+1}}</p>
+              </div>
+            </ng-container>
+            <div #placeholder [ngStyle]="placeholderStyles"></div>
+          </div>
+        </div>
+
+        <div *ngIf="selectedTemplate">
+          <p>TTU Equivalent</p>
+          <input type="number" [(ngModel)]="selectedTemplate.ttuEquivalent" name="ttuEquivavlent" min=".5" max="5.0" step=".5"/>
+        </div>
+      </div>
+    </div>
+    <div class="footer" *ngIf="selectedTemplate">
+
+    </div>
+    <div class="buttons">
+      <button (click)="onSaveClicked()" [disabled]="!selectedTemplate || form.invalid">
+        <span class="material-symbols-outlined">save</span>Save
+      </button>
+      <button (click)="onCancelClicked()">Cancel</button>
+    </div>
+  </form>
+</dialog>
+

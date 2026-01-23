@@ -1,0 +1,32 @@
+<app-application-wrapper></app-application-wrapper>
+<div class="customer-management">
+  <!-- Navigation Breadcrumbs -->
+  <div class="breadcrumbs">
+    <p (click)="onTenantCrumbClicked()">{{(selectedTenant$ | async)?.name}}</p>
+    <ng-container *ngIf="(selectedCustomer$ | async) as selected">
+      <ng-container *ngIf="selected?.type == 'End Customer' && selected.parentCompany">
+        <span class="material-symbols-outlined">chevron_right</span>
+        <p (click)="onMasterCustomerCrumbClicked()">
+          {{selected?.parentCompany?.name}}
+        </p>
+      </ng-container>
+      <span class="material-symbols-outlined">chevron_right</span>
+      <p *ngIf="(selected.id)">{{selected.name}}</p>
+      <p *ngIf="!(selected.id)">New {{selected.type}}</p>
+    </ng-container>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <p
+      *ngFor="let tab of tabs"
+      [ngClass]="{'selected-tab': selectedTab == tab}"
+      (click)="onTabClicked(tab)">
+      <ng-container *ngIf="tab == 'Details'">{{(selectedCustomer$ | async)?.type + ' '}}</ng-container>
+      {{tab}}
+    </p>
+  </div>
+
+  <router-outlet></router-outlet>
+
+</div>

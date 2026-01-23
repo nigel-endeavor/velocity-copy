@@ -1,0 +1,18 @@
+
+<h1 mat-dialog-title>{{ data.isEdit ? 'Edit' : 'Add' }} Custom Worklist</h1>
+<div mat-dialog-content>
+<!--  <input type="hidden" name="id" [(ngModel)]="data.customWorklist.id" />-->
+  <mat-form-field>
+    <mat-label>Enter Worklist Name</mat-label>
+    <input matInput [(ngModel)]="data.customWorklist.name" required autofocus>
+  </mat-form-field>
+  <mat-checkbox [(ngModel)]="data.customWorklist.shared">Share</mat-checkbox>
+  <mat-checkbox *ngIf="data.customWorklist.id > 0" [(ngModel)]="updateView">Update View</mat-checkbox>
+  <p *ngIf="nameExists" class="error">This name already exists!</p>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-button *ngIf="data.customWorklist.id > 0" (click)="onDelete($event)">Delete</button>
+  <button mat-button [disabled]="!data.customWorklist.name" (click)="onSave($event)">Save</button>
+</div>
+

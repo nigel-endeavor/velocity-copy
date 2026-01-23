@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='utf-8'?>
+<job-scheduling-data xmlns="http://www.quartz-scheduler.org/xml/JobSchedulingData"
+                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:schemaLocation="http://www.quartz-scheduler.org/xml/JobSchedulingData http://www.quartz-scheduler.org/xml/job_scheduling_data_2_0.xsd"
+                     version="2.0">
+
+<!--     <schedule>-->
+<!--         <job>-->
+<!--             <name>test-job</name>-->
+<!--             <group>BACKGROUND_JOB_GROUP</group>-->
+<!--             <description>-->
+<!--                 This job runs periodically in the background to pull in new tickets from ISS.-->
+<!--             </description>-->
+<!--             <job-class>com.vertek.corporate.qto.job.TestQuartzJob</job-class>-->
+<!--         </job>-->
+<!--         <trigger>-->
+<!--             <cron>-->
+<!--                 <name>test-job-trigger</name>-->
+<!--                 <group>BACKGROUND_TRIGGER_GROUP</group>-->
+<!--                 <job-name>test-job</job-name>-->
+<!--                 <job-group>BACKGROUND_JOB_GROUP</job-group>-->
+<!--                 &lt;!&ndash; Every day at 3:10am &ndash;&gt;-->
+<!--                 <cron-expression>0 0/2 * * * ?</cron-expression>-->
+<!--             </cron>-->
+<!--         </trigger>-->
+<!--     </schedule>-->
+
+    <schedule>
+        <job>
+            <name>pending-disconnect-job</name>
+            <group>BACKGROUND_JOB_GROUP</group>
+            <description>
+                This job runs periodically in the background to create any pending disconnect records..
+            </description>
+            <job-class>com.vertek.corporate.qto.job.PendingDisconnectJob</job-class>
+        </job>
+        <trigger>
+            <cron>
+                <name>pending-disconnect-job-trigger</name>
+                <group>BACKGROUND_TRIGGER_GROUP</group>
+                <job-name>pending-disconnect-job</job-name>
+                <job-group>BACKGROUND_JOB_GROUP</job-group>
+                <!-- Every 4 hours starting at midnight -->
+                <cron-expression>0 0 0/4 1/1 * ? *</cron-expression>
+            </cron>
+        </trigger>
+    </schedule>
+
+    <schedule>
+        <job>
+            <name>service-snapshot-job</name>
+            <group>BACKGROUND_JOB_GROUP</group>
+            <description>
+                This jobs runs daily at midnight to create service snapshot records.
+            </description>
+            <job-class>com.vertek.corporate.qto.job.ServiceSnapshotJob</job-class>
+        </job>
+        <trigger>
+            <cron>
+                <name>service-snapshot-job-trigger</name>
+                <group>BACKGROUND_TRIGGER_GROUP</group>
+                <job-name>service-snapshot-job</job-name>
+                <job-group>BACKGROUND_JOB_GROUP</job-group>
+                <cron-expression>0 0 0 * * ?</cron-expression>
+            </cron>
+        </trigger>
+    </schedule>
+
+    <schedule>
+        <job>
+            <name>delete-job</name>
+            <group>BACKGROUND_JOB_GROUP</group>
+            <description>
+                This jobs runs daily at 1:00 AM to delete services/locations that have been marked for deletion.
+            </description>
+            <job-class>com.vertek.corporate.qto.job.DeleteJob</job-class>
+        </job>
+        <trigger>
+            <cron>
+                <name>delete-job-trigger</name>
+                <group>BACKGROUND_TRIGGER_GROUP</group>
+                <job-name>delete-job</job-name>
+                <job-group>BACKGROUND_JOB_GROUP</job-group>
+                <cron-expression>0 1 0 * * ?</cron-expression>
+            </cron>
+        </trigger>
+    </schedule>
+
+</job-scheduling-data>

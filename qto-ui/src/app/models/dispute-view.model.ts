@@ -1,0 +1,41 @@
+import { AbstractBaseModel } from "./abstract-base-model";
+
+export class DisputeView extends AbstractBaseModel {
+  serviceId: number;
+  locationId: number;
+  orderId: number;
+  parentCompanyName: string;
+  parentCompanyId: number;
+  parentCompanyClientId: string;
+  companyName: string;
+  companyId: number;
+  endCustomerClientId: string;
+  address: string;
+  address1: string;
+  address2: string;
+  city: string;
+  stateProvince: string;
+  postalCode: string;
+  disputeStatus: string;
+  disputeType: string;
+  provider: string;
+  amountDisputedMrc: number;
+  amountDisputedNrc: number;
+  providerCircuitId: string;
+  summaryBill: string;
+  openDate: Date;
+  disputeFollowUpDate: Date;
+  creditRecognized: Date;
+  billingReviewCompleteDate: Date;
+  disputeClosedDate: Date;
+  invoiceNum: string;
+  vendorTrackingNum: string;
+  serviceMrc: number;
+  serviceNrc: number;
+  speed: string;
+  hasIcb: boolean;
+  latestNote: string;
+  disputeAssignment: string;
+  serviceBilledTo: string;
+  selected?: boolean;
+}

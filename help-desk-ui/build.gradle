@@ -1,0 +1,45 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+}
+
+group = 'com.vertek.corporate'
+version = '1.2.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven {
+        url = uri('https://maven.pkg.github.com/Vertek-Corporation/help-desk-ui')
+        credentials {
+            username = project.findProperty('gpr.user') ?: System.getenv('USERNAME')
+            password = project.findProperty('gpr.key') ?: System.getenv('TOKEN')
+        }
+    }
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri('https://maven.pkg.github.com/Vertek-Corporation/help-desk-ui')
+            credentials {
+                username = project.findProperty('gpr.user') ?: System.getenv('USERNAME')
+                password = project.findProperty('gpr.key') ?: System.getenv('TOKEN')
+            }
+        }
+    }
+    publications {
+        gpr(MavenPublication) {
+            from components.java
+        }
+    }
+}

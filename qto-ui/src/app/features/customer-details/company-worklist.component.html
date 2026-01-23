@@ -1,0 +1,147 @@
+<div class="worklist-page" oncontextmenu="return false;">
+
+
+  <div class="meta-data">
+    <ng-container *ngIf="metaData$ | async as meta">
+      <div class="meta-item">
+        Total Active Customers: {{ meta.totalActiveCustomers }}
+      </div>
+      <div class="meta-item">
+        Total Onboarding Customers: {{ meta.totalOnboardingCustomers }}
+      </div>
+    </ng-container>
+  </div>
+
+  <div class="table-actions">
+    <div *ngIf="(searchCriteria$ | async) as searchCriteria">
+      <input type="text" placeholder="Search..." [ngModel]="searchCriteria.search" (input)="onSearch($event)">
+      <div class="settings-dropdown-wrapper">
+        <div>
+          <div class="dropdown-trigger">
+            <button class="quick-filters">
+              Quick filters
+            </button>
+          </div>
+          <div class="dropdown-content">
+            <ul>
+              <li>
+                <div class="checkbox-wrapper" (click)="onFilterChanged(!searchCriteria.active, 'active')">
+                  <mat-checkbox [ngModel]="searchCriteria.active"></mat-checkbox>Active
+                </div>
+              </li>
+              <li>
+                <div class="checkbox-wrapper" (click)="onFilterChanged(!searchCriteria.onboarding, 'onboarding')">
+                  <mat-checkbox [ngModel]="searchCriteria.onboarding"></mat-checkbox> Onboarding Only
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="header" *ngIf="(searchCriteria$ | async) as searchCriteria">
+        <div #filter class="header-button-wrapper">
+          <ng-content select=".header-buttons"></ng-content>
+
+          <!-- Filters Applied -->
+          <ng-container *ngIf="(filteredFilters$ | async) as appliedFilters">
+            <button class="applied-filters-button" *ngIf="appliedFilters.length > 0" [matMenuTriggerFor]="appliedFilterMenu">
+              Filters Applied ({{appliedFilters.length}})
+            </button>
+            <mat-menu #appliedFilterMenu="matMenu">
+              <div class="applied-filters-menu-item">
+                <p class="v-link" (click)="clearFilters()">Clear Filters</p>
+              </div>
+              <div class="applied-filters-menu-item" *ngFor="let filter of appliedFilters">
+                <p *ngIf="filter.value != undefined && !filter.value.dateRange" [title]="(getFilterDisplayName(filter.name) | async) + ': ' + filter.value">
+                  {{ (getFilterDisplayName(filter.name) | async) }}: {{filter.value}}
+                </p>
+                <span class="material-symbols-outlined" (click)="onClearFilterClicked($event, filter)">
+                  close
+                </span>
+              </div>
+            </mat-menu>
+          </ng-container>
+        </div>
+      </div>
+
+    </div>
+    <div>
+      <ng-container *ngIf="(selectedCustomer$ | async) as selected">
+        <button type="button" (click)="onAddClicked()">Add</button>
+        <button type="button" (click)="exportTable(selected.name + '-endCustomers.xlsx')">Export</button>
+      </ng-container>
+      <div class="settings-dropdown-wrapper">
+        <div>
+          <div class="dropdown-trigger">
+            <button class="icon">
+              <span class="material-symbols-outlined">
+                menu
+              </span>
+            </button>
+          </div>
+          <div class="dropdown-content columns-dropdown-content">
+            <ul>
+              <li *ngFor="let col of (columns$ | async)" (click)="onColSelectClicked(col)">
+                <mat-checkbox [ngModel]="!col.hidden"></mat-checkbox>
+                {{ col.name }}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="content-wrapper">
+    <div class="table-wrapper">
+      <div class="loader" *ngIf="(isLoading$ | async)">
+        <mat-spinner></mat-spinner>
+      </div>
+      <app-company-view-table
+        [style.width]="selectedCompany ? 'calc(100% - 525px - 2em)' : '100%'"
+        [columns]="(columns$ | async) || []"
+        [tableData]="(tableData$ | async) || []"
+        [tableTotal]="(tableTotal$ | async)"
+        [searchCriteria]="(searchCriteria$ | async)"
+        (changeSortClicked)="onChangeSortClicked($event)"
+        (pageClicked)="onFilterChanged($event, 'offset')"
+        (rowClick)="onCompanyClicked($event)"
+        (rowDblClick)="onCustomerDblClicked($event)"
+        (rowRightClick)="onCompanyRightClicked($event)"
+        (limitChanged)="onLimitChanged($event);">
+      </app-company-view-table>
+      <!-- Preview Pane -->
+      <div id="previewPane" class="end-customer-view" *ngIf="selectedCompany">
+        <div class="preview-pane-header">
+          <div>
+          <span class="material-symbols-outlined" (click)="onClosePreviewPaneClicked()">
+            chevron_left
+          </span>
+            <p>Customer: {{ selectedCompany.name }}</p>
+          </div>
+          <div class="v-link" (click)="onCustomerDblClicked(selectedCompany)">
+            Full Details
+          </div>
+        </div>
+        <div class="container">
+          <div class="preview-pane-body">
+            <div class="labelBox">
+              <app-customer-tasks [customerId]="selectedCompany.id" [taskGroupId]="selectedCompany.taskGroupId"
+                                  [editEnabled]="editEnabled" [currentAssignment]="selectedCompany.nextTaskAssignedTo"
+                                  (saveCompanyTasksClicked)="updateTableData()"></app-customer-tasks>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="context-menu" #contextMenu [ngStyle]="contextMenuStyle">
+      <ul>
+        <li (click)="onCustomerDblClicked(contextMenuCompany)">Open</li>
+        <li (click)="onOpenInNewTabClicked()">Open in new tab</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<router-outlet></router-outlet>

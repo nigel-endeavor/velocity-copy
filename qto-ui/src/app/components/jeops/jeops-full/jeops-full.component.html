@@ -1,0 +1,63 @@
+<div class="dialog-backdrop"></div>
+<div class="dialog">
+  <div class="content" *ngIf="showContent">
+    <header class="header">
+      <h2 class="dialogHeader">{{title}}</h2>
+      <button class="material-symbols-outlined closeButton" (click)="closeDialog()">close</button>
+    </header>
+
+    <form #jeopForm="ngForm" *ngIf="(editEnabled$ | async) && !(isInventory$ | async)" class="form">
+      <div class="dateFields">
+        <div class="field">
+          <p class="label">Start Date:</p>
+          <app-datepicker #startDate [(date)]="jeop.startDate" name="startDate" [max]="today" [required]="true"></app-datepicker>
+        </div>
+        <div class="field">
+          <p class="label">End Date:</p>
+          <app-datepicker [(date)]="jeop.endDate" name="endDate" [min]="(this.jeop.startDate) ? startDate.getDisplayDate() : ''" [max]="today"></app-datepicker>
+        </div>
+      </div>
+      <div class="dropdownFields">
+        <div>
+          <p class="label">Description:</p>
+          <select [(ngModel)]="jeop.description" name="description" [required]="true">
+            <option *ngFor="let opt of descriptionOptions" value={{opt}}>{{opt}}</option>
+          </select>
+        </div>
+        <div>
+          <p class="label">Responsibility:</p>
+          <select [(ngModel)]="jeop.responsibility" name="responsibility" [required]="true">
+            <option *ngFor="let opt of responsibilityOptions" value={{opt}}>{{opt}}</option>
+          </select>
+        </div>
+        <div>
+          <p class="label">Assigned To:</p>
+          <select [(ngModel)]="jeop.assignedTo" name="assignedTo">
+            <option *ngFor="let opt of assignedToOptions" value={{opt}}>{{opt}}</option>
+            <option value=""></option>
+          </select>
+        </div>
+      </div>
+      <div class="noteField">
+        <p class="label">Note:</p>
+        <textarea class="inputStyling" [(ngModel)]="jeop.note" rows="3" cols="70" name="note" [maxlength]="maxChars"></textarea>
+      </div>
+      <div class="formButtons">
+        <button (click)="createNewJeop()">
+          Clear
+        </button>
+        <button (click)="save()" [disabled]="jeopForm.invalid">
+          <span class="material-symbols-outlined">save</span>Save
+        </button>
+      </div>
+    </form>
+
+    <app-jeops-table #table
+                      [type]="type"
+                      [parentId]="parentId"
+                      (rowClick)="onJeopClicked($event)">
+    </app-jeops-table>
+  </div>
+
+</div>
+

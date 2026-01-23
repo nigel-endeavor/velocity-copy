@@ -1,0 +1,110 @@
+<!-- List of Lookup Types -->
+<div class="lookup-types-container">
+  <div class="list-wrapper">
+    <div class="category" *ngFor="let category of lookupTypeCategories; let i = index">
+
+      <!-- Category Header -->
+      <div class="header" (click)="onCategoryClicked(category)">
+        <p>{{category.name}} ({{ getFilteredCount(category) }})</p>
+        <span *ngIf="!category.expanded" class="material-symbols-outlined">expand_more</span>
+        <span *ngIf="category.expanded" class="material-symbols-outlined">expand_less</span>
+      </div>
+
+      <!-- Expanded List of Lookup Types -->
+      <div class="lookup-types" *ngIf="category.expanded">
+        <p *ngFor="let lookupType of filteredLookupTypes(category)"
+            onmouseover="this.style.outline = '1px solid #FFFFFF'"
+            onmouseout="this.style.outline = ''"
+            (click)="onLookupTypeClicked(lookupType)"
+            [ngStyle]="selectedLookupType?.typeCode === lookupType.typeCode ? {backgroundColor: '#2A9041'} : {}">
+          {{lookupType.name}}
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Lookup Type Details -->
+  <div class="lookup-type-details" *ngIf="selectedLookupType">
+
+    <div class="buttons">
+      <span class="material-symbols-outlined button" (click)="selectedLookupType = null; saving = false;">
+        arrow_back
+      </span>
+      <div class="button" (click)="onSaveClicked()">
+        <p>Save</p>
+        <span class="material-symbols-outlined">
+          save
+        </span>
+      </div>
+      <mat-spinner *ngIf="saving" [diameter]="25"></mat-spinner>
+      <div #changesSaved class="changes-saved">
+        <span class="material-symbols-outlined">
+          check
+        </span>
+        <p>Changes Saved!</p>
+      </div>
+    </div>
+
+    <!-- Details Header -->
+    <div class="headers">
+      <div class="header">
+        <div>
+          <p>Type Code:</p> {{selectedLookupType.typeCode}}
+        </div>
+        <div>
+          <p>Sort Strategy:</p> {{selectedLookupType.sortDisplay}}
+        </div>
+      </div>
+
+      <!-- Grandparent Value Dropdown -->
+      <div class="header" *ngIf="grandParentLookupType">
+        <div>
+          <p>{{grandParentLookupType.name}}:</p>
+          <select [ngModel]="selectedGrandParentLookupValue" (ngModelChange)="onGrandParentLookupValueSelected($event)">
+            <option [ngValue]="null">Select...</option>
+            <option *ngFor="let lookupValue of grandParentLookupValues" [ngValue]="lookupValue">
+              {{lookupValue.display}}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Parent Value Dropdown -->
+      <div class="header" *ngIf="parentLookupType">
+        <div>
+          <p>{{parentLookupType.name}}:</p>
+          <select [ngModel]="selectedParentLookupValue" (ngModelChange)="onParentLookupValueSelected($event)" [disabled]="!!grandParentLookupType && !selectedGrandParentLookupValue">
+            <option [ngValue]="null">Select...</option>
+            <option *ngFor="let lookupValue of parentLookupValues" [ngValue]="lookupValue">
+              {{lookupValue.display}}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- List of Values -->
+    <div #dropzone class="values" (drop)="onDrop($event)" (dragover)="onParentDragOver($event)" (dragend)="onDragEnd($event)">
+      <div class="value value-headers">
+        <span class="material-symbols-outlined clickable value-header" (click)="onAddClicked()">add</span>
+        <input class="value-header" value="Display" disabled/>
+        <input class="value-header check-column" value="Active" disabled/>
+        <span class="value-header"></span>
+      </div>
+      <div #placeholder class="value" [ngStyle]="placeholderStyles"></div>
+      <div class="value" *ngFor="let lookupValue of selectedLookupTypeValues; let j = index"
+        [draggable]="true" (dragstart)="onDragStart($event, lookupValue)" (dragover)="onChildDragOver($event)">
+        <span class="material-symbols-outlined drag-handle value-el" *ngIf="selectedLookupType.sortStrategy == 1">
+          drag_handle
+        </span>
+        <span class="value-el" *ngIf="selectedLookupType.sortStrategy != 1"></span>
+        <input class="value-el" [(ngModel)]="lookupValue.display"/>
+        <mat-checkbox class="value-el" [(ngModel)]="lookupValue.active"></mat-checkbox>
+        <span class="value-el material-symbols-outlined" (click)="onRemoveClicked(lookupValue)">
+          delete
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

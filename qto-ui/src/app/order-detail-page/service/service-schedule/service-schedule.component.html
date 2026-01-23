@@ -1,0 +1,23 @@
+<ng-container *ngIf="!isLoading">
+  <div *ngIf="schedules && schedules.length > 0" class="schedule-tabs">
+    <p class="tab" [ngStyle]="{'line-height': schedule.id ? '' : '2em'}" [ngClass]="{'selected-tab': selectedSchedule && selectedSchedule.id == schedule.id}" *ngFor="let schedule of schedules" (click)="onTabClicked(schedule)">
+      <ng-container *ngIf="schedule.id">
+        {{schedule.requestedDate | date:'MM/dd/yyyy hh:mm a'}}
+      </ng-container>
+      <ng-container *ngIf="!schedule.id">
+        New
+      </ng-container>
+    </p>
+  </div>
+  <button [ngStyle]="{'margin-top': '1em'}" *ngIf="schedules && (schedules.length == 0 || schedules[0].id) && (editEnabled$ | async) && !isInventory" (click)="onNewClicked()">
+    <span class="material-symbols-outlined">
+      add
+    </span>
+    New
+  </button>
+  <app-activation-schedule *ngIf="selectedSchedule" [schedule]="selectedSchedule" [companyId]="companyId" (cancel)="onScheduleCanceled()" (save)="onScheduleSaved()" (pushToFtdi)="onPushToFtdi()"></app-activation-schedule>
+
+  <p *ngIf="schedules && schedules.length == 0">No schedules to display.</p>
+</ng-container>
+
+<app-loading-spinner *ngIf="isLoading"></app-loading-spinner>

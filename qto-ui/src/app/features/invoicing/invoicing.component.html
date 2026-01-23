@@ -1,0 +1,39 @@
+<app-application-wrapper></app-application-wrapper>
+
+<div class="worklist-page" oncontextmenu="return false;">
+  <div class="table-actions">
+    <div *ngIf="(searchCriteria$ | async) as searchCriteria">
+    <button *ngIf="securityUtils.getIsInvoicingWriteUser()" (click)="onAddClicked()">Add Invoice</button>
+      <input type="text" placeholder="Search..." [ngModel]="searchCriteria.search" (input)="onSearch($event)">
+      <div *ngIf="this.vertekClientOptions$ | async as vertekClientOptions">
+        <app-dropdown *ngIf="vertekClientOptions && vertekClientOptions.length > 1"
+          [placeholder]="'Vertek Clients'"
+          [multiSelect]="true"
+          [selected]="searchCriteria.companyName"
+          [options]="(vertekClientOptions$ | async) || []"
+          [icon]="'person'"
+          (onSelectedChanged)="onFilterChanged($event, 'tenantName')">
+        </app-dropdown>
+      </div>
+    </div>
+    <div>
+      <button type="button" (click)="exportTable('invoices.xlsx')">Export</button>
+    </div>
+  </div>
+  <div class="content-wrapper">
+    <div class="table-wrapper">
+      <div class="loader" *ngIf="(isLoading$ | async)">
+        <mat-spinner></mat-spinner>
+      </div>
+      <app-invoice-table class="invoice-table"
+      [columns]="(columns$ | async) || []"
+      [tableData]="(tableData$ | async) || []"
+      [tableTotal]="(tableTotal$ | async)"
+      [searchCriteria]="(searchCriteria$ | async)"
+      (rowDblClick)="onInvoiceDblClicked($event)"
+      (changeSortClicked)="onChangeSortClicked($event)"
+      (pageClicked)="onFilterChanged($event, 'offset')">
+      </app-invoice-table>
+    </div>
+  </div>
+</div>

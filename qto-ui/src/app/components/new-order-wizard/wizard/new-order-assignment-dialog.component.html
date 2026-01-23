@@ -1,0 +1,66 @@
+<div class="assignment-dialog" mat-dialog-content>
+  
+  <div class="dialog-header">
+    <h2>Do you want to assign your order now, or hold it for later?</h2>
+    <h2 class="sub-header">This is optional</h2>
+  </div>
+  
+  <div class="dialog-content">
+    <div>
+      <div class="field">
+        <p>Provisioner</p>
+        <vtk-select [(ngModel)]="data.order.provisioner" name="provisioner" [options]="data.subjects"></vtk-select>
+      </div>
+      <div class="field">
+        <p>Activation Engineer</p>
+        <vtk-select [(ngModel)]="data.order.activationEngineer" name="activationEngineer" [options]="data.subjects"></vtk-select>
+      </div>
+      <div class="field">
+        <p>Client Project Manager</p>
+        <vtk-select [(ngModel)]="data.order.clientProjectManager" name="clientProjectManager" [options]="data.clientPmOpts"></vtk-select>
+      </div>
+      <div class="field">
+        <p>i90 Project Manager</p>
+        <vtk-select [(ngModel)]="data.order.vertekProjectManager" name="vertekProjectManager" [options]="data.subjects" [required]="data.order.holdProvisioning"></vtk-select>
+      </div>
+      <div class="field">
+        <p>QA Manager</p>
+        <vtk-select [(ngModel)]="data.order.qaManager" name="qaManager" [options]="data.subjects"></vtk-select>
+      </div>
+    </div>
+  
+    <div>
+      <div class="count">
+        <p class="label">Count Locations: </p>
+        <p class="value">{{data.locationCount}}</p>
+      </div>
+      <div class="count">
+        <p class="label">Count Services: </p>
+        <p class="value">{{data.serviceCount}}</p>
+      </div>
+    </div>
+  
+    <div>
+      <div class="field">
+        <p class="large">If you aren't quite ready for this order to be worked and track intervals, check here to hold the provisioning for later</p>
+        <mat-checkbox [(ngModel)]="data.order.holdProvisioning" name="holdProvisioning"></mat-checkbox>
+      </div>
+      <ng-container *ngIf="data.order.holdProvisioning">
+        <p class="bold">Please choose the reason for holding</p>
+        <div class="field">
+          <p>Description</p>
+          <vtk-select [(ngModel)]="data.order.jeopDescription" name="jeopDescription" [options]="data.orderJeopOpts" [required]="data.order.holdProvisioning"></vtk-select>
+        </div>
+        <div class="field">
+          <p>Responsibility</p>
+          <vtk-select [(ngModel)]="data.order.jeopResponsibility" name="jeopResponsibility" [options]="data.jeopResponsibilityOpts" [required]="data.order.holdProvisioning"></vtk-select>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="dialog-buttons">
+    <button class="btn blue" (click)="onClose()">Cancel</button>
+    <button class="btn blue" [mat-dialog-close]="data.order">Create Order</button>
+  </div>
+</div>

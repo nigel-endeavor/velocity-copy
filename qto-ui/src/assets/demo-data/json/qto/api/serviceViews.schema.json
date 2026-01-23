@@ -1,0 +1,100 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "get-services",
+  "title": "ServiceViews",
+  "description": "/serviceViews",
+  "type": "object",
+  "additionalProperties": false,
+  "$ref": "../../../main.schema.json#/definitions/toplevel",
+  "properties": {
+    "payloads": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/payload"
+      }
+    }
+  },
+  "definitions": {
+    "linkRels": {
+      "type": "object",
+      "properties": {
+        "self": {
+          "type": "object",
+          "properties": {
+            "method": {
+              "type": "string"
+            },
+            "href": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "payload": {
+      "allOf": [
+        {
+          "$ref": "../../../main.schema.json#/definitions/payload"
+        },
+        {
+          "properties": {
+            "value": {
+              "type": "object",
+              "properties": {
+                "linkRels": {
+                  "type": "object",
+                  "$ref": "#/definitions/linkRels"
+                },
+                "offset": { "type":  "number"},
+                "total":{ "type": "number" },
+                "limit":{ "type": "number" },
+                "collection": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "active": { "type":  "boolean"},
+                      "address": { "type":  "string"},
+                      "carrier": { "type":  "string"},
+                      "carrierOrderSubmitted": { "type":  "string"},
+                      "clientLocationId": { "type":  "string"},
+                      "clientLocationInfo": { "type":  "string"},
+                      "clientLocationType": { "type":  "string"},
+                      "companyName": { "type":  "string"},
+                      "customerRequestedInstall": { "type":  "number"},
+                      "dataProvisioningComplete": { "type":  "number"},
+                      "greatestMilestoneDate": { "type":  "string"},
+                      "greatestMilestoneName": { "type":  "string"},
+                      "id": { "type":  "number"},
+                      "latestNote": { "type":  "string"},
+                      "linkRels": {
+                        "type": "object",
+                        "$ref": "#/definitions/linkRels"
+                      },
+                      "locationId": { "type":  "number"},
+                      "networkProviderFoc": { "type":  "string"},
+                      "openJeop": { "type":  "string"},
+                      "orderId": { "type":  "number"},
+                      "orderType": { "type":  "string"},
+                      "projectManager": { "type":  "string"},
+                      "provisioner": { "type":  "string"},
+                      "showJeopIcon": { "type":  "boolean"},
+                      "showNoteIcon": { "type":  "boolean"},
+                      "siteSurveyDue": { "type":  "string"},
+                      "siteSurveySubmit": { "type":  "string"},
+                      "speed": { "type":  "string"},
+                      "status": { "type":  "string"},
+                      "type": { "type":  "string"},
+                      "version": { "type":  "number"},
+                      "vertekProjectManager": { "type":  "string"}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

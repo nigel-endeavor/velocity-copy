@@ -1,0 +1,143 @@
+<nav class="application-wrapper">
+  <div class="vertek-logo">
+    <a [routerLink]="['']"><img src="./assets/vertek-logo.png" alt="Vertek Logo" title="Vertek">
+      <!-- TODO: need a higher resolution logo -->
+    </a>
+  </div>
+
+  <div class="left-nav">
+    <button *ngIf="securityUtils.getIsOrderReadUser() || securityUtils.getIsInventoryReadUser"[ngClass]="{'selected-button': router.url == '/reports'}" (click)="onDashboardsClicked()">
+      <span class="material-symbols-outlined">
+        bar_chart
+      </span>
+      Dashboard
+    </button>
+
+    <button *ngIf="securityUtils.getIsOrderReadUser()" [ngClass]="{'selected-button': (router.url.includes('services') || router.url.includes('cyberServices') || router.url.includes('activations') || router.url.includes('disconnects') || router.url.includes('locations') || router.url.includes('order')) && !router.url.includes('/inventory')}" (click)="onWorklistClicked()">
+      <span class="material-symbols-outlined">
+        inventory
+      </span>
+      Order Management
+    </button>
+
+    <button *ngIf="securityUtils.getIsInventoryReadUser()" [ngClass]="{'selected-button': router.url.includes('/inventory')}" (click)="onInventoryClicked()">
+      <span class="material-symbols-outlined">
+        library_books
+      </span>
+      Inventory
+    </button>
+
+    <!-- <button *ngIf="securityUtils.getIsInventoryReadUser()" [ngClass]="{'selected-button': router.url.includes('/customers') || router.url.includes('/endCustomers')}" (click)="onCustomersClicked()">
+      <span class="material-symbols-outlined">
+        domain
+      </span>
+      Manage Customers
+    </button> -->
+
+    <button *ngIf="securityUtils.getIsInventoryReadUser()" [ngClass]="{'selected-button': router.url.includes('/masterCustomers') || router.url.includes('/endCustomers')}" (click)="onCustomersClicked()">
+      <span class="material-symbols-outlined">
+        domain
+      </span>
+      Manage Customers
+    </button>
+
+  </div>
+
+  <div class="right-nav">
+    <button (click)="toggleDemoMode()" *ngIf="!isProd" [class.activeMode]="isDemoModeOn$ | async">
+      Toggle DemoMode
+    </button>
+
+    <button class="icon-button" mat-icon-button [matMenuTriggerFor]="notificationMenu" aria-label="Notifications" [matBadge]="notificationService.count" [matBadgeHidden]="notificationService.count == 0">
+      <mat-icon>notifications</mat-icon>
+    </button>
+    <mat-menu backdropClass="notification-menu" #notificationMenu="matMenu">
+      <div class="header">
+        <mat-checkbox class="dismissed-checkbox" [ngModel]="showDismissedNotifications" (change)="onShowDismissedNotificationsClicked()" (click)="$event.stopPropagation()">Show Dismissed</mat-checkbox>
+        <button (click)="onDismissAllNotificationsClicked($event)">Dismiss All</button>
+      </div>
+      <mat-list>
+        <mat-list-item *ngIf="!notificationService.notifications || notificationService.notifications.length < 1">
+          <p class="notification-body">No notifications to display</p>
+        </mat-list-item>
+        <mat-list-item class="notification" role="listitem" *ngFor="let notification of notificationService.notifications" (click)="onNotificationClicked($event, notification)">
+          <mat-icon mat-list-icon>{{notification.icon}}</mat-icon>
+          <div class="notification-details" mat-line>
+            <div class="notification-header">
+              <p> {{notification.header}}</p>
+            </div>
+            <div class="notification-timestamp">
+              <p [matTooltip]="(notification.createdDate | date:'MMM d, yyyy h:mm a')!">{{notification.createdDate | relativeTime}}</p>
+            </div>
+            <mat-icon class="notification-close" *ngIf="!notification.dismissed" (click)="onNotificationDismissClicked($event, notification)">close</mat-icon>
+          </div>
+          <p class="notification-body" mat-line>
+            <span>{{notification.body}}</span>
+          </p>
+        </mat-list-item>
+      </mat-list>
+    </mat-menu>
+
+    <div class="settings-dropdown-wrapper">
+      <div>
+        <div class="dropdown-trigger">
+          {{ securityUtils.getLoggedInUser()?.name || '' }}
+          <span class="material-symbols-outlined">
+            expand_more
+          </span>
+        </div>
+        <div class="dropdown-content">
+          <ul>
+            <li *ngIf="securityUtils.getIsFileImportUser()" [routerLink]="['/import']">
+              <span>
+                File Import
+              </span>
+            </li>
+            <li *ngIf="securityUtils.getIsTenantAdminUser()" [routerLink]="['/configuration/lookups']">
+              <span>
+                Configuration
+              </span>
+            </li>
+            <li (click)="onResourceCenterClicked()">
+              <span>
+                i90 User Resource Center
+              </span>
+            </li>
+            <li *ngIf="securityUtils.getIsOrderReadUser() || securityUtils.getIsInventoryReadUser" (click)="onHelpDeskClicked()">
+              <span>
+                Help Desk
+              </span>
+            </li>
+            <li>
+              <span>
+                Reports
+              </span>
+              <ul class="sublist">
+                <li (click)="onCreateReport('inventory')">
+                  <span>
+                    Inventory Report
+                  </span>
+                </li>
+                <li (click)="onCreateReport('wip')">
+                  <span>
+                    WIP Report
+                  </span>
+                </li>
+              </ul>
+            </li>
+            <li (click)="onAboutClicked()">
+              <span>
+                About
+              </span>
+            </li>
+            <li (click)="logout()">
+              <span>
+                Logout
+              </span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,699 @@
+<app-application-wrapper></app-application-wrapper>
+<div class="worklist-page" oncontextmenu="return false;">
+
+  <div class="worklist-header">
+    <span class="active">
+      Locations
+      <span class="header-count">{{ tableTotal$ | async }}</span>
+    </span>
+    <span *ngIf="telecomClient || isInventory" class="tab-header" (click)="onWorklistSelectChanged('services')">
+      Services
+    </span>
+    <span *ngIf="cyberClient && !isInventory"  class="tab-header" (click)="onWorklistSelectChanged('cyberServices')">
+      Cyber Services
+    </span>
+    <span *ngIf="!isInventory" class="tab-header" (click)="onWorklistSelectChanged('disconnects')">
+      Disconnects
+    </span>
+    <span *ngIf="!isInventory && telecomClient" class="tab-header" (click)="onWorklistSelectChanged('activations')">
+      Activations
+    </span>
+    <span *ngIf="isInventory" class="tab-header" (click)="onWorklistSelectChanged('disputes')">
+      Disputes
+    </span>
+  </div>
+
+  <!-- Inventory Worklist Meta -->
+  <div *ngIf="isInventory" class="meta-data">
+    <ng-container *ngIf="metaData$ | async as meta">
+      <div class="meta-item">
+        Total MRC: {{ meta.mrc | currency }}
+      </div>
+      <div class="meta-item">
+        Total MRR: {{ meta.mrr | currency }}
+      </div>
+      <div class="meta-item">
+        Total NRR: {{ meta.nrr | currency }}
+      </div>
+      <div class="meta-item" *ngIf="telecomClient">
+        Total Annual Recurring: {{ meta.annualRecurring | currency }}
+      </div>
+      <div class="meta-item">
+        Open Dispute MRC: {{ meta.openDisputeMrc | currency }}
+      </div>
+      <div class="meta-item">
+        Open Dispute NRC: {{ meta.openDisputeNrc | currency }}
+      </div>
+      <div class="meta-item">
+        Open MACD Count: {{ meta.macdCount }}
+      </div>
+    </ng-container>
+  </div>
+
+  <div class="table-actions">
+    <div *ngIf="(searchCriteria$ | async) as searchCriteria">
+
+      <input type="text" placeholder="Search..." [ngModel]="searchCriteria.search" (input)="onSearch($event)">
+
+      <ng-container *ngIf="!isInventory">
+        <app-dropdown
+          [placeholder]="'Status'"
+          [multiSelect]="true"
+          [selected]="searchCriteria.locationStatus"
+          [options]="(statusesValues$ | async) || []" [icon]="'schedule'"
+          (onSelectedChanged)="onFilterChanged($event, 'locationStatus')">
+        </app-dropdown>
+
+        <app-dropdown
+          [placeholder]="'Provisioner...'"
+          [multiSelect]="true"
+          [canSearch]="true"
+          [lazyload]="true"
+          [params]="(provisionersParams$ | async)"
+          [selected]="searchCriteria.provisioner"
+          [options]="(provisionerFilterOptions$ | async) || []"
+          [icon]="'sell'"
+          (search)="onSearchProvisioners($event)"
+          (loadNewPage)="onLoadNextProvisionersPage($event)"
+          (onSelectedChanged)="onFilterChanged($event, 'provisioner')"></app-dropdown>
+      </ng-container>
+
+      <app-dropdown [placeholder]="'All Customers'"
+                    [multiSelect]="true"
+                    [canSearch]="true"
+                    [lazyload]="true"
+                    [params]="(customerParams$ | async)"
+                    [selected]="searchCriteria.parentCompanyName"
+                    [options]="(customerOptions$ | async) || []"
+                    [icon]="'person'"
+                    (search)="onSearchCustomers($event)"
+                    (loadNewPage)="onLoadNextPage($event)"
+                    (onSelectedChanged)="onFilterChanged($event, 'parentCompanyName')"></app-dropdown>
+
+      <app-dropdown [placeholder]="'All Service Types'"
+                    [multiSelect]="true"
+                    [selected]="searchCriteria.services"
+                    [options]="serviceTypeOptions$ | async"
+                    [icon]="'phone_in_talk'"
+                    (onSelectedChanged)="onFilterChanged($event, 'services')"></app-dropdown>
+
+      <div class="settings-dropdown-wrapper">
+        <div>
+          <div class="dropdown-trigger">
+            <button class="quick-filters">
+              Quick filters
+            </button>
+          </div>
+          <div class="dropdown-content">
+            <ul>
+              <!-- Ordering Quickfilters -->
+              <ng-container *ngIf="!isInventory">
+                <li>
+                  <div class="checkbox-wrapper" (click)="onFilterChanged(!searchCriteria.hideTerminalStatuses, 'hideTerminalStatuses')">
+                    <mat-checkbox [ngModel]="searchCriteria.hideTerminalStatuses" (click)="$event.preventDefault()"></mat-checkbox>Hide Terminal Statuses
+                  </div>
+                </li>
+                <li>
+                  <div class="checkbox-wrapper" (click)="onFilterChanged(!searchCriteria.macOnly, 'macOnly')">
+                    <mat-checkbox [ngModel]="searchCriteria.macOnly" (click)="$event.preventDefault()"></mat-checkbox>Move, Add, & Change Orders Only
+                  </div>
+                </li>
+              </ng-container>
+              <!-- Inventory Quickfilters -->
+              <ng-container *ngIf="isInventory">
+                <li>
+                  <div class="checkbox-wrapper" (click)="onFilterChanged(!searchCriteria.macdOpen, 'macdOpen')">
+                    <mat-checkbox [ngModel]="searchCriteria.macdOpen" (click)="$event.preventDefault()"></mat-checkbox>MACD Open
+                  </div>
+                </li>
+                <li>
+                  <div class="checkbox-wrapper" (click)="onFilterChanged(!searchCriteria.disputeOpen, 'disputeOpen')">
+                    <mat-checkbox [ngModel]="searchCriteria.disputeOpen" (click)="$event.preventDefault()"></mat-checkbox>Dispute Open
+                  </div>
+                </li>
+              </ng-container>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="header" *ngIf="(searchCriteria$ | async) as searchCriteria">
+        <div #filter class="header-button-wrapper">
+          <ng-content select=".header-buttons"></ng-content>
+          <span class="filter-trigger v-link" (click)="onFiltersClicked()">
+            Advanced
+          </span>
+
+          <!-- Filters Applied -->
+          <ng-container *ngIf="(appliedFilters$ | async) as appliedFilters">
+            <button class="applied-filters-button" *ngIf="appliedFilters.length > 0" [matMenuTriggerFor]="appliedFilterMenu">
+              Filters Applied ({{appliedFilters.length}})
+            </button>
+            <mat-menu #appliedFilterMenu="matMenu">
+              <div class="applied-filters-menu-item">
+                <p class="v-link" (click)="clearFilters()">Clear Filters</p>
+              </div>
+              <div class="applied-filters-menu-item" *ngFor="let filter of appliedFilters">
+                <p *ngIf="filter.value != undefined && !filter.value.dateRange" [title]="(getFilterDisplayName(filter.name) | async) + ': ' + filter.value">
+                  {{ (getFilterDisplayName(filter.name) | async) }}: {{filter.value}}
+                </p>
+                <p *ngIf="filter.value != undefined && filter.value.dateRange" [title]="(getFilterDisplayName(filter.name) | async) + ': ' + (filter.value.dateRange.startDate | date: 'MM/dd/yyyy') + ' - ' + (filter.value.dateRange.endDate | date: 'MM/dd/yyyy')">
+                  {{ (getFilterDisplayName(filter.name) | async) }}: {{filter.value.dateRange.startDate | date: 'MM/dd/yyyy'}} - {{filter.value.dateRange.endDate | date: 'MM/dd/yyyy'}}
+                </p>
+                <span class="material-symbols-outlined" (click)="onClearFilterClicked($event, filter)">
+                  close
+                </span>
+              </div>
+            </mat-menu>
+          </ng-container>
+
+          <div class="filter-content">
+            <div class="filter-container">
+              <p>Filter by:</p>
+              <ng-container *ngFor="let col of (columns$ | async)">
+                <ng-container *ngIf="col.filterable;">
+                  <ng-container [ngSwitch]="col.type">
+                    <div *ngSwitchCase="'date'" class="filter-content-row date">
+                      <p>{{col.name}}</p>
+                      <input type="text"
+                             ngxDaterangepickerMd
+                             [locale]="{ format: 'YYYY-MM-DD', displayFormat: 'MMM-DD-YYYY' }"
+                             [ngModel]="searchCriteria[col.propertyName].dateRange ? searchCriteria[col.propertyName].dateRange : nullifyier"
+                             (rangeClicked)="checkIsEmpty($event)"
+                             (ngModelChange)="onDateRangeFilter($event, searchCriteria, col)"
+                             [showCustomRangeLabel]="true"
+                             [alwaysShowCalendars]="true"
+                             [ranges]="ranges"
+                             [linkedCalendars]="true"
+                             [showClearButton]="true"
+                             placeholder=" {{ searchCriteria[col.propertyName].isEmpty ? 'Empty dates set' : 'Select a Date Range' }}"/>
+                    </div>
+
+                    <ng-container *ngSwitchCase="['text', 'list'].includes(col.type) ? col.type : !col.type">
+                      <ng-template #normal>
+                        <div class="filter-content-row" [class.isNullable]="col.hasEmpty">
+                          <p>{{col.name}}</p>
+                          <input [ngModel]="getCriteriaModelValue(col, searchCriteria)"
+                                 (input)="onFilter($event, col)"
+                                 class="text-input"
+                                 [class.transparent]="searchCriteria[col.propertyName] === '<NULL>'"
+                                 type="{{ col.type }}">
+                          <div class="emptyToggle"
+                               [matTooltip]="(searchCriteria[col.propertyName] === '<NULL>') ? 'Toggle back to custom search' : 'Toggle to search by empty values'"
+                               [class.selected]="searchCriteria[col.propertyName] === '<NULL>'"
+                               *ngIf="col.hasEmpty"
+                               (click)="onFilter({target: { value: (searchCriteria[col.propertyName] === '<NULL>') ? '' : '<NULL>' }}, col)">
+                            Empty
+                          </div>
+                        </div>
+                      </ng-template>
+                      <ng-container *ngIf="col.filterType === 'select'; else normal">
+                        <ng-container [ngSwitch]="col.propertyName">
+                          <div *ngSwitchCase="'parentCompanyName'" class="filter-content-row">
+                            <p>{{col.name}}</p>
+                            <app-dropdown [placeholder]="''"
+                                          [options]="(customerOptions$ | async) || []"
+                                          (onSelectedChanged)="onFilterChanged($event, 'parentCompanyName')"
+                                          [multiSelect]="true"
+                                          [lazyload]="true"
+                                          [params]="customerParams$ | async"
+                                          [canSearch]="true"
+                                          [searchValue]="(customerParams$ | async)?.name || ''"
+                                          (search)="onSearchCustomers($event)"
+                                          (loadNewPage)="onLoadNextPage($event)"
+                                          [selected]="searchCriteria.parentCompanyName">
+                            </app-dropdown>
+                          </div>
+                          <div *ngSwitchCase="'companyName'" class="filter-content-row">
+                            <p>{{col.name}}</p>
+                            <app-dropdown [placeholder]="''"
+                                          [options]="(endCustomerOptions$ | async) || []"
+                                          (onSelectedChanged)="onFilterChanged($event, 'companyName')"
+                                          [multiSelect]="true"
+                                          [lazyload]="true"
+                                          [params]="endCustomerParams$ | async"
+                                          [canSearch]="true"
+                                          [searchValue]="(endCustomerParams$ | async)?.name || ''"
+                                          (search)="onSearchEndCustomers($event)"
+                                          (loadNewPage)="onLoadNextEndCustomerPage($event)"
+                                          [selected]="searchCriteria.companyName">
+                            </app-dropdown>
+                          </div>
+                          <div *ngSwitchCase="'activeInactive'" class="filter-content-row">
+                            <p>{{col.name}}</p>
+                            <app-dropdown
+                              [placeholder]="''"
+                              [canClear]="false"
+                              [selected]="searchCriteria.activeInactive"
+                              [options]="['Active', 'Inactive', 'All' ]"
+                              (onSelectedChanged)="onFilterChanged($event, 'activeInactive')">
+                            </app-dropdown>
+                          </div>
+                          <div *ngSwitchCase="'provisioner'" class="filter-content-row">
+                            <p>{{col.name}}</p>
+                            <app-dropdown
+                              [placeholder]="''"
+                              [multiSelect]="true"
+                              [canSearch]="true"
+                              [lazyload]="true"
+                              [params]="(provisionersParams$ | async)"
+                              [selected]="searchCriteria.provisioner"
+                              [options]="(provisionerFilterOptions$ | async) || []"
+                              (search)="onSearchProvisioners($event)"
+                              (loadNewPage)="onLoadNextProvisionersPage($event)"
+                              (onSelectedChanged)="onFilterChanged($event, 'provisioner')"></app-dropdown>
+                          </div>
+                          <div *ngSwitchCase="'locationStatus'" class="filter-content-row">
+                            <p>{{col.name}}</p>
+                            <app-dropdown
+                              [placeholder]="''"
+                              [multiSelect]="true"
+                              [selected]="searchCriteria.locationStatus"
+                              [options]="(statusesValues$ | async) || []"
+                              (onSelectedChanged)="onFilterChanged($event, 'locationStatus')">
+                            </app-dropdown>
+                          </div>
+                          <div *ngSwitchCase="'services'" class="filter-content-row">
+                            <p>{{col.name}}</p>
+                            <app-dropdown
+                              [placeholder]="''"
+                              [multiSelect]="true"
+                              [selected]="searchCriteria.services"
+                              [options]="serviceTypeOptions$ | async"
+                              (onSelectedChanged)="onFilterChanged($event, 'services')">
+                            </app-dropdown>
+                          </div>
+                          <div *ngSwitchCase="'subOrderTypes'" class="filter-content-row">
+                            <p>{{col.name}}</p>
+                            <app-dropdown
+                              [placeholder]="''"
+                              [multiSelect]="true"
+                              [selected]="searchCriteria.subOrderTypes"
+                              [options]="(subOrderTypes$ | async) || []"
+                              (onSelectedChanged)="onFilterChanged($event, 'subOrderTypes')">
+                            </app-dropdown>
+                          </div>
+                          <div *ngSwitchCase="'openJeopResponsibilities'" class="filter-content-row">
+                            <p>{{col.name}}</p>
+                            <app-dropdown
+                              [placeholder]="''"
+                              [multiSelect]="true"
+                              [selected]="searchCriteria.openJeopResponsibilities"
+                              [options]="(jeopResponsibilityOptions$ | async ) || []"
+                              (onSelectedChanged)="onFilterChanged($event, 'openJeopResponsibilities')">
+                            </app-dropdown>
+                          </div>
+                        </ng-container>
+                      </ng-container>
+                    </ng-container>
+
+                    <div *ngSwitchCase="'count'" class="filter-content-row">
+                      <p>{{col.name}}</p>
+                      <input [ngModel]="getCriteriaModelValue(col, searchCriteria)" (input)="onFilter($event, col)" type="number">
+                    </div>
+
+                    <div *ngSwitchCase="['currency', 'number'].includes(col.type) ? col.type : !col.type" class="filter-content-row" [class.isNullable]="col.hasEmpty">
+                      <p>{{col.name}}</p>
+                      <input
+                        [ngModel]="getCriteriaModelValue(col, searchCriteria)"
+                        class="text-input"
+                        [class.transparent]="searchCriteria[col.propertyName] === '<NULLNUMBER>'"
+                        (input)="onFilter($event, col)" type="number">
+                      <div class="emptyToggle"
+                           [matTooltip]="(searchCriteria[col.propertyName] === '<NULLNUMBER>') ? 'Toggle back to custom search' : 'Toggle to search by empty values'"
+                           [class.selected]="searchCriteria[col.propertyName] === '<NULLNUMBER>'"
+                           *ngIf="col.hasEmpty"
+                           (click)="onFilter({target: { value: (searchCriteria[col.propertyName] === '<NULLNUMBER>') ? '' : '<NULLNUMBER>' }}, col)">
+                        Empty
+                      </div>
+                    </div>
+                  </ng-container>
+                </ng-container>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="additional">
+<!--      <button>Import</button>-->
+      <button (click)="exportTable('locations.xlsx')">Export</button>
+
+      <!-- beginning of custom worklist dropdown -->
+      <div class="settings-dropdown-wrapper">
+        <div>
+          <div class="custom-worklist-button">
+            <button type="button"> Custom Worklists</button>
+          </div>
+          <div class="dropdown-content columns-dropdown-content">
+            <ul id="customWorklists" *ngIf="!hideList">
+              <li class="add-new" (click)="manageCustomWorklist($event, null)">Add New</li>
+
+              <!-- Favorites Section -->
+              <li *ngIf="favoriteCustomWorklists().length > 0" class="section-header">
+                Favorites
+              </li>
+              <li *ngFor="let item of (favoriteCustomWorklists())" class="worklist-item">
+                  <span
+                    matTooltip="Click to toggle Favorite" matTooltipPosition="above" [matTooltipShowDelay]=750
+                    class="favorite-star"
+                    [class.red]="item.favorite"
+                    (click)="toggleFavorite($event, item)">★
+                  </span>
+                <span class="worklist-name" matTooltip="Click to change the worklist view" matTooltipPosition="above" [matTooltipShowDelay]=750
+                      (click)="onCustomWorklistClicked(item)">
+                    {{ item.name }}
+                  </span>
+                <span class="meta-info" matTooltip="Author and Last Modified Date" matTooltipPosition="above" [matTooltipShowDelay]=750>
+                    {{ item.authorName + '  ' + (item.lastModifiedDate | date: 'MM/dd/yyyy') }}
+                  </span>
+                <button matTooltip="Only the Author can Edit a Custom Worklist" matTooltipPosition="above" [matTooltipShowDelay]=750
+                        (click)="manageCustomWorklist($event, item)">Edit
+                </button>
+              </li>
+
+              <!-- Available Section -->
+              <li *ngIf="availableCustomWorklists().length > 0" class="section-header">
+                Available
+              </li>
+              <li *ngFor="let item of (availableCustomWorklists())" class="worklist-item">
+                  <span
+                    matTooltip="Click to toggle Favorite" matTooltipPosition="above" [matTooltipShowDelay]=750
+                    class="favorite-star"
+                    [class.red]="item.favorite"
+                    (click)="toggleFavorite($event, item)">★
+                  </span>
+                <span class="worklist-name" matTooltip="Click to change the worklist view" matTooltipPosition="above" [matTooltipShowDelay]=750
+                      (click)="onCustomWorklistClicked(item)">
+                    {{ item.name }}
+                  </span>
+                <span class="meta-info" matTooltip="Author and Last Modified Date" matTooltipPosition="above" [matTooltipShowDelay]=750>
+                    {{ item.authorName + '  ' + (item.lastModifiedDate | date: 'MM/dd/yyyy') }}
+                  </span>
+                <button matTooltip="Only the Author can Edit a Custom Worklist" matTooltipPosition="above" [matTooltipShowDelay]=750
+                        (click)="manageCustomWorklist($event, item)">Edit
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- end of custom worklist dropdown -->
+
+      <div class="settings-dropdown-wrapper">
+        <div>
+          <div class="dropdown-trigger">
+            <button class="icon">
+              <span class="material-symbols-outlined">
+                menu
+              </span>
+            </button>
+          </div>
+          <div class="dropdown-content columns-dropdown-content">
+            <ul>
+              <li *ngFor="let col of (columns$ | async)" (click)="onColSelectClicked(col)">
+                <mat-checkbox [ngModel]="!col.hidden"></mat-checkbox>
+                {{ col.name }}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <button *ngIf="!isInventory" class="icon" (click)="toggleSelectedView()">
+        <span class="material-symbols-outlined">
+          {{ (cardViewOn$ | async) ? 'view_list' : 'grid_view' }}
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <div class="content-wrapper">
+    <!-- By adding the #table reference here, we are able to call functions belonging to the table elsewhere in this template. ex. table.toggleSelectedView() -->
+
+    <div class="table-wrapper">
+
+      <div class="loader" *ngIf="(isLoading$ | async)">
+        <mat-spinner></mat-spinner>
+      </div>
+      <app-location-view-table class="view-table"
+                               [style.width]="selectedLocation ? 'calc(100% - 329px - 2em)' : '100%'"
+                               [columns]="(columns$ | async) || []"
+                               [draggable]="true"
+                               [updatedItem]="(updatedItem$ | async)"
+                               [tableData]="(tableData$ | async) || []"
+                               [tableTotal]="(tableTotal$ | async)"
+                               [cardViewSelected]="!!(cardViewOn$ | async)"
+                               [searchCriteria]="(searchCriteria$ | async)"
+                               (reorderColumns)="reorderColumns($event)"
+                               (rowClick)="onLocationClicked($event)"
+                               (rowDblClick)="onLocationDblClicked($event)"
+                               (changeSortClicked)="onChangeSortClicked($event)"
+                               (pageClicked)="onFilterChanged($event, 'offset')"
+                               (rowRightClick)="onLocationRightClicked($event)"
+                               (limitChanged)="onLimitChanged($event);">
+
+        <!-- Card Header -->
+        <ng-template #cardHeader let-card>
+          <div>
+            <p>{{card.data.clientLocationId}}</p>
+            <p *ngIf="card.data.services">{{(card.data.services).replaceAll(',', ', ')}}</p>
+          </div>
+          <div>
+            <p>{{card.data.locationStatus}}</p>
+            <!-- Card Icons -->
+            <div class="card-header-icons">
+              <span *ngIf="card.data.showNoteIcon" class="material-symbols-outlined">
+                event_busy
+              </span>
+              <span *ngIf="card.data.showJeopIcon" class="material-symbols-outlined">
+                offline_bolt
+              </span>
+              <span *ngIf="card.data.showOpenDisconnectIcon" class="material-symbols-outlined">
+                power_off
+              </span>
+              <span *ngIf="card.data.showOpenMacIcon" class="material-symbols-outlined">
+                repeat
+              </span>
+              <span *ngIf="card.data.showOpenDisputeIcon " class="material-symbols-outlined">
+                feedback
+              </span>
+              <span *ngIf="card.data.showLinkedIcon" class="material-symbols-outlined">
+                link
+              </span>
+              <span *ngIf="card.data.showBundledIcon" class="material-symbols-outlined">
+                shop_two
+              </span>
+            </div>
+          </div>
+        </ng-template>
+
+        <!-- Card Body -->
+        <ng-template #cardBody let-card>
+          <div *ngIf="card.meta.page === 0">
+            <div class="card-data">
+              <p class="card-header">Master Customer:</p>
+              <p class="card-text" [matTooltip]="card.data.parentCompanyName">{{card.data.parentCompanyName}}</p>
+            </div>
+            <div class="card-data">
+              <p class="card-header">End Customer:</p>
+              <p class="card-text" [matTooltip]="card.data.companyName">{{card.data.companyName}}</p>
+            </div>
+            <div class="card-data">
+              <p class="card-header">Address:</p>
+              <p class="card-text" [matTooltip]="card.data.address">{{card.data.address}}</p>
+            </div>
+            <div class="card-data">
+              <p class="card-header">Services Count:</p>
+              <p class="card-text" [matTooltip]="card.data.countServices">{{card.data.countServices}}</p>
+            </div>
+            <div class="card-data">
+              <p class="card-header">Location Info:</p>
+              <p class="card-text" [matTooltip]="card.data.clientLocationInfo">{{card.data.clientLocationInfo}}</p>
+            </div>
+            <div class="card-data">
+              <p class="card-header">Location Type:</p>
+              <p class="card-text" [matTooltip]="card.data.clientLocationType">{{card.data.clientLocationType}}</p>
+            </div>
+            <div class="card-data" *ngIf="card.data.greatestMilestoneName">
+              <p class="card-header">{{card.data.greatestMilestoneName}}:</p>
+              <p class="card-text" [matTooltip]="(card.data.greatestMilestoneDate | date:'M/d/yy':'UTC') || ''">{{card.data.greatestMilestoneDate | date:'M/d/yy':'UTC'}}</p>
+            </div>
+          </div>
+
+          <div *ngIf="card.meta.page === 1">
+            <div class="card-data">
+              <p class="card-header">Provisioner:</p>
+              <p class="card-text" [matTooltip]="card.data.provisioner">{{card.data.provisioner}}</p>
+            </div>
+            <div class="card-data">
+              <p class="card-header">Client Project Manager:</p>
+              <p class="card-text" [matTooltip]="card.data.clientProjectManager">{{card.data.clientProjectManager}}</p>
+            </div>
+            <div class="card-data">
+              <p class="card-header">i90 Project Manger:</p>
+              <p class="card-text" [matTooltip]="card.data.vertekProjectManager">{{card.data.vertekProjectManager}}</p>
+            </div>
+            <div class="card-data">
+              <p class="card-header">MRC:</p>
+              <p class="card-text" [matTooltip]="(card.data.mrc | vtkCurrency:true) || ''">{{card.data.mrc | vtkCurrency:true}}</p>
+            </div>
+            <div class="card-data">
+              <p class="card-header">NRC:</p>
+              <p class="card-text" [matTooltip]="(card.data.nrc | vtkCurrency:true) || ''">{{card.data.nrc | vtkCurrency:true}}</p>
+            </div>
+            <div class="card-data">
+              <p class="card-header">Annual Recurring Cost:</p>
+              <p class="card-text" [matTooltip]="(card.data.annualRecurringCost | vtkCurrency:true) || ''">{{card.data.annualRecurringCost | vtkCurrency:true}}</p>
+            </div>
+            <div class="card-data">
+              <p class="card-header">Last Open Jeopardy:</p>
+              <p class="card-text" [matTooltip]="card.data.openJeop">{{card.data.openJeop}}</p>
+            </div>
+            <div class="card-data">
+              <p class="card-header">Latest Note:</p>
+              <p class="card-text" [matTooltip]="card.data.latestNote">{{card.data.latestNote}}</p>
+            </div>
+          </div>
+        </ng-template>
+
+        <ng-template #cardFooter let-card>
+          <div class="card-progress-bar">
+            <div [style.width]="getProgressBarWidth(card.data)" [style.backgroundColor]="getProgressBarColor(card.data)"></div>
+          </div>
+        </ng-template>
+      </app-location-view-table>
+
+      <!-- Preview Pane -->
+      <div id="previewPane" *ngIf="selectedLocation">
+        <div class="preview-pane-header">
+          <div>
+            <span class="material-symbols-outlined" (click)="onClosePreviewPaneClicked()">
+              chevron_left
+            </span>
+            <p>Location: {{selectedLocation.id}}</p>
+          </div>
+          <div class="v-link" (click)="onLocationDblClicked(selectedLocation)">
+            Full Details
+          </div>
+        </div>
+        <div class="container">
+          <!-- Ordering Preview Pane Body -->
+          <div *ngIf="!isInventory" class="preview-pane-body">
+            <div class="labelBox">
+              <div class="bodyText">
+                <p class="labels">Master Customer:</p>
+                <p class="detailText">{{selectedLocation.parentCompanyName}}</p>
+              </div>
+              <div class="bodyText">
+                <p class="labels">End Customer:</p>
+                <p class="detailText">{{selectedLocation.companyName}}</p>
+              </div>
+
+              <div class="bodyText">
+                <p class="labels">Provisioner:</p>
+                <app-dropdown class="proDropDown"
+                              [placeholder]="selectedLocation.provisioner"
+                              [options]="(provisionerOptions$ | async) || []"
+                              *ngIf="editEnabled && !terminalLocationStatuses.includes(selectedLocation.status)"
+                              (onSelectedChanged)="this.selectedLocation.provisioner = $event"
+                ></app-dropdown>
+              </div>
+
+              <div class="bodyText">
+                <p class="labels">Client Location ID:</p>
+                <p class="detailText">{{selectedLocation.clientLocationId}}</p>
+              </div>
+
+              <div class="bodyText">
+                <p class="labels">Address:</p>
+              <div class="address">
+                <p class="address-line1">{{selectedLocation.address1}}</p>
+                <p class="address-line2">{{selectedLocation.address2}}</p>
+                <p class="city-state-zip">
+                    {{selectedLocation.city}}, {{selectedLocation.stateProvince}} {{selectedLocation.postalCode}}
+                </p>
+              </div>
+              </div>
+
+              <div class="bodyText">
+                <p class="labels">Location Name:</p>
+                <p class="detailText">{{selectedLocation.locationName}}</p>
+              </div>
+              <div class="bodyText">
+                <p class="labels">Location Status:</p>
+                <p class="detailText">{{selectedLocation.locationStatus}}</p>
+              </div>
+            </div>
+            <app-note #note
+                      type="location"
+                      [parentId]="selectedLocation.id"
+                      [maxNotes]="2">
+            </app-note>
+
+            <mat-divider></mat-divider>
+            <app-jeops type="location"
+                       [parentId]="selectedLocation.id"
+                       [orderId]="selectedLocation.orderId"
+                       [companyId]="selectedLocation.companyId"
+                       [maxJeops]="5">
+            </app-jeops>
+          </div>
+
+          <!-- Inventory Preview Pane Body -->
+          <div *ngIf="isInventory" class="preview-pane-body">
+            <div class="label-box">
+              <div class="bodyText">
+                <p class="labels">Master Customer:</p>
+                <p class="detailText">{{selectedLocation.parentCompanyName}}</p>
+              </div>
+              <div class="bodyText">
+                <p class="labels">End Customer:</p>
+                <p class="detailText">{{selectedLocation.companyName}}</p>
+              </div>
+              <div class="bodyText">
+                <p class="labels">Client Location ID:</p>
+                <p class="detailText">{{selectedLocation.clientLocationId}}</p>
+              </div>
+              <div class="bodyText">
+                <p class="labels">Address:</p>
+                <p class="detailText">{{selectedLocation.address}}</p>
+              </div>
+              <div class="bodyText">
+                <p class="labels">Active Services:</p>
+                <p class="detailText">{{selectedLocation.services}}</p>
+              </div>
+              <div class="bodyText">
+                <p class="labels">MACD Open:</p>
+                <p class="detailText">{{selectedLocation.macdCount}}</p>
+              </div>
+            </div>
+            <app-note #note
+                      type="location"
+                      [parentId]="selectedLocation.id"
+                      [maxNotes]="0">
+            </app-note>
+          </div>
+
+          <div class="actions">
+<!--            TODO Unfreeze it when needed-->
+            <div class="additionalActions">
+<!--              <button class="v-button-outline">-->
+<!--                Share-->
+<!--              </button>-->
+<!--              <button class="v-button-outline">-->
+<!--                Assign-->
+<!--              </button>-->
+            </div>
+            <button class="v-button updateButton" (click)="clickUpdate()" *ngIf="(editEnabled$ | async) && !isInventory">Update</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="context-menu" #contextMenu [ngStyle]="contextMenuStyle">
+    <ul>
+      <li (click)="onLocationDblClicked(contextMenuLocation)">Open</li>
+      <li (click)="onOpenInNewTabClicked()">Open in new tab</li>
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,93 @@
+<ng-container *ngIf="filters$ | async as filters">
+  <div class="section-header">
+    Install Interval by provider
+    <div class="section-actions">
+      <mat-checkbox [ngModel]="filters.provider.allTime"
+                    name="installIntervalAllTime"
+                    (change)="createInstallIntervalChart({installIntervalAllTime: !filters.provider.allTime });">
+        Show All Time
+      </mat-checkbox>
+      <button class="v-button-outline icon" (click)="showInstallInterval = !showInstallInterval">
+        <span class="material-symbols-outlined">{{showInstallInterval ? 'expand_less' : 'expand_more'}}</span>
+      </button>
+    </div>
+  </div>
+  <div class="report-container">
+    <div [style.display]="showInstallInterval ? 'grid' : 'none'">
+      <div class="report">
+        <div class="canvas-container" [class.expanded]="installIntervalChartConfig.expanded">
+          <div class="header">
+            <span></span>
+            <div class="actions">
+              <div class="action-item">
+                <span class="material-symbols-outlined" (click)="excelService.exportAsExcelFile(this.installIntervalsData, 'install_intervals')">download</span>
+              </div>
+            </div>
+          </div>
+          <canvas id="installIntervalChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-header">
+    Provider Survey Durations
+    <div class="section-actions">
+      <mat-checkbox [ngModel]="filters.survey.allTime"
+                    name="surveyIntervalAllTime"
+                    (change)="createSurveyIntervalChart({
+                      allTime: !filters.survey.allTime
+                    });">
+        Show All Time
+      </mat-checkbox>
+      <button class="v-button-outline icon" (click)="showSurveyInterval = !showSurveyInterval">
+        <span class="material-symbols-outlined">{{showSurveyInterval ? 'expand_less' : 'expand_more'}}</span>
+      </button>
+    </div>
+  </div>
+  <div class="report-container">
+    <div [style.display]="showSurveyInterval ? 'grid' : 'none'">
+      <div class="report">
+        <div class="canvas-container" [class.expanded]="surveyIntervalChartConfig.expanded">
+          <div class="header">
+            <span></span>
+            <div class="actions">
+              <div class="action-item">
+                <span class="material-symbols-outlined" (click)="excelService.exportAsExcelFile(this.surveyIntervalsData, 'survey_intervals')">download</span>
+              </div>
+            </div>
+          </div>
+          <canvas id="surveyIntervalChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-header">
+    Provider Reliance to My Network
+    <div class="section-actions">
+      <button class="v-button-outline icon" (click)="showProviderReliance = !showProviderReliance">
+        <span class="material-symbols-outlined">{{showProviderReliance ? 'expand_less' : 'expand_more'}}</span>
+      </button>
+    </div>
+  </div>
+  <div class="report-container">
+    <div [style.display]="showProviderReliance ? 'grid' : 'none'">
+      <div class="report">
+        <div class="canvas-container" [class.expanded]="providerRelianceChartConfig.expanded">
+          <div class="header">
+            <span></span>
+            <div class="actions">
+              <div class="action-item">
+                <span class="material-symbols-outlined" (click)="excelService.exportAsExcelFile(this.providerRelianceData, 'provider_reliance')">download</span>
+              </div>
+            </div>
+          </div>
+          <canvas id="providerRelianceChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<app-loading-spinner *ngIf="(isLoading$ | async) || excelService.isLoading"></app-loading-spinner>

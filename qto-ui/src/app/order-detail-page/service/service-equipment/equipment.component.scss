@@ -1,0 +1,80 @@
+.equipment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Space between mat-cards */
+  padding: 16px; /* Padding around the form */
+
+  mat-card {
+    padding: 5px; /* Padding inside each card */
+    box-shadow: none; /* Optional: remove the shadow for a flatter look */
+    border: 1px solid rgba(0, 0, 0, 0.12); /* Add a border to cards */
+    border-radius: 4px; /* Optional: rounded corners */
+
+    mat-card-content {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr); /* Create three equal-width columns */
+      gap: 5px; /* Space between fields inside the card */
+
+      @media (max-width: 1024px) {
+        grid-template-columns: repeat(2, 1fr); /* Collapse to two columns on medium screens */
+      }
+
+      @media (max-width: 768px) {
+        grid-template-columns: 1fr; /* Collapse to one column on smaller screens */
+      }
+
+      /* Description field spans the full width */
+      mat-form-field.full-width {
+        grid-column: span 3; /* Make description take all columns */
+
+        @media (max-width: 1024px) {
+          grid-column: span 2; /* Take two columns on medium screens */
+        }
+
+        @media (max-width: 768px) {
+          grid-column: span 1; /* Take full row on small screens */
+        }
+      }
+    }
+
+    mat-form-field {
+      width: 100%; /* Ensure form fields take up full width of their grid cell */
+    }
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px; /* Space between the Save and Cancel buttons */
+    margin-top: 16px;
+    button {
+      padding: .5em 1em;
+      font-family: inherit;
+      border: 1px solid #EEEEEE;
+      border-radius: 4px;
+      background-color: #5DCADE;
+
+      &:hover:not([disabled]) {
+        cursor: pointer;
+        background-color: #3871C1;
+        color: #F8F8F8;
+      }
+    }
+    button.delete-button {
+      background-color: #FF0000;
+      &:hover {
+        background-color: #CC0000;
+      }
+    }
+  }
+}
+
+button:enabled {
+  cursor: pointer;
+  color: white;
+  background-color: #5DCADE;
+
+  &:hover {
+    background: #3871C1;
+  }
+}

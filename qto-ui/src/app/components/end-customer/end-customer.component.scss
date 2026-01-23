@@ -1,0 +1,68 @@
+dialog {
+  display: flex;
+  flex-direction: column;
+
+  .customer-form {
+    display: flex;
+    flex-direction: column;
+    background-color: #F8F8F8;
+    justify-content: center;
+    padding: 1.5em 0;
+    font-family: 'Roboto', sans-serif;
+
+    .field {
+      display: flex;
+      padding: .1em 0;
+      justify-content: space-between;
+      font-size: 12px;
+      gap: 1em;
+
+      p {
+        color: #3E3E3E;
+        margin: 0;
+      }
+
+      input {
+        border: 1px solid #3E3E3E;
+        font-size: inherit;
+      }
+
+      .ng-invalid:focus {
+        outline: 1px solid red;
+      }
+
+      .ng-invalid {
+        border: 1px solid red;
+      }
+    }
+
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+
+      div {
+        display: flex;
+        padding: .5em 0 0 0;
+        gap: .5em;
+      }
+
+
+      button {
+        padding: .5em 1em;
+        font-family: inherit;
+        border: 1px solid #EEEEEE;
+        border-radius: 4px;
+        background-color: #F8F8F8;
+
+        &:hover:not([disabled]) {
+          cursor: pointer;
+          background-color: #5DCADE;
+          color: #F8F8F8;
+        }
+      }
+    }
+  }
+}
+
+

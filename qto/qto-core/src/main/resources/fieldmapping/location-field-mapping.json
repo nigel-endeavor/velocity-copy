@@ -1,0 +1,96 @@
+{
+  "status": {
+    "value": "Status",
+    "type": "string"
+  },
+  "clientLocationId": {
+    "value": "Client Location ID",
+    "type": "string"
+  },
+  "quoteLocationId": {
+    "value": "Quote Location ID",
+    "type": "string"
+  },
+  "name": {
+    "value": "Name",
+    "type": "string"
+  },
+  "phoneNumber": {
+    "value": "Location Phone Number",
+    "type": "string"
+  },
+  "address": {
+    "value": {
+      "address1": {
+        "value": "Address Line 1",
+        "type": "string"
+      },
+      "address2": {
+        "value": "Address Line 2",
+        "type": "string"
+      },
+      "city": {
+        "value": "City",
+        "type": "string"
+      },
+      "state": {
+        "value": "State/Province/Region",
+        "type": "string"
+      },
+      "postalCode": {
+        "value": "ZIP/Postal Code",
+        "type": "string"
+      },
+      "country": {
+        "value": "Country",
+        "type": "string"
+      }
+    },
+    "type": "object"
+  },
+  "timezone": {
+    "value": "Time Zone",
+    "type": "string"
+  },
+  "lcon": {
+    "value": {
+      "firstName": {
+        "value": "LCON First Name",
+        "type": "string"
+      },
+      "lastName": {
+        "value": "LCON Last Name",
+        "type": "string"
+      },
+      "email": {
+        "value": "LCON Email",
+        "type": "string"
+      },
+      "phone": {
+        "value": "LCON Phone",
+        "type": "string"
+      }
+    },
+    "type": "object"
+  },
+  "levelOfEffort": {
+    "value": "Level of Effort",
+    "type": "string"
+  },
+  "clientLocationInfo": {
+    "value": "Client Location Info",
+    "type": "string"
+  },
+  "clientLocationType": {
+    "value": "Client Location Type",
+    "type": "string"
+  },
+  "requirementTemplateId": {
+    "value": "Requirement Template",
+    "type": "string"
+  },
+  "description": {
+    "value": "Description",
+    "type": "string"
+  }
+}

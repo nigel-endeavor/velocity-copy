@@ -1,0 +1,149 @@
+<h2 mat-dialog-title>Equipment</h2>
+<mat-dialog-content>
+  <form #equipmentForm="ngForm" class="equipment-form">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Equipment Info</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-form-field>
+          <mat-label [matTooltip]="equipmentTypeTooltip">Equipment Type</mat-label>
+          <mat-select name="equipmentType" [value]="equipment.equipmentType"
+                      (selectionChange)="onEquipmentTypeChange($event.value)"
+                      [required]="true"
+                      tabindex="1">
+            <mat-option *ngFor="let equipmentType of equipmentTypes$ | async" [value]="equipmentType.value">
+              {{equipmentType.value}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label [matTooltip]="subEquipmentTypeTooltip">Equipment Sub Type</mat-label>
+          <mat-select name="equipmentSubtype" [value]="equipment.equipmentSubtype"
+                      (selectionChange)="equipment.equipmentSubtype = $event.value"
+                      [required]="true"
+                      tabindex="1">
+            <mat-option *ngFor="let equipmentSubType of filteredEquipmentSubTypes" [value]="equipmentSubType.value">
+              {{equipmentSubType.value}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label [matTooltip]="makeTooltip">Make</mat-label>
+          <input matInput type="text" [(ngModel)]="equipment.make" name="make" placeholder="Enter equipment make"/>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label [matTooltip]="modelTooltip">Model</mat-label>
+          <input matInput type="text" [(ngModel)]="equipment.model" name="model" placeholder="Enter equipment model"/>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label [matTooltip]="serialNumberTooltip">Serial Number</mat-label>
+          <input matInput type="text" [(ngModel)]="equipment.serialNumber" name="serialNumber" placeholder="Enter serial number"/>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label [matTooltip]="macAddressTooltip">MAC Address</mat-label>
+          <input matInput type="text" [(ngModel)]="equipment.macAddress" name="macAddress" placeholder="Enter MAC address"/>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label [matTooltip]="ownershipTooltip">Ownership</mat-label>
+          <mat-select name="ownership" [value]="equipment.ownership"
+                      (selectionChange)="equipment.ownership = $event.value"
+                      [required]="true"
+                      tabindex="1">
+            <mat-option *ngFor="let ownership of ownerships$ | async" [value]="ownership.value">
+              {{ownership.value}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+      <mat-checkbox [(ngModel)]="equipment.decommission" name="active" [matTooltip]="decommissionTooltip">Decommission</mat-checkbox>
+
+        <mat-form-field class="full-width">
+          <mat-label>Description</mat-label>
+          <textarea rows="5" maxlength="500" matInput [(ngModel)]="equipment.description" name="description" placeholder="Enter description"></textarea>
+        </mat-form-field>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Shipping Info</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-form-field>
+          <mat-label>Shipping Method</mat-label>
+          <mat-select name="shippingMethod" [value]="equipment.shippingMethod"
+                      (selectionChange)="equipment.shippingMethod = $event.value"
+                      [required]="true"
+                      tabindex="1">
+            <mat-option *ngFor="let shippingMethod of shippingMethods$ | async" [value]="shippingMethod.value">
+              {{shippingMethod.value}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Tracking Info</mat-label>
+          <input matInput type="text" [(ngModel)]="equipment.trackingInfo" name="trackingInfo" placeholder="Enter tracking info"/>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Ship Date</mat-label>
+          <input matInput [matDatepicker]="shipDatePicker" [(ngModel)]="equipment.shipDate" name="shipDate">
+          <mat-datepicker-toggle matIconSuffix [for]="shipDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #shipDatePicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Delivered Date</mat-label>
+          <input matInput [matDatepicker]="deliveredDatePicker" [(ngModel)]="equipment.deliveredDate" name="deliveredDate">
+          <mat-datepicker-toggle matIconSuffix [for]="deliveredDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #deliveredDatePicker></mat-datepicker>
+        </mat-form-field>
+      </mat-card-content>
+    </mat-card>
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Network Info</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-form-field>
+          <mat-label>Network IP Range</mat-label>
+          <input matInput type="text" [(ngModel)]="equipment.networkIpRange" name="networkIpRange" placeholder="Enter network IP range"/>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>IP Address</mat-label>
+          <input matInput type="text" [(ngModel)]="equipment.ipAddress" name="ipAddress" placeholder="Enter IP address" appIpAddress="IPv4"/>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Gateway</mat-label>
+          <input matInput type="text" [(ngModel)]="equipment.gateway" name="gateway" placeholder="Enter gateway" appIpAddress="IPv4"/>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>DNS 1</mat-label>
+          <input matInput type="text" [(ngModel)]="equipment.dns1" name="dns1" placeholder="Enter primary DNS" appIpAddress="IPv4"/>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>DNS 2</mat-label>
+          <input matInput type="text" [(ngModel)]="equipment.dns2" name="dns2" placeholder="Enter secondary DNS" appIpAddress="IPv4"/>
+        </mat-form-field>
+      </mat-card-content>
+    </mat-card>
+    <div class="buttons">
+      <button mat-button (click)="saveEquipment()">Save</button>
+      <button mat-button class="delete-button" (click)="deleteEquipment()">Delete</button>
+      <button mat-button (click)="cancelDialog()">Cancel</button>
+    </div>
+  </form>
+
+</mat-dialog-content>

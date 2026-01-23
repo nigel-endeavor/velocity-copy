@@ -1,0 +1,24 @@
+.container {
+  position: relative;
+}
+
+.colcustom {
+  width: calc(66% - 20px) !important;
+}
+
+.subheader {
+  padding: 0 6px;
+  display: flex;
+  justify-content: space-between;
+  width: 33%;
+  border-left: 1px solid black;
+}
+
+.field {
+  p {
+    width: calc(33% + 2px);
+  }
+  input, select, vtk-select {
+    width: calc(33% + 2px) !important;
+  }
+}

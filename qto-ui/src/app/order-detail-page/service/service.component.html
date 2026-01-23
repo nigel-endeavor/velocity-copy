@@ -1,0 +1,10 @@
+<div class="tabs">
+  <p class="tab"
+     [ngClass]="{'selected-tab':  (selectedTab$ | async) === tab.display || this.selectedTab === tab.display }"
+     *ngFor="let tab of serviceTabs"
+     (click)="changeSelectedTab(tab.display)"
+     [routerLink]="tab.route">
+    {{tab.display}}
+  </p>
+</div>
+<router-outlet *ngIf="(selectedLocationOrService$ | async) && !(selectedIsLocation$ | async)" (activate)="onActivate($event)"></router-outlet>

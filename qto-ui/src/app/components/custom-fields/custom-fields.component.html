@@ -1,0 +1,23 @@
+<div class="customfields content">
+  <ng-container *ngIf="!isLoading">
+    <div class="field" *ngFor="let field of fields">
+      <p>{{field.label}}</p>
+      <ng-container [ngSwitch]="field.type">
+        <input *ngSwitchCase="CustomFieldType.TEXT" [ngModel]="getValue(field)" (ngModelChange)="setValue(field, $event)" name="{{field.name}}" [disabled]="!editing">
+        <select *ngSwitchCase="CustomFieldType.DROPDOWN" [ngModel]="getValue(field)" (ngModelChange)="setValue(field, $event)" name="{{field.name}}" [disabled]="!editing">
+          <option *ngFor="let option of getOptions(field)" [value]="option">{{option}}</option>
+        </select>
+        <mat-checkbox *ngSwitchCase="CustomFieldType.BOOLEAN" [ngModel]="getValue(field)" (ngModelChange)="setValue(field, $event)" name="{{field.name}}" [disabled]="!editing"></mat-checkbox>
+        <input *ngSwitchCase="CustomFieldType.CURRENCY" [ngModel]="getValue(field) | vtkCurrency:!editing" (ngModelChange)="setValue(field, $event)" name="{{field.name}}" [disabled]="!editing">
+      </ng-container>
+    </div>
+  </ng-container>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="isLoading" class="lds-ring">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+</div>

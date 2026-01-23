@@ -1,0 +1,281 @@
+<form #activationForm="ngForm" class="form">
+  <div class="col">
+    <div class="header">
+      <p>Schedule Details</p>
+      <span class="material-symbols-outlined" *ngIf="!editingScheduleDetails && (editEnabled$ | async)"
+        (click)="toggleEdit('scheduleDetails')">
+        border_color
+      </span>
+      <span class="material-symbols-outlined" *ngIf="editingScheduleDetails && (editEnabled$ | async)" (click)="onSaveClicked()">
+        save
+      </span>
+    </div>
+    <div class="content">
+
+      <div class="duplicateCheckbox field">
+        <p>Duplicate to Related Services</p>
+        <mat-checkbox [(ngModel)]="attempt.duplicateToRelated" name="duplicateToRelated" [disabled]="!editingScheduleDetails" ></mat-checkbox>
+      </div>
+
+      <div class="field">
+        <p>Same Day Schedule</p>
+        <mat-checkbox [(ngModel)]="attempt.sameDaySchedule" name="sameDaySchedule" [disabled]="true"></mat-checkbox>
+      </div>
+      <div class="field">
+        <p>Scheduled Attempt Status</p>
+        {{attempt.scheduledAttemptStatus}}
+      </div>
+      <div class="field" *ngIf="attempt.cancelledDate">
+        <p>Cancelled Date</p>
+        {{attempt.cancelledDate | date: 'MM/dd/yyyy'}}
+      </div>
+      <div class="field" *ngIf="attempt.cancelledBy">
+        <p>Cancelled By</p>
+        {{attempt.cancelledBy}}
+      </div>
+      <div class="field">
+        <p>Internal Technician Assigned</p>
+        <select [(ngModel)]="attempt.internalTechAssigned" name="internalTechAssigned" [disabled]="!editingScheduleDetails">
+          <option *ngFor="let opt of subjectOpts" value={{opt}}>{{opt}}</option>
+          <option [ngValue]="null"></option>
+        </select>
+      </div>
+      <div class="field">
+        <p>Field Dispatch Vendor</p>
+        <input [(ngModel)]="attempt.fieldDispatchVendor" name="fieldDispatchVendor"
+          [disabled]="!editingScheduleDetails" />
+      </div>
+      <div class="field">
+        <p>Field Dispatch Vendor ID</p>
+        <input [(ngModel)]="attempt.ftdiVendorId" name="ftdiVendorId"
+          [disabled]="!editingScheduleDetails" />
+      </div>
+      <div class="field">
+        <p>Vendor Status</p>
+        {{attempt.ftdiVendorStatus}}
+      </div>
+      <div class="field">
+        <p>Field Technician Name</p>
+        <input [(ngModel)]="attempt.fieldTechName" name="fieldTechName"
+          [disabled]="!editingScheduleDetails" />
+      </div>
+      <div class="field">
+        <p>Field Technician Phone</p>
+        <input [(ngModel)]="attempt.fieldTechPhone" placeholder="(555)-555-5555 x5555" appPhoneMask name="fieldTechPhone"
+          [disabled]="!editingScheduleDetails" appPhoneValidator={{attempt.fieldTechPhone}}/>
+      </div>
+      <div class="field">
+        <p>FT Check-in Time</p>
+        <app-datetimepicker [(date)]="attempt.fieldTechCheckIn" name="fieldTechCheckIn" [disabled]="!editingScheduleDetails"></app-datetimepicker>
+      </div>
+      <div class="field">
+        <p>FT Check-out Time</p>
+        <app-datetimepicker [(date)]="attempt.fieldTechCheckOut" name="fieldTechCheckOut" [disabled]="!editingScheduleDetails"></app-datetimepicker>
+      </div>
+    </div>
+
+    <div class="ttuNotes" *ngIf="(editEnabled$ | async)">
+      <p>Internal TTU Notes</p>
+      <ng-container *ngIf="editEnabled$ | async">
+        <span class="material-symbols-outlined" *ngIf="!editingTtuNotes && (activationEditEnabled$ | async)"
+        (click)="toggleEdit('ttuNotes')">
+        border_color
+      </span>
+      <span class="material-symbols-outlined" *ngIf="editingTtuNotes && (activationEditEnabled$ | async)" (click)="onSaveClicked()">
+        save
+      </span>
+      </ng-container>
+    </div>
+    <div class="content" *ngIf="(editEnabled$ | async)">
+      <textarea [(ngModel)]="attempt.issueNotesDisplay" name="issueNotes" rows="5" maxlength="5000"
+        [disabled]="!editingTtuNotes"></textarea>
+    </div>
+
+    <div class="closeNotes">
+      <p>Close Notes</p>
+      <span class="material-symbols-outlined" *ngIf="!editingCloseNotes && (activationEditEnabled$ | async)"
+        (click)="toggleEdit('closeNotes')">
+        border_color
+      </span>
+      <span class="material-symbols-outlined" *ngIf="editingCloseNotes && (activationEditEnabled$ | async)" (click)="onSaveClicked()">
+        save
+      </span>
+    </div>
+    <div class="content">
+      <textarea [(ngModel)]="attempt.closeNotes" name="closeNotes" rows="5" maxlength="5000"
+        [disabled]="!editingCloseNotes"></textarea>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="header">
+      <p>Activation Test Results</p>
+      <span class="material-symbols-outlined" *ngIf="!editingTestResults && (activationEditEnabled$ | async)"
+        (click)="toggleEdit('testResults')">
+        border_color
+      </span>
+      <span class="material-symbols-outlined" *ngIf="editingTestResults && (activationEditEnabled$ | async)" (click)="onSaveClicked()">
+        save
+      </span>
+    </div>
+    <div class="content">
+      <div class="field">
+        <p>Tested Download Speed</p>
+        <input [(ngModel)]="attempt.testedDownloadSpeed" name="testedDownloadSpeed"
+          [disabled]="!editingTestResults" />
+      </div>
+      <div class="field">
+        <p>Tested Upload Speed</p>
+        <input [(ngModel)]="attempt.testedUploadSpeed" name="testedUploadSpeed"
+          [disabled]="!editingTestResults" />
+      </div>
+      <div class="field">
+        <p>Latency</p>
+        <input [(ngModel)]="attempt.latency" name="latency" [disabled]="!editingTestResults" />
+      </div>
+      <div class="field">
+        <p>Backup Download Speed</p>
+        <input [(ngModel)]="attempt.backupDownloadSpeed" name="backupDownloadSpeed"
+          [disabled]="!editingTestResults" />
+      </div>
+      <div class="field">
+        <p>Backup Upload Speed</p>
+        <input [(ngModel)]="attempt.backupUploadSpeed" name="backupUploadSpeed"
+          [disabled]="!editingTestResults" />
+      </div>
+      <div class="field">
+        <p>Signal/RSRP</p>
+        <input [(ngModel)]="attempt.signalRsrp" name="signalRsrp" [disabled]="!editingTestResults" />
+      </div>
+      <div class="field">
+        <p>SINR/RSRQ</p>
+        <input [(ngModel)]="attempt.sinrRsrq" name="sinrRsrq" [disabled]="!editingTestResults" />
+      </div>
+      <div class="field">
+        <p>Primary UID</p>
+        <input [(ngModel)]="attempt.primaryUid" name="primaryUid" [disabled]="!editingTestResults" />
+      </div>
+      <div class="field">
+        <p>Secondary UID</p>
+        <input [(ngModel)]="attempt.secondaryUid" name="secondaryUid" [disabled]="!editingTestResults" />
+      </div>
+      <div class="field">
+        <p>Managed Router Serial #</p>
+        <input [(ngModel)]="attempt.managedRouterSerialNumber" name="managedRouterSerialNumber" [disabled]="!editingTestResults" />
+      </div>
+
+      <div class="field">
+        <p>Location Downtime for Cutover</p>
+        <input [(ngModel)]="attempt.locationDowntownForCutover" name="locationDowntownForCutover"
+          [disabled]="!editingTestResults" />
+      </div>
+      <div class="field">
+        <p>Closeout Code</p>
+        <input [(ngModel)]="attempt.closeoutCode" name="closeoutCode"
+          [disabled]="!editingTestResults" />
+      </div>
+    </div>
+
+    <div class="header">
+      <p>Activation Milestones</p>
+      <span class="material-symbols-outlined" *ngIf="!editingMilestoneDates && (activationEditEnabled$ | async)"
+        (click)="toggleEdit('milestoneDates')">
+        border_color
+      </span>
+      <span class="material-symbols-outlined" *ngIf="editingMilestoneDates && (activationEditEnabled$ | async)" (click)="onSaveClicked()">
+        save
+      </span>
+    </div>
+    <div class="content">
+      <div class="field">
+        <p>Network Complete Date</p>
+        <app-datepicker [(date)]="attempt.networkCompleteDate" name="networkCompleteDate" [disabled]="!editingMilestoneDates"></app-datepicker>
+      </div>
+      <div class="field">
+        <p>UCaaS Complete Date</p>
+        <app-datepicker [(date)]="attempt.voipCompleteDate" name="voipCompleteDate" [disabled]="!editingMilestoneDates"></app-datepicker>
+      </div>
+      <div class="field">
+        <p>Replace 4G/5G with Broadband/DIA</p>
+        <select [(ngModel)]="attempt.replace4g5g" name="replace4g5g" [disabled]="!editingMilestoneDates">
+          <option *ngFor="let opt of replace4g5gOpts" value={{opt}}>{{opt}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="col notes-block">
+
+    <div class="header">
+      <!-- TODO: Confirm change correct -->
+      <p *ngIf="!requirementTemplateName || !(activationEditEnabled$ | async)">
+        Requirements
+      </p>
+      <p *ngIf="requirementTemplateName && (activationEditEnabled$ | async)">
+        {{requirementTemplateName}}
+      </p>
+      <span class="material-symbols-outlined" *ngIf="!editingRequirements && (activationEditEnabled$ | async)"
+        (click)="toggleEdit('requirements')">
+        border_color
+      </span>
+      <span class="material-symbols-outlined" *ngIf="editingRequirements && (activationEditEnabled$ | async)" (click)="onSaveClicked()">
+        save
+      </span>
+    </div>
+    <table class="requirement-table">
+      <thead>
+        <th></th>
+        <th>Complete</th>
+        <th>Incomplete</th>
+        <th>Comment</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let requirement of attempt.requirements">
+          <td>{{requirement.requirement.lookupValue.display}}</td>
+          <td class="checkbox-cell">
+            <mat-checkbox [ngModel]="requirement.complete" name="{{requirement.requirement.lookupValue.display}}-complete" (change)="toggleComplete(requirement)"
+              [ngStyle]="!editingRequirements ? {'pointer-events': 'none', 'accent-color': '#3E3E3E'} : {}"></mat-checkbox>
+          </td>
+          <td class="checkbox-cell">
+            <mat-checkbox [ngModel]="!requirement.complete" name="{{requirement.requirement.lookupValue.display}}-incomplete" (change)="toggleComplete(requirement)"
+              [ngStyle]="!editingRequirements ? {'pointer-events': 'none', 'accent-color': '#3E3E3E'} : {}"></mat-checkbox>
+          </td>
+          <td>
+            <input [(ngModel)]="requirement.comment" [name]="requirement.id + 'comment'"
+              [disabled]="!editingRequirements">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <app-note type="service"
+              [parentId]="attempt.serviceId.toString()"
+              [serviceName]="'Activation'"
+              [maxNotes]="2"
+              [showSave]="true"
+              [headerClass]="'header'">
+    </app-note>
+    <br>
+    <div class="header">
+      <p>Actions</p>
+    </div>
+    <div class="buttons-block">
+      <div *ngIf="(activationEditEnabled$ | async)" class="buttons">
+        <button class="v-button" (click)="onCancelDispatchClicked()" *ngIf="canCancelDispatch()">Cancel Dispatch</button>
+        <button class="v-button" (click)="onPushClicked('Complete')">Push Complete</button>
+        <button class="v-button" (click)="onPushClicked('Partial Complete - Pending Re-Schedule')">Push Partial</button>
+        <button class="v-button" (click)="onPushClicked('Incomplete - Pending Re-Schedule')">Push Incomplete</button>
+      </div>
+      <div class="buttons">
+        <button *ngIf="(editEnabled$ | async)" type="button" (click)="onServiceSurchargesClicked(attempt.serviceId, companyId)">Surcharges</button>
+        <button *ngIf="(userHasOrderWrite$ | async)" class="v-button" (click)="onCreateEmailClicked()">Email Event</button>
+        <button class="v-button" (click)="onActivationIssuesRecordClicked()">Activation Issues ({{activationIssueCount}})</button>
+        <button *ngIf="(userHasOrderWriteTerminal$ | async)" class="v-button" (click)="onRollbackPush()">Rollback Push</button>
+      </div>
+    </div>
+  </div>
+</form>
+
+<app-activation-issues *ngIf="showActivationIssues" [attemptId]="attempt.id" [isReadOnly]="(isReadOnly$ | async)" (dialogClosed)="onIssuesDialogClosed($event)"></app-activation-issues>
+<app-loading-spinner *ngIf="isLoading"></app-loading-spinner>

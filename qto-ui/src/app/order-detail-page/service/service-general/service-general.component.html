@@ -1,0 +1,702 @@
+<form #serviceForm="ngForm" class="form" *ngIf="showForm">
+  <div class="col">
+    <!-- MACD Info -->
+    <ng-container
+      *ngIf="!isInventory && (this.service.inventoryServiceId || this.service.parentServiceId) && (inventoryLocation$ | async) as inventoryLocation">
+      <div class="header">
+        <p class="red" *ngIf="isMacd">MACD Info</p>
+        <p *ngIf="!isMacd">Inventory Info</p>
+        <span class="v-link" (click)="onViewInventoryClicked(inventoryLocation)">
+          View Inventory
+        </span>
+      </div>
+      <div class="content">
+        <div class="field">
+          <p class="tooltip">
+            <span class="tooltiptext">{{ orderTypeTip }}</span>
+            Order Type
+          </p>
+          <input [(ngModel)]="service.orderType" name="orderType" [disabled]="true">
+        </div>
+        <div class="field long" *ngIf="!isDisconnect && !isOrderTypeNew">
+          <p class="tooltip">
+            <span class="tooltiptext">{{ subOrderTypeTip }}</span>
+            Sub Order Type
+          </p>
+          <p>{{ service.subOrderType }}</p>
+        </div>
+        <div class="field" *ngIf="isDisconnect">
+          <p>Disconnect Reason</p>
+          <input [(ngModel)]="service.disconnectReason" name="disconnectReason" [disabled]="true">
+        </div>
+      </div>
+    </ng-container>
+    <!-- End Macd Info -->
+    <!-- related macd info -->
+    <ng-container *ngIf="(relatedMacds$ | async) as macds">
+      <div *ngIf="macds.length > 0" class="header">
+        <p *ngIf="hasMacds(macds)" class="red">MACDs Open</p>
+        <p *ngIf="!hasMacds(macds)">Open Orders</p>
+      </div>
+      <span class="v-link macd-link" *ngFor="let macd of macds" (click)="onOrderServiceClicked(macd)">
+        View {{ macd.orderType }}<br>
+      </span>
+    </ng-container>
+    <!-- end related macd info -->
+    <!-- General Service Info -->
+    <div class="header">
+      <p>General Service Info</p>
+      <ng-container *ngIf="editEnabled$ | async">
+        <span class="material-symbols-outlined" *ngIf="!editingServiceInfo"
+              (click)="oes.toggleEditFlag('editingServiceInfo')">
+          border_color
+        </span>
+        <span class="material-symbols-outlined" *ngIf="editingServiceInfo" (click)="onSaveClicked()">
+          save
+        </span>
+      </ng-container>
+    </div>
+    <div class="content">
+      <div class="field">
+        <p class="tooltip">
+          <span class="tooltiptext">{{ projectNameTip }}</span>
+          Project Name
+        </p>
+        <vtk-select [(ngModel)]="service.projectName" [name]="'projectName'" [disabled]="!editingServiceInfo"
+                    [isReadOnly]="isReadOnly" [options]="projectNameOpts"></vtk-select>
+      </div>
+      <div class="field">
+        <p class="tooltip">
+          <span class="tooltiptext">{{ clientServiceIdTip }}</span>
+          Client Service ID
+        </p>
+        <input [(ngModel)]="service.clientServiceId" name="clientServiceId" [disabled]="!editingServiceInfo"
+               [required]="!isOrderTypeNew">
+      </div>
+      <div class="field" *ngIf="service.opportunityNum && editingServiceInfo">
+        <span></span>
+        <a class="link" href="javascript:" (click)="onPullFromCrmClicked()">Pull Data From CRM</a>
+      </div>
+      <div class="field">
+        <p class="tooltip">
+          <span class="tooltiptext">{{ opportunityNumTip }}</span>
+          Opportunity #
+        </p>
+        <textarea class="oppNumber" [(ngModel)]="service.opportunityNum" name="opportunityNum"
+                  [disabled]="!editingServiceInfo"></textarea>
+      </div>
+      <ng-container *ngIf="!cyberClient">
+        <div class="field">
+          <p class="tooltip">
+            <span class="tooltiptext">{{ alternateIdTip }}</span>
+            Alternate ID
+          </p>
+          <input [(ngModel)]="service.alternateId" name="alternateId" [disabled]="!editingServiceInfo">
+        </div>
+        <div class="field">
+          <p class="tooltip">
+            <span class="tooltiptext">{{ quoteIdTip }}</span>
+            Quote ID
+          </p>
+          <input [(ngModel)]="service.quoteSolutionId" name="quoteSolutionId" [disabled]="true">
+        </div>
+      </ng-container>
+      <hr>
+      <div class="field" *ngIf="!isMacd">
+        <p class="tooltip">
+          <span class="tooltiptext">{{ orderTypeTip }}</span>
+          Order Type
+        </p>
+        <input [(ngModel)]="service.orderType" name="orderType" [disabled]="true">
+      </div>
+
+      <div *ngIf="!cyberClient" class="field">
+        <p class="tooltip">
+          <span class="tooltiptext">{{ externalOrderReferenceTip }}</span>
+          External Order Reference
+        </p>
+        <input [(ngModel)]="service.externalOrderReference" name="externalOrderReference"
+               [disabled]="!editingServiceInfo">
+      </div>
+      <div class="field">
+        <p class="tooltip">
+          <span class="tooltiptext">{{ subProductTypeTip }}</span>
+          Sub Product Type
+        </p>
+        <vtk-select [(ngModel)]="service.subProductType" [name]="'subProductType'" [disabled]="!editingServiceInfo"
+                    [isReadOnly]="isReadOnly" [options]="subProductTypeOpts"></vtk-select>
+      </div>
+      <hr>
+      <div class="field">
+        <p class="tooltip">
+          <span class="tooltiptext">{{ providerTip }}</span>
+          Provider
+        </p>
+        <vtk-select [(ngModel)]="service.provider" [name]="'provider'" [disabled]="!editingServiceInfo"
+                    [isReadOnly]="isReadOnly" [options]="providerOpts"></vtk-select>
+      </div>
+      <div *ngIf="!cyberClient" class="field">
+        <p class="tooltip">
+          <span class="tooltiptext">{{ underlyingProviderTip }}</span>
+          Underlying Provider
+        </p>
+        <vtk-select [(ngModel)]="service.underlyingProvider" [name]="'underlyingProvider'"
+                    [disabled]="!editingServiceInfo"
+                    [isReadOnly]="isReadOnly" [options]="underlyingProviderOpts"></vtk-select>
+      </div>
+      <div class="field">
+        <p class="tooltip">
+          <span class="tooltiptext">{{ fieldServicesProviderTip }}</span>
+          Field Services Provider
+        </p>
+        <vtk-select [(ngModel)]="service.fieldServicesProvider" [name]="'fieldServicesProvider'"
+                    [disabled]="!editingServiceInfo"
+                    [isReadOnly]="isReadOnly" [options]="fieldServicesProviderOpts"></vtk-select>
+      </div>
+
+
+      <hr>
+      <div class="field">
+        <p class="tooltip">
+          <span class="tooltiptext">{{ serviceStatusTip }}</span>
+          Service Status
+        </p>
+        <p class="serviceStatus">{{ service.status }}</p>
+      </div>
+      <ng-container *ngIf="!cyberClient">
+        <div class="field">
+          <p class="tooltip">
+            <span class="tooltiptext">{{ serviceSubStatusTip }}</span>
+            Service Sub-Status
+          </p>
+          <vtk-select [(ngModel)]="service.subStatus" name="subStatus" [disabled]="!editingServiceInfo"
+                      [isReadOnly]="isReadOnly" [options]="serviceSubStatusOpts"></vtk-select>
+        </div>
+        <div class="field">
+          <p class="tooltip">
+            <span class="tooltiptext">{{ serviceBilledToTip }}</span>
+            Service Billed To
+          </p>
+          <vtk-select [(ngModel)]="service.serviceBilledTo" [name]="'serviceBilledTo'" [disabled]="!editingServiceInfo"
+                      [isReadOnly]="isReadOnly" [options]="serviceBilledToOpts"></vtk-select>
+        </div>
+
+        <div class="field">
+          <p class="tooltip">
+            <span class="tooltiptext">{{ customerBillingInstructionsTip }}</span>
+            Customer Billing Instructions
+          </p>
+          <vtk-select [(ngModel)]="service.customerBillingInstructions" name="subStatus"
+                      [disabled]="!editingServiceInfo"
+                      [isReadOnly]="isReadOnly" [options]="customerBillingInstructionsOpts"></vtk-select>
+        </div>
+      </ng-container>
+
+      <div class="field">
+        <p class="tooltip">
+          <span class="tooltiptext">{{ serviceInfoTip }}</span>
+          Service Info
+        </p>
+        <input [(ngModel)]="service.clientServiceInfo" name="clientServiceInfo" [disabled]="!editingServiceInfo">
+      </div>
+      <div class="field">
+        <p class="tooltip">
+          <span class="tooltiptext">{{ serviceTypeTip }}</span>
+          Service Type
+        </p>
+        <input [(ngModel)]="service.clientServiceType" name="clientServiceType" [disabled]="!editingServiceInfo">
+      </div>
+      <hr>
+      <div class="field">
+        <p class="tooltip">
+          <span class="tooltiptext">{{ followUpDateTip }}</span>
+          Follow Up Date
+        </p>
+        <app-datepicker [(date)]="service.followUpDate" name="followUpDate"
+                        [disabled]="!editingServiceInfo"></app-datepicker>
+      </div>
+      <div class="field">
+        <p class="tooltip">
+          <span class="tooltiptext">{{ sourceTip }}</span>
+          Source
+        </p>
+        <input [(ngModel)]="service.recordSource" name="recordSource" [disabled]="true">
+      </div>
+      <div class="field textarea">
+        <p class="tooltip">
+          <span class="tooltiptext">{{ descriptionTip }}</span>
+          Description
+        </p>
+        <textarea [(ngModel)]="service.description" name="description" [disabled]="!editingServiceInfo"
+                  rows="5" maxlength="500"></textarea>
+      </div>
+      <hr>
+      <ng-container *ngIf="!cyberClient">
+        <div class="field">
+          <p class="tooltip">
+            <span class="tooltiptext">{{ poNumberTip }}</span>
+            PO Number
+          </p>
+          <input [(ngModel)]="service.poNumber" name="poNumber" [disabled]="!editingServiceInfo">
+        </div>
+        <div class="field">
+          <p class="tooltip">
+            <span class="tooltiptext">{{ jobNumberTip }}</span>
+            Job Number
+          </p>
+          <input [(ngModel)]="service.jobNumber" name="jobNumber" [disabled]="!editingServiceInfo">
+        </div>
+      </ng-container>
+      <div class="check-row">
+        <div class="field">
+          <mat-checkbox [(ngModel)]="service.managedService" name="managedService"
+                        [disabled]="!editingServiceInfo"></mat-checkbox>
+          <p class="tooltip">
+            <span class="tooltiptext">{{ managedServiceTip }}</span>
+            Managed Service
+          </p>
+        </div>
+        <div *ngIf="!cyberClient" class="field">
+          <mat-checkbox [(ngModel)]="service.productionImpacting" name="productionImpacting"
+                        [disabled]="!editingServiceInfo"></mat-checkbox>
+          <p class="tooltip">
+            <span class="tooltiptext">{{ productionImpactingTip }}</span>
+            Production Impacting
+          </p>
+        </div>
+      </div>
+      <ng-container *ngIf="isInventory">
+        <div class="check-row">
+          <div class="field">
+            <mat-checkbox [(ngModel)]="service.billable" name="billable"
+                          [disabled]="!editingServiceInfo"></mat-checkbox>
+            <p>Billable</p>
+          </div>
+          <div class="field">
+            <mat-checkbox [(ngModel)]="service.active" name="active" [disabled]="!editingServiceInfo"></mat-checkbox>
+            <p>Active</p>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+  <!-- Service Billing -->
+  <div class="col">
+    <div class="header">
+      <p>Service Billing</p>
+      <ng-container *ngIf="editEnabled$ | async">
+        <span class="material-symbols-outlined" *ngIf="!editingServiceBilling"
+              (click)="oes.toggleEditFlag('editingServiceBilling')">
+          border_color
+        </span>
+        <span class="material-symbols-outlined" *ngIf="editingServiceBilling" (click)="onSaveClicked()">
+          save
+        </span>
+      </ng-container>
+    </div>
+    <div class="content">
+      <div class="field">
+        <p class="tooltip">
+          <span class="tooltiptext">{{ contractTermTip }}</span>
+          Contract Term
+        </p>
+        <vtk-select [ngModel]="service.contractTerm" (ngModelChange)="service.setContractTerm($event)"
+                    [name]="'contractTerm'" [disabled]="!editingServiceBilling" [isReadOnly]="isReadOnly"
+                    [options]="contractTermOpts" [required]="isInventory"></vtk-select>
+      </div>
+      <div class="field">
+        <p class="tooltip">
+          <span class="tooltiptext">{{ contractSignedDateTip }}</span>
+          Contract Signed Date
+        </p>
+        <app-datepicker [(date)]="service.contractSignedDate" name="contractSignedDate"
+                        [disabled]="!editingServiceBilling" [required]="isInventory"></app-datepicker>
+      </div>
+      <div class="field">
+        <p class="tooltip">
+          <span class="tooltiptext">{{ contractTermEndDateTip }}</span>
+          Contract Term End Date
+        </p>
+        <app-datepicker [date]="service.circuitTermEndDate" name="circuitTermEndDate"
+                        [disabled]="true"></app-datepicker>
+      </div>
+      <div class="check-row">
+        <div class="field">
+          <mat-checkbox [(ngModel)]="service.ignoreForRenewals" name="ignoreForRenewals"
+                        [disabled]="!editingServiceBilling"></mat-checkbox>
+          <p class="tooltip">
+            <span class="tooltiptext">{{ ignoreForRenewalsTip }}</span>
+            Ignore for Renewals
+          </p>
+        </div>
+        <div class="field">
+          <mat-checkbox [(ngModel)]="service.autoRenewal" name="autoRenewal"
+                        [disabled]="!editingServiceBilling"></mat-checkbox>
+          <p class="tooltip">
+            <span class="tooltiptext">{{ autoRenewalTip }}</span>
+            Auto Renewal
+          </p>
+        </div>
+      </div>
+      <div *ngIf="!cyberClient" class="check-row">
+        <div class="field">
+          <mat-checkbox [(ngModel)]="service.hasIcb" name="hasIcb" [disabled]="!editingServiceBilling"></mat-checkbox>
+          <p class="tooltip" [style.min-width]="'120px'">
+            <span class="tooltiptext">{{ icbTip }}</span>
+            ICB
+          </p>
+        </div>
+        <div class="field">
+          <mat-checkbox [(ngModel)]="service.coTerminus" name="coTerminus"
+                        [disabled]="!editingServiceBilling"></mat-checkbox>
+          <p class="tooltip">
+            <span class="tooltiptext">{{ coTerminusTip }}</span>
+            Co-Terminus
+          </p>
+        </div>
+      </div>
+      <div class="field">
+        <p class="tooltip">
+          <span class="tooltiptext">{{ renewalCancelNoticePeriodTip }}</span>
+          Notice Period for Renewal/Cancel
+        </p>
+        <vtk-select [(ngModel)]="service.renewalCancelNoticePeriod" [name]="'renewalCancelNoticePeriod'"
+                    [disabled]="!editingServiceBilling"
+                    [isReadOnly]="isReadOnly" [options]="noticePeriodOpts"></vtk-select>
+      </div>
+      <div class="field textarea">
+        <p class="tooltip">
+          <span class="tooltiptext">{{ contractInfoTip }}</span>
+          Contract Info
+        </p>
+        <textarea class="outline" [(ngModel)]="service.contractInfo" name="contractInfo"
+                  [disabled]="!editingServiceBilling"
+                  rows="5" maxlength="500"></textarea>
+      </div>
+      <ng-container>
+        <div class="field">
+          <p class="tooltip">
+            <span class="tooltiptext">{{ mrcTip }}</span>
+            MRC
+          </p>
+          <input [ngModel]="service.mrc | vtkCurrency:!editingServiceBilling || service.orderType == 'Disconnect'"
+                 (ngModelChange)="service.setMrc($event); costChanged = true;" name="mrc"
+                 pattern="(?:\+|\-|\$)?\d{1,}(?:\,?\d{3})*(\.[0-9][0-9]?)?"
+                 [disabled]="!editingServiceBilling || service.orderType == 'Disconnect'">
+        </div>
+        <div class="field">
+          <p class="tooltip">
+            <span class="tooltiptext">{{ nrcTip }}</span>
+            NRC
+          </p>
+          <input [ngModel]="service.nrc | vtkCurrency:!editingServiceBilling"
+                 (ngModelChange)="service.setNrc($event); costChanged = true;" name="nrc"
+                 pattern="(?:\+|\-|\$)?\d{1,}(?:\,?\d{3})*(\.[0-9][0-9]?)?" [disabled]="!editingServiceBilling">
+        </div>
+      </ng-container>
+      <div class="field" *ngIf="!cyberClient">
+        <p class="tooltip">
+          <span class="tooltiptext">{{ annualRecurringCostTip }}</span>
+          Annual Recurring Cost
+        </p>
+        <input [ngModel]="service.annualRecurringCost | vtkCurrency:!editingServiceBilling"
+               (ngModelChange)="service.setAnnualRecurringCost($event); costChanged = true;"
+               name="annualRecurringCost"
+               pattern="(?:\+|\-|\$)?\d{1,}(?:\,?\d{3})*(\.[0-9][0-9]?)?" [disabled]="!editingServiceBilling">
+      </div>
+      <ng-container>
+        <div class="field">
+          <p class="tooltip">
+            <span class="tooltiptext">{{ mrrTip }}</span>
+            MRR
+          </p>
+          <input [ngModel]="service.mrr | vtkCurrency:!editingServiceBilling || service.orderType == 'Disconnect'"
+                 (ngModelChange)="service.setMrr($event); costChanged = true;" name="mrr"
+                 pattern="(?:\+|\-|\$)?\d{1,}(?:\,?\d{3})*(\.[0-9][0-9]?)?"
+                 [disabled]="!editingServiceBilling || service.orderType == 'Disconnect'">
+        </div>
+        <div class="field">
+          <p class="tooltip">
+            <span class="tooltiptext">{{ nrrTip }}</span>
+            NRR
+          </p>
+          <input [ngModel]="service.nrr | vtkCurrency:!editingServiceBilling"
+                 (ngModelChange)="service.setNrr($event); costChanged = true;" name="nrr"
+                 pattern="(?:\+|\-|\$)?\d{1,}(?:\,?\d{3})*(\.[0-9][0-9]?)?" [disabled]="!editingServiceBilling">
+        </div>
+      </ng-container>
+      <ng-container *ngIf="!cyberClient">
+        <div class="field">
+          <p class="tooltip">
+            <span class="tooltiptext">{{ icbUnitCostTip }}</span>
+            ICB Unit Cost
+          </p>
+          <input [ngModel]="service.icb | vtkCurrency:!editingServiceBilling || service.orderType == 'Disconnect'"
+                 (ngModelChange)="service.setIcb($event)"
+                 name="icb"
+                 pattern="(?:\+|\-|\$)?\d{1,}(?:\,?\d{3})*(\.[0-9][0-9]?)?"
+                 [disabled]="!editingServiceBilling || service.orderType == 'Disconnect'">
+        </div>
+        <div class="field">
+          <p class="tooltip">
+            <span class="tooltiptext">{{ ospConstructionCostTip }}</span>
+            OSP Construction Cost
+          </p>
+          <input [ngModel]="service.osp | vtkCurrency:!editingServiceBilling || service.orderType == 'Disconnect'"
+                 (ngModelChange)="service.setOsp($event)"
+                 name="osp"
+                 pattern="(?:\+|\-|\$)?\d{1,}(?:\,?\d{3})*(\.[0-9][0-9]?)?"
+                 [disabled]="!editingServiceBilling || service.orderType == 'Disconnect'">
+        </div>
+      </ng-container>
+      <div class="field" *ngIf="service.parentServiceId != null">
+        <p>MACD Cost Change</p>
+        <input [ngModel]="service.macdCostChange | vtkCurrency:!true"
+               (ngModelChange)="service.setMacdCostChange($event)" name="macdCostChange" [disabled]="true">
+      </div>
+      <div class="field" *ngIf="service.type == 'DIA'">
+        <p>Burstable Speed Cost</p>
+        <!-- The odd ngModelChange definition on the next line is intentional, see QTO-236 -->
+        <input [ngModel]="service.burstableSpeedCost | vtkCurrency:!editingServiceBilling"
+               (ngModelChange)="service.setBurstableSpeedCost ? service.setBurstableSpeedCost($event) : null"
+               name="burstableSpeed"
+               pattern="(?:\+|\-|\$)?\d{1,}(?:\,?\d{3})*(\.[0-9][0-9]?)?" [disabled]="!editingServiceBilling">
+      </div>
+      <div class="field" *ngIf="service.orderType == 'Disconnect'">
+        <p>Early Termination Fee</p>
+        <input [ngModel]="service.earlyTerminationFee | vtkCurrency:!editingServiceBilling"
+               (ngModelChange)="service.setEarlyTerminationFee($event)" name="earlyTerminationFeee"
+               pattern="(?:\+|\-|\$)?\d{1,}(?:\,?\d{3})*(\.[0-9][0-9]?)?" [disabled]="!editingServiceBilling">
+      </div>
+    </div>
+
+    <!-- Billing Address -->
+    <div class="header">
+      <p>Billing Address</p>
+      <ng-container *ngIf="editEnabled$ | async">
+        <span class="material-symbols-outlined" *ngIf="!editingServiceBillingAddress"
+              (click)="oes.toggleEditFlag('editingServiceBillingAddress')">
+          border_color
+        </span>
+        <span class="material-symbols-outlined" *ngIf="editingServiceBillingAddress" (click)="onSaveClicked()">
+          save
+        </span>
+      </ng-container>
+    </div>
+    <div class="content">
+      <div class="check-row">
+        <div class="field">
+          <mat-checkbox [(ngModel)]="service.billToLocation" name="billToLocation"
+                        [disabled]="!editingServiceBillingAddress"></mat-checkbox>
+          <p class="tooltipCheckBox">
+            <span class="tooltiptext">{{ billToLocationTip }}</span>
+            Bill to Location
+          </p>
+        </div>
+      </div>
+      <ng-container class="field" *ngIf="editingServiceBillingAddress && !service.billToLocation">
+        <div class="field">
+          <span></span>
+          <a class="link" href="javascript:" (click)="onAddressClicked()">Manage Addresses</a>
+        </div>
+        <div class="field">
+          <p>Address Line 1</p>
+          <input [(ngModel)]="service.address1" name="address1">
+        </div>
+        <div class="field">
+          <p>Address Line 2</p>
+          <input [(ngModel)]="service.address2" name="address2">
+        </div>
+        <div class="field">
+          <p>City</p>
+          <input [(ngModel)]="service.city" name="city">
+        </div>
+        <div class="field">
+          <p>State/Province/Region</p>
+          <select [ngModel]="service.state" (ngModelChange)="onStateChanged($event)" name="state">
+            <option *ngFor="let opt of stateOpts" value={{opt.value}}>{{ opt.display }}</option>
+          </select>
+        </div>
+        <div class="field">
+          <p>ZIP/Postal Code</p>
+          <input [(ngModel)]="service.postalCode" name="postalCode"
+                 appZipcodeValidator={{service.postalCode}}>
+        </div>
+        <div class="field">
+          <p>Country</p>
+          <select [(ngModel)]="service.country" name="country">
+            <option *ngFor="let opt of countryOpts" value={{opt}}>{{ opt }}</option>
+          </select>
+        </div>
+        <div class="field">
+          <p class="tooltip">
+            <span class="tooltiptext">{{ billingEmailTip }}</span>
+            Billing Email
+          </p>
+          <input [(ngModel)]="service.billingEmail" name="billingEmail">
+        </div>
+      </ng-container>
+      <div class="field" *ngIf="!editingServiceBillingAddress || service.billToLocation">
+        <p class="address tooltip">
+            <span class="tooltiptext">{{ billingAddressTip }}</span>
+          Billing Address
+        </p>
+        <div class="value detail-text long" [ngStyle]="{'cursor': editingServiceBillingAddress ? 'pointer' : ''}"
+             *ngIf="!service.billToLocation">
+          <ng-container>{{ serviceAddressToString() }}</ng-container>
+        </div>
+        <div class="value detail-text long" *ngIf="service.billToLocation">{{ locationAddressToString() }}</div>
+      </div>
+      <div class="field" *ngIf="!editingServiceBillingAddress">
+        <p class="tooltip">
+            <span class="tooltiptext">{{ billingEmailTip }}</span>
+            Billing Email
+        </p>
+        <div class="value">{{ service.billingEmail }}</div>
+      </div>
+    </div>
+
+    <!-- Associations -->
+    <ng-container *ngIf="this.service.linkedBundledParentId">
+      <div class="header">
+        <p>Associations</p>
+        <ng-container *ngIf="editEnabled$ | async">
+        <span class="material-symbols-outlined" *ngIf="!editingServiceAssociations"
+              (click)="oes.toggleEditFlag('editingServiceAssociations')">
+          border_color
+        </span>
+          <span class="material-symbols-outlined" *ngIf="editingServiceAssociations" (click)="onSaveClicked()">
+          save
+        </span>
+        </ng-container>
+      </div>
+      <div class="content">
+        <div class="check-row">
+          <div class="field">
+            <mat-checkbox [(ngModel)]="service.linked" name="linked"
+                          [disabled]="!editingServiceAssociations || !this.linked"></mat-checkbox>
+            <p class="tooltipCheckBox">
+              <span class="tooltiptext">{{ linkedTip }}</span>
+              Linked
+            </p>
+          </div>
+          <div class="field">
+            <mat-checkbox [(ngModel)]="service.bundled" name="bundled"
+                          [disabled]="!editingServiceAssociations || !this.bundled"></mat-checkbox>
+            <p class="tooltipCheckBox">
+              <span class="tooltiptext">{{ bundledTip }}</span>
+              Bundled
+            </p>
+          </div>
+        </div>
+        <div class="check-row">
+          <div class="field">
+            <mat-checkbox [(ngModel)]="service.linkedBundledParent" name="linkedBundledParent"
+                          [disabled]="true"></mat-checkbox>
+            <p>Parent</p>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+  <div class="col" *ngIf="this.service.id && !(isLoading$ | async)">
+    <app-attachments [type]="'Service'" [id]="service.id"></app-attachments>
+    <mat-divider></mat-divider>
+    <app-note #note
+              type="service"
+              [parentId]="service.id.toString()"
+              [maxNotes]="2"
+              [serviceName]="service.type"
+              [showSave]="true"
+              [headerClass]="'header'">
+    </app-note>
+    <br>
+    <app-note *ngIf="isInventory"
+              type="service"
+              [parentId]="service.id.toString()"
+              [maxNotes]="1"
+              [serviceName]="service.type"
+              [showSave]="false"
+              [audit]="true"
+              [headerClass]="'header'">
+    </app-note>
+    <br>
+    <app-jeops *ngIf="!isInventory"
+               type="service"
+               [parentId]="service.id.toString()"
+               [orderId]="service.orderId"
+               [companyId]="companyId"
+               [maxJeops]="5"
+               [headerClass]="'header'">
+    </app-jeops>
+    <br><br>
+    <ng-container *ngIf="(editEnabled$ | async)">
+      <div class="header">
+        <p>Actions</p>
+      </div>
+      <div class="buttons">
+        <button *ngIf="!isReadOnly && !isInventory" type="button"
+                (click)="onServiceSurchargesClicked(service.id, companyId)" class="tooltip">
+          <span class="tooltiptext">{{ surchargesTip }}</span>
+          Surcharges
+        </button>
+        <button *ngIf="!isReadOnly" type="button" (click)="onServiceHistoryClicked(service.id)" class="tooltip">
+          <span class="tooltiptext">{{ serviceHistoryTip }}</span>
+          Service History
+        </button>
+        <button *ngIf="!isReadOnly && isInventory" type="button" (click)="onCostHistoryClicked(service.id)">Cost
+          History
+        </button>
+        <!-- <button *ngIf="!isReadOnly && !isInventory && !service.parentServiceId" type="button"
+                (click)="onLinkToParentClicked()">
+                <span class="tooltiptext">{{linkInventoryTip}}</span>
+                Link to Inventory
+        </button> -->
+        <button *ngIf="!isReadOnly"
+                [disabled]="((!this.service.linkedBundledParent || this.service.bundled) && this.service.linkedBundledParentId) || service.status == 'Disconnect Complete'"
+                type="button"
+                (click)="onLinkToServicesClicked()" class="tooltip">
+          <span class="tooltiptext">{{ linkServicesTip }}</span>
+          Link Services
+        </button>
+        <button *ngIf="!isReadOnly"
+                [disabled]="((!this.service.linkedBundledParent || this.service.linked) && this.service.linkedBundledParentId) || service.status == 'Disconnect Complete'"
+                type="button"
+                (click)="onBundleClicked()" class="tooltip">
+          <span class="tooltiptext">{{ bundleTip }}</span>
+          Bundle Services
+        </button>
+        <app-service-cancel-clone *ngIf="(editEnabled$ | async) && !isInventory" [service]="service"
+                                  [tooltip]="cloneAndCancelTip"
+                                  [disabled]="isMacd"></app-service-cancel-clone>
+        <button *ngIf="!editingServiceInfo && !isReadOnly && isInventory" type="button" [title]="newMacdTitleText"
+                [disabled]="!service.billable || !service.active || (relatedMacds$ | async).length > 0"
+                (click)="onNewMacdClicked(service, companyId)">
+          New MACD
+        </button>
+
+        <!-- <ng-container *ngIf="(relatedMacds$ | async) as macds"> -->
+        <ng-container *ngIf="{
+            macds: (relatedMacds$ | async),
+            terminalstatus: (terminalstatus$ | async)
+          } as data">
+          <button *ngIf="!isReadOnly"
+                  type="button"
+                  [disabled]="this.service.linkedBundledParentId || (!isInventory && (isMacd || data.terminalstatus)) || (isInventory && (hasMacds(data.macds) || !service.active || !data.terminalstatus))"
+                  (click)="relocateServiceRecord()"
+                  class="tooltip">
+            <span class="tooltiptext">{{ relocateTip }}</span>
+            Relocate Service Record
+          </button>
+        </ng-container>
+        <button *ngIf="!isReadOnly" type="button" (click)="onDeleteService(service.id)" class="tooltip">
+          <span class="tooltiptext">{{ deleteServiceTip }}</span>
+          Delete Service
+        </button>
+      </div>
+    </ng-container>
+  </div>
+</form>
+
+<app-addresses *ngIf="showAddressDialog" [companyId]="companyId" (addressSelected)="onAddressSelected($event)"
+               (addressSelectCancelled)="onAddressSelectCancelled()"></app-addresses>

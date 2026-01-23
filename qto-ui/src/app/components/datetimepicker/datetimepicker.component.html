@@ -1,0 +1,19 @@
+<app-datepicker [date]="date" (dateChange)="onDateSelected($event)" name={{name}} [hasTime]="true" [disabled]="disabled" [required]="required"></app-datepicker>
+<ng-container *ngIf="disabled">
+  <span class="time-read-only">{{date | date: 'hh:mm a'}}</span>
+</ng-container>
+<ng-container *ngIf="!disabled">
+  <select [ngModel]="hour" (ngModelChange)="onHourChanged($event)" name="hour" [required]="required">
+    <option [ngValue]="null" disabled selected hidden></option>
+    <option *ngFor="let opt of hourOpts" [ngValue]="opt">{{opt}}</option>
+  </select>
+  <select [ngModel]="minute"
+          (ngModelChange)="onMinuteChanged($event)" name="minute" [required]="required">
+    <option [ngValue]="null" disabled selected hidden></option>
+    <option *ngFor="let opt of minOpts" [ngValue]="opt">{{opt}}</option>
+  </select>
+  <select [ngModel]="ampm" (ngModelChange)="onAmpmChanged($event)" name="ampm" [required]="required">
+    <option [ngValue]="null" disabled selected hidden></option>
+    <option *ngFor="let opt of amPmOpts" [ngValue]="opt">{{opt}}</option>
+  </select>
+</ng-container>

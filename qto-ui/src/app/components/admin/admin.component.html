@@ -1,0 +1,13 @@
+<div class="buttons">
+  <button (click)="getAzureAdGroups()">Get Azure AD Groups</button>
+  <button (click)="refreshAzureAdGroups()">Reload Azure AD Groups</button>
+</div>
+<div class="ad-groups-container" *ngIf="azureAdGroups">
+  <p class="header">Azure AD Groups</p>
+  <div class="group-container" *ngFor="let group of azureAdGroups | keyvalue">
+    <p class="group">{{group.key}}</p>
+    <div *ngFor="let user of group.value">
+      <p class="user">{{user}}</p>
+    </div>
+  </div>
+</div>

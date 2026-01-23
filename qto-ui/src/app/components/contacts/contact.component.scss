@@ -1,0 +1,186 @@
+.dialog {
+  border: solid 3px;
+  border-radius:6px;
+  border-color:#5DCADE;
+  ::backdrop {
+    background-color: #d2cbff;
+    //opacity: 0.8;
+  }
+  header {
+    display: flex;
+    gap: 2rem;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+    h2 {
+      margin-block: 0px;
+      font-family: 'Mulish', sans-serif;
+      font-style: normal;
+      font-weight: 700;
+      font-size: 20px;
+      line-height: 25px;
+    }
+    .closeButton {
+      border: none;
+      background-color: transparent;
+    }
+
+    .closeButton:hover {
+      background-color: #3871C1;
+      color: white;
+      border-radius: 6px;
+    }
+  }
+  .contact-form {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding-top: 1.5em 0;
+    font-family: 'Roboto', sans-serif;
+
+    .col-wrapper {
+      display: flex;
+      gap: 1em;
+    }
+
+    .col {
+      .field {
+        display: flex;
+        padding: .1em 0;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 14px;
+        line-height: 14px;
+        gap: 1em;
+
+        p {
+          color: #3E3E3E;
+        }
+
+        input, select {
+          border: 1px solid #3E3E3E;
+          font-size: inherit;
+          font-family: inherit;
+          box-sizing: border-box;
+
+          &:disabled {
+            border: 1px solid #FFFFFF;
+            background-color: #FFFFFF;
+            color: black;
+            opacity: 1;
+          }
+        }
+        
+        .text-area {
+          display: flex;
+          width: calc(50% + 12.3em);
+          padding-top: .75em;
+        }
+        textarea {
+          border: 1px solid #3E3E3E;
+          font-size: inherit;
+          font-family: inherit;
+          flex-grow: 1;
+
+          &:disabled {
+            border: 1px solid #FFFFFF;
+            text-align: right;
+            background-color: #FFFFFF;
+            color: black;
+            opacity: 1;
+          }
+        }
+
+        select {
+          width: 11.8em;
+        }
+
+        select:disabled {
+          //makes selects look like input boxes
+          -webkit-appearance: none;
+          -moz-appearance : none;
+        }
+
+        .ng-invalid:focus {
+          outline: 1px solid red;
+        }
+
+        .ng-invalid {
+          border: 1px solid red;
+        }
+      }
+    }
+  }
+}
+
+.dateFields {
+  display: flex;
+  gap: 2em;
+  .field {
+    display: flex;
+    gap: 1em;
+    padding-bottom: 1em;
+  }
+}
+
+.padding-top {
+  padding-top: 1em;
+}
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding-left: 10px;
+  padding-right: 10px;
+
+  .button-group {
+    display: flex;
+    gap: .5em;
+  }
+
+  button {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-size: 13px;
+    height: 30px;
+    border:none;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+  }
+
+  button:enabled {
+    cursor: pointer;
+    color: white;
+    background-color: #5DCADE;
+
+    &:hover {
+      background: #3871C1;
+    }
+  }
+}
+
+.label {
+  font-weight: bold;
+  font-family: Roboto,sans-serif;
+  font-size: 15px;
+  margin: 2px 0;
+}
+
+.content {
+  height: fit-content;
+  overflow: hidden;
+}
+
+
+.last-updated {
+  display: flex;
+  color: #C5C5C5;
+  font-family: inherit;
+  font-size: 12px;
+  justify-content: right;
+}
+
+select.ng-invalid.ng-touched, input.ng-invalid.ng-touched {
+  border: 1px solid red;
+}

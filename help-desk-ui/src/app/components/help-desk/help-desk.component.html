@@ -1,0 +1,46 @@
+<div class="requestSupportForm">
+    <h1 class="welcome-text">Hello, how can we help?</h1>
+
+    <div class="supportBox">
+        <p class="descriptionText">Please provide some information about your issue in the form below. Include details
+            about the problem and any other relevant information. Rest assured, our team will address your concern promptly. Thank you for reaching out.
+        </p>
+        <div *ngIf="showDialog"><app-dialog #dialog></app-dialog></div>
+        <div class="fields">
+            <div class="nameInput">
+                <p class="titles">Name: </p>
+                <p>{{ securityUtils.getLoggedInUser()?.name || '' }}</p>
+            </div>
+            <div *ngIf="titleInput.invalid && (titleInput.dirty || titleInput.touched)"
+                     class="error" style="color: red; margin-top: 0px; margin-bottom: 10px;">A title is required to create your ticket.</div>
+            <div class="nameInput">
+                <p class="titles">Ticket Name:</p>
+                <input type="text" [(ngModel)]="formData.title" required
+                    placeholder="Please add a short and descriptive name for your ticket."
+                    #titleInput="ngModel">
+            </div>
+            <div *ngIf="descriptionInput.invalid && (descriptionInput.dirty || descriptionInput.touched)"
+                 class="error" style="color: red; margin-top: 0px; margin-bottom: 10px;">A description is required to create your ticket.
+            </div>
+            <textarea [(ngModel)]="formData.description" class="issueForm"
+                placeholder="Please describe your issue here." name="description" rows="5" required
+                #descriptionInput="ngModel"></textarea>
+            <div class="attachments">
+                <p class="titles">Attachments</p>
+                <input type="file" id="fileInput" />
+            </div>      
+        </div>
+
+        <div class="button-group">
+            <button [disabled]="!titleInput.valid || !descriptionInput.valid || submitted" (click)="onSubmit()">
+                {{submitted ? "Processing" : "Submit"}}
+            </button>
+        </div>
+    </div>
+
+    <div class="shapes">
+        <div class="shape1"></div>
+        <div class="shape2"></div>
+        <div class="shape3"></div>
+    </div>
+</div>

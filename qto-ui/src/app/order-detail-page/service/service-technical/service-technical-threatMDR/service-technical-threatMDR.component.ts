@@ -1,0 +1,83 @@
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from "@angular/core";
+import { NgForm } from "@angular/forms";
+import { select, Store } from '@ngrx/store';
+import { plainToClass } from "class-transformer";
+import { Service } from "src/app/models/service.model";
+import { ThreatMDRService } from "src/app/models/threatMdr-service.model";
+import { editEnabled, getFlagByName, getIsInventory, getIsLoading, getIsReadOnly } from "src/app/order-detail-page/ngrx/order-details.selectors";
+import { OrderEditService } from "src/app/order-detail-page/order-edit.service";
+import { LookupValueService } from "src/app/services/lookup-value.service";
+import { ServiceTechnicalTooltipsService} from "../service-technical-tooltips.service";
+
+@Component({
+  selector: 'app-service-technical-threatMDR',
+  templateUrl: './service-technical-threatMDR.component.html',
+  styleUrls: ['../../../form-styles.scss']
+})
+
+export class ServiceTechnicalThreatMDRComponent implements OnInit, OnDestroy {
+
+  public editEnabled$ = this.store.pipe(select(editEnabled));
+  public isReadOnly$ = this.store.pipe(select(getIsReadOnly))
+  public isLoading$ = this.store.pipe(select(getIsLoading));
+  public isInventory$ = this.store.pipe(select(getIsInventory));
+
+  @Input() service: ThreatMDRService;
+  @Input() companyId: number;
+  @Output() save = new EventEmitter<Service>();
+  @ViewChild('serviceForm') serviceForm: NgForm;
+  providerOpts: string[];
+  usmAnywhereControlNodeOpts: string[];
+  tierExpansionStorageSizeOpts: string[];
+  hotStorageRetentionOpts: string[];
+  public editingServiceProvider = false;
+  public editingThreatMDRDetails = false;
+
+  constructor(
+    public oes: OrderEditService,
+    private lookupValueService: LookupValueService,
+    private store: Store,
+    public tooltips: ServiceTechnicalTooltipsService
+  ) { }
+
+  ngOnInit(): void {
+    this.store.pipe(select(getFlagByName('editingServiceProvider'))).subscribe(res => {
+      this.editingServiceProvider = res;
+    });
+    this.store.pipe(select(getFlagByName('editingThreatMDRDetails'))).subscribe(res => {
+      this.editingThreatMDRDetails = res;
+    });
+    this.lookupValueService.getValues('PROVIDER', this.companyId).subscribe((values: string[]) => { this.providerOpts = values; });
+
+    this.lookupValueService.getValues('USM_ANYWHERE_CONTROL_NODE', this.companyId).subscribe((values: string[]) => { this.usmAnywhereControlNodeOpts = values; });
+
+    this.lookupValueService.getValues('HOT_STORAGE_RETENTION', this.companyId).subscribe((values: string[]) => { this.hotStorageRetentionOpts = values; });
+
+    this.lookupValueService.getValues('TIER_EXPANSION_STORAGE_SIZE', this.companyId).subscribe((values: string[]) => { this.tierExpansionStorageSizeOpts = values; });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['service']) {
+      this.setService(this.service);
+    }
+  }
+
+  setService(service: ThreatMDRService): void {
+    this.service = plainToClass(ThreatMDRService, service);
+    setTimeout(() => {
+      this.oes.addForm(this.serviceForm);
+    }, 1);
+  }
+
+  ngOnDestroy(): void {
+    this.oes.removeForm(this.serviceForm);
+  }
+
+  onSaveClicked(): void {
+    if (this.serviceForm.invalid) {
+      throw new Error('Validation Error: Please correct the highlighted fields before saving');
+    }
+    this.save.emit(this.service);
+  }
+
+}

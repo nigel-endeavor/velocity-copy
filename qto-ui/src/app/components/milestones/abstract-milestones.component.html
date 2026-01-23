@@ -1,0 +1,88 @@
+<div class="milestones">
+  <div class="loader" *ngIf="(isLoading$ | async)">
+    <mat-spinner></mat-spinner>
+  </div>
+  <form #milestoneForm="ngForm" class="form" *ngIf="displaySet && instances">
+    <div class="column completed">
+      <div class="show-progress" *ngIf="collapseIndex" [ngStyle]="getStyle()">
+      </div>
+      {{ progressPercent }}%
+    </div>
+    <div class="column">
+      <ng-container *ngFor="let displayGroup of displayGroups; let j = index">
+        <div class="section-head" *ngIf="level == 'service' && displayGroup.displaySetIncludes.length > 0">
+          {{ displayGroup.sectionName }}
+        </div>
+        <div class="milestone" *ngFor="let include of displayGroup.displaySetIncludes; let i = index" [class.collapsed]="!getVisible(j, i)">
+          <ng-container *ngIf="getVisible(j, i)">
+            <ng-container *ngIf="getInstance(include); let instance">
+              <p class="tooltip">
+                <span *ngIf="include.description" class="tooltiptext">{{include.description}}</span>
+                {{ include.milestone.name }}
+              </p>
+              <div *ngIf="include.hasTime" class="input-wrapper">
+                <app-datetimepicker #picker
+                                    [(date)]="instance.milestoneDate"
+                                    name={{include.milestone.code}}
+                                    [max]="include.disallowFuture ? getToday(include.hasTime) : getMaxDate(include.hasTime)"
+                                    [disabled]="isDisabled(include, instance) || !(editEnabled$ | async)"
+                                    (dateChange)="onSaveClicked(instance); picker.dirty = false;"
+                ></app-datetimepicker>
+                <span class="material-symbols-outlined show-icon"
+                      *ngIf="milestoneForm.form.controls[include.milestone.code] && milestoneForm.form.controls[include.milestone.code].dirty"
+                      (click)="onSaveClicked(instance);">
+                  save
+                </span>
+              </div>
+              <div *ngIf="!include.hasTime" class="input-wrapper">
+                <span class="date" [ngStyle]="{'margin-right': instance.milestoneDate && !include.workflowDriven && !(isDisabled(include, instance) || (editEnabled$ | async)) ? '4px' : ''}" [class.noEdit]="isDisabled(include, instance) || (editEnabled$ | async)" (click)="picker.openPicker()">
+                  <ng-container *ngIf="instance.milestoneDate">
+                    {{ instance.milestoneDate | date: 'MM/dd/yyyy':'UTC' }}
+                  </ng-container>
+                  <ng-container *ngIf="!instance.milestoneDate && !include.workflowDriven && (editEnabled$ | async)">
+                    Edit
+                  </ng-container>
+                </span>
+                <span class="material-symbols-outlined" [class.show-icon]="picker.dirty" *ngIf="!include.workflowDriven && (editEnabled$ | async)" (click)="picker.openPicker()" >
+                    border_color
+                </span>
+                <app-datepicker #picker
+                                [(date)]="instance.milestoneDate"
+                                name={{include.milestone.code}}
+                                [max]="include.disallowFuture ? getToday(include.hasTime) : getMaxDate(include.hasTime)"
+                                [disabled]="isDisabled(include, instance) || !(editEnabled$ | async)"
+                                (dateChange)="onSaveClicked(instance); picker.dirty = false;"
+                ></app-datepicker>
+              </div>
+            </ng-container>
+          </ng-container>
+        </div>
+      </ng-container>
+    </div>
+    <div class="column">
+      <div class="collapse">
+        <span (click)="onCollapseClicked()">{{ collapseCompleted ? 'Expand Completed' : 'Collapse Completed' }} </span>
+      </div>
+      <app-note *ngIf="this.parentId" #note
+                [type]="this.level"
+                [parentId]="this.parentId.toString()"
+                [serviceName]="serviceType"
+                [maxNotes]="2"
+                [showSave]="true"
+                [headerClass]="'header'">
+      </app-note>
+      <br>
+     <div *ngIf="!(isInventory$ | async)">
+      <app-jeops *ngIf="this.parentId"
+                 [type]="this.level"
+                 [parentId]="this.parentId"
+                 [orderId]=0
+                 [companyId]="companyId"
+                 [maxJeops]="5"
+                 [headerClass]="'header'"
+                 (jeopsLoaded)="jeops = $event">
+      </app-jeops>
+    </div>
+    </div>
+  </form>
+</div>

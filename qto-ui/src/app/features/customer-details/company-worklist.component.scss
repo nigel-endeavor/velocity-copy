@@ -1,0 +1,59 @@
+::ng-deep .company-view-table .abstract-table {
+  height: calc(100vh - 26em) !important;
+  padding: 0 .5em !important;
+}
+
+.meta-data {
+  display: flex;
+  gap: 2em;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: Roboto, sans-serif;
+  padding: 8px 24px 0;
+  margin-bottom: -20px;
+}
+
+.table-actions {
+  display: flex;
+  gap: 1em;
+  padding: .5em;
+
+  input {
+    border: 1px solid #E9E9E9;
+    border-radius: 4px;
+    padding: .4em;
+    font-size: 14px;
+    font-family: inherit;
+  }
+
+  button {
+    cursor: pointer;
+    background-color: #F8F8F8;
+    border: 1px solid #EEEEEE;
+    border-radius: 4px;
+
+    font-size: 12px;
+    padding: 6px 12px;
+    box-sizing: border-box;
+    &:hover {
+      border-color: #5DCADE;
+      color: #5DCADE;
+      background: rgba(93, 202, 222, 0.1);
+    }
+  }
+}
+
+
+
+.worklist-page .content-wrapper #previewPane.end-customer-view {
+  max-width: unset;
+  flex-grow: 1;
+}
+
+.preview-pane-subheader {
+  text-align: center;
+  p {
+    font-weight: 500;;
+    font-size: small;
+  }
+}

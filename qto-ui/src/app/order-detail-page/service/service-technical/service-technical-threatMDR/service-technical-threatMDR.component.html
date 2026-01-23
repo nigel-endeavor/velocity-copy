@@ -1,0 +1,125 @@
+<form #serviceForm="ngForm" class="form">
+    <div class="col">
+        <!-- Provider Info -->
+        <div class="header">
+            <p>Provider Information</p>
+            <ng-container *ngIf="editEnabled$ | async">
+                <span class="material-symbols-outlined" *ngIf="!editingServiceProvider"
+                      (click)="oes.toggleEditFlag('editingServiceProvider')">
+                    border_color
+                </span>
+                <span class="material-symbols-outlined" *ngIf="editingServiceProvider" (click)="onSaveClicked()">
+                    save
+                </span>
+            </ng-container>
+        </div>
+        <div class="content">
+            <div class="field">
+                <p class="tooltip">
+                  <span class="tooltiptext">{{ tooltips.providerTooltip }}</span>
+                  Provider
+                </p>
+                <vtk-select [(ngModel)]="service.provider" [name]="'provider'" [disabled]="!editingServiceProvider" [isReadOnly]="!!(isReadOnly$ | async)" [options]="providerOpts"></vtk-select>
+            </div>
+            <div class="field">
+                <p class="tooltip">
+                  <span class="tooltiptext">{{ tooltips.accountNumberBanTooltip }}</span>
+                  Account Number / BAN
+                </p>
+                <input [(ngModel)]="service.accountNumber" name="accountNumber"
+                       [disabled]="!editingServiceProvider">
+            </div>
+            <div class="field">
+                <p class="tooltip">
+                  <span class="tooltiptext">{{ tooltips.providerOrderNumberTooltip }}</span>
+                  Provider Order #
+                </p>
+                <input [(ngModel)]="service.providerOrderNum" name="providerOrderNum" [disabled]="!editingServiceProvider">
+            </div>
+            <div class="field">
+                <p class="tooltip">
+                  <span class="tooltiptext">{{ tooltips.billCycleTooltip }}</span>
+                  Bill Cycle
+                </p>
+                <input type="number" min="1" max="31" step="1" [(ngModel)]="service.billCycle" name="billCycle" [disabled]="!editingServiceProvider">
+            </div>
+            <div class="field">
+                <p class="tooltip">
+                  <span class="tooltiptext">{{ tooltips.accountPasscodeTooltip }}</span>
+                  Account Passcode
+                </p>
+                <input [(ngModel)]="service.accountPasscode" name="accountPasscode" [disabled]="!editingServiceProvider">
+            </div>
+        </div>
+
+        <!-- Provider Info -->
+        <div class="header">
+            <p>threatMDR Details</p>
+            <ng-container *ngIf="editEnabled$ | async">
+                <span class="material-symbols-outlined" *ngIf="!editingThreatMDRDetails"
+                      (click)="oes.toggleEditFlag('editingThreatMDRDetails')">
+                    border_color
+                </span>
+                <span class="material-symbols-outlined" *ngIf="editingThreatMDRDetails" (click)="onSaveClicked()">
+                    save
+                </span>
+            </ng-container>
+        </div>
+        <div class="content">
+                <div class="field">
+                    <p>USM Anywhere Control Node</p>
+                    <vtk-select [(ngModel)]="service.usmAnywhereControlNode" [name]="'usmAnywhereControlNode'" [disabled]="!editingThreatMDRDetails" [isReadOnly]="!!(isReadOnly$ | async)" [options]="usmAnywhereControlNodeOpts"></vtk-select>
+                </div>
+
+                <div class="field">
+                    <p>Tier Expansion Storage Size</p>
+                    <vtk-select [(ngModel)]="service.tierExpansionStorageSize" [name]="'tierExpansionStorageSize'" [disabled]="!editingThreatMDRDetails" [isReadOnly]="!!(isReadOnly$ | async)" [options]="tierExpansionStorageSizeOpts"></vtk-select>
+                </div>
+
+                <div class="field">
+                    <p>Log Retention Requirement</p>
+                    <input [(ngModel)]="service.logRetentionRequirement" name="logRetentionRequirement" [disabled]="!editingThreatMDRDetails">
+                </div>
+
+                <div class="field">
+                    <p>Hot Storage Retention</p>
+                    <vtk-select [(ngModel)]="service.hotStorageRetention" [name]="'hotStorageRetention'" [disabled]="!editingThreatMDRDetails" [isReadOnly]="!!(isReadOnly$ | async)" [options]="hotStorageRetentionOpts"></vtk-select>
+                </div>
+
+                <div class="field">
+                    <p>Sensors</p>
+                    <input [(ngModel)]="service.sensors" name="sensors" [disabled]="!editingThreatMDRDetails">
+                </div>
+
+                <div class="field textarea">
+                    <p class="tooltip">
+                      <span class="tooltiptext">{{ tooltips.otherTechNotesTooltip }}</span>
+                      Other Technical Notes
+                    </p>
+                    <textarea [(ngModel)]="service.technicalNotes" maxlength="500" name="technicalNotes" [disabled]="!editingThreatMDRDetails"
+                              rows="5"></textarea>
+                </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <app-note #note *ngIf="this.service.id && !(isLoading$ | async)"
+                  type="service"
+                  [parentId]="service.id.toString()"
+                  [maxNotes]="2"
+                  [serviceName]="service.type"
+                  [showSave]="true"
+                  [headerClass]="'header'">
+        </app-note>
+        <br>
+        <div *ngIf="!(isInventory$ | async)">
+            <app-jeops *ngIf="this.service.id" type="service"
+                       [parentId]="service.id"
+                       [orderId]="service.orderId"
+                       [companyId]="companyId"
+                       [maxJeops]="5"
+                       [headerClass]="'header'">
+            </app-jeops>
+        </div>
+    </div>
+</form>

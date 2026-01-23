@@ -1,0 +1,77 @@
+.jeopsInput {
+    display: flex;
+    flex-direction: column;
+    padding: 0px;
+    gap: 8px;
+
+  .label {
+    height: 14px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 14px;
+    color: #636363;
+  }
+
+  .header {
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 26px;
+    padding: 0 5px;
+    border-radius: 5px;
+    background-color: #EDEDED;
+    margin-bottom: 5px;
+  }
+}
+
+.inputStyling {
+  box-sizing: border-box;
+  height: 71px;
+  width: 100%;
+  background: #F8F8F8;
+  border: 1px solid #EEEEEE;
+  border-radius: 4px;
+  padding-top: 0px;
+}
+
+.jeopList {
+  font-family: 'Roboto', 'sans-serif';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #272727;
+  .date {
+    font-size: 12px;
+  }
+}
+
+.jeopRecord {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  .bolt-icon {
+    font-size: 15px;
+    color: #5DCADE;
+    line-height: 20px;
+    margin-right: 20px;
+  }
+}
+
+.manageJeops {
+  color:#3871C1;
+  font-family: 'Roboto', 'sans-serif';
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: none;
+  line-height: 30px;
+}
+
+.manageJeops:hover {
+  color: #5DCADE;
+}
+
+.v-link {
+  margin-top: 21px;
+}

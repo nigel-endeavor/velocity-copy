@@ -1,0 +1,240 @@
+{
+  "$schema": "lookupValues.schema.json",
+  "payloads": [
+    {
+      "method": "get",
+      "args": {
+        "typeCode": "CLIENT_PROJECT_MANAGER"
+      },
+      "value": {
+        "page": 0,
+        "offset": 0,
+        "limit": 10000,
+        "total": 3,
+        "collection": [
+          {
+            "version": 1,
+            "id": 270,
+            "display": "Bob Lemon",
+            "value": "Bob Lemon",
+            "active": true,
+            "sortSequence": 0,
+            "parentId": null
+          },
+          {
+            "version": 1,
+            "id": 271,
+            "display": "John Doe",
+            "value": "John Doe",
+            "active": true,
+            "sortSequence": 0,
+            "parentId": null
+          },
+          {
+            "version": 1,
+            "id": 269,
+            "display": "Tom Smith",
+            "value": "Tom Smith",
+            "active": true,
+            "sortSequence": 0,
+            "parentId": null
+          }
+        ]
+      }
+    },
+    {
+      "method": "get",
+      "args": {
+        "typeCode": "LOCATION_STATUS"
+      },
+      "value": {
+        "page": 0,
+        "offset": 0,
+        "limit": 10000,
+        "total": 20,
+        "collection": [
+          {
+            "version": 1,
+            "id": 48,
+            "display": "Pending Assignment",
+            "value": "Pending Assignment",
+            "active": true,
+            "sortSequence": 10,
+            "parentId": null
+          },
+          {
+            "version": 1,
+            "id": 49,
+            "display": "Change In Assignment",
+            "value": "Change In Assignment",
+            "active": true,
+            "sortSequence": 20,
+            "parentId": null
+          },
+          {
+            "version": 1,
+            "id": 50,
+            "display": "On Hold",
+            "value": "On Hold",
+            "active": true,
+            "sortSequence": 30,
+            "parentId": null
+          },
+          {
+            "version": 1,
+            "id": 51,
+            "display": "Customer Requested Delay",
+            "value": "Customer Requested Delay",
+            "active": true,
+            "sortSequence": 40,
+            "parentId": null
+          },
+          {
+            "version": 1,
+            "id": 52,
+            "display": "Customer Unresponsive",
+            "value": "Customer Unresponsive",
+            "active": true,
+            "sortSequence": 50,
+            "parentId": null
+          },
+          {
+            "version": 1,
+            "id": 53,
+            "display": "Customer Unresponsive",
+            "value": "Customer Unresponsive",
+            "active": true,
+            "sortSequence": 60,
+            "parentId": null
+          },
+          {
+            "version": 1,
+            "id": 54,
+            "display": "Pending Customer Provided Circuit Info",
+            "value": "Pending Customer Provided Circuit Info",
+            "active": true,
+            "sortSequence": 70,
+            "parentId": null
+          },
+          {
+            "version": 1,
+            "id": 55,
+            "display": "Pending Info From Sales",
+            "value": "Pending Info From Sales",
+            "active": true,
+            "sortSequence": 80,
+            "parentId": null
+          },
+          {
+            "version": 1,
+            "id": 56,
+            "display": "Pending Customer Contact",
+            "value": "Pending Customer Contact",
+            "active": true,
+            "sortSequence": 90,
+            "parentId": null
+          },
+          {
+            "version": 1,
+            "id": 57,
+            "display": "PM or Sales Contacted",
+            "value": "PM or Sales Contacted",
+            "active": true,
+            "sortSequence": 100,
+            "parentId": null
+          },
+          {
+            "version": 1,
+            "id": 58,
+            "display": "Customer Contacted",
+            "value": "Customer Contacted",
+            "active": true,
+            "sortSequence": 110,
+            "parentId": null
+          },
+          {
+            "version": 1,
+            "id": 59,
+            "display": "TDG Interview Scheduled",
+            "value": "TDG Interview Scheduled",
+            "active": true,
+            "sortSequence": 120,
+            "parentId": null
+          },
+          {
+            "version": 1,
+            "id": 60,
+            "display": "Customer Gathering Info",
+            "value": "Customer Gathering Info",
+            "active": true,
+            "sortSequence": 130,
+            "parentId": null
+          },
+          {
+            "version": 1,
+            "id": 61,
+            "display": "Further Research Required",
+            "value": "Further Research Required",
+            "active": true,
+            "sortSequence": 140,
+            "parentId": null
+          },
+          {
+            "version": 1,
+            "id": 62,
+            "display": "Pending Design Approval",
+            "value": "Pending Design Approval",
+            "active": true,
+            "sortSequence": 150,
+            "parentId": null
+          },
+          {
+            "version": 1,
+            "id": 63,
+            "display": "TDG Complete",
+            "value": "TDG Complete",
+            "active": true,
+            "sortSequence": 160,
+            "parentId": null
+          },
+          {
+            "version": 1,
+            "id": 64,
+            "display": "Site Survey In Progress",
+            "value": "Site Survey In Progress",
+            "active": true,
+            "sortSequence": 170,
+            "parentId": null
+          },
+          {
+            "version": 1,
+            "id": 65,
+            "display": "Provisioning In Progress",
+            "value": "Provisioning In Progress",
+            "active": true,
+            "sortSequence": 180,
+            "parentId": null
+          },
+          {
+            "version": 1,
+            "id": 66,
+            "display": "Location Complete",
+            "value": "Location Complete",
+            "active": true,
+            "sortSequence": 190,
+            "parentId": null
+          },
+          {
+            "version": 1,
+            "id": 67,
+            "display": "Location Cancelled",
+            "value": "Location Cancelled",
+            "active": true,
+            "sortSequence": 200,
+            "parentId": null
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+<dialog #customerDialog (close)="cancelDialog()">
+    <form #customerForm="ngForm" class="customer-form">
+      <div class="field">
+        <p>Company Name</p>
+        <input [(ngModel)]="company.name" name="companyName">
+      </div>
+      <div class="field">
+        <p>Client ID</p>
+        <input [(ngModel)]="company.clientId" name="clientId">
+      </div>
+      <div class="field">
+        <p>Billing Address 1</p>
+        <input [(ngModel)]="company.address1" name="address1">
+      </div>
+      <div class="field">
+        <p>Billing Address 2</p>
+        <input [(ngModel)]="company.address2" name="address2">
+      </div>
+      <div class="field">
+        <p>Billing City</p>
+        <input [(ngModel)]="company.city" name="city">
+      </div>
+      <div class="field">
+        <p>Billing State</p>
+        <input [(ngModel)]="company.state" name="state">
+      </div>
+      <div class="field">
+        <p>Billing Postal Code</p>
+        <input [(ngModel)]="company.postalCode" name="postalCode">
+      </div>
+      <div class="field">
+        <p>Billing Country</p>
+        <input [(ngModel)]="company.country" name="country">
+      </div>
+      <div class="field">
+        <p>Billing Contact Name</p>
+        <input [(ngModel)]="company.xbillingContact.name" name="billingContactName">
+      </div>
+      <div class="field">
+        <p>Billing Contact Email</p>
+        <input [(ngModel)]="company.xbillingContact.email" name="billingContactEmail" email="true">
+      </div>
+      <div class="field">
+        <p>Billing Contact Phone</p>
+        <input [(ngModel)]="company.xbillingContact.phone" placeholder="(555)-555-5555 x5555" appPhoneMask name="billingContactPhone"
+               appPhoneValidator={{company.xbillingContact.phone}}>
+      </div>
+    </form>
+
+  <div class="buttons">
+    <button (click)="saveCustomer()">Save</button>
+    <button (click)="cancelDialog()">Cancel</button>
+  </div>
+</dialog>
+
+

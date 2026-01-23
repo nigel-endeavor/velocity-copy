@@ -1,0 +1,32 @@
+INSERT INTO milestone_display_set (display_group, display_set_label, display_type)
+VALUES ('CYBER360_ENDPOINT_PROTECTION_SERVICE_MILESTONE', 'cyber360-Endpoint Protection Milestones', 'cyber360-Endpoint Protection');
+
+INSERT INTO milestone (milestone_name, milestone_code) VALUES ('Intune Connector Configured', 'INTUNE_CONNECTOR_CONFIGURED');
+INSERT INTO milestone (milestone_name, milestone_code) VALUES ('Secure Baseline Configured', 'SECURE_BASELINE_CONFIGURED');
+INSERT INTO milestone (milestone_name, milestone_code) VALUES ('Web Content Filter Enabled', 'WEB_CONTENT_FILTER_ENABLED');
+INSERT INTO milestone (milestone_name, milestone_code) VALUES ('Vulnerability Management Enabled', 'VULNERABILITY_MANAGEMENT_ENABLED');
+
+
+SET @displaySetId = (SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'CYBER360_ENDPOINT_PROTECTION_SERVICE_MILESTONE');
+INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
+                                           milestone_required, adjustable, workflow_driven, has_time, disallow_future, description, inventory_flag, progress_percentage, status)
+VALUES
+(@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'CREATED'), 1, 10, 1, 0, 1, 0, 0, 'Order Request Received', 0, 5, 'Pending Assignment'),
+(@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'RECEIVED'), 1, 20, 1, 0, 0, 0, 0, 'Order Received', 0, 5, 'Pending Assignment'),
+(@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'CUSTOMER_REQUESTED_INSTALL'), 1, 30, 1, 0, 0, 0, 0, 'Customer Requested Install', 0, 5, 'Pending Assignment'),
+(@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'ENGINEER_ASSIGNED'), 1, 40, 1, 0, 1, 0, 0, 'Engineer Assigned', 0, 10, 'Engineer Assigned'),
+
+(@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'TECH_DATA_GATHERING_MEETING_SCHEDULED'), 1, 2750, 1, 1, 0, 0, 0, 'Kickoff call with customer to determine meeting frequency and gain access to the tenant', 0, 15, 'Technical Data Gathering'),
+(@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'TECH_DATA_GATHERING_MEETING_COMPLETED'), 1, 2760, 1, 1, 0, 0, 0, 'Kickoff call/TDG completed with Customer', 0, 20, 'TDG Complete'),
+(@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'INTUNE_CONNECTOR_CONFIGURED'), 1, 2770, 1, 1, 0, 0, 0, null, 0, 40, 'Policy & Compliance Configuration'),
+(@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'SECURE_BASELINE_CONFIGURED'), 1, 2780, 1, 1, 0, 0, 0, null, 0, 65,'Policy & Compliance Configuration'),
+(@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'WEB_CONTENT_FILTER_ENABLED'), 1, 2790, 1, 1, 0, 0, 0, null, 0, 75, 'Policy & Compliance Configuration'),
+(@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'VULNERABILITY_MANAGEMENT_ENABLED'), 1, 2800, 1, 1, 0, 0, 0, null, 0, 85, 'Policy & Compliance Configuration'),
+(@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'CLOSEOUT_CALL_SCHEDULED'), 1, 2810, 1, 1, 0, 0, 0, 'Meeting to overview the goals of the project and ensure that the goals of the project have been completed', 0, 90, 'Closeout Call Scheduled'),
+(@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'CLOSEOUT_CALL_COMPLETED'), 1, 2820, 1, 1, 0, 0, 0, 'Meeting completed', 0, 95, 'Closeout Call Completed'),
+
+
+(@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'ON_HOLD'), 1, 3010, 1, 1, 0, 0, 0, 'Order is on hold. Jeop has been opened and noted', 0, 0, 'On Hold'),
+(@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'COMPLETE'), 1, 3020, 1, 1, 0, 0, 0, 'All aspects of the order have successfully been completed', 1, 100, 'Service Complete'),
+(@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'CANCELLED'), 1, 3030, 1, 1, 0, 0, 0, 'Order is on hold. Jeop has been opened and noted. Order has a complete date and closed out', 0, 100, 'Service Cancelled'),
+(@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'CHANGE_IN_ASSIGNMENT'), 1, 3040, 1, 1, 0, 0, 0, 'Date order has been assigned to another users worklist', 0, 0, 'Change In Assignment');

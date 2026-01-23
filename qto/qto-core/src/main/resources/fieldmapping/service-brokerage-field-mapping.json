@@ -1,0 +1,178 @@
+{
+  "commissionsSupplier": {
+    "value": "Commissions Supplier",
+    "type": "string"
+  },
+  "commissionsAccountNumber": {
+    "value": "Commissions Account Number",
+    "type": "string"
+  },
+  "subAgentPercent": {
+      "value": "Sub Agent %",
+      "type": "string"
+  },
+  "subAgent": {
+      "value": "Sub Agent",
+      "type": "string"
+  },
+  "subAgentRep": {
+      "value": "Sub Agent Rep",
+      "type": "string"
+  },
+  "secondaryAgency": {
+      "value": "Secondary Sub Agent",
+      "type": "string"
+  },
+  "secondaryAgencyRep": {
+      "value": "Secondary Sub Agent Rep",
+      "type": "string"
+  },
+  "tertiaryAgency": {
+      "value": "Tertiary Sub Agent",
+      "type": "string"
+  },
+  "tertiaryAgencyRep": {
+      "value": "Tertiary Sub Agent Rep",
+      "type": "string"
+  },
+  "referral": {
+      "value": "Referral",
+      "type": "string"
+  },
+  "referralName": {
+      "value": "Referral Name",
+      "type": "string"
+  },
+  "companyReferralPercent": {
+      "value": "Company Referral %",
+      "type": "string"
+  },
+  "submittedInAdvToProvider": {
+    "value": "Submitted in Advance to Provider",
+    "type": "string"
+  },
+  "parentTsd": {
+    "value": "Parent TSD",
+    "type": "string"
+  },
+  "submittedInAdvToTsd": {
+    "value": "Submitted in Advance to TSD",
+    "type": "string"
+  },
+  "sfaOpportunityNum": {
+    "value": "SFA Opportunity #",
+    "type": "string"
+  },
+  "netProviderPoints": {
+    "value": "Net Provider Points/Rate/%",
+    "type": "string"
+  },
+  "spiffAmount": {
+    "value": "SPIFF Amount",
+    "type": "currency"
+  },
+  "customerOrderAlias": {
+    "value": "Customer Order Alias",
+    "type": "string"
+  },
+  "promotions": {
+    "value": "Promotions",
+    "type": "string"
+  },
+  "engineerResource": {
+    "value": "Engineer Resource",
+    "type": "string"
+  },
+  "engineerResourceAllocation": {
+    "value": "Engineer Resource Allocation",
+    "type": "string"
+  },
+  "commissionableMrc": {
+    "value": "Commissionable MRC",
+    "type": "currency"
+  },
+  "commissionableNrc": {
+    "value": "Commissionable NRC",
+    "type": "currency"
+  },
+  "commissionableArc": {
+    "value": "Commissionable ARC",
+    "type": "currency"
+  },
+  "commissionPaymentType": {
+    "value": "Commission Payment Type",
+    "type": "string"
+  },
+  "expectedCommission": {
+    "value": "Expected Commission",
+    "type": "currency"
+  },
+  "commissionReductionPercent": {
+    "value": "Commission Reduction %",
+    "type": "string"
+  },
+  "cieTeamedDealInfo": {
+    "value": "CIE/Teamed Deal Info",
+    "type": "string"
+  },
+  "commissionIcb": {
+    "value": "Commission ICB",
+    "type": "string"
+  },
+  "internalCommissionsComments": {
+    "value": "Internal Commissions Comments",
+    "type": "string"
+  },
+  "grossProfitMrcMultiplier": {
+      "value": "Gross Profit MRC Multiplier",
+      "type": "string"
+  },
+  "percentResidesFromCarrier": {
+      "value": "% Resides from Carrier",
+      "type": "string"
+  },
+  "grossProfitMrc": {
+      "value": "Gross Profit MRC",
+      "type": "currency"
+  },
+  "grossProfit": {
+      "value": "Gross Profit",
+      "type": "currency"
+  },
+  "grossProfitMrcNeedsToBeEdited": {
+      "value": "Gross Profit MRC Needs to be Edited",
+      "type": "string"
+  },
+  "grossProfitNeedsToBeEdited": {
+      "value": "Gross Profit Needs to be Edited",
+      "type": "string"
+  },
+  "repGrossProfitNeedsToBeEdited": {
+      "value": "Rep Gross Profit Needs to be Edited",
+      "type": "string"
+  },
+  "grossProfitMrcOverride": {
+      "value": "Gross Profit MRC Override",
+      "type": "currency"
+  },
+  "grossProfitOverride": {
+      "value": "Gross Profit Override",
+      "type": "currency"
+  },
+  "repGrossProfitProduction": {
+      "value": "Rep Gross Profit Production",
+      "type": "currency"
+  },
+  "totalContractValue": {
+      "value": "Total Contract Value",
+      "type": "currency"
+  },
+  "upliftMrc": {
+      "value": "Uplift MRC",
+      "type": "currency"
+  },
+  "subaccountMrc": {
+      "value": "Subaccount MRC",
+      "type": "currency"
+  }
+}

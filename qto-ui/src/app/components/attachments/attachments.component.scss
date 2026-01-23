@@ -1,0 +1,132 @@
+.attachments {
+  font-family: 'Roboto', sans-serif;
+  font-size: 12px;
+  line-height: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+
+  .title {
+    width: 98%;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 26px;
+    padding: 0 5px;
+    border-radius: 5px;
+    background-color: #EDEDED;
+    margin-bottom: 5px;
+  }
+
+  .map {
+    margin: 0 .25em;
+  }
+
+  .service-display-text {
+    margin: 0 .25em;
+    font-weight: 500;
+  }
+
+  .attachments-container {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: .5em;
+  }
+
+  .attachment {
+    margin: .25em 0;
+    display: flex;
+    flex-direction: column;
+    background-color: #EDEDED;
+    border: 1px solid #EEEEEE;
+    border-radius: 4px;
+
+    width: fit-content;
+    min-width: 250px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: Roboto, sans-serif;
+
+    .attachment-icon {
+      line-height: 1.4;
+      color: #5DCADE;
+      transform: rotate(180deg);
+    }
+
+    .attachment-description {
+      margin: 8px 0;
+    }
+
+    div {
+      display: flex;
+      gap: .5em;
+      align-items: center;
+      justify-content: left;
+
+      input {
+        border: 1px solid #C5C5C5;
+      }
+
+      input[disabled] {
+        border: 1px solid transparent;
+        background-color: transparent;
+        color: black;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        cursor: pointer;
+      }
+
+      button {
+        border-radius: 150px;
+        padding: .5em;
+        .material-symbols-outlined {
+          padding: 0;
+          font-size: 18px;
+        }
+      }
+    }
+  }
+
+  .dialog {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #C5C5C5;
+    border-radius: 5px;
+    padding: 1em;
+    width: fit-content;
+
+    #description-input {
+      margin-top: 1em;
+    }
+
+    .max-file-size {
+      margin-left: auto;
+    }
+
+    .buttons {
+      margin-top: 1em;
+      display: flex;
+      gap: 1em;
+    }
+
+    input {
+      font-family: inherit;
+    }
+  }
+
+  button, input::file-selector-button {
+    padding: .5em 1em;
+    border: 1px solid #EEEEEE;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Roboto', sans-serif;
+    font-size: 12px;
+    line-height: 14px;
+
+    &:hover {
+      background-color: #5DCADE;
+      color: #EEEEEE;
+    }
+  }
+
+  p { margin: 0; width: fit-content; }
+}

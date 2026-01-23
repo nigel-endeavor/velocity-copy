@@ -1,0 +1,63 @@
+header {
+  display: flex;
+  gap: 2rem;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 10px;
+  h2 {
+    margin-block: 0px;
+    font-family: 'Mulish', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 25px;
+  }
+  .closeButton {
+    border: none;
+    background-color: transparent;
+  }
+
+  .closeButton:hover {
+    background-color: #3871C1;
+    color: white;
+    border-radius: 6px;
+  }
+}
+
+a {
+  color:#3871C1;
+  font-family: 'Roboto', 'sans-serif';
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #5DCADE;
+}
+
+a.disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+:host ::ng-deep .mat-card-header-text {
+  margin-left: 0;
+}
+
+.template-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.email-preview {
+  mat-card-title {
+    font-size: 14px;
+  }
+  mat-card-content {
+    display: flex;
+    flex-direction: column;
+  }
+}

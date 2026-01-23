@@ -1,0 +1,431 @@
+<app-loading-spinner *ngIf="isLoading$ | async"></app-loading-spinner>
+
+<ng-container *ngIf="(order$ | async) && oes.order">
+  <app-application-wrapper></app-application-wrapper>
+  <form #orderForm="ngForm" class="order-detail-page">
+    <!-- Header -->
+    <div class="order-header" [ngStyle]="{ 'background-color': (getStatusColor() | async) }">
+      <div class="left">
+        <div class="v-link" (click)="onWorklistClicked()">
+          <span class="material-symbols-outlined">
+            chevron_left
+          </span>
+          {{ worklist.charAt(0).toUpperCase() + worklist.slice(1) }}
+        </div>
+        <p class="order-identifier" *ngIf="!(isInventory$ | async)">Order {{oes.order.id}}</p>
+        <p class="order-identifier" *ngIf="isInventory$ | async">Inventory - {{(selectedLocation$ |
+          async)?.clientLocationId}}</p>
+        <p class="textWrap" *ngIf="!(isInventory$ | async)">{{oes.order.serviceListString}}</p>
+        <p class="textWrap" *ngIf="isInventory$ | async">{{(selectedLocation$ | async)?.inventoryServiceListString}}</p>
+      </div>
+      <div class="center">
+        <div class="center-top">
+          <p>Created Date</p>
+          <b>{{oes.order.createdDate | date:'MMM dd, yyyy'}}</b>
+          <span>
+            |
+          </span>
+          <p>{{oes.order.status}}</p>
+          <ng-container *ngIf="selectedLocationOrService$ | async as selectedLocationOrService">
+            <ng-container *ngIf="(selectedisLocation$ | async) else selectedService">
+              <span>
+                |
+              </span>
+              <p>{{ (selectedLocation$ | async)?.displayText }}</p>
+            </ng-container>
+            <ng-template #selectedService>
+              <span>
+                |
+              </span>
+              <p>{{ (selectedLocation$ | async)?.displayText }}</p>
+              <span>
+                |
+              </span>
+              <p>{{ selectedLocationOrService?.displayText }}</p>
+            </ng-template>
+          </ng-container>
+        </div>
+        <div class="center-bottom">
+          <p>Vertek Client <b>{{ ': ' + oes.order.vertekClient }}</b></p>
+          <!-- Master Customer   -->
+          <p class="clickable" matTooltip="Double click on the name to navigate to the Master Customer" *ngIf="!editingMasterCustomer" (click)="navToMc()"> Master Customer <b> {{ ': ' +  oes.order.company.parentCompany.name }} </b></p>
+          <div class = "field" *ngIf="editingMasterCustomer">
+              <p>Master Customer:</p>
+              <select [(ngModel)]="oes.order.company.parentCompany.name"
+                name="parentCompany" required (ngModelChange)="onMasterCustomerSelected($event)">
+                <option [ngValue]="null" disabled selected hidden>Select...</option>
+                <option *ngFor="let customer of masterCustomers" [ngValue]="customer.name">{{ customer.name }}</option>
+              </select>
+          </div>
+          <p class="clickable" matTooltip="Double click on the name to navigate to the End Customer" *ngIf="!editingMasterCustomer" (click)="navToEc()"> End Customer<b> {{ ': ' +  oes.order.company?.name }} </b></p>
+          <div class= "field clickable" *ngIf="editingMasterCustomer">
+              <p>End Customer:</p>
+              <select [(ngModel)]="oes.order.company.name"  name="name"  required (ngModelChange)="onEcClick($event)">
+                <option [ngValue]="null" disabled selected hidden>Select...</option>
+                <option *ngFor="let endCustomer of endCustomers" [ngValue]="endCustomer.name">{{ endCustomer.name }}</option>
+              </select>
+              <mat-spinner *ngIf="ecLoading" [diameter]="25"></mat-spinner>
+          </div>
+
+
+          <!-- Client Order ID -->
+          <p *ngIf="!editingMasterCustomer"> Client Order ID <b> {{ ': ' + oes.order.clientOrderId}} </b></p>
+          <div class="field" *ngIf="editingMasterCustomer">
+            <p>Client Order ID</p>
+            <input [(ngModel)]="oes.order.clientOrderId" name="clientOrderId" [disabled]="!editingMasterCustomer" required>
+          </div><!-- Quote ID -->
+
+          <p>Account Manager<b>{{ ': ' + accountManager}}</b></p>
+
+          <ng-container *ngIf="(editEnabled$ | async)">
+            <span class="material-symbols-outlined clickable" *ngIf="!editingMasterCustomer" (click)="toggleMC()">
+              border_color
+            </span>
+            <span class="material-symbols-outlined clickable" *ngIf="editingMasterCustomer" (click)="onOrderSave($event)">
+              save
+            </span>
+          </ng-container>
+        </div>
+      </div>
+      <div class="right">
+        <div class="tooltip-container">
+          <button class="transparent" type="button" (click)="onShareClicked()">
+            Share
+          </button>
+          <div #shareTooltip class="tooltiptext">
+            Link copied to clipboard.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detail Cards -->
+    <div class="order-details" [class.collapsed]="orderDetailsCollapsed">
+      <div class="collapse v-link collapseForm" (click)="orderDetailsCollapsed = !orderDetailsCollapsed">
+        <ng-container *ngIf="orderDetailsCollapsed; else expanded">
+          <span class="material-symbols-outlined">expand_more</span>
+        </ng-container>
+        <ng-template #expanded>
+          <span class="material-symbols-outlined">expand_less</span>
+        </ng-template>
+      </div>
+      <div class="cardGroup">
+        <div class="card">
+          <p class="card-header">
+            Assignments
+            <ng-container *ngIf="!terminalOrderStatuses.includes(oes.order.status) && (editEnabled$ | async)">
+              <span class="material-symbols-outlined" *ngIf="!editingAssignmentCard"
+                (click)="oes.toggleEditFlag('editingAssignmentCard')">
+                border_color
+              </span>
+              <span class="material-symbols-outlined" *ngIf="editingAssignmentCard" (click)="onSaveClicked()">
+                save
+              </span>
+            </ng-container>
+          </p>
+          <div class="col-wrapper">
+            <div class="col">
+              <div class="field">
+                <p class="field-header">Provisioner</p>
+                <select [(ngModel)]="oes.order.provisioner" name="provisioner" [disabled]="!editingAssignmentCard">
+                  <option [ngValue]="null" disabled selected hidden>Select...</option>
+                  <option [ngValue]="null"></option>
+                  <ng-container *ngIf="provisioners$ | async as provisioners">
+                    <option *ngFor="let provisioner of provisioners" [ngValue]="provisioner.id">
+                      {{provisioner.displayName}}</option>
+                  </ng-container>
+                </select>
+              </div>
+              <div class="field">
+                <p class="field-header">Activation Engineer</p>
+                <select [(ngModel)]="oes.order.activationEngineer" name="activationEngineer"
+                  [disabled]="!editingAssignmentCard">
+                  <option [ngValue]="null" disabled selected hidden>Select...</option>
+                  <option [ngValue]="null"></option>
+                  <ng-container *ngIf="provisioners$ | async as provisioners">
+                    <option *ngFor="let provisioner of provisioners" [ngValue]="provisioner.id">
+                      {{provisioner.displayName}}</option>
+                  </ng-container>
+                </select>
+              </div>
+              <div class="field">
+                <p class="field-header">Client Project Manager</p>
+                <vtk-select [(ngModel)]="oes.order.clientProjectManager" name="clientProjectManager"
+                  [disabled]="!editingAssignmentCard" [options]="(clientProjectManagers$ | async) || []"></vtk-select>
+              </div>
+              <div class="field">
+                <p class="field-header">i90 Project Manager</p>
+                <select [(ngModel)]="oes.order.vertekProjectManager" name="vertekProjectManager"
+                  [disabled]="!editingAssignmentCard">
+                  <option [ngValue]="null" disabled selected hidden>Select...</option>
+                  <option [ngValue]="null"></option>
+                  <ng-container *ngIf="provisioners$ | async as provisioners">
+                    <option *ngFor="let provisioner of provisioners" [ngValue]="provisioner.id">
+                      {{provisioner.displayName}}</option>
+                  </ng-container>
+                </select>
+              </div>
+              <div class="field">
+                <p class="field-header">QA Manager</p>
+                <select [(ngModel)]="oes.order.qaManager" name="qaManager" [disabled]="!editingAssignmentCard">
+                  <option [ngValue]="null" disabled selected hidden>Select...</option>
+                  <option [ngValue]="null"></option>
+                  <ng-container *ngIf="provisioners$ | async as provisioners">
+                    <option *ngFor="let provisioner of provisioners" [ngValue]="provisioner.id">
+                      {{provisioner.displayName}}</option>
+                  </ng-container>
+                </select>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Order Summary Card -->
+        <div *ngIf="!(isInventory$ | async)" class="card">
+          <p class="card-header">Order Summary</p>
+
+          <div class="ordSumCard">
+            <div class="col">
+              <div class="field">
+                <p class="field-header">Cumulative MRC</p>
+                <p>{{oes.order.mrc | currency}}</p>
+              </div>
+              <div class="field">
+                <p class="field-header">Cumulative NRC</p>
+                <p>{{oes.order.nrc | currency}}</p>
+              </div>
+<!--              <div class="field">-->
+<!--                <p class="field-header">Cumulative Annual Recurring Cost</p>-->
+<!--                <p>{{oes.order.annualRecurringCost | currency}}</p>-->
+<!--              </div>-->
+              <div class="field">
+                <p class="field-header">Cumulative MRR</p>
+                <p>{{oes.order.mrr | currency}}</p>
+              </div>
+              <div class="field">
+                <p class="field-header">Cumulative NRR</p>
+                <p>{{oes.order.nrr | currency}}</p>
+              </div>
+              <div class="field" *ngIf="telecomClient">
+                <p class="field-header">Cumulative ICB</p>
+                <p>{{oes.order.icb | currency}}</p>
+              </div>
+              <div class="field" *ngIf="telecomClient">
+                <p class="field-header">Cumulative OSP</p>
+                <p>{{oes.order.osp | currency}}</p>
+              </div>
+            </div>
+            <div class="col">
+              <div class="field">
+                <p class="field-header">Locations Count</p>
+                <p>{{oes.order.locationCount || 0}}</p>
+              </div>
+              <div class="field">
+                <p class="field-header">Services Count</p>
+                <p>{{oes.order.serviceCount || 0}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="tabHeaderContainer">
+            <!-- Billing Contact Tab -->
+            <div class="tabHeader" [class.tabActive]="selectedTab === 'billing'" (click)="selectedTab = 'billing'">
+              Billing
+            </div>
+            <!-- Sales Contact Tab -->
+            <div class="tabHeader" [class.tabActive]="selectedTab === 'salesTeam'" (click)="selectedTab = 'salesTeam'">
+              <p class="techContact">Sales Team</p>
+              <ng-container *ngIf="!terminalOrderStatuses.includes(oes.order.status) && (editEnabled$ | async)">
+                <div class="tabEditButton">
+                  <span class="material-symbols-outlined" *ngIf="!editingSalesContact" (click)="oes.toggleEditFlag('editingSalesContact')">
+                    border_color
+                  </span>
+                  <span class="material-symbols-outlined" *ngIf="editingSalesContact" (click)="onSaveClicked()">
+                    save
+                  </span>
+                </div>
+              </ng-container>
+            </div>
+            <!-- Tech Contact Tab -->
+            <div class="tabHeader" [class.tabActive]="selectedTab === 'technicalContact'" (click)="selectedTab = 'technicalContact'">
+              <p class="techContact">Technical Contact</p>
+              <ng-container *ngIf="!terminalOrderStatuses.includes(oes.order.status) && (editEnabled$ | async)">
+                <div class="tabEditButton">
+                  <span class="material-symbols-outlined" *ngIf="!editingTechContact" (click)="oes.toggleEditFlag('editingTechContact')">
+                    border_color
+                  </span>
+                  <span class="material-symbols-outlined" *ngIf="editingTechContact" (click)="onSaveClicked()">
+                    save
+                  </span>
+                </div>
+              </ng-container>
+            </div>
+            <!-- Auth Contact Tab -->
+            <div class="tabHeader" [class.tabActive]="selectedTab === 'authContact'" (click)="selectedTab = 'authContact'">
+              <p class="techContact">Authorization Contact</p>
+              <ng-container *ngIf="!terminalOrderStatuses.includes(oes.order.status) && (editEnabled$ | async)">
+                <div class="tabEditButton">
+                  <span class="material-symbols-outlined" *ngIf="!editingAuthContact" (click)="oes.toggleEditFlag('editingAuthContact')">
+                    border_color
+                  </span>
+                  <span class="material-symbols-outlined" *ngIf="editingAuthContact" (click)="onSaveClicked()">
+                    save
+                  </span>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+
+          <!-- Billing Tab Content -->
+          <ng-container *ngIf="selectedTab === 'billing'">
+            <div class="tabField" [ngStyle]="{'gap': oes.order.company ? '' : '15em'}">
+              <p class="field-header">Client ID</p>
+              <div class="tooltip">
+                <input *ngIf="oes.order.company" [(ngModel)]="oes.order.company.clientId"
+                  name="clientId" [disabled]="true">
+                <span *ngIf="oes.order.company.clientId" class="tooltiptext">{{oes.order.company.clientId}} </span>
+              </div>
+            </div>
+            <div class="tabField">
+              <p class="field-header">Billing Address</p>
+              <div class="tooltip">
+                <p class="billingAddress">{{companyAddressToString()}}</p>
+                <span *ngIf="oes.order.company.address1" class="tooltiptext">{{companyAddressToString()}} </span>
+              </div>
+            </div>
+            <div class="tabField">
+              <p class="field-header">Billing Contact Name</p>
+              <div class="tooltip">
+                <input *ngIf="oes.order.company && oes.order.company.xbillingContact" [(ngModel)]="oes.order.company.xbillingContact.name"
+                  name="billingContactName" [disabled]="true">
+                <span class="tooltiptext"
+                  *ngIf="oes.order.company.xbillingContact && oes.order.company.xbillingContact.name">{{oes.order.company.xbillingContact.name}} </span>
+              </div>
+            </div>
+            <div class="tabField">
+              <p class="field-header">Billing Contact Email</p>
+              <div class="tooltip">
+                <input *ngIf="oes.order.company && oes.order.company.xbillingContact" [(ngModel)]="oes.order.company.xbillingContact.email"
+                  name="billingContactEmail" [disabled]="true">
+                <span class="tooltiptext"
+                  *ngIf="oes.order.company.xbillingContact && oes.order.company.xbillingContact.email">{{oes.order.company.xbillingContact.email}} </span>
+              </div>
+            </div>
+            <div class="tabField">
+              <p class="field-header">Billing Contact Phone</p>
+              <div class="tooltip">
+                <input *ngIf="oes.order.company && oes.order.company.xbillingContact" [(ngModel)]="oes.order.company.xbillingContact.phone"
+                  name="billingContactPhone" [disabled]="true">
+                <span class="tooltiptext"
+                  *ngIf="oes.order.company.xbillingContact && oes.order.company.xbillingContact.phone">{{oes.order.company.xbillingContact.phone}} </span>
+              </div>
+            </div>
+          </ng-container>
+
+          <!-- Sales Contact Tab Content -->
+          <ng-container *ngIf="selectedTab === 'salesTeam'">
+            <div class="tabField">
+              <p class="field-header">Name</p>
+              <div class="tooltip">
+                <input [(ngModel)]="oes.order.salesContact.name" name="salesContactName"
+                  [disabled]="!editingSalesContact">
+                <span class="tooltiptext" *ngIf="!editingSalesContact && oes.order.salesContact.name">{{oes.order.salesContact.name}} </span>
+              </div>
+            </div>
+            <div class="tabField">
+              <p class="field-header">Email</p>
+              <div class="tooltip">
+                <input #salesContactEmail name="salesContactEmail" [(ngModel)]="oes.order.salesContact.email" [disabled]="!editingSalesContact" email="true">
+                <span class="tooltiptext" *ngIf="!editingSalesContact && oes.order.salesContact.email">{{oes.order.salesContact.email}} </span>
+              </div>
+            </div>
+            <div class="tabField">
+              <p class="field-header">Phone</p>
+              <div class="tooltip">
+                <input #salesContactPhone [(ngModel)]="oes.order.salesContact.phone" placeholder="(555)-555-5555 x5555" appPhoneMask name="salesContactPhone"
+                [disabled]="!editingSalesContact" appPhoneValidator={{oes.order.salesContact.phone}}>
+                <span class="tooltiptext" *ngIf="!editingSalesContact && oes.order.salesContact.phone">{{oes.order.salesContact.phone}} </span>
+              </div>
+            </div>
+          </ng-container>
+
+          <!-- Tech Contact Tab Content -->
+          <ng-container class="col" *ngIf="selectedTab === 'technicalContact'">
+            <div class="tabField">
+              <p class="field-header">Name</p>
+              <div class="tooltip">
+                <input [(ngModel)]="oes.order.techContact.name" name="techContactName" [disabled]="!editingTechContact">
+                <span class="tooltiptext" *ngIf="!editingTechContact && oes.order.techContact.name">{{oes.order.techContact.name}} </span>
+                </div>
+            </div>
+            <div class="tabField">
+              <p class="field-header">Email</p>
+              <div class="tooltip">
+                <input #techContactEmail [(ngModel)]="oes.order.techContact.email" name="techContactEmail" [disabled]="!editingTechContact"
+                email="true">
+                <span class="tooltiptext" *ngIf="!editingTechContact && oes.order.techContact.email">{{oes.order.techContact.email}} </span>
+                </div>
+            </div>
+            <div class="tabField">
+              <p class="field-header">Phone</p>
+              <div class="tooltip">
+                <input #techContactPhone [(ngModel)]="oes.order.techContact.phone" placeholder="(555)-555-5555 x5555" appPhoneMask name="techContactPhone"
+                [disabled]="!editingTechContact" appPhoneValidator={{oes.order.techContact.phone}}>
+                <span class="tooltiptext" *ngIf="!editingTechContact && oes.order.techContact.phone">{{oes.order.techContact.phone}} </span>
+                </div>
+            </div>
+          </ng-container>
+
+          <!-- Auth Contact Tab Content -->
+          <ng-container class="col" *ngIf="selectedTab === 'authContact'">
+            <div class="tabField">
+              <p class="field-header">Name</p>
+              <div class="tooltip">
+                <input [(ngModel)]="oes.order.authContact.name" name="authContactName" [disabled]="!editingAuthContact">
+                <span class="tooltiptext" *ngIf="!editingAuthContact && oes.order.authContact.name">{{oes.order.authContact.name}} </span>
+                </div>
+            </div>
+            <div class="tabField">
+              <p class="field-header">Email</p>
+              <div class="tooltip">
+                <input #authContactEmail [(ngModel)]="oes.order.authContact.email" name="authContactEmail" [disabled]="!editingAuthContact"
+                email="true">
+                <span class="tooltiptext" *ngIf="!editingAuthContact && oes.order.authContact.email">{{oes.order.authContact.email}} </span>
+                </div>
+            </div>
+            <div class="tabField">
+              <p class="field-header">Phone</p>
+              <div class="tooltip">
+                <input #authContactPhone [(ngModel)]="oes.order.authContact.phone" placeholder="(555)-555-5555 x5555" appPhoneMask name="authContactPhone"
+                [disabled]="!editingAuthContact" appPhoneValidator={{oes.order.authContact.phone}}>
+                <span class="tooltiptext" *ngIf="!editingAuthContact && oes.order.authContact.phone">{{oes.order.authContact.phone}} </span>
+                </div>
+            </div>
+          </ng-container>
+
+        </div>
+        <!-- Notes/Jeops Card -->
+        <div *ngIf="!(isInventory$ | async) && oes.order.locations && oes.order.locations.length && !(isLoading$ | async)" class="card">
+          <app-jeops type="order" [parentId]="oes.order.id" [companyId]="oes.order.company.id" [maxJeops]="5"
+            [customCSS]="{'font-size': '15px', 'font-weight': 'bold', 'color': '#2b2929', 'font-family' : 'Roboto, sans-serif', 'padding-top' : '6px', 'padding-bottom' : '15px' }">
+          </app-jeops>
+        </div>
+      </div>
+    </div>
+
+  </form>
+
+  <div class="location-service-panel">
+    <app-location-service-list></app-location-service-list>
+    <div class="container">
+      <router-outlet *ngIf="oes.order"></router-outlet>
+    </div>
+  </div>
+
+  <app-requirement-templates *ngIf="editingRequirementsTemplate" [company]="oes.order.company"
+    (dialogClosed)="onRequirementTemplateDialogClosed()">
+  </app-requirement-templates>
+</ng-container>

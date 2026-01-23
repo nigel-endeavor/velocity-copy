@@ -1,0 +1,77 @@
+package com.vertek.corporate.qto.notification;
+
+import com.vertek.corporate.qto.common.SecurityUtils;
+import com.vertek.corporate.qto.common.StandardManager;
+import com.vertek.corporate.qto.subject.Subject;
+import com.vertek.corporate.qto.subject.SubjectManager;
+
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * @author rcasey
+ * @since 6/15/2023
+ */
+@Stateless
+public class NotificationManager extends StandardManager<Notification> {
+
+    /**
+     * Persistence tier for Notification.
+     */
+    @Inject
+    private NotificationJpaDao dao;
+
+    @Inject
+    private NotificationWebsocket websocket;
+
+    @Inject
+    private SubjectManager subjectManager;
+
+    @Override
+    protected NotificationJpaDao getDao() {
+        return dao;
+    }
+
+    @Override
+    public Notification create(final Notification notification) {
+        notification.setCreatedDate(new Date());
+        Notification created = super.create(notification);
+        websocket.pushNotification(created);
+        return created;
+    }
+
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    public Notification create(final Long subjectId, final String header, final String body,
+                               final String icon, final String link) {
+        Notification notification = new Notification();
+        notification.setSubjectId(subjectId);
+        notification.setHeader(header);
+        notification.setBody(body);
+        notification.setIcon(icon);
+        notification.setLinkTo(link);
+        return create(notification);
+    }
+
+    public Notification dismiss(final Long notificationId) {
+        Notification notification = retrieve(notificationId);
+        notification.setDismissed(true);
+        return edit(notification);
+    }
+
+    public void dismissAll() {
+        Subject subject = subjectManager.findByUsername(SecurityUtils.getLoggedInUser());
+        List<Notification> notifications = dao.findBySubjectId(subject.getId(), false);
+        for (Notification notification : notifications) {
+            notification.setDismissed(true);
+            edit(notification);
+        }
+    }
+
+    public List<Notification> findBySubjectId(final Long subjectId, final boolean includeDismissed) {
+        return dao.findBySubjectId(subjectId, includeDismissed);
+    }
+}

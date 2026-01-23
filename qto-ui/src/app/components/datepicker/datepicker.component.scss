@@ -1,0 +1,29 @@
+:disabled {
+  border: 1px solid #FFFFFF;
+  background-color: #FFFFFF;
+  color: black;
+  opacity: 1;
+}
+
+button {
+  margin-left: 5px;
+  padding: 5px 10px;
+  align-items: center;
+  font-family: "Roboto", "sans-serif";
+  font-style: normal;
+  font-size: 13px;
+  color: white;
+  background-color: #5DCADE;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+input {
+  width: inherit;
+  margin-left: auto;
+}
+
+.ng-invalid {
+  border: 1px solid red;
+}

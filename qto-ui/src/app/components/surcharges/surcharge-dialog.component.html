@@ -1,0 +1,78 @@
+<div [hidden]="selectedSurcharge$ | async">
+  <header class="header">
+    <h2 mat-dialog-title class="dialogHeader">Surcharges</h2>
+    <button class="material-symbols-outlined closeButton" (click)="onClose()">close</button>
+  </header>
+
+  <div class="header-buttons" *ngIf="!data.isInventory">
+    <button (click)="onAddClicked()">Add Surcharge</button>
+  </div>
+  <app-service-surcharge-table class="surcharge-table"
+    [columns]="(columns$ | async) || []"
+    [tableData]="(tableData$ | async) || []"
+    [tableTotal]="(tableTotal$ | async)"
+    [searchCriteria]="(searchCriteria$ | async)"
+    (rowDblClick)="onSurchargeDblClicked($event)"
+    (changeSortClicked)="onChangeSortClicked($event)"
+    (pageClicked)="onFilterChanged($event, 'offset')">
+  </app-service-surcharge-table>
+</div>
+<div *ngIf="(selectedSurcharge$ | async) as surcharge">
+  <header class="header">
+    <h2 *ngIf="surcharge.id == undefined" class="dialogHeader">New Surcharge</h2>
+    <h2 *ngIf="surcharge.id !== undefined" class="dialogHeader">Editing Surcharge</h2>
+    <button class="material-symbols-outlined closeButton" (click)="onCancel()">close</button>
+  </header>
+  
+  <form #surchargeForm="ngForm" class="surcharge-form">
+    <div class="col-wrapper">
+      <div class="col">
+        <mat-form-field>
+          <mat-label>Surcharge Type</mat-label>
+          <mat-select name="surchargeType" [value]="surcharge.surchargeType"
+                      (selectionChange)="onPropertyUpdate('surchargeType', $event)"
+                      [required]="true"
+                      [disabled]="surcharge.id !== undefined" 
+                      [compareWith]="compareSurchargeTypes" tabindex="1">
+            <mat-option *ngFor="let surchargeType of surchargeTypes$ | async" [value]="surchargeType">
+              {{surchargeType.level}} - {{surchargeType.type}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>
+            Surcharge Date
+          </mat-label>
+          <input name="surchargeDate"
+                  matInput
+                  [value]="surcharge.surchargeDate"
+                  (dateChange)="onPropertyUpdate('surchargeDate', $event)"
+                  [matDatepicker]="picker"
+                  [required]="true"
+                  [disabled]="surcharge.id !== undefined"
+                  tabindex="2">
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="form-buttons">
+      <div *ngIf="surcharge.id === undefined" class="button-group">
+        <button (click)="save(surcharge)" [disabled]="!(surcharge.surchargeType && surcharge.surchargeDate)" tabindex="3">
+          <span class="material-symbols-outlined">save</span>Save
+        </button>
+        <button (click)="onCancel()" tabindex="4">Cancel</button>
+      </div>
+      <div *ngIf="surcharge.id !== undefined" class="button-group">
+        <button *ngIf="(surcharge.id !== undefined && !surcharge.finalized)" title="Delete" (click)="onDelete(surcharge)" tabindex="3">
+          <span class="material-symbols-outlined">
+            delete
+          </span>
+        </button>
+        <button (click)="onCancel()" tabindex="4">Cancel</button>
+      </div>
+    </div>
+  </form>
+</div>

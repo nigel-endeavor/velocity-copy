@@ -1,0 +1,19 @@
+<div class="bulk-import-dialog">
+  <header class="header">
+    <h2 mat-dialog-title class="dialogHeader">Import File</h2>
+    <button class="material-symbols-outlined closeButton" (click)="onClose()">close</button>
+  </header>
+  <div class="form">
+    <button mat-raised-button (click)="onDownloadTemplateClicked()">Download Template</button>
+    <div class="file-input">
+      <button mat-raised-button color="primary" (click)="fileInput.click()">Choose File</button>
+      <input #fileInput type="file" hidden (change)="onFileSelected($event)">
+      <p>{{selectedFile?.name || 'No file selected'}}</p>
+    </div>
+  </div>
+  <div class="buttons">
+    <button mat-raised-button [disabled]="!selectedFile" (click)="onUploadClicked()">Upload File</button>
+  </div>
+</div>
+
+<app-loading-spinner *ngIf="isLoading"></app-loading-spinner>

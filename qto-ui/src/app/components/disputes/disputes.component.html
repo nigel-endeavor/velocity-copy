@@ -1,0 +1,173 @@
+<div *ngIf="!selectedDisputeId">
+  <div class="header-buttons">
+    <button  *ngIf="(editEnabled$ | async) && !editDisabled" (click)="onAddClicked()">Add Dispute</button>
+    <br>
+    <div class="meta-data">
+      <ng-container *ngIf="metaData$ | async as meta">
+        <div class="meta-item">
+          Open Disputed MRC: {{ meta.openDisputeMrc | currency }}
+        </div>
+        <div class="meta-item">
+          Open Disputed NRC: {{ meta.openDisputeNrc | currency }}
+        </div>
+      </ng-container>
+    </div>
+  </div>
+  <app-disputes-table class="disputes-table"
+    [columns]="(columns$ | async) || []"
+    [tableData]="(tableData$ | async) || []"
+    [tableTotal]="(tableTotal$ | async)"
+    [searchCriteria]="(searchCriteria$ | async)"
+    (rowDblClick)="onDisputeDblClicked($event)"
+    (changeSortClicked)="onChangeSortClicked($event)"
+    (pageClicked)="onFilterChanged($event, 'offset')">
+  </app-disputes-table>
+</div>
+
+<div *ngIf="selectedDispute">
+
+  <form #disputeForm="ngForm" class="form">
+    <div class="col">
+      <div class="header">
+        <p>Dispute Details</p>
+      </div>
+      <div class="content">
+        <div class="field">
+          <p>Dispute Status</p>
+          {{selectedDispute.disputeStatus}}
+        </div>
+        <div class="field">
+          <p>Dispute Type</p>
+          <select [(ngModel)]="selectedDispute.disputeType" name="disputeStatus" [required]="true" [disabled]="inputDisabled || !(editEnabled$ | async)">
+            <option *ngFor="let status of (disputeTypes$ | async)" [value]="status">{{status}}</option>
+          </select>
+        </div>
+        <div class="field">
+          <p>Dispute Assignment</p>
+          <select [(ngModel)]="selectedDispute.disputeAssignment" name="disputeAssignment" [required]="false" [disabled]="inputDisabled || !(editEnabled$ | async)">
+            <option value=""></option>
+            <option *ngFor="let assignment of (disputeAssignments$ | async)" [value]="assignment">{{assignment}}</option>
+          </select>
+        </div>
+        <div class="field">
+          <p>Summary Bill</p>
+          <input [(ngModel)]="summaryBill" name="summaryBill" [disabled]="true">
+        </div>
+        <div class="field">
+          <p>Invoice #</p>
+          <input [(ngModel)]="selectedDispute.invoiceNum" name="invoiceNum" [disabled]="inputDisabled || !(editEnabled$ | async)">
+        </div>
+        <div class="field">
+          <p>MRC Disputed</p>
+          <input [ngModel]="selectedDispute.amountDisputedMrc | vtkCurrency:inputDisabled || !(editEnabled$ | async)" (ngModelChange)="selectedDispute.setMrc($event)" name="amountDisputedMrc"
+                 pattern="(?:\+|\-|\$)?\d{1,}(?:\,?\d{3})*(\.[0-9][0-9]?)?" [disabled]="inputDisabled || !(editEnabled$ | async)">
+        </div>
+        <div class="field">
+          <p>NRC Disputed</p>
+          <input [ngModel]="selectedDispute.amountDisputedNrc | vtkCurrency:inputDisabled || !(editEnabled$ | async)" (ngModelChange)="selectedDispute.setNrc($event)" name="amountDisputedNrc"
+                 pattern="(?:\+|\-|\$)?\d{1,}(?:\,?\d{3})*(\.[0-9][0-9]?)?" [disabled]="inputDisabled || !(editEnabled$ | async)">
+        </div>
+        <div class="field">
+          <p>Vendor Tracking #</p>
+          <input [(ngModel)]="selectedDispute.vendorTrackingNum" name="vendorTrackingNum" [disabled]="inputDisabled || !(editEnabled$ | async)">
+        </div>
+        <div class="field">
+          <p>Realized Credit</p>
+          <input [ngModel]="selectedDispute.realizedCredit | vtkCurrency:inputDisabled || !(editEnabled$ | async)" (ngModelChange)="selectedDispute.setRealizedCredit($event)" name="realizedCredit"
+                 pattern="(?:\+|\-|\$)?\d{1,}(?:\,?\d{3})*(\.[0-9][0-9]?)?" [disabled]="inputDisabled || !(editEnabled$ | async)">
+        </div>
+        <div class="field">
+          <p>Realized MRC Adjustment</p>
+          <input [ngModel]="selectedDispute.realizedMrcAdjustment | vtkCurrency:inputDisabled || !(editEnabled$ | async)" (ngModelChange)="selectedDispute.setRealizedMrcAdjustment($event)" name="realizedMrcAdjustment"
+                 pattern="(?:\+|\-|\$)?\d{1,}(?:\,?\d{3})*(\.[0-9][0-9]?)?" [disabled]="inputDisabled || !(editEnabled$ | async)">
+        </div>
+        <div class="field">
+          <p>Annualized MRC Save</p>
+          <input [ngModel]="selectedDispute.annualizedMrcSave | vtkCurrency:inputDisabled || !(editEnabled$ | async)" name="annualizedMrcSave" [disabled]="true">
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="header">
+        <p>Dispute Milestones</p>
+      </div>
+      <div class="content">
+        <div class="field datepicker-field">
+          <p>Open Date</p>
+          <p (click)="picker1.openPicker()">
+            {{(selectedDispute.openDate | date:'MM/dd/yyyy':'UTC') || (inputDisabled ? '' : 'Edit')}}
+          </p>
+          <app-datepicker #picker1 [(date)]="selectedDispute.openDate" name="openDate" [required]="true" [disabled]="inputDisabled" (dateChange)="onMilestoneSave()"></app-datepicker>
+        </div>
+        <div class="field datepicker-field">
+          <p>Dispute Follow Up Date</p>
+          <p (click)="picker2.openPicker()">
+            {{(selectedDispute.disputeFollowUpDate | date:'MM/dd/yyyy':'UTC') || (inputDisabled ? '' : 'Edit')}}
+          </p>
+          <app-datepicker #picker2 [(date)]="selectedDispute.disputeFollowUpDate" name="disputeFollowUpDate" [disabled]="inputDisabled" (dateChange)="onMilestoneSave()"></app-datepicker>
+        </div>
+        <div class="field datepicker-field">
+          <p>Credit Recognized</p>
+          <p (click)="picker3.openPicker()">
+            {{(selectedDispute.creditRecognized | date:'MM/dd/yyyy':'UTC') || (inputDisabled ? '' : 'Edit')}}
+          </p>
+          <app-datepicker #picker3 [(date)]="selectedDispute.creditRecognized" name="creditRecognized" [disabled]="inputDisabled" (dateChange)="onMilestoneSave()"></app-datepicker>
+        </div>
+        <div class="field datepicker-field">
+          <p>Billing Review Complete</p>
+          <p (click)="picker4.openPicker()">
+            {{(selectedDispute.billingReviewComplete | date:'MM/dd/yyyy':'UTC') || (inputDisabled ? '' : 'Edit')}}
+          </p>
+          <app-datepicker #picker4 [(date)]="selectedDispute.billingReviewComplete" name="billingReviewComplete" [disabled]="inputDisabled" (dateChange)="onMilestoneSave()"></app-datepicker>
+        </div>
+        <div class="field datepicker-field">
+          <p>Dispute Closed</p>
+          <p (click)="picker5.openPicker()">
+            {{(selectedDispute.disputeClosedDate | date:'MM/dd/yyyy':'UTC') || (inputDisabled ? '' : 'Edit')}}
+          </p>
+          <app-datepicker #picker5 [(date)]="selectedDispute.disputeClosedDate" name="disputeClosedDate" [disabled]="inputDisabled" (dateChange)="onMilestoneSave()"></app-datepicker>
+        </div>
+      </div>
+    </div>
+
+    <div class="col button-col">
+      <app-note *ngIf="selectedDispute.id" type="dispute"
+                [parentId]="selectedDispute.id.toString()"
+                [maxNotes]="2"
+                [showSave]="!editDisabled"
+                [headerClass]="'header'">
+      </app-note>
+      <div *ngIf="!selectedDispute.id">
+        <div class="header">
+          <p>Dispute Notes</p>
+        </div>
+        <div class="note-input">
+          <textarea class="input-styling" [(ngModel)]="selectedDispute.initialNote" name="initalNote" rows="5" maxlength="50000"></textarea>
+
+          <span class="notes-ops">
+            <label class="checkbox-container">
+              <mat-checkbox name="internalOnly" [(ngModel)]="selectedDispute.initialNoteInternalOnly"></mat-checkbox>
+              <span class="checkbox"></span> Internal Only
+            </label>
+          </span>
+        </div>
+      </div>
+
+      <div class="buttons">
+        <button class="v-button" (click)="onCancel()">
+          {{inputDisabled ? 'Back' : 'Cancel'}}
+        </button>
+        <button *ngIf="(!editDisabled && !inputDisabled) && (editEnabled$ | async)" class="v-button" (click)="save()" [disabled]="disputeForm.invalid">
+          <span class="material-symbols-outlined">
+            save
+          </span>
+          Save
+        </button>
+      </div>
+    </div>
+
+  </form>
+</div>
+
+<app-loading-spinner *ngIf="(isLoading$ | async)"></app-loading-spinner>

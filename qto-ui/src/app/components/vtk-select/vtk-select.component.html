@@ -1,0 +1,6 @@
+<select [ngModel]="ngModel" (ngModelChange)="ngModelChange.emit($event)" name="{{ name }}" [disabled]="disabled">
+  <option [ngValue]="null" disabled selected hidden>{{ isReadOnly ? '' : 'Select...'}}</option>
+  <option [ngValue]="null"></option>
+  <option *ngIf="ngModel && (!options || !options.includes(ngModel))" [ngValue]="ngModel">{{ ngModel }}</option>
+  <option *ngFor="let opt of options" [ngValue]="opt">{{ opt }}</option>
+</select>

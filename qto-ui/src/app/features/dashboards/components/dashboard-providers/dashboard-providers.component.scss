@@ -1,0 +1,16 @@
+.report {
+  gap: 1rem;
+  justify-content: left;
+  .canvas-container {
+    max-width: 50%;
+    canvas {
+      max-height: 100%;
+    }
+  }
+}
+.section-actions {
+  mat-checkbox {
+    margin: 0 5px;
+  }
+}
+

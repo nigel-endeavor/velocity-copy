@@ -1,0 +1,209 @@
+<form #serviceForm="ngForm" class="form" *ngIf="showForm">
+  <div class="col">
+    <div class="header">
+      <p>Shipping</p>
+      <ng-container *ngIf="editEnabled$ | async">
+        <span class="material-symbols-outlined" *ngIf="!editingShipping"
+              (click)="oes.toggleEditFlag('editingShipping')">
+          border_color
+        </span>
+        <span class="material-symbols-outlined" *ngIf="editingShipping" (click)="onSaveClicked()">
+          save
+        </span>
+      </ng-container>
+    </div>
+    <div class="content">
+      <div class="field nowrap">
+        <div class="radio-options">
+          <div class="radio-option">
+            <input type="radio" [(ngModel)]="service.shipTo" name="shipTo"
+                value="Service Address" [ngStyle]="!editingShipping ? {'pointer-events': 'none', 'accent-color': '#3E3E3E'} : {}">
+            <p class="tooltip">
+              <span class="tooltiptext">{{ shipToServiceAddressTooltip }}</span>
+              Ship to Service Address
+            </p>
+          </div>
+          <div class="radio-option">
+            <input type="radio" [(ngModel)]="service.shipTo" name="shipTo"
+                  value="Master Customer Address" [ngStyle]="!editingShipping ? {'pointer-events': 'none', 'accent-color': '#3E3E3E'} : {}">
+            <p class="tooltip">
+              <span class="tooltiptext">{{ shipToMasterCustomerAddressTooltip }}</span>
+              Ship to Master Customer Address
+            </p>
+          </div>
+          <div class="radio-option">
+            <input type="radio" [(ngModel)]="service.shipTo" name="shipTo"
+                  value="Other" [ngStyle]="!editingShipping ? {'pointer-events': 'none', 'accent-color': '#3E3E3E'} : {}">
+            <p class = "tooltip">
+              <span class="tooltiptext">{{ otherTooltip }}</span>
+              Other
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <ng-container class="field" *ngIf="editingShipping && service.shipTo == 'Other'">
+        <div class="field">
+          <span></span>
+          <a class="link" href="javascript:" (click)="onAddressClicked()">Manage Addresses</a>
+        </div>
+        <div class="field">
+          <p>Shipping Address Line 1</p>
+          <input [(ngModel)]="service.shippingAddress1" name="shippingAddress1">
+        </div>
+        <div class="field">
+          <p>Shipping Address Line 2</p>
+          <input [(ngModel)]="service.shippingAddress2" name="shippingAddress2">
+        </div>
+        <div class="field">
+          <p>Shipping City</p>
+          <input [(ngModel)]="service.shippingCity" name="shippingCity">
+        </div>
+        <div class="field">
+          <p>Shipping State/Province/Region</p>
+          <select [ngModel]="service.shippingState" (ngModelChange)="onStateChanged($event)" name="shippingState">
+            <option *ngFor="let opt of stateOpts" value={{opt.value}}>{{opt.display}}</option>
+          </select>
+        </div>
+        <div class="field">
+          <p>Shipping ZIP/Postal Code</p>
+          <input [(ngModel)]="service.shippingPostalCode" name="shippingPostalCode"
+            appZipcodeValidator={{service.postalCode}}>
+        </div>
+        <div class="field">
+          <p>Shipping Country</p>
+          <select [(ngModel)]="service.shippingCountry" name="shippingCountry">
+            <option *ngFor="let opt of countryOpts" value={{opt}}>{{opt}}</option>
+          </select>
+        </div>
+      </ng-container>
+      <div class="shippingField" *ngIf="!editingShipping || service.shipTo != 'Other'">
+        <p class="address">
+          Shipping Address:
+        </p>
+        <div class="value detail-text long" *ngIf="service.shipTo == 'Other'">
+          <ng-container>{{shippingAddressToString()}}</ng-container>
+        </div>
+        <div class="value detail-text long" *ngIf="service.shipTo == 'Service Address'">
+          <ng-container>{{locationAddressToString()}}</ng-container>
+        </div>
+        <div class="value detail-text long" *ngIf="service.shipTo == 'Master Customer Address'">
+          <ng-container>{{masterCustomerAddressToString()}}</ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Equipment -->
+  <div class="col">
+    <!-- either use an impl of the abstract table component for cards, or make a new one. Our data is paginated. Let's try abstract table first. -->
+    <div class="buttons" *ngIf="editEnabled$ | async">
+      <button mat-raised-button color="primary" (click)="onAddEquipmentClicked()">Add Equipment</button>
+    </div>
+    <div class="content-wrapper">
+      <div class="table-wrapper">
+        <div class="loader" *ngIf="(isLoading$ | async)">
+          <mat-spinner></mat-spinner>
+        </div>
+        <app-service-equipment-table
+          [style.width]="'100%'"
+          [columns]="(columns$ | async) || []"
+          [tableData]="(tableData$ | async) || []"
+          [tableTotal]="(tableTotal$ | async)"
+          [showMultiEdit]="false"
+          [draggable]="true"
+          [cardViewSelected]="!!(cardViewOn$ | async)"
+          [searchCriteria]="(searchCriteria$ | async)"
+          (rowDblClick)="onSelectedServiceEquipmentChanged($event)"
+          (reorderColumns)="reorderColumns($event)"
+          (changeSortClicked)="onChangeSortClicked($event)"
+          (pageClicked)="onFilterChanged($event, 'offset')"
+          (limitChanged)="onLimitChanged($event);">
+
+          <!-- Card Header -->
+          <ng-template #cardHeader let-card>
+            <div>
+              <p class="card-text" [matTooltip]="equipmentTypeTooltip">{{ card.data.equipmentType }}</p>
+              <p class="secondary-card-header card-text" [matTooltip]="makeTooltip">{{card.data.make}} {{card.data.model}}</p>
+            </div>
+            <div>
+              <p class="card-text" [matTooltip]="subEquipmentTypeTooltip">{{ card.data.equipmentSubtype }}</p>
+              <p class="secondary-card-header card-text" [matTooltip]="decommissionCardTooltip" *ngIf="card.data.decommission">Decommissioned {{card.data.decommissionedDate | date:'MM/dd/yyyy'}}</p>
+            </div>
+          </ng-template>
+
+          <!-- Card Body -->
+          <ng-template #cardBody let-card>
+            <div *ngIf="card.meta.page === 0">
+              <div class="card-data">
+                <p class="card-header" [matTooltip]="serialNumberTooltip">Serial Number:</p>
+                <p class="card-text">{{card.data.serialNumber}}</p>
+              </div>
+              <div class="card-data">
+                <p class="card-header" [matTooltip]="macAddressTooltip">MAC Address:</p>
+                <p class="card-text">{{card.data.macAddress}}</p>
+              </div>
+              <div class="card-data">
+                <p class="card-header" [matTooltip]="ownershipTooltip">Ownership:</p>
+                <p class="card-text">{{card.data.ownership}}</p>
+              </div>
+              <div class="card-data">
+                <p class="card-header">Shipping Method:</p>
+                <p class="card-text" [matTooltip]="card.data.shippingMethod">{{card.data.shippingMethod}}</p>
+              </div>
+              <div class="card-data">
+                <p class="card-header">Tracking Info:</p>
+                <p class="card-text" [matTooltip]="card.data.trackingInfo">{{card.data.trackingInfo}}</p>
+              </div>
+              <div class="card-data">
+                <p class="card-header">Ship Date:</p>
+                <p class="card-text" [matTooltip]="(card.data.shipDate | date:'M/d/yy':'UTC') || ''">{{card.data.shipDate | date:'M/d/yy':'UTC'}}</p>
+              </div>
+              <div class="card-data">
+                <p class="card-header">Delivered Date:</p>
+                <p class="card-text" [matTooltip]="(card.data.deliveredDate | date:'M/d/yy':'UTC') || ''">{{card.data.deliveredDate | date:'M/d/yy':'UTC'}}</p>
+              </div>
+            </div>
+
+            <div *ngIf="card.meta.page === 1">
+              <div class="card-data">
+                <p class="card-header">Network IP/Range:</p>
+                <p class="card-text" [matTooltip]="card.data.networkIpRange">{{card.data.networkIpRange}}</p>
+              </div>
+              <div class="card-data">
+                <p class="card-header">{{card.data.equipmentType}} IP:</p>
+                <p class="card-text" [matTooltip]="card.data.ipAddress">{{card.data.ipAddress}}</p>
+              </div>
+              <div class="card-data">
+                <p class="card-header">{{card.data.equipmentType}} Gateway IP:</p>
+                <p class="card-text" [matTooltip]="card.data.gateway">{{card.data.gateway}}</p>
+              </div>
+              <div class="card-data">
+                <p class="card-header">{{card.data.equipmentType}} DNS1:</p>
+                <p class="card-text" [matTooltip]="card.data.dns1">{{card.data.dns1}}</p>
+              </div>
+              <div class="card-data">
+                <p class="card-header">{{card.data.equipmentType}} DNS2:</p>
+                <p class="card-text" [matTooltip]="card.data.dns2">{{card.data.dns2}}</p>
+              </div>
+            </div>
+          </ng-template>
+
+          <ng-template #cardFooter let-card>
+            <div class="card-footer-content">
+              <mat-divider></mat-divider>
+              <p>{{card.data.description}}</p>
+            </div>
+          </ng-template>
+        </app-service-equipment-table>
+      </div>
+    </div>
+  </div>
+</form>
+
+<app-addresses *ngIf="showAddressDialog" [companyId]="companyId" (addressSelected)="onAddressSelected($event)"
+               (addressSelectCancelled)="onAddressSelectCancelled()"></app-addresses>
+
+<!-- <ng-container *ngIf="(selectedServiceEquipment$ | async) as selected">
+  HIBYE {{selectedServiceEquipment}}
+  <app-equipment *ngIf="selected && selectedServiceEquipment" [equipment]="selectedServiceEquipment" (equipmentSave)="onEquipmentSaveClicked($event)" (equipmentCancel)="onEquipmentCancelClicked()"></app-equipment>
+</ng-container> -->

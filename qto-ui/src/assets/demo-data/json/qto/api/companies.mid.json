@@ -1,0 +1,3404 @@
+{
+  "$schema": "companies.schema.json",
+  "payloads": [
+    {
+      "method": "get",
+      "args": {
+        "limit": "50",
+        "offset": "100",
+        "name": "ggg",
+        "type": "Master Customer"
+      },
+      "value": {
+        "linkRels": {
+          "self": {
+            "method": "GET",
+            "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies"
+          }
+        },
+        "offset": 100,
+        "limit": 50,
+        "total": 150,
+        "collection": [
+          {
+            "version": 0,
+            "id": 3,
+            "name": "OSF",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "100c58f0-d36b-4ddf-8ab8-d7c3548213e3",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1704,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/3"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 3,
+            "name": "OSF",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "100c58f0-d36b-4ddf-8ab8-d7c3548213e3",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1704,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/3"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 9,
+            "name": "JAV",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "d117db41-236e-48de-a9d9-8f0a3efc8e1a",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1929,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/9"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 13,
+            "name": "CUATM",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "2f26deba-0261-499d-a1d1-d04d47836402",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1878,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/13"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 15,
+            "name": "MICHAELS",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "d46f2dde-337b-4e8a-9df6-14a5fd72e579",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 220,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/15"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 19,
+            "name": "Pressed Juicery",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "d60c9e28-abf1-4be9-add6-e6f34b191aaa",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1968,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/19"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 21,
+            "name": "Paul Stuart",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "62b89623-64fe-40fc-bb97-0069124ba03b",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1949,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/21"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 29,
+            "name": "SMASHBURGER",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "064531fb-52e1-4ec4-88d4-6d2f239f916b",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1975,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/29"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 32,
+            "name": "DHC",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "1f6d2da9-7382-4a44-8862-b1198549b068",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1979,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/32"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 227,
+            "name": "SALATA",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "a7eaf9eb-4a98-4784-9626-d214ea65603c",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1986,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/227"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 239,
+            "name": "Jollibee",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "84cff19f-8a14-42c3-8d12-95488375e3ee",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1988,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/239"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 323,
+            "name": "GFH",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "20a55e85-7b23-4471-9771-3409220a684f",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1987,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/323"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 329,
+            "name": "Unassigned",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "e9946838-5037-44e9-9ad0-2f730de8b385",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 0,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/329"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 331,
+            "name": "IMOS",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "77003ef9-21ab-42a0-91d4-3627affb8760",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1989,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/331"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 392,
+            "name": "IHOP",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "5cb05f6c-93ee-437a-9412-07344fd66717",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1858,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/392"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 395,
+            "name": "PARDIS",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "7de8cd29-8d60-4d91-8d7a-fcc55c6ee71b",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 2004,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/395"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 397,
+            "name": "GENESCO",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "f73c73fb-acf8-457e-a3a1-371a86e72a99",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1959,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/397"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 459,
+            "name": "RPH",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "a870f20b-cec0-4b79-b3ed-3926618fe7b7",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 2000,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/459"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 464,
+            "name": "TWA",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "2fc9e659-fb94-4be4-9932-5318e58f7e95",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1996,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/464"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 468,
+            "name": "LJS",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "a128a4d8-7cee-4887-9a32-4fdf4652532c",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1816,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/468"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 509,
+            "name": "DGC",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "f48d26ea-2ff4-406f-9fcc-edcf7e1409b7",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1414,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/509"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 556,
+            "name": "WABA GRILL",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "dc149872-e630-44d4-8bfc-6040474db5b0",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1995,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/556"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 560,
+            "name": "SWATCH GROUP USA",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "c84f715b-6e4b-496f-9395-dac117702c07",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1883,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/560"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 565,
+            "name": "AAA",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "e1a5a3a6-cc35-418e-8f80-3882c96defff",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1964,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/565"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 569,
+            "name": "SLIM CHICKEN",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "e29f6e1a-9974-4b39-8cc3-af4cc3d3ff92",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1982,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/569"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 571,
+            "name": "DENALI DRIVELINES",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "a11795db-0034-4caf-8283-643705683790",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 2006,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/571"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 605,
+            "name": "Friendlys",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "b9ba601e-5b97-4b4e-ac24-4f1092861c1e",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 2009,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/605"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 655,
+            "name": "TRUCK PRO",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "27719838-0c0a-4c68-860c-c1f3003ae63d",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1957,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/655"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 673,
+            "name": "GEN",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "368a9d7f-fd37-4a33-84fc-4e74325fb802",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1958,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/673"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 677,
+            "name": "GRN",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "88e494c9-d9ec-415b-830d-a205577aa066",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 2012,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/677"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 699,
+            "name": "Langston Bag Company",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "c034a107-1e98-4f1f-9852-f262ae3a0ef3",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1417,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/699"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 703,
+            "name": "Hitched",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "532a7abc-5027-4cbe-880f-ed3367fb429b",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 2001,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/703"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 708,
+            "name": "CSG",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "ce4c14dc-c9d8-4f31-9e5b-6fff430ed891",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 2003,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/708"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 724,
+            "name": "DOG STOP",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "33ea8230-6f0e-4204-9461-72266a09acf3",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 2005,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/724"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 726,
+            "name": "JARS",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "a5fdb6d5-72ab-4303-b24d-af29c3fd1e25",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 2014,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/726"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 765,
+            "name": "JRG",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "992fea54-5be7-49a3-9c10-543ef923206d",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1976,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/765"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 778,
+            "name": "CNT",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "31ab17d1-c1c3-40c1-8198-f15248873d6b",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 2015,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/778"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 816,
+            "name": "APB",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "e2bb8df0-74e8-4578-bf6d-d547c3481413",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1992,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/816"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 819,
+            "name": "LONGVIEW HEIGHTS SDA CHURCH",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "67264a8c-62c6-41f8-889a-525d4ba5d93d",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1803,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/819"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 857,
+            "name": "Smoothie Factory",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "7b1c2c53-8c7e-41e4-848e-401e7e859a07",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 2016,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/857"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 871,
+            "name": "MAMMOTH",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "9753de6a-606a-4a7d-b3a6-49eade580b98",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 2017,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/871"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 891,
+            "name": "Paris Baguette",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "1e9a3187-db0b-4ab7-b921-30fced02e328",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 2010,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/891"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 893,
+            "name": "JBPZ",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "33fdfc40-f259-4df8-be88-2e41cda81b29",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 2019,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/893"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 898,
+            "name": "VERSACE",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "b4f5e991-bb25-41cb-8b19-4d09a08ec800",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1901,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/898"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 908,
+            "name": "A&W",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "de28bef2-3dcc-420d-815e-fa4544530def",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 2020,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/908"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 911,
+            "name": "JMS",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "cec9a0ff-4d4d-489e-8f96-50ae3c40e365",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 2022,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/911"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 943,
+            "name": "CHURCH'S CHICKEN",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "3a9c5179-1358-4441-82cb-45b22a78025e",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1874,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/943"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 967,
+            "name": "DOH",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "3173e4b0-3b90-4256-8153-91d3144e2e79",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 2021,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/967"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 974,
+            "name": "WILCO",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "694d70e7-3972-4d88-92fd-258d4272a63e",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 2023,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/974"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 1186,
+            "name": "LIDS",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "66215d8c-61b5-44a0-9018-df3176911368",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1953,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/1186"
+              }
+            }
+          }
+        ]
+      }
+    },
+
+
+    {
+      "method": "get",
+      "args": {
+        "limit": "50",
+        "offset": "50",
+        "name": "ggg",
+        "type": "Master Customer"
+      },
+      "value": {
+        "linkRels": {
+          "self": {
+            "method": "GET",
+            "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies"
+          }
+        },
+        "offset": 50,
+        "limit": 50,
+        "total": 150,
+        "collection": [
+          {
+            "version": 0,
+            "id": 3,
+            "name": "OSF",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "100c58f0-d36b-4ddf-8ab8-d7c3548213e3",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1704,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/3"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 3,
+            "name": "OSF",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "100c58f0-d36b-4ddf-8ab8-d7c3548213e3",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1704,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/3"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 9,
+            "name": "JAV",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "d117db41-236e-48de-a9d9-8f0a3efc8e1a",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1929,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/9"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 13,
+            "name": "CUATM",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "2f26deba-0261-499d-a1d1-d04d47836402",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1878,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/13"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 15,
+            "name": "MICHAELS",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "d46f2dde-337b-4e8a-9df6-14a5fd72e579",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 220,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/15"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 19,
+            "name": "Pressed Juicery",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "d60c9e28-abf1-4be9-add6-e6f34b191aaa",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1968,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/19"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 21,
+            "name": "Paul Stuart",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "62b89623-64fe-40fc-bb97-0069124ba03b",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1949,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/21"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 29,
+            "name": "SMASHBURGER",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "064531fb-52e1-4ec4-88d4-6d2f239f916b",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1975,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/29"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 32,
+            "name": "DHC",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "1f6d2da9-7382-4a44-8862-b1198549b068",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1979,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/32"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 227,
+            "name": "SALATA",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "a7eaf9eb-4a98-4784-9626-d214ea65603c",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1986,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/227"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 239,
+            "name": "Jollibee",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "84cff19f-8a14-42c3-8d12-95488375e3ee",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1988,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/239"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 323,
+            "name": "GFH",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "20a55e85-7b23-4471-9771-3409220a684f",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1987,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/323"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 329,
+            "name": "Unassigned",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "e9946838-5037-44e9-9ad0-2f730de8b385",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 0,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/329"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 331,
+            "name": "IMOS",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "77003ef9-21ab-42a0-91d4-3627affb8760",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1989,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/331"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 392,
+            "name": "IHOP",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "5cb05f6c-93ee-437a-9412-07344fd66717",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1858,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/392"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 395,
+            "name": "PARDIS",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "7de8cd29-8d60-4d91-8d7a-fcc55c6ee71b",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 2004,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/395"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 397,
+            "name": "GENESCO",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "f73c73fb-acf8-457e-a3a1-371a86e72a99",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1959,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/397"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 459,
+            "name": "RPH",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "a870f20b-cec0-4b79-b3ed-3926618fe7b7",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 2000,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/459"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 464,
+            "name": "TWA",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "2fc9e659-fb94-4be4-9932-5318e58f7e95",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1996,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/464"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 468,
+            "name": "LJS",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "a128a4d8-7cee-4887-9a32-4fdf4652532c",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1816,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/468"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 509,
+            "name": "DGC",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "f48d26ea-2ff4-406f-9fcc-edcf7e1409b7",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1414,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/509"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 556,
+            "name": "WABA GRILL",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "dc149872-e630-44d4-8bfc-6040474db5b0",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1995,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/556"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 560,
+            "name": "SWATCH GROUP USA",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "c84f715b-6e4b-496f-9395-dac117702c07",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1883,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/560"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 565,
+            "name": "AAA",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "e1a5a3a6-cc35-418e-8f80-3882c96defff",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1964,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/565"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 569,
+            "name": "SLIM CHICKEN",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "e29f6e1a-9974-4b39-8cc3-af4cc3d3ff92",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1982,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/569"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 571,
+            "name": "DENALI DRIVELINES",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "a11795db-0034-4caf-8283-643705683790",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 2006,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/571"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 605,
+            "name": "Friendlys",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "b9ba601e-5b97-4b4e-ac24-4f1092861c1e",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 2009,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/605"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 655,
+            "name": "TRUCK PRO",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "27719838-0c0a-4c68-860c-c1f3003ae63d",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1957,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/655"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 673,
+            "name": "GEN",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "368a9d7f-fd37-4a33-84fc-4e74325fb802",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1958,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/673"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 677,
+            "name": "GRN",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "88e494c9-d9ec-415b-830d-a205577aa066",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 2012,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/677"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 699,
+            "name": "Langston Bag Company",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "c034a107-1e98-4f1f-9852-f262ae3a0ef3",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1417,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/699"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 703,
+            "name": "Hitched",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "532a7abc-5027-4cbe-880f-ed3367fb429b",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 2001,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/703"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 708,
+            "name": "CSG",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "ce4c14dc-c9d8-4f31-9e5b-6fff430ed891",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 2003,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/708"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 724,
+            "name": "DOG STOP",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "33ea8230-6f0e-4204-9461-72266a09acf3",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 2005,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/724"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 726,
+            "name": "JARS",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "a5fdb6d5-72ab-4303-b24d-af29c3fd1e25",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 2014,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/726"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 765,
+            "name": "JRG",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "992fea54-5be7-49a3-9c10-543ef923206d",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1976,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/765"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 778,
+            "name": "CNT",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "31ab17d1-c1c3-40c1-8198-f15248873d6b",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 2015,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/778"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 816,
+            "name": "APB",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "e2bb8df0-74e8-4578-bf6d-d547c3481413",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1992,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/816"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 819,
+            "name": "LONGVIEW HEIGHTS SDA CHURCH",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "67264a8c-62c6-41f8-889a-525d4ba5d93d",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1803,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/819"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 857,
+            "name": "Smoothie Factory",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "7b1c2c53-8c7e-41e4-848e-401e7e859a07",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 2016,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/857"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 871,
+            "name": "MAMMOTH",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "9753de6a-606a-4a7d-b3a6-49eade580b98",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 2017,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/871"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 891,
+            "name": "Paris Baguette",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "1e9a3187-db0b-4ab7-b921-30fced02e328",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 2010,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/891"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 893,
+            "name": "JBPZ",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "33fdfc40-f259-4df8-be88-2e41cda81b29",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 2019,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/893"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 898,
+            "name": "VERSACE",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "b4f5e991-bb25-41cb-8b19-4d09a08ec800",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1901,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/898"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 908,
+            "name": "A&W",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "de28bef2-3dcc-420d-815e-fa4544530def",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 2020,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/908"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 911,
+            "name": "JMS",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "cec9a0ff-4d4d-489e-8f96-50ae3c40e365",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 2022,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/911"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 943,
+            "name": "CHURCH'S CHICKEN",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "3a9c5179-1358-4441-82cb-45b22a78025e",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1874,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/943"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 967,
+            "name": "DOH",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "3173e4b0-3b90-4256-8153-91d3144e2e79",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 2021,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/967"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 974,
+            "name": "WILCO",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "694d70e7-3972-4d88-92fd-258d4272a63e",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 2023,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/974"
+              }
+            }
+          },
+          {
+            "version": 0,
+            "id": 1186,
+            "name": "LIDS",
+            "type": "Master Customer",
+            "active": false,
+            "uuid": "66215d8c-61b5-44a0-9018-df3176911368",
+            "clientId": null,
+            "address": null,
+            "parentCompanyId": null,
+            "legacyId": 1953,
+            "parentCompany": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/1186"
+              }
+            }
+          }
+        ]
+      }
+    },
+
+    {
+      "method": "get",
+      "args": {
+        "limit": "50",
+        "name": "ggg",
+        "type": "Master Customer"
+      },
+      "value": {
+        "linkRels": {
+          "self": {
+            "method": "GET",
+            "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies"
+          }
+        },
+        "offset": 0,
+        "limit": 50,
+        "total": 150,
+        "collection": [
+            {
+              "version": 0,
+              "id": 3,
+              "name": "OSF",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "100c58f0-d36b-4ddf-8ab8-d7c3548213e3",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 1704,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/3"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 3,
+              "name": "OSF",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "100c58f0-d36b-4ddf-8ab8-d7c3548213e3",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 1704,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/3"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 9,
+              "name": "JAV",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "d117db41-236e-48de-a9d9-8f0a3efc8e1a",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 1929,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/9"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 13,
+              "name": "CUATM",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "2f26deba-0261-499d-a1d1-d04d47836402",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 1878,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/13"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 15,
+              "name": "MICHAELS",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "d46f2dde-337b-4e8a-9df6-14a5fd72e579",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 220,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/15"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 19,
+              "name": "Pressed Juicery",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "d60c9e28-abf1-4be9-add6-e6f34b191aaa",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 1968,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/19"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 21,
+              "name": "Paul Stuart",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "62b89623-64fe-40fc-bb97-0069124ba03b",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 1949,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/21"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 29,
+              "name": "SMASHBURGER",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "064531fb-52e1-4ec4-88d4-6d2f239f916b",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 1975,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/29"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 32,
+              "name": "DHC",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "1f6d2da9-7382-4a44-8862-b1198549b068",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 1979,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/32"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 227,
+              "name": "SALATA",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "a7eaf9eb-4a98-4784-9626-d214ea65603c",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 1986,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/227"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 239,
+              "name": "Jollibee",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "84cff19f-8a14-42c3-8d12-95488375e3ee",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 1988,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/239"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 323,
+              "name": "GFH",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "20a55e85-7b23-4471-9771-3409220a684f",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 1987,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/323"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 329,
+              "name": "Unassigned",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "e9946838-5037-44e9-9ad0-2f730de8b385",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 0,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/329"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 331,
+              "name": "IMOS",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "77003ef9-21ab-42a0-91d4-3627affb8760",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 1989,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/331"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 392,
+              "name": "IHOP",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "5cb05f6c-93ee-437a-9412-07344fd66717",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 1858,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/392"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 395,
+              "name": "PARDIS",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "7de8cd29-8d60-4d91-8d7a-fcc55c6ee71b",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 2004,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/395"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 397,
+              "name": "GENESCO",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "f73c73fb-acf8-457e-a3a1-371a86e72a99",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 1959,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/397"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 459,
+              "name": "RPH",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "a870f20b-cec0-4b79-b3ed-3926618fe7b7",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 2000,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/459"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 464,
+              "name": "TWA",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "2fc9e659-fb94-4be4-9932-5318e58f7e95",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 1996,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/464"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 468,
+              "name": "LJS",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "a128a4d8-7cee-4887-9a32-4fdf4652532c",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 1816,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/468"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 509,
+              "name": "DGC",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "f48d26ea-2ff4-406f-9fcc-edcf7e1409b7",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 1414,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/509"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 556,
+              "name": "WABA GRILL",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "dc149872-e630-44d4-8bfc-6040474db5b0",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 1995,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/556"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 560,
+              "name": "SWATCH GROUP USA",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "c84f715b-6e4b-496f-9395-dac117702c07",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 1883,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/560"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 565,
+              "name": "AAA",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "e1a5a3a6-cc35-418e-8f80-3882c96defff",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 1964,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/565"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 569,
+              "name": "SLIM CHICKEN",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "e29f6e1a-9974-4b39-8cc3-af4cc3d3ff92",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 1982,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/569"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 571,
+              "name": "DENALI DRIVELINES",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "a11795db-0034-4caf-8283-643705683790",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 2006,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/571"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 605,
+              "name": "Friendlys",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "b9ba601e-5b97-4b4e-ac24-4f1092861c1e",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 2009,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/605"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 655,
+              "name": "TRUCK PRO",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "27719838-0c0a-4c68-860c-c1f3003ae63d",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 1957,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/655"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 673,
+              "name": "GEN",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "368a9d7f-fd37-4a33-84fc-4e74325fb802",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 1958,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/673"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 677,
+              "name": "GRN",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "88e494c9-d9ec-415b-830d-a205577aa066",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 2012,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/677"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 699,
+              "name": "Langston Bag Company",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "c034a107-1e98-4f1f-9852-f262ae3a0ef3",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 1417,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/699"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 703,
+              "name": "Hitched",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "532a7abc-5027-4cbe-880f-ed3367fb429b",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 2001,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/703"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 708,
+              "name": "CSG",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "ce4c14dc-c9d8-4f31-9e5b-6fff430ed891",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 2003,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/708"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 724,
+              "name": "DOG STOP",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "33ea8230-6f0e-4204-9461-72266a09acf3",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 2005,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/724"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 726,
+              "name": "JARS",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "a5fdb6d5-72ab-4303-b24d-af29c3fd1e25",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 2014,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/726"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 765,
+              "name": "JRG",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "992fea54-5be7-49a3-9c10-543ef923206d",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 1976,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/765"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 778,
+              "name": "CNT",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "31ab17d1-c1c3-40c1-8198-f15248873d6b",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 2015,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/778"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 816,
+              "name": "APB",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "e2bb8df0-74e8-4578-bf6d-d547c3481413",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 1992,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/816"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 819,
+              "name": "LONGVIEW HEIGHTS SDA CHURCH",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "67264a8c-62c6-41f8-889a-525d4ba5d93d",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 1803,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/819"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 857,
+              "name": "Smoothie Factory",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "7b1c2c53-8c7e-41e4-848e-401e7e859a07",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 2016,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/857"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 871,
+              "name": "MAMMOTH",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "9753de6a-606a-4a7d-b3a6-49eade580b98",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 2017,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/871"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 891,
+              "name": "Paris Baguette",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "1e9a3187-db0b-4ab7-b921-30fced02e328",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 2010,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/891"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 893,
+              "name": "JBPZ",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "33fdfc40-f259-4df8-be88-2e41cda81b29",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 2019,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/893"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 898,
+              "name": "VERSACE",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "b4f5e991-bb25-41cb-8b19-4d09a08ec800",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 1901,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/898"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 908,
+              "name": "A&W",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "de28bef2-3dcc-420d-815e-fa4544530def",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 2020,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/908"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 911,
+              "name": "JMS",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "cec9a0ff-4d4d-489e-8f96-50ae3c40e365",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 2022,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/911"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 943,
+              "name": "CHURCH'S CHICKEN",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "3a9c5179-1358-4441-82cb-45b22a78025e",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 1874,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/943"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 967,
+              "name": "DOH",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "3173e4b0-3b90-4256-8153-91d3144e2e79",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 2021,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/967"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 974,
+              "name": "WILCO",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "694d70e7-3972-4d88-92fd-258d4272a63e",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 2023,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/974"
+                }
+              }
+            },
+            {
+              "version": 0,
+              "id": 1186,
+              "name": "LIDS",
+              "type": "Master Customer",
+              "active": false,
+              "uuid": "66215d8c-61b5-44a0-9018-df3176911368",
+              "clientId": null,
+              "address": null,
+              "parentCompanyId": null,
+              "legacyId": 1953,
+              "parentCompany": null,
+              "billingContact": null,
+              "linkRels": {
+                "self": {
+                  "method": "GET",
+                  "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/1186"
+                }
+              }
+            }
+        ]
+      }
+    },
+
+    {
+      "method": "get",
+      "value": {
+        "linkRels": {
+          "self": {
+            "method": "GET",
+            "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies"
+          }
+        },
+        "offset": 0,
+        "limit": 50,
+        "total": 11,
+        "collection": [
+          {
+            "version": 63,
+            "id": 2,
+            "name": "ABC Company",
+            "type": "End Customer",
+            "active": true,
+            "uuid": "uuid",
+            "clientId": null,
+            "address": {
+              "version": 2,
+              "id": 1,
+              "address1": "463 Mountain View Drive",
+              "address2": null,
+              "city": "Colchester",
+              "state": "VT",
+              "postalCode": "05456",
+              "country": "USA",
+              "latitude": null,
+              "longitude": null,
+              "geocodeStatus": null,
+              "geocodeSource": null,
+              "accuracy": null,
+              "validated": false,
+              "companyId": 0
+            },
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/2"
+              }
+            }
+          },
+          {
+            "version": 23,
+            "id": 3,
+            "name": "Mountain View High School",
+            "type": "End Customer",
+            "active": false,
+            "uuid": "2f5ad5d1-dcfc-45c8-a86e-9504cf0ba6df",
+            "clientId": "act 123 ",
+            "address": {
+              "version": 1,
+              "id": 7,
+              "address1": "1000 any street",
+              "address2": "",
+              "city": "any city",
+              "state": "vermont",
+              "postalCode": "05452",
+              "country": "USA",
+              "latitude": null,
+              "longitude": null,
+              "geocodeStatus": null,
+              "geocodeSource": null,
+              "accuracy": null,
+              "validated": false,
+              "companyId": 3
+            },
+            "billingContact": {
+              "version": 22,
+              "id": 5,
+              "companyId": 3,
+              "firstName": "bc",
+              "lastName": "name",
+              "active": false,
+              "notes": null,
+              "type": "BILLING",
+              "role": null,
+              "address": {
+                "version": 1,
+                "id": 7,
+                "address1": "1000 any street",
+                "address2": "",
+                "city": "any city",
+                "state": "vermont",
+                "postalCode": "05452",
+                "country": "USA",
+                "latitude": null,
+                "longitude": null,
+                "geocodeStatus": null,
+                "geocodeSource": null,
+                "accuracy": null,
+                "validated": false,
+                "companyId": 3
+              },
+              "phone": null,
+              "email": null,
+              "lastUpdateBy": null,
+              "lastUpdateDate": null
+            },
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/3"
+              }
+            }
+          },
+          {
+            "version": 2,
+            "id": 14,
+            "name": "Larry's Tree Farm",
+            "type": "End Customer",
+            "active": false,
+            "uuid": "79380ace-6cb1-455a-88ab-e353be7e91c8",
+            "clientId": "12897738",
+            "address": {
+              "version": 0,
+              "id": 9,
+              "address1": "1473 Vt Rte 36",
+              "address2": null,
+              "city": "Faifield",
+              "state": "I can be anythiing",
+              "postalCode": "Banana",
+              "country": "Mauritius",
+              "latitude": null,
+              "longitude": null,
+              "geocodeStatus": null,
+              "geocodeSource": null,
+              "accuracy": null,
+              "validated": false,
+              "companyId": 14
+            },
+            "billingContact": {
+              "version": 1,
+              "id": 16,
+              "companyId": 14,
+              "firstName": "Carl",
+              "lastName": "Weathers",
+              "active": false,
+              "notes": null,
+              "type": "BILLING",
+              "role": null,
+              "address": {
+                "version": 0,
+                "id": 9,
+                "address1": "1473 Vt Rte 36",
+                "address2": null,
+                "city": "Faifield",
+                "state": "I can be anythiing",
+                "postalCode": "Banana",
+                "country": "Mauritius",
+                "latitude": null,
+                "longitude": null,
+                "geocodeStatus": null,
+                "geocodeSource": null,
+                "accuracy": null,
+                "validated": false,
+                "companyId": 14
+              },
+              "phone": null,
+              "email": null,
+              "lastUpdateBy": null,
+              "lastUpdateDate": null
+            },
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/14"
+              }
+            }
+          },
+          {
+            "version": 1,
+            "id": 15,
+            "name": "dfabd",
+            "type": "End Customer",
+            "active": false,
+            "uuid": "0ab7b01e-83eb-4ce2-8460-6b0b27761dcf",
+            "clientId": null,
+            "address": {
+              "version": 0,
+              "id": 10,
+              "address1": null,
+              "address2": null,
+              "city": null,
+              "state": null,
+              "postalCode": null,
+              "country": null,
+              "latitude": null,
+              "longitude": null,
+              "geocodeStatus": null,
+              "geocodeSource": null,
+              "accuracy": null,
+              "validated": false,
+              "companyId": 15
+            },
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/15"
+              }
+            }
+          },
+          {
+            "version": 19,
+            "id": 16,
+            "name": "Pure Pressed Juicery",
+            "type": "End Customer",
+            "active": false,
+            "uuid": "f10ae3b8-8fb7-472a-95ba-8fc178424163",
+            "clientId": "383826",
+            "address": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/16"
+              }
+            }
+          },
+          {
+            "version": 17,
+            "id": 17,
+            "name": "Langston Co Inc",
+            "type": "End Customer",
+            "active": false,
+            "uuid": "ed34888f-f8ee-4a7c-9dfb-dc6d4b7849ae",
+            "clientId": "383832",
+            "address": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/17"
+              }
+            }
+          },
+          {
+            "version": 21,
+            "id": 18,
+            "name": "Larry's Tree Farms",
+            "type": "End Customer",
+            "active": false,
+            "uuid": "1bda49b4-dc2d-476f-95c9-acaed491f445",
+            "clientId": "353032",
+            "address": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/18"
+              }
+            }
+          },
+          {
+            "version": 15,
+            "id": 19,
+            "name": "My New Account",
+            "type": "End Customer",
+            "active": false,
+            "uuid": "977a9cfa-a59e-4345-bbdd-28bc5f9bf121",
+            "clientId": "221449",
+            "address": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/19"
+              }
+            }
+          },
+          {
+            "version": 39,
+            "id": 40,
+            "name": "Domino's Pizza",
+            "type": "End Customer",
+            "active": false,
+            "uuid": "455bac97-191c-4443-a085-d6e564f83f4f",
+            "clientId": "392343",
+            "address": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/40"
+              }
+            }
+          },
+          {
+            "version": 4,
+            "id": 172,
+            "name": "iHeartMedia",
+            "type": "End Customer",
+            "active": false,
+            "uuid": "1c684e3e-ea65-421f-bbc7-a2aaf9d813e7",
+            "clientId": "232595",
+            "address": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/172"
+              }
+            }
+          },
+          {
+            "version": 1,
+            "id": 173,
+            "name": "Bass Pro Group",
+            "type": "End Customer",
+            "active": false,
+            "uuid": "9448121e-fc35-4bf4-aaaf-f5ac2025a478",
+            "clientId": "413823",
+            "address": null,
+            "billingContact": null,
+            "linkRels": {
+              "self": {
+                "method": "GET",
+                "href": "http://platform-lb.dev.vertekaws.com/qto/api/companies/173"
+              }
+            }
+          }
+        ]
+      }
+    }
+
+  ]
+}

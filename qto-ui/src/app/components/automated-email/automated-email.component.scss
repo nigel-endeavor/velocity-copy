@@ -1,0 +1,95 @@
+.content {
+  font-family: 'Roboto', sans-serif;
+  color: #2b2929;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 20px;
+
+  .emails {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    margin-top: 0px;
+    margin-left: 2.3em;
+
+    p {
+      margin: 0px;
+    }
+  }
+
+  .field {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    margin-bottom: 10px;
+    margin-top: 0px;
+
+    p {
+      margin: 0px;
+    }
+  }
+
+  /* email list */
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin-left: 2.3em;
+  }
+
+  // li {
+  //   margin: 5px 0;
+  // }
+
+  span.material-symbols-outlined {
+    cursor: pointer;
+    color: #5DCADE;
+    font-size: 24px;
+  }
+
+/* label */
+.custom-checkbox {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.custom-checkbox input {
+  display: none; /* Hide the default checkbox */
+}
+
+/* Style for the custom checkbox appearance */
+.custom-checkbox .checkbox {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  background-color: white;
+  margin-right: 10px;
+  transition: all 0.3s ease;
+  position: relative; /* Needed for positioning the checkmark */
+}
+
+/* When the checkbox is selected */
+.custom-checkbox input:checked + .checkbox {
+  border-color: #5DCADE;
+  background-color: white;
+}
+
+/* Checkmark inside the checkbox when selected */
+.custom-checkbox input:checked + .checkbox::after {
+  content: '✔';
+  font-size: 14px;
+  color: #5DCADE;
+  position: absolute;
+  left: 2px;
+  top: -1px;
+  font-weight: bold;
+}
+
+/* Text styling */
+.custom-checkbox span {
+  font-size: 13px;
+}
+
+
+}

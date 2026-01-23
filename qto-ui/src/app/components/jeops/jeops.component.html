@@ -1,0 +1,22 @@
+<div class="jeopsInput">
+  <p [ngClass]="headerClass" [ngStyle]="customCSS">
+    {{title}}<span *ngIf="headerClass === 'label'">:</span>
+  </p>
+</div>
+<div class="jeopList" *ngFor="let jeop of jeops; let i=index">
+  <div *ngIf="jeop" class="jeopRecord">
+    <span *ngIf="!jeop.endDate" class="material-symbols-outlined bolt-icon">offline_bolt</span>
+    <span><span class="date">{{jeop.startDate | date:'MMM dd, yyyy':'UTC'}}</span> | {{jeop.level}} | {{jeop.description}}</span>
+  </div>
+</div>
+<p class="tooltip">
+  <span class="tooltiptext">{{ manageJeopsTip }}</span>
+  <span class="v-link" (click)="openDialog()">Manage Jeops</span>
+</p>
+<app-jeops-full *ngIf="showContent" #jeopsFull
+                [type]="type"
+                [parentId]="parentId"
+                [orderId]="orderId"
+                [companyId]="companyId"
+                (close)="closeDialog()">
+</app-jeops-full>

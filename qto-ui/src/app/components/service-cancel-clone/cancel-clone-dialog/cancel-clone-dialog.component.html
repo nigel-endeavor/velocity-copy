@@ -1,0 +1,31 @@
+<dialog #dialog class="dialog">
+  <header class="header">
+    <h2 class="dialogHeader">Warning</h2>
+    <button class="material-symbols-outlined closeButton" (click)="onCancelClicked()">close</button>
+  </header>
+
+  <div>
+    <form #dialogForm="ngForm" class="dialog-form">
+      <div class="col-wrapper">
+        <div class="col">
+          <p>Are you sure you want to cancel and clone this service? This action cannot be undone.<br>
+            If so, what service type would you like to clone this service's details to?</p>
+          <div class="field">
+          <select [(ngModel)]="selectedServiceType" name="role" required>
+            <option [ngValue]="undefined" disabled selected hidden>Select...</option>
+            <option *ngFor="let opt of serviceTypes" value={{opt.value}}>{{opt.value}}</option>
+          </select></div>
+        </div>
+      </div>
+
+      <div class="form-buttons">
+        <div class="button-group">
+          <button (click)="cloneAndCancel()" [disabled]="dialogForm.invalid" tabindex="7">
+            Clone & Cancel
+          </button>
+          <button (click)="onCancelClicked()" tabindex="8">Cancel</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</dialog>

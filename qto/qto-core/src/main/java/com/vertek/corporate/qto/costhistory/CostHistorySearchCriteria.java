@@ -1,0 +1,56 @@
+package com.vertek.corporate.qto.costhistory;
+
+import com.vertek.corporate.qto.common.BaseSearchCriteria;
+
+import javax.ws.rs.QueryParam;
+import java.util.List;
+
+/**
+ * @author rcasey
+ * @since 11/1/2023
+ */
+public class CostHistorySearchCriteria extends BaseSearchCriteria<CostHistory> {
+
+    @QueryParam("serviceId")
+    private Long serviceId;
+
+    @QueryParam("locationId")
+    private Long locationId;
+
+    @QueryParam("costType")
+    private List<String> costType;
+
+    private List<Long> serviceIds;
+
+    public Long getServiceId() {
+        return serviceId;
+    }
+
+    public void setServiceId(final Long serviceId) {
+        this.serviceId = serviceId;
+    }
+
+    public Long getLocationId() {
+        return locationId;
+    }
+
+    public void setLocationId(final Long locationId) {
+        this.locationId = locationId;
+    }
+
+    public List<Long> getServiceIds() {
+        return serviceIds;
+    }
+
+    public void setServiceIds(final List<Long> serviceIds) {
+        this.serviceIds = serviceIds;
+    }
+
+    public List<String> getCostType() {
+        return costType;
+    }
+
+    public void setCostType(final List<String> costType) {
+        this.costType = costType;
+    }
+}

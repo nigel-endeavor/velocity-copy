@@ -1,0 +1,44 @@
+<div class="attachments">
+  <p class="title">Attachments</p>
+
+  <!-- Reverses the order of entries in the attachmentMap -->
+  <div style="display: flex; flex-direction: column-reverse; gap: .5em;"> 
+    <div class="map" *ngFor="let attachmentEntry of attachmentMap | keyvalue">
+      <p class="service-display-text">
+        {{attachmentEntry.key}}
+      </p>
+      <div class="attachment" *ngFor="let attachment of attachmentEntry.value" (click)="onAttachmentClicked($event, attachment)">
+
+        <div>
+          <span class="material-symbols-outlined attachment-icon">
+            attach_file
+          </span>
+          <div>
+            {{attachment.name}}
+            <div style="margin: 8px 0;">
+              <p *ngIf="!attachment.expanded">{{attachment.description}}</p>
+              <input *ngIf="attachment.expanded"  name="description" (change)="setDirty(attachment)" (click)="$event.stopPropagation()">
+              <!-- [(ngModel)]="attachment.description" -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <p class="v-link" *ngIf="!showDialog" (click)="toggleShowDialog()">Add Attachment</p>
+  <div class="dialogStyling">
+  <div class="dialog" *ngIf="showDialog">
+    <input id="file-input" type="file" (change)="onFileSelected($event)">
+    
+    <p class="max-file-size">5MB Max File Size</p>
+    <div class="buttons">
+      <button (click)="toggleShowDialog()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<!-- <app-loading-spinner *ngIf="isLoading"></app-loading-spinner> -->

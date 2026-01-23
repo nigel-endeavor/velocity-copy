@@ -1,0 +1,222 @@
+.communication {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  display: flex;
+  padding: 24px 12px;
+
+  .message-list {
+    border-right: 3px solid #EDEDED;
+    width: 31.2%;
+
+    .header {
+      display: flex;
+      position: relative;
+      .v-search {
+        width: calc(100% - 15px);
+      }
+      .input {
+        width: calc(100% - 114px);
+      }
+      .v-button {
+        width: 114px;
+      }
+    }
+
+    .search-list-item {
+      padding: 1em;
+
+      .search-wrapper {
+        padding: .5em;
+        display: flex;
+        background-color: #EDEDED;
+        border-radius: 4px;
+      }
+
+      .material-symbols-outlined {
+        font-size: 18px;
+      }
+
+      input {
+        background-color: #EDEDED;
+        width: 100%;
+        border: none;
+        outline: none;
+      }
+    }
+
+    .message-list-item {
+      display: flex;
+      flex-direction: column;
+      gap: .5em;
+      padding: 8px 12px;
+      padding-left: 37px;
+      cursor: pointer;
+      position: relative;
+
+      .active {
+        position: absolute;
+        display: none;
+        width: 9px;
+        height: 9px;
+        background-color: #64BB3A;
+        border-radius: 50%;
+        left: 12px;
+        top: 27px;
+      }
+
+      .list-item-header {
+        display: flex;
+        justify-content: space-between;
+
+        p:first-child {
+          font-weight: bold;
+        }
+        p:nth-child(2) {
+          color: #646464;
+        }
+      }
+    }
+
+    .selected-list-item, .message-list-item:hover {
+      background-color: #EFFAFC;
+    }
+    .selected-list-item {
+      .active {
+        display: block;
+      }
+    }
+  }
+  .message-view {
+    height: 400px;
+    width: 65%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: .5em;
+
+    .messages-header {
+      border-bottom: 3px solid #EDEDED;
+      display: block;
+      width: 90%;
+      padding: .5em 2em;
+
+      .messages-header-left {
+        display: flex;
+        flex-direction: column;
+        gap: .5em;
+
+        p:first-child {
+          font-weight: bold;
+        }
+        p:nth-child(3) {
+          color: #646464;
+        }
+
+        .watchers-wrapper {
+          display: flex;
+          align-items: center;
+          button {
+            border: 1px solid #EEEEEE;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 5px;
+          }
+          .mat-form-field {
+            flex-grow: 1;
+          }
+        }
+
+        app-dropdown::ng-deep {
+          .dropdown-trigger {
+            max-width: none;
+          }
+        }
+      }
+
+      .subject-title {
+        width: 100%;
+        display: flex;
+        gap: 1em;
+
+        input {
+          width: 90%;
+        }
+      }
+
+      input.ng-invalid.ng-touched {
+        border: 1px solid red;
+      }
+    }
+
+    .messages {
+      margin: .5em 2em;
+      display: grid;
+      height: 100%;
+      overflow-y: scroll;
+      align-content: flex-start;
+
+      .message {
+        max-width: 95%;
+      }
+
+      .message-header {
+        font-size: 12px;
+      }
+
+      .message-body {
+        display: flex;
+        margin: .1em 0;
+        padding: .25em .5em;
+        width: fit-content;
+        border-radius: 5px;
+        background-color: #EDEDED;
+      }
+
+      .receiver-message {
+        justify-self: right;
+        .message-body {
+          margin-left: auto;
+          background-color: #5DCADE;
+          color: white;
+        }
+      }
+
+      .helpful-message {
+        white-space: pre-wrap;
+        font-size: 1.1em;
+      }
+    }
+
+    .message-input {
+      margin: .5em;
+      width: 97%;
+      font-size: inherit;
+      font-family: inherit;
+      resize: none;
+    }
+
+    .input-buttons {
+      align-self: self-end;
+      margin-right: 14px;
+
+      button {
+        border: 1px solid #EEEEEE;
+        border-radius: 4px;
+        padding: .5em 1em;
+        margin: 0 .25em;
+        cursor: pointer;
+      }
+
+      .send-button {
+        background-color: #5DCADE;
+        color: white;
+      }
+    }
+  }
+
+  button:disabled {
+    opacity: .5;
+    cursor: default;
+  }
+
+  p { margin: 0; }
+}

@@ -1,0 +1,723 @@
+<app-application-wrapper></app-application-wrapper>
+
+<div class="new-order" *ngIf="orders && selectedOrder">
+
+  <div class="header">
+
+    <!-- Order Details -->
+    <div class="order-details" *ngIf="orders.length == 1">
+      <div class="field">
+        <p>Master Customer</p>
+        <app-dropdown #mcdd class="dropdown"
+                      [options]="mcOpts"
+                      (onSelectedChanged)="onMcSelected($event, mcdd)"
+                      [lazyload]="true"
+                      [params]="mcParams"
+                      [canSearch]="true"
+                      [searchValue]="mcParams.name!"
+                      (search)="onMcSearch($event)"
+                      [selected]="selectedOrder.masterCustomer?.name"
+                      [canClear]="!ordersCreated"
+                      [disabled]="mcLoading || ordersCreated">
+        </app-dropdown>
+        <mat-spinner *ngIf="mcLoading" [diameter]="25"></mat-spinner>
+      </div>
+
+      <div class="field">
+        <p>End Customer</p>
+        <app-dropdown #ecdd class="dropdown"
+                      [options]="ecOpts"
+                      (onSelectedChanged)="onEcSelected($event, ecdd)"
+                      [lazyload]="true"
+                      [params]="ecParams"
+                      [canSearch]="true"
+                      [searchValue]="ecParams.name!"
+                      (search)="onEcSearch($event)"
+                      [selected]="selectedOrder.endCustomer?.name"
+                      [canClear]="!ordersCreated"
+                      [disabled]="ecLoading || ordersCreated">
+        </app-dropdown>
+        <mat-spinner *ngIf="ecLoading" [diameter]="25"></mat-spinner>
+      </div>
+
+      <div class="field client-order-id">
+        <p>Client Order ID</p>
+        <input [(ngModel)]="selectedOrder.clientOrderId" name="clientOrderId" [disabled]="ordersCreated">
+      </div>
+    </div>
+
+    <div *ngIf="orders.length > 1"></div>
+
+    <div class="btn-group">
+      <button class="btn gray" (click)="onImportActivityClicked()">
+        Import Activity
+      </button>
+      <button class="btn gray" *ngIf="securityUtils.userHasPermission('tenant-admin')" [routerLink]="['/customers']">
+        Manage Customers
+      </button>
+    </div>
+
+  </div>
+
+  <!-- Contacts -->
+  <div class="contact-header">
+    <div class="contact">
+      <p>Billing Address:</p>
+      <button *ngIf="!selectedOrder.billingAddress?.address1" class="btn gray" (click)="onAddAddressClicked()" [disabled]="!selectedOrder.endCustomer">
+        Select Address
+      </button>
+      <ng-template #addAddressDialogContent>
+        <div class="addAddressDialog">
+          <h3>New Address</h3>
+        <div class="addressDialogField">
+          <span></span>
+          <a class="v-link" href="javascript:" (click)="onSelectAddressClicked('billing')" [ngClass]="{'disabled': !selectedOrder.endCustomer || ordersCreated}">Select an Address</a>
+        </div>
+        <div class="addressDialogField">
+          <p>Address Line 1</p>
+          <input [(ngModel)]="selectedOrder.billingAddress!.address1" name="address1">
+        </div>
+        <div class="addressDialogField">
+          <p>Address Line 2</p>
+          <input [(ngModel)]="selectedOrder.billingAddress!.address2" name="address2">
+        </div>
+        <div class="addressDialogField">
+          <p>City</p>
+          <input [(ngModel)]="selectedOrder.billingAddress!.city" name="city">
+        </div>
+        <div class="addressDialogField">
+          <p>State/Province/Region</p>
+          <select [(ngModel)]="selectedOrder.billingAddress!.state" (ngModelChange)="onStateChanged($event, selectedOrder.billingAddress!)" name="state">
+            <option *ngFor="let opt of stateOpts" [value]="opt.value">{{ opt.display }}</option>
+          </select>
+        </div>
+        <div class="addressDialogField">
+          <p>ZIP/Postal Code</p>
+          <input [(ngModel)]="selectedOrder.billingAddress!.postalCode" name="postalCode">
+        </div>
+        <div class="addressDialogField">
+          <p>Country</p>
+          <select [(ngModel)]="selectedOrder.billingAddress!.country" name="country">
+            <option *ngFor="let opt of countryOpts" [value]="opt">{{ opt }}</option>
+          </select>
+        </div>
+        <div class="button-group-address">
+          <button (click)="saveNewAddress()">
+            <span class="material-symbols-outlined">save</span>Save
+          </button>
+          <button (click)="onCancelClicked()" tabindex="8">Cancel</button>
+        </div>
+      </div>
+      </ng-template>
+      <p class="billing-address" *ngIf="selectedOrder.billingAddress" (click)="onAddAddressClicked()">{{selectedOrder.billingAddress.toString()}}
+      </p>
+    </div>
+    <div class="contact">
+      <p>Sales Contact:</p>
+      <button *ngIf="!selectedOrder.salesContact" class="btn gray" (click)="onContactClicked(ContactType.SALES)">
+        Add Contact
+      </button>
+      <p class="contact-name" *ngIf="selectedOrder.salesContact" (click)="onContactClicked(ContactType.SALES)">{{selectedOrder.salesContact.name}}</p>
+    </div>
+    <div class="contact">
+      <p>Technical Contact:</p>
+      <button *ngIf="!selectedOrder.techContact" class="btn gray" (click)="onContactClicked(ContactType.TECH)">
+        Add Contact
+      </button>
+      <p class="contact-name" *ngIf="selectedOrder.techContact" (click)="onContactClicked(ContactType.TECH)">{{selectedOrder.techContact.name}}</p>
+    </div>
+    <div class="contact">
+      <p>Authorization Contact:</p>
+      <button *ngIf="!selectedOrder.authContact" class="btn gray" (click)="onContactClicked(ContactType.AUTH)">
+        Add Contact
+      </button>
+      <p class="contact-name" *ngIf="selectedOrder.authContact" (click)="onContactClicked(ContactType.AUTH)">{{selectedOrder.authContact.name}}</p>
+    </div>
+  </div>
+
+
+  <div class="header">
+
+    <!-- LHS Buttons -->
+    <div class="btn-group">
+      <button class="btn blue" (click)="onAddLocationClicked()" [disabled]="ordersCreated">
+        <span class="material-symbols-outlined">
+          add
+        </span>
+        Add Location
+      </button>
+      <button class="btn blue" (click)="onCreateOrderClicked()" [disabled]="ordersCreated">
+        <span class="material-symbols-outlined">
+          add
+        </span>
+        Create Order
+      </button>
+    </div>
+    <!-- RHS Buttons -->
+    <div class="btn-group">
+      <button class="btn gray" (click)="onClearFormClicked()" [disabled]="ordersCreated">
+        Clear Form
+      </button>
+      <button class="btn blue" (click)="onBulkImportClicked()" [disabled]="ordersCreated">
+        Bulk Import
+      </button>
+    </div>
+
+  </div>
+
+  <div class="body">
+    <!-- Table -->
+    <app-dto-table [style.height]="'calc(100vh - 16em)'"
+                   [tableData]="orders"
+                   (rowClick)="onRowClick($event)"
+                   (rowDblClick)="onRowDblClick($event)"
+                   [selectedRow]="selectedService">
+    </app-dto-table>
+
+    <!-- Selector buttons -->
+    <div *ngIf="selectedLocation || selectedService" class="details"
+         [style.min-height]="'calc(100vh - 16em)'"
+         [style.max-height]="'calc(100vh - 16em)'">
+
+      <div class="preview-header">
+        <div>
+          <span class="material-symbols-outlined" (click)="onClosePreviewClicked()">
+            chevron_left
+          </span>
+          <p>{{ selectedOrder.clientOrderId }}</p>
+        </div>
+        <button class="btn blue" (click)="onAddServiceClicked()" [disabled]="ordersCreated">
+          <span class="material-symbols-outlined">
+            add
+          </span>
+          Add Service
+        </button>
+      </div>
+
+      <div class="detail-selector">
+        <div class="location-selector" *ngIf="selectedLocation" (click)="tabSelected = 'location'">
+          Location Details
+        </div>
+        <div class="service-selector" *ngIf="selectedService" (click)="tabSelected = 'service'">
+          Service Details
+        </div>
+        <div class="brokerage-selector" *ngIf="selectedService && showBrokerageFields" (click)="tabSelected = 'brokerage'; loadCustomFields()">
+          Brokerage/Commissions
+        </div>
+      </div>
+
+      <!-- Location Details -->
+      <ng-container *ngIf="tabSelected === 'location' && selectedLocation as location">
+        <div class="detail-content" [style.border-color]="'#3871C1'" [style.background-color]="'#3871C11A'">
+          <div class="section">
+            <div class="field" *ngIf="orders.length > 1">
+              <p>Client Order ID</p>
+              <input [(ngModel)]="location.clientOrderId" name="clientOrderId" [disabled]="true">
+            </div>
+            <div class="field">
+              <span></span>
+              <a class="v-link" href="javascript:" (click)="onSelectAddressClicked('location')" [ngClass]="{'disabled': !selectedOrder.endCustomer || ordersCreated}">Select an Address</a>
+            </div>
+            <div class="field">
+              <p>Client Location ID</p>
+              <input [(ngModel)]="location.clientLocationId" name="clientLocationId" required [disabled]="ordersCreated">
+            </div>
+            <div class="field">
+              <p>Address Line 1</p>
+              <input [(ngModel)]="location.address.address1" name="address1" [disabled]="ordersCreated">
+            </div>
+            <div class="field">
+              <p>Address Line 2</p>
+              <input [(ngModel)]="location.address.address2" name="address2" [disabled]="ordersCreated">
+            </div>
+            <div class="field">
+              <p>City</p>
+              <input [(ngModel)]="location.address.city" name="city" [disabled]="ordersCreated">
+            </div>
+            <div class="field">
+              <p>State/Province/Region</p>
+              <select [ngModel]="location.address.state" (ngModelChange)="onStateChanged($event, location.address)" name="state" [disabled]="ordersCreated">
+                <option *ngFor="let opt of stateOpts" value={{opt.value}}>{{ opt.display }}</option>
+              </select>
+            </div>
+            <div class="field">
+              <p>ZIP/Postal Code</p>
+              <input [(ngModel)]="location.address.postalCode" name="postalCode" [disabled]="ordersCreated"
+                     appZipcodeValidator={{location.address.postalCode}}>
+            </div>
+            <div class="field">
+              <p>Country</p>
+              <select [(ngModel)]="location.address.country" name="country" [disabled]="ordersCreated">
+                <option *ngFor="let opt of countryOpts" value={{opt}}>{{ opt }}</option>
+              </select>
+            </div>
+          </div>
+          <hr>
+          <div class="section">
+            <div class="field">
+              <p>LCON Name</p>
+              <input [(ngModel)]="location.lconName" name="lconName" [disabled]="ordersCreated"/>
+            </div>
+            <div class="field">
+              <p>LCON Email</p>
+              <input [(ngModel)]="location.lconEmail" name="lconEmail" email [disabled]="ordersCreated"/>
+            </div>
+            <div class="field">
+              <p>LCON Phone</p>
+              <input [(ngModel)]="location.lconPhone" name="lconPhone" placeholder="(555)-555-5555 x5555" appPhoneMask appPhoneValidator={{location.lconPhone}} [disabled]="ordersCreated"/>
+            </div>
+          </div>
+          <hr>
+          <div>
+            <div class="field">
+              <p>Location Info</p>
+              <input [(ngModel)]="location.locationInfo" name="locationInfo" [disabled]="ordersCreated"/>
+            </div>
+            <div class="field">
+              <p>Location Type</p>
+              <input [(ngModel)]="location.locationType" name="locationType" [disabled]="ordersCreated"/>
+            </div>
+            <!-- <div class="field">
+              <p>Level of Effort</p>
+              <vtk-select [(ngModel)]="location.levelOfEffort" name="levelOfEffort" [options]="levelOfEffortOpts" [disabled]="ordersCreated"></vtk-select>
+            </div> -->
+          </div>
+          <div class="btn-group">
+            <button class="btn blue" (click)="onLocationClearEntryClicked()" [disabled]="ordersCreated">
+              Clear Entry
+            </button>
+            <button class="btn blue" (click)="onRemoveServiceClicked()" [disabled]="ordersCreated">
+              Remove Service
+            </button>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- Service Details -->
+      <ng-container *ngIf="tabSelected === 'service' && selectedService as service">
+        <div class="detail-content" [style.border-color]="'#2A9041'" [style.background-color]="'#2A90411A'">
+          <div class="field">
+            <p>Service</p>
+            <select [(ngModel)]="service.serviceType" name="serviceType" required #serviceField="ngModel" [disabled]="ordersCreated">
+              <option *ngFor="let opt of serviceTypes" value={{opt.value}}>{{ opt.value }}</option>
+            </select>
+          </div>
+          <div class="field">
+            <p>Client Service ID</p>
+            <input [(ngModel)]="service.clientServiceId" name="clientServiceId" [required] = "!autoCreateClientServiceId" #serviceField="ngModel" [disabled]="ordersCreated">
+          </div>
+          <div class="field">
+            <p>Opportunity #</p>
+            <input [(ngModel)]="service.opportunityNum" name="opportunityNum"  #brokerageField="ngModel"[disabled]="ordersCreated">
+          </div>
+          <div class="field" *ngIf="telecomClient">
+            <p>Quote ID</p>
+            <input [(ngModel)]="service.quoteId" name="quoteId" #serviceField="ngModel" [disabled]="ordersCreated">
+          </div>
+          <div class="field">
+            <p>Project Name</p>
+            <vtk-select [(ngModel)]="service.projectName" name="projectName" [options]="projectNameOpts" #serviceField="ngModel" [disabled]="ordersCreated"></vtk-select>
+          </div>
+          <div class="field" *ngIf="telecomClient">
+            <p>Service Billed To</p>
+            <vtk-select [(ngModel)]="service.serviceBilledTo" name="serviceBilledTo" [options]="serviceBilledToOpts" #serviceField="ngModel" [disabled]="ordersCreated"></vtk-select>
+          </div>
+          <div class="field">
+            <p>Customer Requested Install</p>
+            <app-datepicker [(date)]="service.customerRequestedInstallDate" name="customerRequestedInstallDate" #serviceDate [disabled]="ordersCreated"></app-datepicker>
+          </div>
+          <hr>
+          <div class="field">
+            <p>Provider</p>
+            <vtk-select [(ngModel)]="service.provider" name="provider" [options]="providerOpts" #serviceField="ngModel" [disabled]="ordersCreated"></vtk-select>
+          </div>
+          <div class="field">
+            <p>Sub Product Type</p>
+            <vtk-select [(ngModel)]="service.subProductType" name="subProductType" [options]="subProductTypeOpts" #serviceField="ngModel" [disabled]="ordersCreated"></vtk-select>
+          </div>
+          <div class="field">
+            <p>Contract Term</p>
+            <vtk-select [(ngModel)]="service.contractTerm" name="contractTerm" [options]="contractTermOpts" #serviceField="ngModel" [disabled]="ordersCreated"></vtk-select>
+          </div>
+          <div class="field">
+            <p>Contract Signed Date</p>
+            <app-datepicker [(date)]="service.contractSignedDate" name="contractSignedDate" #serviceDate [disabled]="ordersCreated"></app-datepicker>
+          </div>
+          <div class="field" *ngIf="!telecomClient">
+            <p>Managed Service</p>
+            <input type="checkbox" [(ngModel)]="service.managedService" name="managedService" #serviceField="ngModel" [disabled]="ordersCreated">
+          </div>
+          <div class="field" *ngIf="telecomClient">
+            <p>MRC</p>
+            <input [ngModel]="service.mrc | vtkCurrency:ordersCreated" (ngModelChange)="service.setMrc($event)" name="mrc" pattern="(?:\+|\-|\$)?\d{1,}(?:\,?\d{3})*(\.[0-9][0-9]?)?" #serviceField="ngModel" [disabled]="ordersCreated">
+          </div>
+          <div class="field" *ngIf="telecomClient">
+            <p>NRC</p>
+            <input [ngModel]="service.nrc | vtkCurrency:ordersCreated" (ngModelChange)="service.setNrc($event)" name="nrc" pattern="(?:\+|\-|\$)?\d{1,}(?:\,?\d{3})*(\.[0-9][0-9]?)?" #serviceField="ngModel" [disabled]="ordersCreated">
+          </div>
+          <div class="field" *ngIf="!telecomClient">
+            <p>MRR</p>
+            <input [ngModel]="service.mrr | vtkCurrency:ordersCreated" (ngModelChange)="service.setMrr($event)" name="mrr" pattern="(?:\+|\-|\$)?\d{1,}(?:\,?\d{3})*(\.[0-9][0-9]?)?" #serviceField="ngModel" [disabled]="ordersCreated">
+          </div>
+          <div class="field" *ngIf="!telecomClient">
+            <p>NRR</p>
+            <input [ngModel]="service.nrr | vtkCurrency:ordersCreated" (ngModelChange)="service.setNrr($event)" name="nrc" pattern="(?:\+|\-|\$)?\d{1,}(?:\,?\d{3})*(\.[0-9][0-9]?)?" #serviceField="ngModel" [disabled]="ordersCreated">
+          </div>
+          <div class="field" *ngIf="telecomClient">
+            <p>Annual NRC</p>
+            <input [ngModel]="service.annualNrc | vtkCurrency:ordersCreated" (ngModelChange)="service.setAnnualNrc($event)" name="annualNrc" pattern="(?:\+|\-|\$)?\d{1,}(?:\,?\d{3})*(\.[0-9][0-9]?)?" #serviceField="ngModel" [disabled]="ordersCreated">
+          </div>
+          <hr>
+          <div class="field">
+            <div class="checkbox-wrapper">
+              <input type="checkbox" [(ngModel)]="service.autoRenewal" name="autoRenewal" #serviceField="ngModel" [disabled]="ordersCreated">
+              <p>Auto Renewal</p>
+            </div>
+            <div class="checkbox-wrapper">
+              <input type="checkbox" [(ngModel)]="service.coTerminus" name="coTerminus" #serviceField="ngModel" [disabled]="ordersCreated">
+              <p>Co-Terminus</p>
+            </div>
+          </div>
+          <div class="field" *ngIf="telecomClient">
+            <p>Notice Period for Renewal/Cancel</p>
+            <vtk-select [(ngModel)]="service.noticePeriodForRenewal" name="noticePeriodForRenewal" [options]="noticePeriodOpts" #serviceField="ngModel" [disabled]="ordersCreated"></vtk-select>
+          </div>
+          <div class="field">
+            <p>Contract Info</p>
+            <input [(ngModel)]="service.contractInfo" name="contractInfo" #serviceField="ngModel" [disabled]="ordersCreated">
+          </div>
+          <hr>
+          <div class="field" *ngIf="telecomClient">
+            <p>Download Speed</p>
+            <vtk-select [(ngModel)]="service.downloadSpeed" name="downloadSpeed" [options]="speedOpts" #serviceField="ngModel" [disabled]="ordersCreated"></vtk-select>
+          </div>
+          <div class="field" *ngIf="telecomClient">
+            <p>Upload Speed</p>
+            <vtk-select [(ngModel)]="service.uploadSpeed" name="uploadSpeed" [options]="speedOpts" #serviceField="ngModel" [disabled]="ordersCreated"></vtk-select>
+          </div>
+          <div class="field" *ngIf="telecomClient">
+            <p>Media Type</p>
+            <vtk-select [(ngModel)]="service.mediaType" name="mediaType" [options]="mediaTypeOpts" #serviceField="ngModel" [disabled]="ordersCreated"></vtk-select>
+          </div>
+          <div class="field" *ngIf="telecomClient">
+            <p>Additional IP Block</p>
+            <vtk-select [(ngModel)]="service.additionalIpBlock" name="additionalIpBlock" [options]="additionalIpBlockOpts" #serviceField="ngModel" [disabled]="ordersCreated"></vtk-select>
+          </div>
+          <div class="field" *ngIf="telecomClient">
+            <p>DMARC</p>
+            <input [(ngModel)]="service.dmarc" name="dmarc" #serviceField="ngModel" [disabled]="ordersCreated">
+          </div>
+          <div class="field">
+            <p>Field Services Provider</p>
+            <vtk-select [(ngModel)]="service.fieldServicesProvider" name="fieldServicesProvider" [options]="fieldServicesProviderOpts" #serviceField="ngModel" [disabled]="ordersCreated"></vtk-select>
+          </div>
+          <div class="field" *ngIf="telecomClient">
+            <p>Service Info</p>
+            <input [(ngModel)]="service.serviceInfo" name="serviceInfo" #serviceField="ngModel" [disabled]="ordersCreated">
+          </div>
+          <div class="field" *ngIf="telecomClient">
+            <p>Service Type</p>
+            <input [(ngModel)]="service.clientServiceType" name="clientServiceType" #serviceField="ngModel" [disabled]="ordersCreated">
+          </div>
+          <div class="field" *ngIf="telecomClient">
+            <p>PO Number</p>
+            <input [(ngModel)]="service.poNumber" name="poNumber" #serviceField="ngModel" [disabled]="ordersCreated">
+          </div>
+
+          <ng-container *ngIf="service.serviceType === 'Ethernet'">
+            <div class="section">
+              <div class="field">
+                <span></span>
+                <a class="v-link" href="javascript:" (click)="onSelectAddressClicked('z')" [ngClass]="{'disabled': !selectedOrder.endCustomer || ordersCreated}">Select an Address</a>
+              </div>
+              <div class="field">
+                <p>Address Line 1</p>
+                <input [(ngModel)]="service.zAddress.address1" name="address1" #serviceField="ngModel" [disabled]="ordersCreated">
+              </div>
+              <div class="field">
+                <p>Address Line 2</p>
+                <input [(ngModel)]="service.zAddress.address2" name="address2" #serviceField="ngModel" [disabled]="ordersCreated">
+              </div>
+              <div class="field">
+                <p>City</p>
+                <input [(ngModel)]="service.zAddress.city" name="city" #serviceField="ngModel" [disabled]="ordersCreated">
+              </div>
+              <div class="field">
+                <p>State/Province/Region</p>
+                <select [ngModel]="service.zAddress.state" (ngModelChange)="onStateChanged($event, service.zAddress)" name="state" #serviceField="ngModel" [disabled]="ordersCreated">
+                  <option *ngFor="let opt of stateOpts" value={{opt.value}}>{{ opt.display }}</option>
+                </select>
+              </div>
+              <div class="field">
+                <p>ZIP/Postal Code</p>
+                <input [(ngModel)]="service.zAddress.postalCode" name="postalCode" #serviceField="ngModel" [disabled]="ordersCreated"
+                       appZipcodeValidator={{service.zAddress.postalCode}}>
+              </div>
+              <div class="field">
+                <p>Country</p>
+                <select [(ngModel)]="service.zAddress.country" name="country" #serviceField="ngModel" [disabled]="ordersCreated">
+                  <option *ngFor="let opt of countryOpts" value={{opt}}>{{ opt }}</option>
+                </select>
+              </div>
+            </div>
+          </ng-container>
+          <div class="radio-group">
+            <div class="radio-option">
+              <input type="radio" [(ngModel)]="service.linkedOrBundled" id="none" name="options" #serviceField="ngModel" [disabled]="ordersCreated" value="none" checked>
+              <label for="none">None</label>
+            </div>
+            <div class="radio-option">
+              <input type="radio" [(ngModel)]="service.linkedOrBundled" id="linked" name="options" value="linked" #serviceField="ngModel" [disabled]="ordersCreated">
+              <label for="linked">Linked</label>
+            </div>
+            <div class="radio-option">
+              <input type="radio" [(ngModel)]="service.linkedOrBundled" id="bundled" name="options" value="bundled" #serviceField="ngModel" [disabled]="ordersCreated">
+              <label for="bundled">Bundled</label>
+            </div>
+          </div>
+          <div class="field">
+            <p>Parent Client Service ID</p>
+            <input [(ngModel)]="service.linkedBundledClientServiceId" name="linkedBundledClientServiceId"
+                   #serviceField="ngModel" [disabled]="ordersCreated || (this.service.linkedOrBundled == 'none')"
+                   [required]="this.service.linkedOrBundled == 'bundled' || this.service.linkedOrBundled == 'linked'">
+          </div>
+          <div class="field">
+            <p>Description</p>
+            <textarea [(ngModel)]="service.description" name="description" rows="5" #serviceField="ngModel" [disabled]="ordersCreated"></textarea>
+          </div>
+
+          <div class="btn-group">
+            <button class="btn blue" (click)="onServiceClearEntryClicked('serviceField', 'serviceDate')" [disabled]="ordersCreated">
+              Clear Entry
+            </button>
+            <button class="btn blue" (click)="onRemoveServiceClicked()" [disabled]="ordersCreated">
+              Remove Service
+            </button>
+          </div>
+
+          <div class="field attachment-header">
+            <p>Service Attachments</p>
+            <span class="material-symbols-outlined" (click)="onAddAttachmentClicked(service)">
+              add
+            </span>
+          </div>
+          <div *ngFor="let attachment of attachments.get(service.uuid); let attIdx = index">
+            <div class="attachment">
+              <input *ngIf="!attachment.content" id="{{attachment.inputId}}"
+                     (change)="onAttachmentFileSelected($event, attachment.inputId)" type="file"
+                     name="{{attIdx}}attachment" [disabled]="ordersCreated">
+              <p *ngIf="attachment.content">{{ attachment.content.name }}</p>
+              <input class="attachment-description" [(ngModel)]="attachment.description" name="attachmentDescription"
+                     [disabled]="ordersCreated">
+              <span class="material-symbols-outlined" (click)="onRemoveAttachmentClicked(service, attachment)">
+                close
+              </span>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- Brokerage Fields -->
+      <ng-container *ngIf="showBrokerageFields && tabSelected === 'brokerage' && selectedService as service" >
+        <div class="detail-content" [style.border-color]="'#565656'" [style.background-color]="'#5656561A'">
+
+          <div class="field">
+            <p>Commissionable MRC</p>
+            <input [ngModel]="service.commissionableMrc | vtkCurrency:ordersCreated"
+                   (ngModelChange)="service.setCommissionableMrc($event)" name="commissionableMrc"
+                   pattern="(?:\+|\-|\$)?\d{1,}(?:\,?\d{3})*(\.[0-9][0-9]?)?"  #brokerageField="ngModel"[disabled]="ordersCreated">
+          </div>
+          <div class="field">
+            <p>Commissionable NRC</p>
+            <input [ngModel]="service.commissionableNrc | vtkCurrency:ordersCreated"
+                   (ngModelChange)="service.setCommissionableNrc($event)" name="commissionableNrc"
+                   pattern="(?:\+|\-|\$)?\d{1,}(?:\,?\d{3})*(\.[0-9][0-9]?)?"  #brokerageField="ngModel"[disabled]="ordersCreated">
+          </div>
+          <div class="field" *ngIf="telecomClient">
+            <p>Commissionable ARC</p>
+            <input [ngModel]="service.commissionableArc | vtkCurrency:ordersCreated"
+                   (ngModelChange)="service.setCommissionableArc($event)" name="commissionableArc"
+                   pattern="(?:\+|\-|\$)?\d{1,}(?:\,?\d{3})*(\.[0-9][0-9]?)?"  #brokerageField="ngModel"[disabled]="ordersCreated">
+          </div>
+          <hr>
+          <div class="field">
+            <p>Agent</p>
+            <vtk-select [(ngModel)]="service.agent" name="agent" [options]="agentOpts"
+                         #brokerageField="ngModel" [disabled]="ordersCreated"></vtk-select>
+          </div>
+          <div class="field">
+            <p>Agent Rep</p>
+            <vtk-select [(ngModel)]="service.subAgent" name="subAgent" [options]="getAgencyRepOpts(service.agent)"
+                         #brokerageField="ngModel" [disabled]="ordersCreated"></vtk-select>
+          </div>
+          <div class="field">
+            <p>Agent %</p>
+            <input [ngModel]="service.agentPercent | vtkPercent:ordersCreated"
+                   (ngModelChange)="service.setAgentPercent($event)" name="agentPercent"
+                   pattern="^[+-]?\d+(\.\d{1,2})?%$"  #brokerageField="ngModel"[disabled]="ordersCreated">
+          </div>
+          <div class="field">
+            <p>Sub Agent</p>
+            <vtk-select [(ngModel)]="service.agentRep" name="subAgent" [options]="agentOpts"
+                         #brokerageField="ngModel" [disabled]="ordersCreated"></vtk-select>
+          </div>
+          <div class="field">
+            <p>Sub Agent Rep</p>
+            <vtk-select [(ngModel)]="service.subAgentRep" name="subAgent" [options]="getAgencyRepOpts(service.agentRep)"
+                         #brokerageField="ngModel" [disabled]="ordersCreated"></vtk-select>
+          </div>
+          <div class="field">
+            <p>Sub Agent %</p>
+            <input [ngModel]="service.subAgentPercent | vtkPercent:ordersCreated"
+                   (ngModelChange)="service.setSupAgentPercent($event)" name="subAgentPercent"
+                   pattern="^[+-]?\d+(\.\d{1,2})?%$"  #brokerageField="ngModel"[disabled]="ordersCreated">
+          </div>
+          <div class="field" *ngIf="telecomClient">
+            <p>Submitted in Advance to Provider</p>
+            <input type="checkbox" [(ngModel)]="service.submittedInAdvToProvider" name="submittedInAdvToProvider"
+                   [disabled]="ordersCreated">
+          </div>
+          <div class="field" *ngIf="telecomClient">
+            <p>Parent TSD</p>
+            <vtk-select [(ngModel)]="service.parentTsd" name="parentTsd" [options]="brokerageOpts"
+                         #brokerageField="ngModel"[disabled]="ordersCreated"></vtk-select>
+          </div>
+          <div class="field" *ngIf="telecomClient">
+            <p>Submitted in Advance to TSD</p>
+            <input type="checkbox" [(ngModel)]="service.submittedInAdvToTsd" name="submittedInAdvToTsd"
+                    #brokerageField="ngModel"[disabled]="ordersCreated">
+          </div>
+          <hr>
+          <div class="field">
+            <p>Referral</p>
+            <input type="checkbox" [(ngModel)]="service.referral" name="referral"  #brokerageField="ngModel"[disabled]="ordersCreated">
+          </div>
+          <div class="field" *ngIf="service.referral">
+            <p>Referral Name/Company</p>
+            <input [(ngModel)]="service.referralName" name="referralName"  #brokerageField="ngModel"[disabled]="ordersCreated">
+          </div>
+          <div class="field" *ngIf="service.referral">
+            <p>Company Referral %</p>
+            <input [ngModel]="service.referralPercent | vtkPercent:ordersCreated"
+                   (ngModelChange)="service.setReferralPercent($event)" name="referralPercent"
+                   pattern="^[+-]?\d+(\.\d{1,2})?%$"  #brokerageField="ngModel"[disabled]="ordersCreated">
+          </div>
+          <hr>
+          <div class="field">
+            <p>Commisions Payment Type</p>
+            <vtk-select [(ngModel)]="service.commissionPaymentType" name="commissionPaymentType"
+                        [options]="commissionPaymentTypeOpts"  #brokerageField="ngModel"[disabled]="ordersCreated"></vtk-select>
+          </div>
+          <div class="field">
+            <p>Expected Commission</p>
+            <input [ngModel]="service.expectedCommission | vtkCurrency:ordersCreated"
+                   (ngModelChange)="service.setExpectedCommission($event)" name="expectedCommission"
+                   pattern="(?:\+|\-|\$)?\d{1,}(?:\,?\d{3})*(\.[0-9][0-9]?)?"  #brokerageField="ngModel"[disabled]="ordersCreated">
+          </div>
+          <div class="field">
+            <p>Comission Reduction %</p>
+            <input [ngModel]="service.commissionReductionPercent | vtkPercent:ordersCreated"
+                   (ngModelChange)="service.setCommissionReductionPercent($event)" name="commissionReductionPercent"
+                   pattern="^[+-]?\d+(\.\d{1,2})?%$"  #brokerageField="ngModel"[disabled]="ordersCreated">
+          </div>
+          <div class="field" *ngIf="telecomClient">
+            <p>CIE/Teamed Deal Info</p>
+            <input [(ngModel)]="service.cieTeamedDealInfo" name="cieTeamedDealInfo"  #brokerageField="ngModel"[disabled]="ordersCreated">
+          </div>
+          <div class="field" *ngIf="telecomClient">
+            <p>Commission ICB</p>
+            <input type="checkbox" [(ngModel)]="service.commissionIcb" name="commissionIcb"  #brokerageField="ngModel"[disabled]="ordersCreated">
+          </div>
+          <div class="field">
+            <p>Internal Commissions Comments</p>
+            <textarea [(ngModel)]="service.internalCommissionsComments" name="internalCommissionsComments" rows="5"
+                       #brokerageField="ngModel"[disabled]="ordersCreated"></textarea>
+          </div>
+          <hr *ngIf="telecomClient">
+          <div class="field" *ngIf="telecomClient">
+            <p>Net Provider Points</p>
+            <input [(ngModel)]="service.netProviderPoints" name="netProviderPoints"  #brokerageField="ngModel"[disabled]="ordersCreated">
+          </div>
+          <div class="field" *ngIf="telecomClient">
+            <p>Promotions            </p>
+            <textarea [(ngModel)]="service.promotions" name="promotions" rows="5"  #brokerageField="ngModel"[disabled]="ordersCreated"></textarea>
+          </div>
+          <div class="field" *ngIf="telecomClient">
+            <p>SPIFF Amount</p>
+            <input [ngModel]="service.spiffAmount | vtkCurrency:ordersCreated"
+                   (ngModelChange)="service.setSpiffAmount($event)" name="spiffAmount"
+                   pattern="(?:\+|\-|\$)?\d{1,}(?:\,?\d{3})*(\.[0-9][0-9]?)?"  #brokerageField="ngModel"[disabled]="ordersCreated">
+          </div>
+          <hr *ngIf="telecomClient">
+          <div class="field" *ngIf="telecomClient">
+            <p>Engineer Resource</p>
+            <input type="checkbox" [(ngModel)]="service.engineerResource" name="engineerResource"
+                    #brokerageField="ngModel"[disabled]="ordersCreated">
+          </div>
+          <div class="field" *ngIf="service.engineerResource">
+            <p>Engineer Resource Allocation %</p>
+            <input [ngModel]="service.engineerResourceAllocation | vtkPercent:ordersCreated"
+                   (ngModelChange)="service.setEngineerResourceAllocation($event)" name="engineerResourceAllocation"
+                   pattern="^[+-]?\d+(\.\d{1,2})?%$"  #brokerageField="ngModel"[disabled]="ordersCreated">
+          </div>
+          <hr>
+          <div (focusout)="onFocusOut($event)">
+            <app-custom-fields #cf
+                 [type]="'newOrder'"
+                 [id]=0
+                 [tab]="customFieldTabValue"
+                 [companyId]=0
+                 [editing]="true"></app-custom-fields>
+          </div>
+          <div class="btn-group">
+            <button class="btn blue" (click)="onServiceClearEntryClicked('brokerageField', '')" [disabled]="ordersCreated">
+              Clear Entry
+            </button>
+          </div>
+
+          <div class="field attachment-header">
+            <p>Service Attachments</p>
+            <span class="material-symbols-outlined" (click)="onAddAttachmentClicked(service)">
+              add
+            </span>
+          </div>
+          <div *ngFor="let attachment of attachments.get(service.uuid); let attIdx = index">
+            <div class="attachment">
+              <input *ngIf="!attachment.content" id="{{attachment.inputId}}"
+                     (change)="onAttachmentFileSelected($event, attachment.inputId)" type="file"
+                     name="{{attIdx}}attachment" [disabled]="ordersCreated">
+              <p *ngIf="attachment.content">{{ attachment.content.name }}</p>
+              <input class="attachment-description" [(ngModel)]="attachment.description" name="attachmentDescription"
+                     [disabled]="ordersCreated">
+              <span class="material-symbols-outlined" (click)="onRemoveAttachmentClicked(service, attachment)">
+                close
+              </span>
+            </div>
+          </div>
+
+        </div>
+      </ng-container>
+
+    </div>
+  </div>
+
+</div>
+
+<app-addresses
+  *ngIf="showAddressDialog && selectedOrder.endCustomer"
+  [companyId]="selectedOrder.endCustomer.id"
+  [isLocation]="editedAddressType === 'location'"
+  (addressSelected)="onAddressSelected($event)"
+  (addressSelectCancelled)="showAddressDialog = false">
+</app-addresses>
+
+<app-contact
+  *ngIf="showContactDialog && selectedContact"
+  [contact]="selectedContact"
+  [showRoleAndNoteFields]="false"
+  (contactSaved)="onContactSaved($event)"
+  (contactDeleted)="onContactDeleted($event)"
+  (contactCancelled)="showContactDialog = false">
+</app-contact>
+
+<app-loading-spinner *ngIf="isLoading"></app-loading-spinner>

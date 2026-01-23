@@ -1,0 +1,135 @@
+/* You can add global styles to this file, and also import other style files */
+@import 'styles/colors';
+@import 'styles/theme';
+
+// removes default margin from root body element
+body { margin: 0; }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, sans-serif; }
+
+
+.notification-menu+* .mat-menu-panel {
+  max-width: 350px;
+  .notification-details {
+    display: flex;
+  }
+  .notification-timestamp {
+    font-size: 12px;
+    white-space: nowrap;
+    padding-right: 8px;
+  }
+  .notification-close {
+    font-size: 20px;
+  }
+  padding: 0;
+  .mat-menu-content { padding: 0; }
+  .mat-list { padding: 0; }
+
+  .mat-list-base .mat-list-item .mat-list-item-content {
+    padding: 2px 8px;
+    height: fit-content;
+    border-top: 1px solid #EBEBEB;
+    cursor: pointer;
+  }
+
+  .mat-list-base .mat-list-item.mat-2-line {
+    height: fit-content;
+  }
+
+  .mat-list-base .mat-list-item .mat-line {
+    white-space: pre-wrap;
+    font-family: 'Roboto';
+  }
+
+  .notification-header {
+    font-weight: bold !important;
+    display: flex;
+    justify-content: space-between;
+    p {
+      width: 157px;
+      padding: 0;
+      margin: 0;
+    }
+    .mat-icon {
+      cursor: pointer;
+    }
+  }
+
+  .notification-body {
+    line-height: 16px;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+
+    .dismissed-checkbox {
+      padding: 0 8px;
+    }
+
+    button {
+      font-family: 'Roboto';
+      border: none;
+      background-color: #5DCADE;
+      color: white;
+      cursor: pointer;
+    }
+  }
+}
+
+.mat-datepicker-popup {
+  .mat-calendar-body-selected {
+    background-color: #3871C1;
+  }
+}
+
+ngx-daterangepicker-material {
+  .active {
+    background-color: #3871C1 !important;
+    opacity: 1 !important;
+  }
+}
+
+.file-import-dialog .mdc-dialog__surface {
+  overflow-y: hidden !important;
+}
+
+.prewrap {
+  white-space: pre;
+  .mdc-tooltip__surface.mdc-tooltip__surface-animation {
+    text-align: left;
+  }
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+
+  .button-group {
+    display: flex;
+    gap: .5em;
+  }
+
+  button {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-size: 13px;
+    height: 30px;
+    border:none;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+  }
+
+  button:enabled {
+    cursor: pointer;
+    color: white;
+    background-color: #5DCADE;
+
+    &:hover {
+      background: #3871C1;
+    }
+  }
+}

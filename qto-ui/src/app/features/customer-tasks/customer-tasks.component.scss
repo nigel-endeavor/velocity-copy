@@ -1,0 +1,180 @@
+
+app-dropdown.master-customer-dropdown ::ng-deep {
+  .dropdown-wrapper {
+    width: 12em;
+    margin: 10px 0;
+  }
+}
+
+.no-tasks-message {
+  text-align: center;
+  p {
+    font-weight: 500;;
+    font-size: small;
+  }
+}
+
+.field {
+  height: 30px;
+}
+
+/* Basic table styling */
+.task-container {
+  border: 2px solid #ededed; /* Adds border to the table */
+  border-radius: 15px; /* Semi-circle border radius */
+}
+
+table {
+  border-collapse:separate;
+  border-spacing: 0;
+  border:solid #ededed 2px;
+  border-radius: 5px;
+  font-family: Roboto, sans-serif;
+  overflow: hidden;
+}
+ .comments {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between;
+    align-items: center;
+    // .commentHeader{
+    //   padding-left: .5em;
+    // }
+  }
+
+th {
+  background-color: #ededed;
+  text-align: center;
+  padding: 12px;
+  font-weight: 500;
+  font-size: 13px;
+
+
+  .saveButton {
+      color: red !important;
+      cursor: pointer;
+      line-height: 4px;
+      font-size: 20px;
+    }
+
+    /* Header Icon */
+  .pencilButton {
+    cursor: pointer;
+    line-height: 4px;
+    font-size: 20px;
+    color: #5DCADE;
+  }
+}
+
+td.taskValue {
+  max-width: 100px !important;
+  padding-right: 3px;
+  padding-left: 3px;
+}
+
+/* Table row and cell styling */
+td {
+  text-align: center;
+  // display: table-cell !important;
+    border-bottom: 1px solid #ddd;
+    background-color: white;
+
+
+
+
+
+  textarea {
+    resize: vertical;
+  }
+  select:disabled {
+    //makes selects look like input boxes
+    -webkit-appearance: none;
+    -moz-appearance : none;
+    border: 1px solid #FFFFFF;
+    background-color: #FFFFFF;
+    color: black;
+    opacity: 1;
+  }
+}
+
+::ng-deep app-datepicker {
+  input {
+    max-width: 70px !important;
+  }
+}
+
+/* Adding a little padding to the edit and save icons */
+.material-symbols-outlined {
+  cursor: pointer;
+  padding: 6px;
+  vertical-align: middle;
+}
+
+/* Disabled inputs styling */
+input[disabled], app-datepicker[disabled] {
+  background-color: #eaeaea;
+  border: 1px solid #ccc;
+}
+
+textarea {
+  font-family: Roboto, sans-serif;
+  border-radius: 4px;
+  background: #ededed;
+  border: none;
+  outline: none;
+}
+textarea[disabled]::placeholder {
+  color: transparent;
+}
+
+textarea[disabled] {
+  background-color: white;
+}
+
+.tooltip {
+  position: relative;
+  cursor: pointer;
+  display: inline-block; /* Ensures the icon stays properly placed */
+  margin-left: 5px; /* Space between text and tooltip */
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  min-width: 200px; /* Increased width to accommodate longer text */
+  max-width: 400px; /* Limits width for readability */
+  background-color: #3871c1;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 10px;
+  position: absolute;
+  z-index: 1;
+  left: 120%; /* Move tooltip to the right */
+  top: 0; /* Align with top of icon */
+  transform: none; /* Remove vertical centering */
+  opacity: 0;
+  transition: opacity 0.3s;
+  white-space: normal; /* Allow multiline text */
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 10px; /* Adjust position of arrow */
+  right: 100%;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent #3871c1 transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* For the last th column's tooltip (aligned to the left of the icon) */
+.last-column-tooltip .tooltip .tooltiptext {
+  left: auto;
+  right: 120%;  /* Move it to the left of the icon */
+  top: 0;  /* Align with top of icon */
+}

@@ -1,0 +1,29 @@
+.v-toggle {
+  background-color: #CECECE;
+  width: 42px;
+  display: flex;
+  height: 22px;
+  padding: 2px 3px;
+  flex-shrink: 0;
+  border-radius: 17px;
+  box-sizing: border-box;
+  transition: all 0.2s linear;
+
+  .handler {
+    width: 18px;
+    height: 18px;
+    background-color: white;
+    border-radius: 50%;
+    margin-left: 0;
+    transition: all 0.2s linear;
+  }
+  &.active {
+    background-color: #5DCADE;
+    .handler {
+      margin-left: 17px;
+    }
+  }
+  &.disabled {
+    background-color: #e6e6e6;
+  }
+}

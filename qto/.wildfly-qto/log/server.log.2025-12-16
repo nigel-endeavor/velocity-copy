@@ -1,0 +1,81 @@
+2025-12-16 15:54:01,012 ERROR [org.jboss.as.controller.management-operation] (Controller Boot Thread) WFLYCTL0013: Operation ("add") failed - address: ([
+    ("core-service" => "management"),
+    ("management-interface" => "http-interface")
+]) - failure description: {
+    "WFLYCTL0080: Failed services" => {"org.wildfly.management.http.extensible" => "WFLYSRV0083: Failed to start the http-interface service
+    Caused by: java.lang.RuntimeException: java.net.SocketException: Operation not permitted
+    Caused by: java.net.SocketException: Operation not permitted"},
+    "WFLYCTL0412: Required services that are not installed:" => ["jboss.http-upgrade-registry.http-management"],
+    "WFLYCTL0180: Services with missing/unavailable dependencies" => ["jboss.remoting.remoting-http-upgrade-service.http-management is missing [jboss.http-upgrade-registry.http-management]"]
+}
+2025-12-16 15:54:01,015 ERROR [org.jboss.as.controller.management-operation] (Controller Boot Thread) WFLYCTL0013: Operation ("add") failed - address: ([
+    ("subsystem" => "remoting"),
+    ("http-connector" => "http-remoting-connector")
+]) - failure description: {
+    "WFLYCTL0412: Required services that are not installed:" => ["jboss.http-upgrade-registry.default"],
+    "WFLYCTL0180: Services with missing/unavailable dependencies" => ["jboss.remoting.remoting-http-upgrade-service.http-remoting-connector is missing [jboss.http-upgrade-registry.default]"]
+}
+2025-12-16 15:54:01,037 ERROR [org.jboss.as.controller.management-operation] (Controller Boot Thread) WFLYCTL0013: Operation ("add") failed - address: ([
+    ("subsystem" => "undertow"),
+    ("server" => "default-server"),
+    ("http-listener" => "default")
+]) - failure description: {"WFLYCTL0080: Failed services" => {"org.wildfly.undertow.listener.default" => "WFLYUT0082: Could not start 'default' listener.
+    Caused by: java.net.SocketException: Operation not permitted"}}
+2025-12-16 15:54:01,038 ERROR [org.jboss.as.controller.management-operation] (Controller Boot Thread) WFLYCTL0013: Operation ("add") failed - address: ([
+    ("subsystem" => "undertow"),
+    ("server" => "default-server"),
+    ("https-listener" => "https")
+]) - failure description: {"WFLYCTL0080: Failed services" => {"org.wildfly.undertow.listener.https" => "WFLYUT0082: Could not start 'https' listener.
+    Caused by: java.net.SocketException: Operation not permitted"}}
+2025-12-16 15:54:01,039 ERROR [org.jboss.as.controller] (Controller Boot Thread) WFLYCTL0459: Triggering roll back due to missing management services.
+2025-12-16 15:54:01,039 ERROR [org.jboss.as.controller.management-operation] (Controller Boot Thread) WFLYCTL0013: Operation ("add") failed - address: ([
+    ("core-service" => "management"),
+    ("management-interface" => "http-interface")
+]) - failure description: {
+    "WFLYCTL0080: Failed services" => {"org.wildfly.management.http.extensible" => "WFLYSRV0083: Failed to start the http-interface service
+    Caused by: java.lang.RuntimeException: java.net.SocketException: Operation not permitted
+    Caused by: java.net.SocketException: Operation not permitted"},
+    "WFLYCTL0412: Required services that are not installed:" => ["jboss.http-upgrade-registry.http-management"],
+    "WFLYCTL0180: Services with missing/unavailable dependencies" => ["jboss.remoting.remoting-http-upgrade-service.http-management is missing [jboss.http-upgrade-registry.http-management]"]
+}
+2025-12-16 15:59:16,850 INFO  [org.jboss.as.server.deployment.scanner] (MSC service thread 1-8) WFLYDS0013: Started FileSystemDeploymentService for directory /Users/johnnycrupi/Documents/devel/KickAnalytics/EndeavorVelocity/qto/.wildfly-qto/deployments
+2025-12-16 15:59:17,073 ERROR [org.jboss.as.controller.management-operation] (Controller Boot Thread) WFLYCTL0013: Operation ("add") failed - address: ([
+    ("core-service" => "management"),
+    ("management-interface" => "http-interface")
+]) - failure description: {
+    "WFLYCTL0080: Failed services" => {"org.wildfly.management.http.extensible" => "WFLYSRV0083: Failed to start the http-interface service
+    Caused by: java.lang.RuntimeException: java.net.SocketException: Operation not permitted
+    Caused by: java.net.SocketException: Operation not permitted"},
+    "WFLYCTL0412: Required services that are not installed:" => ["jboss.http-upgrade-registry.http-management"],
+    "WFLYCTL0180: Services with missing/unavailable dependencies" => ["jboss.remoting.remoting-http-upgrade-service.http-management is missing [jboss.http-upgrade-registry.http-management]"]
+}
+2025-12-16 15:59:17,098 ERROR [org.jboss.as.controller.management-operation] (Controller Boot Thread) WFLYCTL0013: Operation ("add") failed - address: ([
+    ("subsystem" => "remoting"),
+    ("http-connector" => "http-remoting-connector")
+]) - failure description: {
+    "WFLYCTL0412: Required services that are not installed:" => ["jboss.http-upgrade-registry.default"],
+    "WFLYCTL0180: Services with missing/unavailable dependencies" => ["jboss.remoting.remoting-http-upgrade-service.http-remoting-connector is missing [jboss.http-upgrade-registry.default]"]
+}
+2025-12-16 15:59:17,099 ERROR [org.jboss.as.controller.management-operation] (Controller Boot Thread) WFLYCTL0013: Operation ("add") failed - address: ([
+    ("subsystem" => "undertow"),
+    ("server" => "default-server"),
+    ("http-listener" => "default")
+]) - failure description: {"WFLYCTL0080: Failed services" => {"org.wildfly.undertow.listener.default" => "WFLYUT0082: Could not start 'default' listener.
+    Caused by: java.net.SocketException: Operation not permitted"}}
+2025-12-16 15:59:17,099 ERROR [org.jboss.as.controller.management-operation] (Controller Boot Thread) WFLYCTL0013: Operation ("add") failed - address: ([
+    ("subsystem" => "undertow"),
+    ("server" => "default-server"),
+    ("https-listener" => "https")
+]) - failure description: {"WFLYCTL0080: Failed services" => {"org.wildfly.undertow.listener.https" => "WFLYUT0082: Could not start 'https' listener.
+    Caused by: java.net.SocketException: Operation not permitted"}}
+2025-12-16 15:59:17,100 ERROR [org.jboss.as.controller] (Controller Boot Thread) WFLYCTL0459: Triggering roll back due to missing management services.
+2025-12-16 15:59:17,100 ERROR [org.jboss.as.controller.management-operation] (Controller Boot Thread) WFLYCTL0013: Operation ("add") failed - address: ([
+    ("core-service" => "management"),
+    ("management-interface" => "http-interface")
+]) - failure description: {
+    "WFLYCTL0080: Failed services" => {"org.wildfly.management.http.extensible" => "WFLYSRV0083: Failed to start the http-interface service
+    Caused by: java.lang.RuntimeException: java.net.SocketException: Operation not permitted
+    Caused by: java.net.SocketException: Operation not permitted"},
+    "WFLYCTL0412: Required services that are not installed:" => ["jboss.http-upgrade-registry.http-management"],
+    "WFLYCTL0180: Services with missing/unavailable dependencies" => ["jboss.remoting.remoting-http-upgrade-service.http-management is missing [jboss.http-upgrade-registry.http-management]"]
+}

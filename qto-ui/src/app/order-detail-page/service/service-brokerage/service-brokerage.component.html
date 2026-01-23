@@ -1,0 +1,408 @@
+<ng-container *ngIf="selectedLocationOrService$ | async as service">
+  <ng-container *ngIf="serviceBrokerage$ | async as serviceBrokerage">
+    <form #serviceForm="ngForm" class="form" *ngIf="showForm">
+      <div class="col">
+        <div class="header">
+          <p>Brokerage/Agency</p>
+          <ng-container *ngIf="editEnabled$ | async">
+            <span class="material-symbols-outlined" *ngIf="!editingServiceBrokerageAgency"
+                  (click)="oes.toggleEditFlag('editingServiceBrokerageAgency')">
+              border_color
+            </span>
+            <span class="material-symbols-outlined" *ngIf="editingServiceBrokerageAgency"
+                  (click)="onSaveClicked(serviceBrokerage)">
+              save
+            </span>
+          </ng-container>
+        </div>
+        <div class="content">
+          <div class="field" *ngIf="telecomClient">
+            <p>Commissions Supplier</p>
+            <vtk-select [(ngModel)]="serviceBrokerage.commissionsSupplier" name="commissionsSupplier"
+                        [disabled]="!editingServiceBrokerageAgency" [options]="commissionsSupplierOpts"></vtk-select>
+          </div>
+          <div class="field" *ngIf="telecomClient">
+            <p>Commissions Account Number</p>
+            <input [(ngModel)]="serviceBrokerage.commissionsAccountNumber" name="commissionsAccountNumber"
+                   [disabled]="!editingServiceBrokerageAgency">
+          </div>
+          <div class="field">
+            <p>Agent</p>
+            <vtk-select [(ngModel)]="serviceBrokerage.agent" name="agent" [options]="agencyNameOpts"
+                        (ngModelChange)="serviceBrokerage.agent"
+                        [disabled]="!editingServiceBrokerageAgency"></vtk-select>
+          </div>
+          <div class="field">
+            <p>Agent Rep</p>
+            <vtk-select [(ngModel)]="serviceBrokerage.agentRep" name="agentRep"
+                        [options]="getAgencyRepOpts(serviceBrokerage.agent)"
+                        [disabled]="!editingServiceBrokerageAgency"></vtk-select>
+          </div>
+          <div class="field">
+            <p>Agent %</p>
+            <input [ngModel]="serviceBrokerage.agentPercent | vtkPercent:!editingServiceBrokerageAgency"
+                   (ngModelChange)="serviceBrokerage.setAgentPercent($event)" name="agentPercent"
+                   pattern="^[+-]?\d+(\.\d{1,2})?%$" [disabled]="!editingServiceBrokerageAgency">
+          </div>
+          <div class="field">
+            <p>Sub Agent</p>
+            <vtk-select [(ngModel)]="serviceBrokerage.subAgent" name="subAgent" [options]="agencyNameOpts"
+                        (ngModelChange)="serviceBrokerage.subAgentRep = undefined"
+                        [disabled]="!editingServiceBrokerageAgency"></vtk-select>
+          </div>
+          <div class="field">
+            <p>Sub Agent Rep</p>
+            <vtk-select [(ngModel)]="serviceBrokerage.subAgentRep" name="subAgentRep"
+                        [options]="getAgencyRepOpts(serviceBrokerage.subAgent)"
+                        [disabled]="!editingServiceBrokerageAgency"></vtk-select>
+          </div>
+          <div class="field">
+            <p>Sub Agent %</p>
+            <input [ngModel]="serviceBrokerage.subAgentPercent | vtkPercent:!editingServiceBrokerageAgency"
+                   (ngModelChange)="serviceBrokerage.setSupAgentPercent($event)" name="subAgentPercent"
+                   pattern="^[+-]?\d+(\.\d{1,2})?%$" [disabled]="!editingServiceBrokerageAgency">
+          </div>
+          <div class="field" *ngIf="telecomClient">
+            <p>Secondary Sub Agent</p>
+            <vtk-select [(ngModel)]="serviceBrokerage.secondaryAgency" name="secondaryAgency" [options]="agencyNameOpts"
+                        (ngModelChange)="serviceBrokerage.secondaryAgencyRep = undefined"
+                        [disabled]="!editingServiceBrokerageAgency"></vtk-select>
+          </div>
+          <div class="field" *ngIf="telecomClient">
+            <p>Secondary Sub Agent Rep</p>
+            <vtk-select [(ngModel)]="serviceBrokerage.secondaryAgencyRep" name="secondaryAgencyRep"
+                        [options]="getAgencyRepOpts(serviceBrokerage.secondaryAgency)"
+                        [disabled]="!editingServiceBrokerageAgency"></vtk-select>
+          </div>
+          <hr>
+          <div class="check-row">
+            <div class="field">
+              <mat-checkbox [(ngModel)]="serviceBrokerage.referral" name="referral"
+                            [disabled]="!editingServiceBrokerageAgency"
+                            (ngModelChange)="referralChanged($event, serviceBrokerage)"></mat-checkbox>
+              <p>Referral</p>
+            </div>
+          </div>
+          <div class="field" *ngIf="serviceBrokerage.referral">
+            <p>Referral Name/Company</p>
+            <input [(ngModel)]="serviceBrokerage.referralName" name="referralName"
+                   [disabled]="!editingServiceBrokerageAgency">
+          </div>
+          <div class="field" *ngIf="serviceBrokerage.referral">
+            <p>Referral %</p>
+            <input [ngModel]="serviceBrokerage.referralPercent ?? 0 | vtkPercent:!editingServiceBrokerageAgency"
+                   (ngModelChange)="serviceBrokerage.setReferralPercent($event)" name="referralPercent"
+                   pattern="^[+-]?\d+(\.\d{1,2})?%$" [disabled]="!editingServiceBrokerageAgency">
+          </div>
+        </div>
+        <ng-container *ngIf="telecomClient">
+          <div class="header">
+            <p>Order Details</p>
+            <ng-container *ngIf="editEnabled$ | async">
+            <span class="material-symbols-outlined" *ngIf="!editingServiceBrokerageOrderDetails"
+                  (click)="oes.toggleEditFlag('editingServiceBrokerageOrderDetails')">
+              border_color
+            </span>
+              <span class="material-symbols-outlined" *ngIf="editingServiceBrokerageOrderDetails"
+                    (click)="onSaveClicked(serviceBrokerage)">
+              save
+            </span>
+            </ng-container>
+          </div>
+          <div class="content">
+            <div class="check-row">
+              <div class="field">
+                <mat-checkbox [(ngModel)]="serviceBrokerage.submittedInAdvToProvider" name="submittedInAdvToProvider"
+                              [disabled]="!editingServiceBrokerageOrderDetails"></mat-checkbox>
+                <p>Submitted in Advance to Provider</p>
+              </div>
+            </div>
+            <div class="field">
+              <p>Parent TSD</p>
+              <vtk-select [(ngModel)]="serviceBrokerage.parentTsd" name="parentTsd"
+                          [disabled]="!editingServiceBrokerageOrderDetails" [options]="parentTsdOpts"></vtk-select>
+            </div>
+            <div class="check-row">
+              <div class="field">
+                <mat-checkbox [(ngModel)]="serviceBrokerage.submittedInAdvToTsd" name="submittedInAdvToTsd"
+                              [disabled]="!editingServiceBrokerageOrderDetails"></mat-checkbox>
+                <p>Submitted in Advance to TSD</p>
+              </div>
+            </div>
+            <div class="field">
+              <p>Net Provider Points/Rate/%</p>
+              <input [(ngModel)]="serviceBrokerage.netProviderPoints" name="netProviderPoints"
+                     [disabled]="!editingServiceBrokerageOrderDetails">
+            </div>
+            <div class="field">
+              <p>SPIFF Amount</p>
+              <input [ngModel]="serviceBrokerage.spiffAmount | vtkCurrency:!editingServiceBrokerageOrderDetails"
+                     (ngModelChange)="serviceBrokerage.setSpiffAmount($event)" name="spiffAmount"
+                     pattern="(?:\+|\-|\$)?\d{1,}(?:\,?\d{3})*(\.[0-9][0-9]?)?"
+                     [disabled]="!editingServiceBrokerageOrderDetails">
+            </div>
+            <div class="field">
+              <p>Customer Order Alias</p>
+              <input [(ngModel)]="serviceBrokerage.customerOrderAlias" name="customerOrderAlias"
+                     [disabled]="!editingServiceBrokerageOrderDetails">
+            </div>
+            <div class="field textarea">
+              <p>Promotions</p>
+              <textarea [(ngModel)]="serviceBrokerage.promotions" name="promotions"
+                        [disabled]="!editingServiceBrokerageOrderDetails" rows="5" maxlength="500"></textarea>
+            </div>
+            <hr>
+            <div class="check-row">
+              <div class="field">
+                <mat-checkbox [(ngModel)]="serviceBrokerage.engineerResource" name="engineerResource"
+                              [disabled]="!editingServiceBrokerageOrderDetails"></mat-checkbox>
+                <p>Engineer Resource</p>
+              </div>
+            </div>
+            <div class="field" *ngIf="serviceBrokerage.engineerResource">
+              <p>Engineer Resource Allocation</p>
+              <input
+                [ngModel]="serviceBrokerage.engineerResourceAllocation ?? 0 | vtkPercent:!editingServiceBrokerageOrderDetails"
+                (ngModelChange)="serviceBrokerage.setEngineerResourceAllocation($event)"
+                name="engineerResourceAllocation"
+                pattern="^[+-]?\d+(\.\d{1,2})?%$" [disabled]="!editingServiceBrokerageOrderDetails">
+            </div>
+          </div>
+        </ng-container>
+        <div class="header" *ngIf="telecomClient">
+          <p>Other</p>
+          <ng-container *ngIf="editEnabled$ | async">
+            <span class="material-symbols-outlined" *ngIf="!editingCustomFields" (click)="editingCustomFields = true">
+              border_color
+            </span>
+            <span class="material-symbols-outlined" *ngIf="editingCustomFields"
+                  (click)="cf.saveValues(); editingCustomFields = false;">
+              save
+            </span>
+          </ng-container>
+        </div>
+        <app-custom-fields #cf
+                           [type]="'service'"
+                           [id]="service.id"
+                           [tab]="customFieldTabValue"
+                           [companyId]="companyId"
+                           [editing]="editingCustomFields"></app-custom-fields>
+      </div>
+      <div class="col">
+        <div class="header">
+          <p>Commissions</p>
+          <ng-container *ngIf="editEnabled$ | async">
+            <span class="material-symbols-outlined" *ngIf="!editingServiceBrokerageCommissions"
+                  (click)="oes.toggleEditFlag('editingServiceBrokerageCommissions')">
+              border_color
+            </span>
+            <span class="material-symbols-outlined" *ngIf="editingServiceBrokerageCommissions"
+                  (click)="onSaveClicked(serviceBrokerage)">
+              save
+            </span>
+          </ng-container>
+        </div>
+        <div class="content">
+          <div class="field">
+            <p>Commissionable MRC</p>
+            <input [ngModel]="serviceBrokerage.commissionableMrc | vtkCurrency:!editingServiceBrokerageCommissions"
+                   (ngModelChange)="serviceBrokerage.setCommissionableMrc($event)" name="commissionableMrc"
+                   pattern="(?:\+|\-|\$)?\d{1,}(?:\,?\d{3})*(\.[0-9][0-9]?)?"
+                   [disabled]="!editingServiceBrokerageCommissions">
+          </div>
+          <div class="field">
+            <p>Commissionable NRC</p>
+            <input [ngModel]="serviceBrokerage.commissionableNrc | vtkCurrency:!editingServiceBrokerageCommissions"
+                   (ngModelChange)="serviceBrokerage.setCommissionableNrc($event)" name="commissionableNrc"
+                   pattern="(?:\+|\-|\$)?\d{1,}(?:\,?\d{3})*(\.[0-9][0-9]?)?"
+                   [disabled]="!editingServiceBrokerageCommissions">
+          </div>
+          <div class="field" *ngIf="telecomClient">
+            <p>Commissionable ARC</p>
+            <input [ngModel]="serviceBrokerage.commissionableArc | vtkCurrency:!editingServiceBrokerageCommissions"
+                   (ngModelChange)="serviceBrokerage.setCommissionableArc($event)" name="commissionableArc"
+                   pattern="(?:\+|\-|\$)?\d{1,}(?:\,?\d{3})*(\.[0-9][0-9]?)?"
+                   [disabled]="!editingServiceBrokerageCommissions">
+          </div>
+          <hr>
+          <div class="field">
+            <p>Commission Payment Type</p>
+            <vtk-select [(ngModel)]="serviceBrokerage.commissionPaymentType" name="commissionPaymentType"
+                        [options]="commissionPaymentTypeOpts"
+                        [disabled]="!editingServiceBrokerageCommissions"></vtk-select>
+          </div>
+          <div class="field">
+            <p>Expected Commission</p>
+            <input [ngModel]="serviceBrokerage.expectedCommission | vtkCurrency:!editingServiceBrokerageCommissions"
+                   (ngModelChange)="serviceBrokerage.setExpectedCommission($event)" name="expectedCommission"
+                   pattern="(?:\+|\-|\$)?\d{1,}(?:\,?\d{3})*(\.[0-9][0-9]?)?"
+                   [disabled]="!editingServiceBrokerageCommissions">
+          </div>
+          <div class="field">
+            <p>Commission Reduction %</p>
+            <input
+              [ngModel]="serviceBrokerage.commissionReductionPercent | vtkPercent:!editingServiceBrokerageCommissions"
+              (ngModelChange)="serviceBrokerage.setCommissionReductionPercent($event)" name="commissionReductionPercent"
+              pattern="^[+-]?\d+(\.\d{1,2})?%$" [disabled]="!editingServiceBrokerageCommissions">
+          </div>
+          <div class="field" *ngIf="telecomClient">
+            <p>CIE/Teamed Deal Info</p>
+            <input [(ngModel)]="serviceBrokerage.cieTeamedDealInfo" name="cieTeamedDealInfo"
+                   [disabled]="!editingServiceBrokerageCommissions">
+          </div>
+          <div class="check-row" *ngIf="telecomClient">
+            <div class="field">
+              <mat-checkbox [(ngModel)]="serviceBrokerage.commissionIcb" name="commissionIcb"
+                            [disabled]="!editingServiceBrokerageCommissions"></mat-checkbox>
+              <p>Commissions ICB</p>
+            </div>
+          </div>
+          <div class="field textarea">
+            <p>Internal Commissions Comments</p>
+            <textarea [(ngModel)]="serviceBrokerage.internalCommissionsComments" name="internalCommissionsComments"
+                      [disabled]="!editingServiceBrokerageCommissions" rows="5" maxlength="500"></textarea>
+          </div>
+        </div>
+        <div class="header" *ngIf="telecomClient">
+          <p>Profit Monitoring</p>
+          <ng-container *ngIf="editEnabled$ | async">
+            <span class="material-symbols-outlined" *ngIf="!editingServiceBrokerageProfitMonitoring"
+                  (click)="oes.toggleEditFlag('editingServiceBrokerageProfitMonitoring')">
+              border_color
+            </span>
+            <span class="material-symbols-outlined" *ngIf="editingServiceBrokerageProfitMonitoring"
+                  (click)="onSaveClicked(serviceBrokerage)">
+              save
+            </span>
+          </ng-container>
+        </div>
+        <div class="content" *ngIf="telecomClient">
+          <div class="field">
+            <p>Gross Profit MRC Multiplier</p>
+            <input type="number" [(ngModel)]="serviceBrokerage.grossProfitMrcMultiplier" name="grossProfitMrcMultiplier"
+                   [disabled]="!editingServiceBrokerageProfitMonitoring">
+          </div>
+          <div class="field">
+            <p>% Resides from Carrier</p>
+            <input [(ngModel)]="serviceBrokerage.percentResidesFromCarrier" name="percentResidesFromCarrier"
+                   [disabled]="!editingServiceBrokerageProfitMonitoring">
+          </div>
+          <div class="field">
+            <p>Gross Profit MRC</p>
+            <input [ngModel]="serviceBrokerage.grossProfitMrc | vtkCurrency:!editingServiceBrokerageProfitMonitoring"
+                   (ngModelChange)="serviceBrokerage.setGrossProfitMrc($event)" name="grossProfitMrc"
+                   pattern="(?:\+|\-|\$)?\d{1,}(?:\,?\d{3})*(\.[0-9][0-9]?)?"
+                   [disabled]="!editingServiceBrokerageProfitMonitoring">
+          </div>
+          <div class="field">
+            <p>Gross Profit</p>
+            <input [ngModel]="serviceBrokerage.grossProfit | vtkCurrency:!editingServiceBrokerageProfitMonitoring"
+                   (ngModelChange)="serviceBrokerage.setGrossProfit($event)" name="grossProfit"
+                   pattern="(?:\+|\-|\$)?\d{1,}(?:\,?\d{3})*(\.[0-9][0-9]?)?"
+                   [disabled]="!editingServiceBrokerageProfitMonitoring">
+          </div>
+          <hr>
+          <div class="check-row">
+            <div class="field">
+              <mat-checkbox [(ngModel)]="serviceBrokerage.grossProfitMrcNeedsToBeEdited"
+                            name="grossProfitMrcNeedsToBeEdited"
+                            [disabled]="!editingServiceBrokerageProfitMonitoring"></mat-checkbox>
+              <p>Gross Profit MRC Needs to be Edited</p>
+            </div>
+            <div class="field">
+              <mat-checkbox [(ngModel)]="serviceBrokerage.grossProfitNeedsToBeEdited" name="grossProfitNeedsToBeEdited"
+                            [disabled]="!editingServiceBrokerageProfitMonitoring"></mat-checkbox>
+              <p>Gross Profit Needs to be Edited</p>
+            </div>
+          </div>
+          <div class="check-row">
+            <div class="field">
+              <mat-checkbox [(ngModel)]="serviceBrokerage.repGrossProfitNeedsToBeEdited"
+                            name="repGrossProfitNeedsToBeEdited"
+                            [disabled]="!editingServiceBrokerageProfitMonitoring"></mat-checkbox>
+              <p>Rep Gross Profit Needs to be Edited</p>
+            </div>
+          </div>
+          <div class="field">
+            <p>Gross Profit MRC Override</p>
+            <input
+              [ngModel]="serviceBrokerage.grossProfitMrcOverride | vtkCurrency:!editingServiceBrokerageProfitMonitoring"
+              (ngModelChange)="serviceBrokerage.setGrossProfitMrcOverride($event)" name="grossProfitMrcOverride"
+              pattern="(?:\+|\-|\$)?\d{1,}(?:\,?\d{3})*(\.[0-9][0-9]?)?"
+              [disabled]="!editingServiceBrokerageProfitMonitoring">
+          </div>
+          <div class="field">
+            <p>Gross Profit Override</p>
+            <input
+              [ngModel]="serviceBrokerage.grossProfitOverride | vtkCurrency:!editingServiceBrokerageProfitMonitoring"
+              (ngModelChange)="serviceBrokerage.setGrossProfitOverride($event)" name="grossProfitOverride"
+              pattern="(?:\+|\-|\$)?\d{1,}(?:\,?\d{3})*(\.[0-9][0-9]?)?"
+              [disabled]="!editingServiceBrokerageProfitMonitoring">
+          </div>
+          <div class="field">
+            <p>Rep Gross Profit Prodution</p>
+            <input
+              [ngModel]="serviceBrokerage.repGrossProfitProduction | vtkCurrency:!editingServiceBrokerageProfitMonitoring"
+              (ngModelChange)="serviceBrokerage.setRepGrossProfitProduction($event)" name="repGrossProfitProduction"
+              pattern="(?:\+|\-|\$)?\d{1,}(?:\,?\d{3})*(\.[0-9][0-9]?)?"
+              [disabled]="!editingServiceBrokerageProfitMonitoring">
+          </div>
+          <hr>
+          <div class="field">
+            <p>Total Contract Value</p>
+            <input
+              [ngModel]="serviceBrokerage.totalContractValue | vtkCurrency:!editingServiceBrokerageProfitMonitoring"
+              (ngModelChange)="serviceBrokerage.setTotalContractValue($event)" name="totalContractValue"
+              pattern="(?:\+|\-|\$)?\d{1,}(?:\,?\d{3})*(\.[0-9][0-9]?)?"
+              [disabled]="!editingServiceBrokerageProfitMonitoring">
+          </div>
+          <div class="field">
+            <p>Uplift MRC</p>
+            <input [ngModel]="serviceBrokerage.upliftMrc | vtkCurrency:!editingServiceBrokerageProfitMonitoring"
+                   (ngModelChange)="serviceBrokerage.setUpliftMrc($event)" name="upliftMrc"
+                   pattern="(?:\+|\-|\$)?\d{1,}(?:\,?\d{3})*(\.[0-9][0-9]?)?"
+                   [disabled]="!editingServiceBrokerageProfitMonitoring">
+          </div>
+          <div class="field">
+            <p>Subaccount MRC</p>
+            <input [ngModel]="serviceBrokerage.subaccountMrc | vtkCurrency:!editingServiceBrokerageProfitMonitoring"
+                   (ngModelChange)="serviceBrokerage.setSubaccountMrc($event)" name="subaccountMrc"
+                   pattern="(?:\+|\-|\$)?\d{1,}(?:\,?\d{3})*(\.[0-9][0-9]?)?"
+                   [disabled]="!editingServiceBrokerageProfitMonitoring">
+          </div>
+        </div>
+      </div>
+      <div class="col" *ngIf="this.service.id">
+        <app-attachments [type]="'Service'" [id]="service.id"></app-attachments>
+        <mat-divider></mat-divider>
+        <app-note #note
+                  type="service"
+                  [parentId]="service.id.toString()"
+                  [maxNotes]="2"
+                  [serviceName]="service.type"
+                  [showSave]="true"
+                  [headerClass]="'header'">
+        </app-note>
+        <br>
+        <app-note *ngIf="isInventory"
+                  type="service"
+                  [parentId]="service.id.toString()"
+                  [maxNotes]="1"
+                  [serviceName]="service.type"
+                  [showSave]="false"
+                  [audit]="true"
+                  [headerClass]="'header'">
+        </app-note>
+        <br>
+        <app-jeops *ngIf="!isInventory"
+                   type="service"
+                   [parentId]="service.id"
+                   [orderId]="service.orderId"
+                   [companyId]="companyId"
+                   [maxJeops]="5"
+                   [headerClass]="'header'">
+        </app-jeops>
+      </div>
+    </form>
+  </ng-container>
+</ng-container>

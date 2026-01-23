@@ -1,0 +1,41 @@
+<dialog #dialog>
+  <div class="search-bar-wrapper">
+    <input [ngModel]="searchText" (ngModelChange)="onSearchTextChanged($event)" placeholder="Search">
+  </div>
+  <div class="dialog-content">
+    <div class="address-table">
+      <table>
+        <thead>
+          <tr>
+            <th class="med-col">Source</th>
+            <th *ngIf="isLocation">Client Location ID</th>
+            <th class="big-col">Address 1</th>
+            <th class="med-col">Address 2</th>
+            <th class="med-col">City</th>
+            <th>State</th>
+            <th class="sm-col">Zip</th>
+            <th>Country</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr #tr *ngFor="let address of addresses" class="table-row" (click)="onRowClicked(tr, address)" (dblclick)="onRowDblClicked(tr, address)">
+            <td class="med-col">{{address.type}}</td>
+            <td *ngIf="isLocation">{{address.clientLocationId}}</td>
+            <td class="big-col">{{address.address1}}</td>
+            <td class="med-col">{{address.address2}}</td>
+            <td class="med-col">{{address.city}}</td>
+            <td>{{address.state}}</td>
+            <td class="sm-col">{{address.postalCode}}</td>
+            <td>{{address.country}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="buttons">
+    <div>
+      <button [disabled]="!selectedAddress" (click)="onSelectClicked()">Select</button>
+      <button (click)="onCancelClicked()">Cancel</button>
+    </div>
+  </div>
+</dialog>

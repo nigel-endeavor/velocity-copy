@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="1_2_0-001" author="rcasey">
+        <addColumn tableName="location">
+            <column name="inventory_added_date" type="datetime"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_2_0-002" author="rcasey">
+        <preConditions onFail="CONTINUE">
+            <dbms type="mysql"/>
+        </preConditions>
+        <comment>Update power bi PMV Service Report view.</comment>
+        <sqlFile path="data/v_manage_locations_v14.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+    
+    <changeSet id="1_2_0-003" author="rcasey">
+        <createTable tableName="customer_import_error">
+            <column name="customer_import_error_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="import_activity_id" type="int"/>
+            <column name="error_message" type="varchar(2500)"/>
+            <column name="master_customer_name" type="varchar(100)"/>
+            <column name="billing_account_number" type="varchar(100)"/>
+            <column name="billing_address_1" type="varchar(100)"/>
+            <column name="billing_address_2" type="varchar(100)"/>
+            <column name="billing_city" type="varchar(100)"/>
+            <column name="billing_state" type="varchar(100)"/>
+            <column name="billing_postal_code" type="varchar(20)"/>
+            <column name="billing_country" type="varchar(100)"/>
+            <column name="billing_contact_name" type="varchar(100)"/>
+            <column name="billing_contact_email" type="varchar(100)"/>
+            <column name="billing_contact_phone" type="varchar(100)"/>
+            <column name="version" type="int" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="llevit" id="1_2_0-003" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="mysql"/>
+        </preConditions>
+        <comment>Create disputes table.</comment>
+        <sqlFile path="data/disputes.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_2_0-004" author="rcasey">
+        <preConditions onFail="CONTINUE">
+            <dbms type="mysql"/>
+        </preConditions>
+        <comment>Create disputes table.</comment>
+        <sqlFile path="data/v_manage_locations_v15.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_2_0-005" author="fcurran">
+        <addColumn tableName="activation_attempt">
+            <column name="close_notes" type="longtext"/>
+        </addColumn>
+        <sqlFile path="data/v_pbi_iss_activation_attempts_v3.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_2_0-006" author="fcurran">
+        <preConditions onFail="CONTINUE">
+            <dbms type="mysql"/>
+        </preConditions>
+        <comment>Create disputes worklist.</comment>
+        <sqlFile path="data/v_manage_disputes_v1.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-009" author="rcasey">
+        <addColumn tableName="import_activity">
+            <column name="error_file_attachment_id" type="int">
+                <constraints foreignKeyName="FK_import_activity_error_file_attachment_id"
+                             referencedTableName="file_attachment"
+                             referencedColumnNames="file_attachment_id"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_2_0-010" author="rcasey">
+        <addColumn tableName="service">
+            <column name="inventory_added_date" type="datetime"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_2_0-011" author="rcasey">
+        <dropTable tableName="customer_import_error"/>
+    </changeSet>
+
+    <changeSet id="1_2_0-012" author="fcurran">
+        <dropColumn tableName="dispute" columnName="credit_recognized"/>
+        <addColumn tableName="dispute">
+            <column name="credit_recognized" type="datetime"/>
+        </addColumn>
+        <dropColumn tableName="dispute" columnName="open_date"/>
+        <addColumn tableName="dispute">
+            <column name="open_date" type="datetime"/>
+        </addColumn>
+        <dropColumn tableName="dispute" columnName="dispute_follow_up_date"/>
+        <addColumn tableName="dispute">
+            <column name="dispute_follow_up_date" type="datetime"/>
+        </addColumn>
+        <dropColumn tableName="dispute" columnName="billing_review_complete_date"/>
+        <addColumn tableName="dispute">
+            <column name="billing_review_complete_date" type="datetime"/>
+        </addColumn>
+        <dropColumn tableName="dispute" columnName="dispute_closed_date"/>
+        <addColumn tableName="dispute">
+            <column name="dispute_closed_date" type="datetime"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_2_0-012" author="rcasey">
+        <dropColumn tableName="import_activity" columnName="uploaded_by_username"/>
+        <addColumn tableName="import_activity">
+            <column name="subject_id" type="int"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_2_0-013" author="rcasey">
+        <preConditions onFail="CONTINUE">
+            <dbms type="mysql"/>
+        </preConditions>
+        <comment>Create disputes table.</comment>
+        <sqlFile path="data/insert_dispute_type_lookup.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_2_0-014" author="rcasey">
+        <preConditions onFail="CONTINUE">
+            <dbms type="mysql"/>
+        </preConditions>
+        <comment>Create disputes table.</comment>
+        <sqlFile path="data/v_manage_locations_v16.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_2_0-014" author="fcurran">
+        <sql>
+            CREATE TABLE dispute_note
+            (
+                dispute_id int NOT NULL,
+                note_id     int NOT NULL,
+                CONSTRAINT FK_dispute_note_note
+                    FOREIGN KEY (note_id) REFERENCES note (note_id),
+                CONSTRAINT FK_dispute_note_dispute
+                    FOREIGN KEY (dispute_id) REFERENCES dispute (dispute_id)
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="1_2_0-015" author="fcurran">
+        <dropColumn tableName="dispute" columnName="carrier_site_account_num"/>
+    </changeSet>
+
+    <changeSet id="1_2_0-016" author="fcurran">
+        <preConditions onFail="CONTINUE">
+            <dbms type="mysql"/>
+        </preConditions>
+        <comment>Missing fields.</comment>
+        <sqlFile path="data/v_manage_disputes_v2.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_2_0-015" author="rcasey">
+        <dropColumn tableName="dispute" columnName="dispute_note"/>
+    </changeSet>
+
+    <changeSet id="1_2_0-017" author="rcasey">
+        <preConditions onFail="CONTINUE">
+            <dbms type="mysql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_services_v19.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_2_0-018" author="rcasey">
+        <preConditions onFail="CONTINUE">
+            <dbms type="mysql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_locations_v17.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_2_0-018" author="fcurran">
+        <preConditions onFail="CONTINUE">
+            <dbms type="mysql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_services_v20.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_2_0-019" author="rcasey">
+        <preConditions onFail="CONTINUE">
+            <dbms type="mysql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_services_v21.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_2_0-020" author="rcasey">
+        <preConditions onFail="CONTINUE">
+            <dbms type="mysql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_locations_v18.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_2_0-021" author="rcasey">
+        <preConditions onFail="CONTINUE">
+            <dbms type="mysql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_locations_v19.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_2_0-022" author="fcurran">
+        <preConditions onFail="CONTINUE">
+            <dbms type="mysql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_locations_v20.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_2_0-023" author="rcasey">
+        <modifyDataType tableName="config_property" columnName="config_property_value" newDataType="varchar(10000)"/>
+    </changeSet>
+
+    <changeSet id="1_2_0-024" author="rcasey">
+        <preConditions onFail="CONTINUE">
+            <dbms type="mysql"/>
+        </preConditions>
+        <sqlFile path="data/insert_field_mapping_config.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+</databaseChangeLog>

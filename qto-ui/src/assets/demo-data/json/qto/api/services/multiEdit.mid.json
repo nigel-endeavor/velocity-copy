@@ -1,0 +1,60 @@
+{
+  "$schema": "multiEdit.schema.json",
+  "payloads": [
+    {
+      "args": {
+        "fieldValues" : {
+          "provisioner": "",
+          "clientProjectManager": ""
+        },
+        "milestones": [],
+        "serviceIds": [364]
+      },
+      "method": "post",
+      "value": {
+        "cantEdit": [{
+          "service":  {
+            "id": 364,
+            "displayName": "test"
+          },
+          "fields": [ "provisioner", "clientProjectManager"]
+        }]
+      }
+    },    {
+      "args": {
+        "fieldValues" : {
+          "provisioner": ""
+        },
+        "milestones": [],
+        "serviceIds": [364]
+      },
+      "method": "post",
+      "value": {
+        "cantEdit": []
+      }
+    },    {
+      "args": {
+        "fieldValues" : {
+          "provisioner": ""
+        },
+        "milestones": [],
+        "serviceIds": [365, 364]
+      },
+      "method": "post",
+      "value": {
+        "cantEdit": [{
+          "service":  {
+            "id": 365,
+            "displayName": "test2"
+          },
+          "fields": [ "provisioner"]
+        }]
+      }
+    }, {
+      "method": "post",
+      "value": {
+        "cantEdit": []
+      }
+    }
+  ]
+}

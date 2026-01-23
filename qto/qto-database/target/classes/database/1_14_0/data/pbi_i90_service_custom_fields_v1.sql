@@ -1,0 +1,48 @@
+CREATE OR REPLACE VIEW pbi_i90_service_custom_fields AS
+select s.service_id, s.tenant_id, s.current_inventory, cft.tab,
+       MAX(CASE WHEN cf.generic_name = 'Custom 1' THEN cf.label else null END) AS 'Custom 1 Label',
+       MAX(CASE WHEN cf.generic_name = 'Custom 1' THEN cfv.value else null END) AS 'Custom 1 Value',
+       MAX(CASE WHEN cf.generic_name = 'Custom 2' THEN cf.label else null END) AS 'Custom 2 Label',
+       MAX(CASE WHEN cf.generic_name = 'Custom 2' THEN cfv.value else null END) AS 'Custom 2 Value',
+       MAX(CASE WHEN cf.generic_name = 'Custom 3' THEN cf.label else null END) AS 'Custom 3 Label',
+       MAX(CASE WHEN cf.generic_name = 'Custom 3' THEN cfv.value else null END) AS 'Custom 3 Value',
+       MAX(CASE WHEN cf.generic_name = 'Custom 4' THEN cf.label else null END) AS 'Custom 4 Label',
+       MAX(CASE WHEN cf.generic_name = 'Custom 4' THEN cfv.value else null END) AS 'Custom 4 Value',
+       MAX(CASE WHEN cf.generic_name = 'Custom 5' THEN cf.label else null END) AS 'Custom 5 Label',
+       MAX(CASE WHEN cf.generic_name = 'Custom 5' THEN cfv.value else null END) AS 'Custom 5 Value',
+       MAX(CASE WHEN cf.generic_name = 'Custom 6' THEN cf.label else null END) AS 'Custom 6 Label',
+       MAX(CASE WHEN cf.generic_name = 'Custom 6' THEN cfv.value else null END) AS 'Custom 6 Value',
+       MAX(CASE WHEN cf.generic_name = 'Custom 7' THEN cf.label else null END) AS 'Custom 7 Label',
+       MAX(CASE WHEN cf.generic_name = 'Custom 7' THEN cfv.value else null END) AS 'Custom 7 Value',
+       MAX(CASE WHEN cf.generic_name = 'Custom 8' THEN cf.label else null END) AS 'Custom 8 Label',
+       MAX(CASE WHEN cf.generic_name = 'Custom 8' THEN cfv.value else null END) AS 'Custom 8 Value',
+       MAX(CASE WHEN cf.generic_name = 'Custom 9' THEN cf.label else null END) AS 'Custom 9 Label',
+       MAX(CASE WHEN cf.generic_name = 'Custom 9' THEN cfv.value else null END) AS 'Custom 9 Value',
+       MAX(CASE WHEN cf.generic_name = 'Custom 10' THEN cf.label else null END) AS 'Custom 10 Label',
+       MAX(CASE WHEN cf.generic_name = 'Custom 10' THEN cfv.value else null END) AS 'Custom 10 Value',
+       MAX(CASE WHEN cf.generic_name = 'Custom 11' THEN cf.label else null END) AS 'Custom 11 Label',
+       MAX(CASE WHEN cf.generic_name = 'Custom 11' THEN cfv.value else null END) AS 'Custom 11 Value',
+       MAX(CASE WHEN cf.generic_name = 'Custom 12' THEN cf.label else null END) AS 'Custom 12 Label',
+       MAX(CASE WHEN cf.generic_name = 'Custom 12' THEN cfv.value else null END) AS 'Custom 12 Value',
+       MAX(CASE WHEN cf.generic_name = 'Custom 13' THEN cf.label else null END) AS 'Custom 13 Label',
+       MAX(CASE WHEN cf.generic_name = 'Custom 13' THEN cfv.value else null END) AS 'Custom 13 Value',
+       MAX(CASE WHEN cf.generic_name = 'Custom 14' THEN cf.label else null END) AS 'Custom 14 Label',
+       MAX(CASE WHEN cf.generic_name = 'Custom 14' THEN cfv.value else null END) AS 'Custom 14 Value',
+       MAX(CASE WHEN cf.generic_name = 'Custom 15' THEN cf.label else null END) AS 'Custom 15 Label',
+       MAX(CASE WHEN cf.generic_name = 'Custom 15' THEN cfv.value else null END) AS 'Custom 15 Value',
+       MAX(CASE WHEN cf.generic_name = 'Custom 16' THEN cf.label else null END) AS 'Custom 16 Label',
+       MAX(CASE WHEN cf.generic_name = 'Custom 16' THEN cfv.value else null END) AS 'Custom 16 Value',
+       MAX(CASE WHEN cf.generic_name = 'Custom 17' THEN cf.label else null END) AS 'Custom 17 Label',
+       MAX(CASE WHEN cf.generic_name = 'Custom 17' THEN cfv.value else null END) AS 'Custom 17 Value',
+       MAX(CASE WHEN cf.generic_name = 'Custom 18' THEN cf.label else null END) AS 'Custom 18 Label',
+       MAX(CASE WHEN cf.generic_name = 'Custom 18' THEN cfv.value else null END) AS 'Custom 18 Value',
+       MAX(CASE WHEN cf.generic_name = 'Custom 19' THEN cf.label else null END) AS 'Custom 19 Label',
+       MAX(CASE WHEN cf.generic_name = 'Custom 19' THEN cfv.value else null END) AS 'Custom 19 Value',
+       MAX(CASE WHEN cf.generic_name = 'Custom 20' THEN cf.label else null END) AS 'Custom 20 Label',
+       MAX(CASE WHEN cf.generic_name = 'Custom 20' THEN cfv.value else null END) AS 'Custom 20 Value'
+from custom_field cf
+	join custom_field_tab cft on cf.custom_field_id = cft.custom_field_id
+	left join custom_field_value cfv on cf.custom_field_id = cfv.custom_field_id
+	left join service_custom_field_value scfv on cfv.custom_field_value_id = scfv.custom_field_value_id
+	join service s on scfv.service_id = s.service_id
+group by s.service_id, s.tenant_id, s.current_inventory, cft.tab;

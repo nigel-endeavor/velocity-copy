@@ -1,0 +1,93 @@
+<header class="header">
+  <h2 mat-dialog-title class="dialogHeader">Manage Email Templates</h2>
+  <button class="material-symbols-outlined closeButton" (click)="onClose()">close</button>
+</header>
+
+<div [hidden]="workingTemplate">
+  <div class="template-controls">
+    <mat-form-field>
+      <mat-label>Email Template</mat-label>
+      <mat-select [value]="workingTemplate" (selectionChange)="onTemplateSelectionChange($event)">
+        <mat-option *ngFor="let template of emailTemplates$ | async" [value]="template">
+          {{template.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <a href="javascript:" (click)="onAddClicked()">Create New Email Template</a>
+  </div>
+</div>
+
+<form #templateForm="ngForm" [hidden]="!workingTemplate">
+  <mat-form-field>
+    <mat-label>Name</mat-label>
+    <input matInput #nameInput type="text" *ngIf="workingTemplate" [(ngModel)]="workingTemplate.name" name="name" placeholder="Email Template Name">
+    <input matInput type="text" *ngIf="!workingTemplate" placeholder="Email Template Name">
+  </mat-form-field>
+  <div class="email-template-wrapper">
+    <mat-card class="email-template">
+      <mat-card-header>
+        <mat-card-title>Template</mat-card-title>
+      </mat-card-header>
+        <mat-card-content>
+          <mat-form-field>
+            <mat-label>Subject</mat-label>
+            <textarea (contextmenu)="onTemplateRightClicked('subject', $event)" oncontextmenu="return false;" matInput #subjectInput *ngIf="workingTemplate" [(ngModel)]="workingTemplate.subject" name="subject" (input)="onEmailTemplateSubjectChange()" rows="1" cols="50" placeholder="Subject" [disabled]="!workingTemplate"></textarea>
+            <textarea matInput *ngIf="!workingTemplate" rows="1" cols="50" placeholder="Subject" [disabled]="!workingTemplate"></textarea>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Body</mat-label>
+            <textarea (contextmenu)="onTemplateRightClicked('body', $event)" oncontextmenu="return false;" matInput #bodyInputTextArea [(ngModel)]="bodyValue" name="body" (input)="onEmailTemplateBodyChange()" rows="10" cols="50" placeholder="Body" [disabled]="!workingTemplate"></textarea>
+          </mat-form-field>
+          To add a variable to the email template, right click on the template and select the variable you want to insert.
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card class="email-template">
+      <mat-card-header>
+        <mat-card-title>Preview</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-form-field>
+          <mat-label>Subject</mat-label>
+          <textarea matInput value={{previewEmailSubject}} rows="1" cols="50" placeholder="Subject" readonly="true" [disabled]="!workingTemplate"></textarea>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Body</mat-label>
+          <textarea matInput #bodyPreviewTextArea class="scroll-sync" value={{previewEmailBody}} rows="10" cols="50" placeholder="Body" readonly="true" [disabled]="!workingTemplate"></textarea>
+        </mat-form-field>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</form>
+
+<div class="form-buttons" *ngIf="workingTemplate">
+  <div class="button-group">
+    <button (click)="onSaveClicked()" [disabled]="templateForm.invalid" tabindex="7">
+      <span class="material-symbols-outlined">save</span>Save
+    </button>
+    <button (click)="onCancelClicked()" tabindex="8">Cancel</button>
+  </div>
+  <button *ngIf="workingTemplate && workingTemplate.id !== undefined" title="Delete" (click)="onDeleteClicked()" tabindex="9">
+    <span class="material-symbols-outlined">
+      delete
+    </span>
+  </button>
+</div>
+<ng-container *ngIf="!workingTemplate">
+  <div  class="center">
+    Select a template to edit or create a new template.
+  </div>
+  <button (click)="onBackClicked()" tabindex="8">Back</button>
+</ng-container>
+
+<div class="context-menu" #contextMenu [ngStyle]="contextMenuStyle">
+  Insert Variable
+  <div>
+    <div class="field">
+      <select #templateDropdown (change)="onVariableClicked($event)" [ngModel]="selectedTemplateVariable" name="templateVariables">
+        <option [ngValue]="undefined">Select a variable</option>
+        <option *ngFor="let variable of templateVariables" value="{{variable.path}}">{{variable.label}}</option>
+      </select>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,77 @@
+.requirement-table {
+  font-size: 14px;
+  border-spacing: 1em 0;
+  margin-bottom: 1em;
+
+  td.checkbox-cell {
+    text-align: center;
+  }
+
+  input:disabled {
+    border: 1px solid #FFFFFF;
+    background-color: #FFFFFF;
+    color: black;
+    opacity: 1;
+  }
+}
+
+.ttuNotes, .closeNotes{
+  margin-top: 10px;
+  color: #3E3E3E;
+  font-size: 13px;
+  font-family: "Roboto", sans-serif;
+  display: flex;
+  justify-content: space-between;
+  p {
+    margin-bottom: 10px;
+  }
+  span {
+    font-size: 18px;
+    color: #5DCADE;
+    cursor: pointer;
+  }
+}
+
+.duplicateCheckbox {
+  display: flex;
+  flex-direction: row;
+}
+
+textarea {
+  box-sizing: border-box;
+  height: 71px;
+  width: 100%;
+  background: #F8F8F8;
+  border: 1px solid #EDEDED;
+  border-radius: 4px;
+  padding-top: 0px;
+  word-wrap: break-word;
+  font-family: 'Roboto';
+  font-weight: bold;
+  resize: none;
+  &:focus {
+    outline: none;
+  }}
+
+.noteLabel {
+  padding-top: 5px;
+  color: #5A5A5A;
+  font-family: Roboto;
+  font-size: 13px;
+}
+.buttons-block {
+  .buttons {
+    display: flex;
+    gap: .5em;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    .v-button {
+      width: auto;
+    }
+  }
+  .buttons:first-child {
+    margin-top: 20px;
+  }
+}

@@ -1,0 +1,22 @@
+<form class="dialog-form">
+  <div mat-dialog-content>
+  <mat-form-field>
+    <mat-label>Reason for Cost Change</mat-label>
+    <mat-select [value]="data.changeReason" (selectionChange)="data.changeReason = $event.value">
+      <mat-option *ngFor="let reason of data.changeReasonOpts" [value]="reason">
+        {{reason}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div class="form-buttons">
+  <div class="button-group">
+    <button [mat-dialog-close]="data.changeReason" [disabled]="!data.changeReason">
+      OK
+    </button>
+    <button (click)="onClose()">
+      Cancel
+    </button>
+  </div>
+</div>
+</form>

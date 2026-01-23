@@ -1,0 +1,143 @@
+.dialog-container {
+  padding: 0 0 0 0;
+}
+
+.buttons {
+  margin: 0 2em 0 2em;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  flex: 1;
+  mat-icon {
+    cursor: pointer;
+  }
+  h2 {
+    margin-bottom: 0;
+  }
+}
+
+::ng-deep .task-table .abstract-table {
+  max-height: calc(100vh - 48em) !important;
+}
+
+.body {
+  margin-bottom: .5em;
+}
+
+::ng-deep .mdc-form-field .mdc-label {
+  display: flex;
+  align-items: center; /* Align label and icon vertically */
+}
+
+::ng-deep .mdc-form-field .mat-icon {
+  margin-left: 8px; /* Add spacing if needed */
+}
+
+.header-buttons {
+  display: flex;
+  padding: 1em 1em .5em 2em;
+  button {
+    font-family: 'Roboto', sans-serif;
+    font-style: normal;
+    font-size: 13px;
+    height: 30px;
+    border:none;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+  }
+
+  button:enabled {
+    cursor: pointer;
+    color: white;
+    background-color: #5DCADE;
+    outline: none;
+
+    &:hover {
+      background: #3871C1;
+    }
+  }
+}
+
+.columns {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.columns .column {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin: 0 10px;
+}
+
+.columns .column:first-child {
+  margin-left: 2em;
+}
+
+.columns .column:last-child {
+  margin-right: 2em;
+}
+
+.task-list {
+  border: solid 1px #ccc;
+  min-height: 200px;
+  height: auto;
+  background: white;
+  border-radius: 4px;
+  overflow: hidden;
+  display: block;
+  flex-grow: 1;
+}
+
+.task-box {
+  padding: 5px 2px;
+  border-bottom: solid 1px #ccc;
+  color: rgba(0, 0, 0, 0.87);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  cursor: move;
+  background: white;
+  font-size: 14px;
+}
+
+.inactive {
+  background: #ccc;
+  cursor: not-allowed;
+  user-select: none;
+}
+
+.task-box.cdk-drag-disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  user-select: none;
+}
+
+.cdk-drag-preview {
+  text-transform: none;
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+              0 8px 10px 1px rgba(0, 0, 0, 0.14),
+              0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.task-box:last-child {
+  border: none;
+}
+
+.task-list.cdk-drop-list-dragging .task-box:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}

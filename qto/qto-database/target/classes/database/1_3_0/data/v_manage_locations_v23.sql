@@ -1,0 +1,72 @@
+CREATE OR REPLACE VIEW v_manage_locations AS
+SELECT
+    o.order_id,
+    l.location_id,
+    c.company_name,
+    c.company_id,
+    pc.company_name AS parent_company_name,
+    pc.company_id AS master_customer_id,
+    COALESCE(vs.display_name, 'Unassigned') AS provisioner,
+    o.client_order_id,
+    l.client_location_id,
+    l.location_name,
+    l.location_status,
+    IFNULL(sv.count_services, 0) as count_services,
+    sv.services,
+    l.progress_percentage,
+    CONCAT(a.address_1,
+           IF(LENGTH(a.address_2), CONCAT('\n', a.address_2), ''),
+           '\n', a.city, ', ', a.state_province, ' ', a.postal_code) AS address,
+    a.address_1,
+    a.address_2,
+    a.city,
+    a.state_province,
+    a.postal_code,
+    (SELECT mi.milestone_date
+         FROM milestone_instance mi
+         JOIN location_milestone_instance lmi ON mi.milestone_instance_id = lmi.milestone_instance_id
+         JOIN milestone m ON mi.milestone_id = m.milestone_id
+         WHERE lmi.location_id = l.location_id AND m.milestone_code = 'COMPLETE') completion_date,
+    IFNULL(vju.show_jeop_icon, 0) AS show_jeop_icon,
+    l.tenant_id,
+    l.version,
+    l.active,
+    IFNULL(vju.open_jeops, '') AS open_jeops,
+    IFNULL(sv.mac_count, 0) AS mac_count
+FROM company c
+         JOIN orders o ON c.company_id = o.company_id
+         JOIN location l ON o.order_id = l.order_id
+         LEFT JOIN company pc ON c.master_customer_id = pc.company_id
+         LEFT JOIN address a ON l.address_id = a.address_id
+         LEFT JOIN v_subject vs ON vs.subject_id = provisioner
+         LEFT JOIN v_subject vsm ON vsm.subject_id = vertek_project_manager
+         LEFT JOIN (
+            SELECT
+                s.location_id,
+                COUNT(s.service_id) AS count_services,
+                SUM(s.active = true) AS count_active_services,
+                SUM(s.active = false) AS count_inactive_services,
+                CONCAT_WS(',',
+                          CASE WHEN COUNT(bs.service_id) > 0 THEN 'Broadband' END,
+                          CASE WHEN COUNT(ds.service_id) > 0 THEN 'DIA' END,
+                          CASE WHEN COUNT(us.service_id) > 0 THEN 'UCaaS' END,
+                          CASE WHEN COUNT(gs.service_id) > 0 THEN '4G/5G' END
+                    ) AS services,
+                COUNT(CASE WHEN s.order_type in ('Move', 'Add', 'Change') THEN 1 END) AS mac_count
+            FROM service s
+                     LEFT JOIN broadband_service bs ON s.service_id = bs.service_id
+                     LEFT JOIN dia_service ds ON s.service_id = ds.service_id
+                     LEFT JOIN ucaas_service us ON s.service_id = us.service_id
+                     LEFT JOIN `4g5g_service` gs ON s.service_id = gs.service_id
+            WHERE s.service_status != 'Service Cancelled'
+            GROUP BY s.location_id
+        ) sv ON l.location_id = sv.location_id
+         LEFT JOIN (
+            SELECT
+                location_id,
+                GROUP_CONCAT(DISTINCT level_jeop) AS open_jeops,
+                COUNT(*) AS show_jeop_icon
+            FROM v_jeops_union
+            WHERE jeop_level IN ('Order', 'Location') AND end_date IS NULL
+            GROUP BY location_id
+        ) vju ON l.location_id = vju.location_id;

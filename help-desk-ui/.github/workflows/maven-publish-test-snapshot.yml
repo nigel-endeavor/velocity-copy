@@ -1,0 +1,29 @@
+name: Maven Package - Test Snapshot
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+     - uses: actions/checkout@v3
+     - uses: actions/setup-node@v3
+       with:
+        node-version: 16
+     - run: npm ci
+     - run: npm run build:test --omit=dev
+     - name: Get NPM Version
+       id: package-version
+       uses: martinbeentjes/npm-get-version-action@main
+     - name: Create zip
+       run: |
+        cd dist/help-desk-ui
+        zip -r help-desk-ui-${{steps.package-version.outputs.current-version}}-TEST-SNAPSHOT.zip .
+     - name: Publish to GitHub Packages Apache Maven
+       run: |
+        REPO="https://maven.pkg.github.com/${GITHUB_REPOSITORY}"
+        mvn deploy:deploy-file -s $GITHUB_WORKSPACE/.github/workflows/maven-settings.xml -DgroupId=com.vertek.corporate -DartifactId=help-desk-ui -Dversion=${{steps.package-version.outputs.current-version}}-TEST-SNAPSHOT -Dpackaging=zip -Dfile=dist/help-desk-ui/help-desk-ui-${{steps.package-version.outputs.current-version}}-TEST-SNAPSHOT.zip -Durl="${REPO}" -Dregistry="${REPO}" -DrepositoryId=github
+       env:
+         GITHUB_USER_REF: rcasey-vertek
+         GITHUB_TOKEN_REF: ${{ secrets.RC_PACKAGES_READ_WRITE_TOKEN }}

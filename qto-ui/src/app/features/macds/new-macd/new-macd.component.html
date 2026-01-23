@@ -1,0 +1,146 @@
+<div class="header">
+  <h2>
+    New MACD
+  </h2>
+  <mat-icon (click)="onClose()">
+    close
+  </mat-icon>
+</div>
+
+<form #newMacdForm="ngForm" class="new-macd-form">
+  <mat-card class="new-macd-card" *ngFor="let macdSelection of macdSelections$ | async; let i = index; let isLast = last; let isFirst = first">
+    <mat-card-content class="columns">
+      <div class="column">
+        <mat-form-field>
+          <mat-label>Order Type</mat-label>
+          <mat-select name="orderType" [value]="macdSelection.orderType"
+                      (selectionChange)="onPropertyUpdate('orderType', $event, i)"
+                      [required]="true"
+                      [disabled]="!isLast"
+                      tabindex="1">
+            <mat-option *ngFor="let orderType of filteredOrderTypes$ | async" [value]="orderType">
+              {{orderType.value}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Project Name</mat-label>
+          <mat-select name="projectName" [value]="macdSelection.projectName"
+                      (selectionChange)="onPropertyUpdate('projectName', $event, i)"
+                      [required]="false"
+                      [disabled]="!isLast"
+                      tabindex="2">
+            <mat-option *ngFor="let projectName of projectNames$ | async" [value]="projectName">
+              {{projectName.value}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-checkbox *ngIf="macdSelection.subOrderType && macdSelection.subOrderType.value.startsWith('New Service')" [checked]="macdSelection.createDisconnectUponCompletion" [disabled]="!isLast" (change)="onPropertyUpdate('createDisconnectUponCompletion', $event, i)" tabindex="3">Create Disconnect Upon Completion</mat-checkbox>
+        <mat-form-field *ngIf="macdSelection.subOrderType && macdSelection.subOrderType.value.startsWith('New Service')">
+          <mat-label>Service Type</mat-label>
+          <mat-select name="serviceType" [value]="macdSelection.serviceType"
+                      (selectionChange)="onPropertyUpdate('serviceType', $event, i)"
+                      [required]="true"
+                      [disabled]="!isLast"
+                      tabindex="4">
+            <mat-option *ngFor="let serviceType of serviceTypes$ | async" [value]="serviceType">
+              {{serviceType.value}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="column">
+        <mat-form-field *ngIf="!macdSelection.orderType || !macdSelection.orderType.value.startsWith('Disconnect')">
+          <mat-label>Sub Order Type</mat-label>
+          <mat-select name="subOrderType" [value]="macdSelection.subOrderType"
+                      (selectionChange)="onPropertyUpdate('subOrderType', $event, i)"
+                      [required]="true"
+                      [disabled]="!isLast || !macdSelection.orderType"
+                      tabindex="3">
+            <ng-container *ngIf="!isLast">
+              <mat-option *ngFor="let subOrderType of subOrderTypes$ | async" [value]="subOrderType">
+                  {{subOrderType.value}}
+              </mat-option>
+            </ng-container>
+            <ng-container *ngIf="isLast">
+              <mat-option *ngFor="let subOrderType of filteredSubOrderTypes$ | async" [value]="subOrderType">
+                {{subOrderType.value}}
+              </mat-option>
+            </ng-container>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field *ngIf="macdSelection.createDisconnectUponCompletion|| (latestMacdSelection.orderType && latestMacdSelection.orderType.value.startsWith('Disconnect'))">
+          <mat-label>Disconnect Reason</mat-label>
+          <mat-select name="disconnectReason" [value]="macdSelection.disconnectReason"
+                      (selectionChange)="onPropertyUpdate('disconnectReason', $event, i)"
+                      [required]="true"
+                      [disabled]="!isLast"
+                      tabindex="5">
+            <mat-option *ngFor="let disconnectReason of disconnectReasons$ | async" [value]="disconnectReason">
+              {{disconnectReason.value}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+    <button *ngIf="isLast && !isFirst" (click)="removeMacd(i)" tabindex="5">Remove</button>
+  </mat-card>
+
+  <mat-checkbox *ngIf="!isMultiMacd && isLinkedOrBundled" [checked]="(createLinkedBundled$ | async) || false" (change)="onCreateLinkedBundledChange($event)">Create For Any Linked or Bundled Services</mat-checkbox>
+
+
+  <mat-form-field>
+    <mat-label>MACD Note</mat-label>
+    <textarea matInput [value]="macdNote$ | async" (input)="onMacdNoteChange($event)"></textarea>
+  </mat-form-field>
+
+  <div class="form-buttons">
+    <div class="buttonGrouping">
+        <h3 class="title">Attachments</h3>
+        <!-- Reverses the order of entries in the attachmentMap -->
+        <div class="attachments-container">
+          <div class="map" *ngFor="let attachmentEntry of attachmentMap | keyvalue">
+            <p class="service-display-text">
+              {{attachmentEntry.key}}
+            </p>
+
+            <div class="attachment" *ngFor="let attachment of attachmentEntry.value" (click)="onAttachmentClicked($event, attachment)">
+
+              <div>
+                <span class="material-symbols-outlined attachment-icon">
+                  attach_file
+                </span>
+                <div>
+                  {{attachment.name}}
+                  <div class="attachment-description">
+                    <p *ngIf="!attachment.expanded">{{attachment.description}}</p>
+                    <input *ngIf="attachment.expanded" [(ngModel)]="attachment.description" name="description" (change)="setDirty(attachment)" (click)="$event.stopPropagation()">
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+
+        <p class="v-link" *ngIf="!showDialog" (click)="toggleShowDialog()">Add Attachment</p>
+
+        <div class="dialog" *ngIf="showDialog">
+          <input id="file-input" type="file">
+          <p class="max-file-size">5MB Max File Size</p>
+          <div class="buttons">
+            <button (click)="toggleShowDialog()">Cancel</button>
+          </div>
+        </div>
+
+      <app-loading-spinner *ngIf="(isLoading$ | async)"></app-loading-spinner>
+    </div>
+    <div class="right-buttons button-group">
+      <button (click)="addMacd()" tabindex="6" [disabled]="(!latestMacdSelection.subOrderType || latestMacdSelection.subOrderType.value.startsWith('New Service'))
+    || (latestMacdSelection.orderType && latestMacdSelection.orderType.value.startsWith('Disconnect'))">Add Another</button>
+      <button (click)="onSubmit()" [disabled]="isFormInvalid()" tabindex="7">Submit</button>
+      <button (click)="onClose()" tabindex="8">Cancel</button>
+    </div>
+  </div>
+</form>

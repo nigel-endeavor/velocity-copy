@@ -1,0 +1,228 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "get-companies",
+  "title": "Companies",
+  "description": "/companies",
+  "type": "object",
+  "additionalProperties": false,
+  "$ref": "../../../main.schema.json#/definitions/toplevel",
+  "properties": {
+    "payloads": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/payload"
+      }
+    }
+  },
+  "definitions": {
+    "linkRels": {
+      "type": "object",
+      "properties": {
+        "self": {
+          "type": "object",
+          "properties": {
+            "method": {
+              "type": "string"
+            },
+            "href": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "payload": {
+      "allOf": [
+        {
+          "$ref": "../../../main.schema.json#/definitions/payload"
+        },
+        {
+          "properties": {
+            "value": {
+              "type": "object",
+              "properties": {
+                "linkRels": {
+                  "type": "object",
+                  "$ref": "#/definitions/linkRels"
+                },
+                "offset": {"type":  "number"},
+                "limit": {"type":  "number"},
+                "total": {"type":  "number"},
+                "collection": {
+                  "type": "array",
+                  "additionalProperties": false,
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "version": {
+                        "type": "number"
+                      },
+                      "id": {"type": "number"},
+                      "name": {
+                        "type": "string"
+                      },
+                      "type":{
+                        "type": "string"
+                      },
+                      "active":{
+                        "type": "boolean"
+                      },
+                      "uuid":{
+                        "type": "string"
+                      },
+                      "clientId":{
+                        "type": "string"
+                      },
+                      "address": {
+                        "version":{
+                          "type": "number"
+                        },
+                        "id":{
+                          "type": "number"
+                        },
+                        "address1":{
+                          "type": "string"
+                        },
+                        "address2":{
+                          "type": "string"
+                        },
+                        "city":{
+                          "type": "string"
+                        },
+                        "state":{
+                          "type": "string"
+                        },
+                        "postalCode":{
+                          "type": "string"
+                        },
+                        "country":{
+                          "type": "string"
+                        },
+                        "latitude":{
+                          "type": "string"
+                        },
+                        "longitude":{
+                          "type": "string"
+                        },
+                        "geocodeStatus":{
+                          "type": "string"
+                        },
+                        "geocodeSource":{
+                          "type": "string"
+                        },
+                        "accuracy":{
+                          "type": "string"
+                        },
+                        "validated":{
+                          "type": "boolean"
+                        },
+                        "companyId":{
+                          "type": "number"
+                        }
+                      },
+                      "billingContact":{
+                        "type": "object",
+                        "properties": {
+                          "version":{
+                            "type": "number"
+                          },
+                          "id":{
+                            "type": "number"
+                          },
+                          "companyId":{
+                            "type": "number"
+                          },
+                          "firstName":{
+                            "type": "string"
+                          },
+                          "lastName":{
+                            "type": "string"
+                          },
+                          "active":{
+                            "type": "boolean"
+                          },
+                          "notes":{
+                            "type": "string"
+                          },
+                          "type":{
+                            "type": "string"
+                          },
+                          "role":{
+                            "type": "string"
+                          },
+                          "address":{
+                            "version":{
+                              "type": "number"
+                            },
+                            "id":{
+                              "type": "number"
+                            },
+                            "address1":{
+                              "type": "string"
+                            },
+                            "address2":{
+                              "type": "string"
+                            },
+                            "city":{
+                              "type": "string"
+                            },
+                            "state":{
+                              "type": "string"
+                            },
+                            "postalCode":{
+                              "type": "string"
+                            },
+                            "country":{
+                              "type": "string"
+                            },
+                            "latitude":{
+                              "type": "string"
+                            },
+                            "longitude":{
+                              "type": "string"
+                            },
+                            "geocodeStatus":{
+                              "type": "string"
+                            },
+                            "geocodeSource":{
+                              "type": "string"
+                            },
+                            "accuracy":{
+                              "type": "string"
+                            },
+                            "validated":{
+                              "type": "boolean"
+                            },
+                            "companyId":{
+                              "type": "number"
+                            }
+                          },
+                          "phone":{
+                            "type": "string"
+                          },
+                          "email":{
+                            "type": "string"
+                          },
+                          "lastUpdateBy":{
+                            "type": "string"
+                          },
+                          "lastUpdateDate":{
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "linkRels": {
+                        "type": "object",
+                        "$ref": "#/definitions/linkRels"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

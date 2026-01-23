@@ -1,0 +1,78 @@
+<div class="no-tasks-message" *ngIf="!(taskGroup$ | async)">
+  <p>There are no tasks for this customer.</p>
+</div>
+<ng-container *ngIf="(taskGroup$ | async) && (customerTasks$ | async) as tasks">
+  <div class="no-tasks-message" *ngIf="tasks.length === 0">
+    <p>There are no tasks defined for this customer's task group.</p>
+  </div>
+  <div class="no-tasks-message" *ngIf="tasks.length > 0 && currentAssignment">
+    <p>Current Task Assignment {{ currentAssignment }}</p>
+  </div>
+  <table *ngIf="tasks.length > 0">
+    <!-- Table Header -->
+    <tr>
+      <th>
+        Task
+        <span class="tooltip">
+            ℹ️
+          <span class="tooltiptext">{{ taskHeaderTooltip }}</span>
+        </span>
+      </th>
+
+      <th>
+        Completed
+        <span class="tooltip">
+            ℹ️
+          <span class="tooltiptext">{{ completedHeaderTooltip }}</span>
+        </span>
+      </th>
+      <th>
+        Assigned To
+        <span class="tooltip">
+            ℹ️
+          <span class="tooltiptext">{{ assignedToHeaderTooltip }}</span>
+        </span>
+      </th>
+      <th class="comments">
+        <div class="last-column-tooltip">
+          Comments
+          <span class="tooltip">
+              ℹ️
+            <span class="tooltiptext">{{ commentsHeaderTooltip }}</span>
+          </span></div>
+        <div>
+          <span class="material-symbols-outlined pencilButton" *ngIf="editEnabled && !editTask"
+                (click)="editTask = true">
+            border_color
+          </span>
+          <span class="material-symbols-outlined saveButton" *ngIf="editEnabled && editTask"
+                (click)="onSaveCompanyTasksClicked()">
+            save
+          </span>
+        </div>
+      </th>
+    </tr>
+    <!-- Table Body -->
+    <tr *ngFor="let task of customerTasks">
+      <td class="taskValue">{{ task.value }}</td>
+      <td>
+        <app-datepicker [(date)]="task.completeDate" name="{{task.value}}-completeDate"
+                        (dateChange)="markUnsaved()" [disabled]="!editEnabled || !editTask"></app-datepicker>
+      </td>
+      <td>
+        <ng-container *ngIf="(provisioners$ | async) as assignedToOptions">
+          <select [(ngModel)]="task.assignedTo" name="{{task.value}}-assignedTo"
+                  (change)="markUnsaved()" [disabled]="!editEnabled || !editTask">
+            <option *ngFor="let opt of assignedToOptions" [value]="opt.displayName">{{ opt.displayName }}</option>
+            <option value=""></option>
+          </select>
+        </ng-container>
+      </td>
+      <td>
+        <textarea matInput [(ngModel)]="task.comment" name="{{task.value}}-comment"
+                  (input)="markUnsaved()" [disabled]="!editEnabled || !editTask"
+                  rows="5" cols="30" maxlength="500" placeholder="Any comments?..."></textarea>
+      </td>
+    </tr>
+  </table>
+</ng-container>

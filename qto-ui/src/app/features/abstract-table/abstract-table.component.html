@@ -1,0 +1,188 @@
+<!-- Table View -->
+<div *ngIf="!cardViewSelected" class="abstract-table">
+  <div class="tWrap">
+    <div #tWrapHead id="tWrapHead" class="tWrap__head" (scroll)="onHeaderScroll($event)">
+      <table #headerTable id="headerTable"
+             mat-table
+             cdkDropList
+             cdkDropListOrientation="horizontal"
+             [cdkDropListData]="columns"
+             (cdkDropListDropped)="dropTable($event)">
+        <thead>
+        <tr>
+          <th *ngIf="showMultiEdit" class="checkbox-cell">
+            <mat-checkbox class="inverted"
+                          [checked]="allComplete"
+                          [indeterminate]="indeterminate"
+                          (change)="setAll($event.checked)">
+            </mat-checkbox>
+          </th>
+          <ng-container *ngFor="let col of columns">
+            <!-- Draggable Column Header -->
+            <th *ngIf="draggable && !col.hidden"
+                [style.width]="col.width || '100px'"
+                [style.padding-right]="searchCriteria.sortField == col.propertyName ? '22px': ''"
+                title={{col.name}}
+                cdkDrag cdkDragHandle [cdkDragData]="col" 
+                (click)="changeSort(col.propertyName)">
+              {{ col.name }}
+              <span class="material-symbols-outlined" *ngIf="searchCriteria.sortField === col.propertyName">
+                {{searchCriteria.sortDir === 'ASC' ? 'arrow_drop_up' : 'arrow_drop_down'}}
+              </span>
+              <div #resizer [ngStyle]="resizerStyles" class="resizer"></div>
+            </th>
+            <!-- Non-Draggable Column Header -->
+            <th *ngIf="!draggable && !col.hidden"
+                [style.width]="col.width || '100px'"
+                [style.padding-right]="searchCriteria.sortField == col.propertyName ? '22px': ''"
+                title={{col.name}}
+                (click)="changeSort(col.propertyName)">
+              {{ col.name }}
+              <span class="material-symbols-outlined" *ngIf="searchCriteria.sortField === col.propertyName">
+                {{searchCriteria.sortDir === 'ASC' ? 'arrow_drop_up' : 'arrow_drop_down'}}
+              </span>
+              <div #resizer [ngStyle]="resizerStyles" class="resizer"></div>
+            </th>
+          </ng-container>
+        </tr>
+        </thead>
+      </table>
+    </div>
+    <div #tWrapBody id="tWrapBody" class="tWrap__body" (scroll)="onBodyScroll($event)">
+      <table id="bodyTable">
+        <tbody>
+          <tr #tr class="table-row" *ngFor="let row of tableData" (click)="onRowClicked(row, tr)" (dblclick)="onRowDblClicked(row)" (mouseup)="onMouseUp(row, $event)">
+            <td *ngIf="showMultiEdit" class="checkbox-cell" [style.border-color]="getStatusColor(row)">
+              <mat-checkbox [ngModel]="row.selected"
+                            (ngModelChange)="updateAllComplete($event, row)"
+                            (click)="$event.stopPropagation()">
+              </mat-checkbox>
+            </td>
+            <ng-container *ngFor="let col of columns; let i = index">
+              <td *ngIf="!col.hidden" [style.width]="col.width || '100px'" [style.border-color]="getStatusColor(row)">
+                <!-- Default Cell Type -->
+                <div class="multi-cell">
+                  <!-- 1st Column Alert Icons -->
+                  <div *ngIf="i === 0" class="alert-icons">
+                    <span *ngIf="showNoteIcon(row) || showDisputeFollowUpIcon(row)" class="material-symbols-outlined" [ngStyle]="{color: noteIconColor}">
+                      event_busy
+                    </span>
+                    <span *ngIf="showJeopIcon(row)" class="material-symbols-outlined" [ngStyle]="{color: jeopIconColor}">
+                      offline_bolt
+                    </span>
+                    <span *ngIf="showDisconnectIcon(row)" class="material-symbols-outlined" [ngStyle]="{color: disconnectIconColor}">
+                      power_off
+                    </span>
+                    <span *ngIf="showMacIcon(row)" class="material-symbols-outlined" [ngStyle]="{color: macIconColor}">
+                      repeat
+                    </span>
+                    <span *ngIf="showDisputeIcon(row)" class="material-symbols-outlined" [ngStyle]="{color: disputeIconColor}">
+                      feedback
+                    </span>
+                    <span *ngIf="showLinkedIcon(row)" class="material-symbols-outlined" [ngStyle]="{color: linkedIconColor}">
+                      link
+                    </span>
+                    <span *ngIf="showBundledIcon(row)" class="material-symbols-outlined" [ngStyle]="{color: bundledIconColor}">
+                      shop_two
+                    </span>
+                  </div>
+                  <p *ngIf="col.type === 'number' || col.type === 'text'" [ngStyle]="col.wrapText ? { whiteSpace: 'pre-wrap' } : {}">{{ row | nestedProperty: col.propertyName || '' }}</p>
+                  <p *ngIf="col.type === 'currency'">{{ row | nestedProperty: col.propertyName | currency }}</p>
+                </div>
+                <ng-container [ngSwitch]="col.type">
+                  <ng-container *ngSwitchCase="'count'">
+                    <!-- Count Cell -->
+                    <p *ngIf="col.type === 'count'" class="count-cell-content"> {{ row | nestedProperty: col.propertyName }}</p>
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'date'">
+                    <p *ngIf="col.type === 'date'">{{ row | nestedProperty: col.propertyName | date:'MMM d, yyyy'}}</p>
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'dateutc'">
+                    <p *ngIf="col.type === 'dateutc'">{{ row | nestedProperty: col.propertyName | date:'MMM d, yyyy':'UTC'}}</p>
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'datetime'">
+                    <!-- Date and time Cell -->
+                    <p *ngIf="col.type === 'datetime'">{{ row | nestedProperty: col.propertyName | date:'MMM d, yyyy h:mm a'}}</p>
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'time'">
+                    <p *ngIf="col.type === 'time'">{{ row | nestedProperty: col.propertyName | date:'h:mm a'}}</p>
+                  </ng-container>
+                  <!-- Boolean Cell -->
+                  <ng-container *ngSwitchCase="'boolean'">
+                    <mat-checkbox [ngModel]="row | nestedProperty: col.propertyName"
+                                  (click)="$event.preventDefault()"
+                                  [disabled]="true">
+                    </mat-checkbox>
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'list'">
+                    <!-- List Cell -->
+                    <ul class="list-cell-content">
+                      <li *ngFor="let item of (row | nestedProperty: col.propertyName)?.split(',')">{{item}}</li>
+                    </ul>
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'progress'">
+                    <!-- Progress Bar Cell -->
+                    <div *ngIf="col.type === 'progress'" class="progress-cell-content">
+                      {{ row | nestedProperty: col.propertyName }}%
+                      <div class="progress-bar">
+                        <div [style.width]="getProgressBarWidth(row, col)" [style.backgroundColor]="getStatusColor(row)"></div>
+                      </div>
+                    </div>
+                  </ng-container>
+                </ng-container>
+              </td>
+            </ng-container>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Card View -->
+<div *ngIf="cardViewSelected" class="abstract-cards">
+  <div #div *ngFor="let card of cards" class="card" (click)="onRowClicked(card.data, div)" (dblclick)="onRowDblClicked(card.data)" (mouseup)="onMouseUp(card.data, $event)">
+    <div class="card-header" [style.background]="getStatusColor(card.data)">
+      <ng-container *ngTemplateOutlet="cardHeader; context: {$implicit: card}"></ng-container>
+    </div>
+    <div class="card-body">
+      <ng-container *ngTemplateOutlet="cardBody; context: {$implicit: card}"></ng-container>
+    </div>
+    <div class="card-footer">
+      <div class="card-page-select">
+        <!-- Odd syntax for using ngFor with a number, instead of a collection -->
+        <ng-container *ngFor="let item of [].constructor(cardPageCount); let i = index">
+          <button type="button" [style.background-color]="(card.meta.page === i) ? '#5DCADE' : ''" (click)="onCardPageClicked($event, card, i)"></button>
+        </ng-container>
+      </div>
+      <ng-container *ngTemplateOutlet="cardFooter; context: {$implicit: card}"></ng-container>
+    </div>
+  </div>
+</div>
+
+<div class="header">
+  <div>
+    <ng-container *ngIf="allowLimitToggle">
+      <p>Display</p>
+      <select [ngModel]="searchCriteria.limit" (ngModelChange)="onLimitChange($event)">
+        <option *ngFor="let option of limitToggleOpts" [value]="option">{{option}}</option>
+      </select>
+      <p>records per page</p>
+    </ng-container>
+  </div>
+  <div>
+    <p>Displaying {{(+tableTotal! > 0) ? 1 + searchCriteria.offset : 0}} -</p>
+    <p>{{(+searchCriteria.offset + +searchCriteria.limit < +tableTotal!) ? +searchCriteria.offset + +searchCriteria.limit : tableTotal}}</p>
+    <p>of {{tableTotal!}}</p>
+    <button type="button" (click)="onPrevPageClicked()" [disabled]="prevPageDisabled()">
+      <span class="material-symbols-outlined">
+        chevron_left
+        </span>
+    </button>
+    <button type="button" (click)="onNextPageClicked()" [disabled]="nextPageDisabled()">
+      <span class="material-symbols-outlined">
+        chevron_right
+      </span>
+    </button>
+  </div>
+</div>

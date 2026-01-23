@@ -1,0 +1,28 @@
+<div class="container">
+  <ng-container *ngIf="selectedLocationOrService$ | async as service">
+    <ng-container *ngIf="showForm && service">
+      <ng-container [ngSwitch]="service.type">
+        <app-service-technical-broadband *ngSwitchCase="ServiceType.BROADBAND" [service]="getSelectedService(service)" [companyId]="companyId" (save)="saveService($event)"></app-service-technical-broadband>
+        <app-service-technical-dia *ngSwitchCase="ServiceType.DIA" [service]="getSelectedService(service)" [companyId]="companyId" (save)="saveService($event)"></app-service-technical-dia>
+        <app-service-technical-ucaas *ngSwitchCase="ServiceType.UCAAS" [service]="getSelectedService(service)" [companyId]="companyId" (save)="saveService($event)"></app-service-technical-ucaas>
+        <app-service-technical-g *ngSwitchCase="ServiceType.G" [service]="getSelectedService(service)" [companyId]="companyId" (save)="saveService($event)"></app-service-technical-g>
+        <app-service-technical-crossconnect *ngSwitchCase="ServiceType.CROSSCONNECT" [service]="getSelectedService(service)" [companyId]="companyId" (save)="saveService($event)"></app-service-technical-crossconnect>
+        <app-service-technical-ethernet *ngSwitchCase="ServiceType.ETHERNET" [service]="getSelectedService(service)" [companyId]="companyId" (save)="saveService($event)"></app-service-technical-ethernet>
+        <app-service-technical-television *ngSwitchCase="ServiceType.TELEVISION" [service]="getSelectedService(service)" [companyId]="companyId" (save)="saveService($event)"></app-service-technical-television>
+        <app-service-technical-mpls *ngSwitchCase="ServiceType.MPLS" [service]="getSelectedService(service)" [companyId]="companyId" (save)="saveService($event)"></app-service-technical-mpls>
+        <app-service-technical-threatMDR *ngSwitchCase="ServiceType.THREATMDR" [service]="getSelectedService(service)" [companyId]="companyId" (save)="saveService($event)"></app-service-technical-threatMDR>
+        <app-service-technical-ransomMDR *ngSwitchCase="ServiceType.RANSOMMDR" [service]="getSelectedService(service)" [companyId]="companyId" (save)="saveService($event)"></app-service-technical-ransomMDR>
+        <app-service-technical-riskMDR *ngSwitchCase="ServiceType.RISKMDR" [service]="getSelectedService(service)" [companyId]="companyId" (save)="saveService($event)"></app-service-technical-riskMDR>
+        <app-service-technical-engineering-IAM *ngSwitchCase="ServiceType.ENGINEERING_IAM" [service]="getSelectedService(service)" [companyId]="companyId" (save)="saveService($event)"></app-service-technical-engineering-IAM>
+        <app-service-technical-engineering-MDM *ngSwitchCase="ServiceType.ENGINEERING_MDM" [service]="getSelectedService(service)" [companyId]="companyId" (save)="saveService($event)"></app-service-technical-engineering-MDM>
+        <app-service-technical-engineering-endpoint *ngSwitchCase="ServiceType.ENGINEERING_ENDPOINT" [service]="getSelectedService(service)" [companyId]="companyId" (save)="saveService($event)"></app-service-technical-engineering-endpoint>
+        <app-service-technical-engineering-info-protection *ngSwitchCase="ServiceType.ENGINEERING_INFO_PROTECTION" [service]="getSelectedService(service)" [companyId]="companyId" (save)="saveService($event)"></app-service-technical-engineering-info-protection>
+        <app-service-technical-engineeringEmailMessaging *ngSwitchCase="ServiceType.ENGINEERING_EMAIL_MESSAGING" [service]="getSelectedService(service)" [companyId]="companyId" (save)="saveService($event)"></app-service-technical-engineeringEmailMessaging>
+        <app-service-technical-microsoft-licenses *ngSwitchCase="ServiceType.MICROSOFTLICENSES" [service]="getSelectedService(service)" [companyId]="companyId" (save)="saveService($event)"></app-service-technical-microsoft-licenses>
+        <app-service-technical-cyber360MXDR *ngSwitchCase="ServiceType.CYBER360MXDR" [service]="getSelectedService(service)" [companyId]="companyId" (save)="saveService($event)"></app-service-technical-cyber360MXDR>
+
+        <p *ngSwitchDefault>Technical</p>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+</div>

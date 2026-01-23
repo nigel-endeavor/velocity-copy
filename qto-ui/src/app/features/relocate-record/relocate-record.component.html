@@ -1,0 +1,25 @@
+<div class="dialog">
+    <div class="header">
+        <h2 mat-dialog-title>Relocate a Service</h2>
+        <button class="material-symbols-outlined closeButton" (click)="onClose()">close</button>
+    </div>
+    <div *ngIf="(searchCriteria$ | async) as searchCriteria" class="searchBar">
+        <input type="text" placeholder="Search..." [ngModel]="searchCriteria.search" (input)="onSearch($event)">
+    </div>
+
+    <app-relocate-record-table class="relocate-table" #table 
+        [columns]="(columns$ | async) || []" 
+        [tableData]="(tableData$ | async) || []"
+        [tableTotal]="(tableTotal$ | async)"
+        [searchCriteria]="(searchCriteria$ | async)"
+        (rowClick)="onRowClicked($event)"
+        (changeSortClicked)="onChangeSortClicked($event)"
+        (pageClicked)="onFilterChanged($event, 'offset')">
+    </app-relocate-record-table>
+
+    <div class="table-actions">
+        <button mat-raised-button color="primary" [disabled]="!data.output" [mat-dialog-close]="data.output">Relocate
+            Service Record</button>
+        <button mat-raised-button color="primary" (click)="onClose()">Cancel</button>
+    </div>
+</div>

@@ -1,0 +1,69 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "get-subjects",
+  "title": "Subjects",
+  "description": "/companies",
+  "type": "object",
+  "additionalProperties": false,
+  "$ref": "../../../main.schema.json#/definitions/toplevel",
+  "properties": {
+    "payloads": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/payload"
+      }
+    }
+  },
+  "definitions": {
+    "payload": {
+      "allOf": [
+        {
+          "$ref": "../../../main.schema.json#/definitions/payload"
+        },
+        {
+          "properties": {
+            "value": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "version": {
+                    "type": "number"
+                  },
+                  "id":{
+                    "type": "number"
+                  },
+                  "username":{
+                    "type": "string"
+                  },
+                  "password":{
+                    "type": "string"
+                  },
+                  "displayName":{
+                    "type": "string"
+                  },
+                  "emailAddress":{
+                    "type": "string"
+                  },
+                  "encKey":{
+                    "type": "string"
+                  },
+                  "active":{
+                    "type": "boolean"
+                  },
+                  "badPasswordTime":{
+                    "type": "string"
+                  },
+                  "badPasswordCount":{
+                    "type": "number"
+                  },
+                  "lastLoginTime":null
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
