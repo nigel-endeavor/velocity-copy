@@ -1,0 +1,79 @@
+# QTO Spring Boot Application Configuration
+# Phase 1: Foundation - Basic configuration with placeholders
+
+spring:
+  application:
+    name: qto-application
+
+  # Datasource configuration - Use profiles for database selection
+  # Profiles available: mysql, postgres, dev (no database)
+  # Activate with: --spring.profiles.active=mysql or --spring.profiles.active=postgres
+  # Or set environment variable: SPRING_PROFILES_ACTIVE=mysql
+
+  # JPA Configuration (Phase 2: full dual-datasource setup)
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        generate_statistics: false
+        use_sql_comments: true
+        format_sql: false
+
+  # Liquibase (Phase 2: will be enabled with proper changelog)
+  liquibase:
+    enabled: false
+    change-log: classpath:database/changelog-master.xml
+
+# Server Configuration
+server:
+  port: 8080
+  servlet:
+    context-path: /qto
+  tomcat:
+    threads:
+      max: 200
+      min-spare: 10
+  compression:
+    enabled: true
+    mime-types: application/json,application/xml,text/html,text/xml,text/plain
+
+# Management Endpoints (Spring Actuator)
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: when-authorized
+  health:
+    defaults:
+      enabled: true
+
+# Logging Configuration
+logging:
+  level:
+    root: INFO
+    com.endeavorms.qto: DEBUG
+    org.springframework.web: INFO
+    org.springframework.boot: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+# Application-specific configuration (Phase 2+)
+qto:
+  version: 1.18.1-SNAPSHOT
+  tenant:
+    default-id: 1
+  file-storage:
+    base-path: ${QTO_FILE_STORAGE:/var/qto/files}
+    max-file-size: 10MB
+  migration:
+    phase: 1-foundation
+    description: "Basic Spring Boot application shell created"
