@@ -1,4 +1,4 @@
-package com.vertek.corporate.qto;
+package com.endeavorms.qto;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -7,11 +7,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * QTO Spring Boot Application Entry Point
  *
  * <p>This is the main Spring Boot application class for the Quantum Task Orchestrator (QTO) platform.
- * It replaces the WildFly/Java EE deployment model with a standalone Spring Boot application.</p>
+ * Built with Spring Boot and Gradle for Endeavor Managed Services.</p>
  *
  * <p><strong>Migration Status:</strong> Phase 1 - Foundation</p>
  * <ul>
  *   <li>✓ Spring Boot application shell created</li>
+ *   <li>✓ Gradle build system configured</li>
+ *   <li>✓ Package structure updated to com.endeavorms</li>
  *   <li>⏳ Database configuration (Phase 2)</li>
  *   <li>⏳ JPA repositories (Phase 3)</li>
  *   <li>⏳ Service layer (Phase 4)</li>

@@ -1,0 +1,54 @@
+# QTO Spring Boot Application - Development Profile
+# This profile allows running the application without a database connection
+
+spring:
+  application:
+    name: qto-application-dev
+
+  # Disable datasource autoconfiguration for local development
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
+
+  # Liquibase disabled for dev profile
+  liquibase:
+    enabled: false
+
+# Server Configuration
+server:
+  port: 8080
+  servlet:
+    context-path: /qto
+
+# Management Endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,env,beans
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: always
+
+# Logging Configuration - More verbose for development
+logging:
+  level:
+    root: INFO
+    com.endeavorms.qto: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.boot: INFO
+
+# Application-specific configuration
+qto:
+  version: 1.18.1-SNAPSHOT
+  migration:
+    phase: 1-foundation
+    description: "Development profile - no database required"
+  development:
+    mode: true
+    features:
+      database: false
+      rest-api: true
+      actuator: true

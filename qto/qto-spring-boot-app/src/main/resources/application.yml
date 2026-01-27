@@ -60,7 +60,7 @@ management:
 logging:
   level:
     root: INFO
-    com.vertek.corporate.qto: DEBUG
+    com.endeavorms.qto: DEBUG
     org.springframework.web: INFO
     org.springframework.boot: INFO
     org.hibernate.SQL: DEBUG
