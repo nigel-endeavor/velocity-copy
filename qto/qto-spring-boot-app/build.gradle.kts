@@ -28,8 +28,9 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-validation")
 
-    // Database
+    // Database Drivers (both MySQL and PostgreSQL supported)
     runtimeOnly("com.mysql:mysql-connector-j")
+    runtimeOnly("org.postgresql:postgresql")
 
     // Liquibase
     implementation("org.liquibase:liquibase-core")

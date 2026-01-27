@@ -5,16 +5,13 @@ spring:
   application:
     name: qto-application
 
-  # Datasource configuration (Phase 2: will be configured with dual datasources)
-  datasource:
-    url: jdbc:mysql://localhost:3306/qto?useSSL=false&serverTimezone=UTC
-    username: qto_user
-    password: ${QTO_DB_PASSWORD:changeme}
-    driver-class-name: com.mysql.cj.jdbc.Driver
+  # Datasource configuration - Use profiles for database selection
+  # Profiles available: mysql, postgres, dev (no database)
+  # Activate with: --spring.profiles.active=mysql or --spring.profiles.active=postgres
+  # Or set environment variable: SPRING_PROFILES_ACTIVE=mysql
 
   # JPA Configuration (Phase 2: full dual-datasource setup)
   jpa:
-    database-platform: org.hibernate.dialect.MySQL8Dialect
     show-sql: false
     hibernate:
       ddl-auto: validate

@@ -1,0 +1,96 @@
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# Maven (legacy - should not be present)
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.settings/
+.project
+.classpath
+.factorypath
+
+# Eclipse
+bin/
+.metadata/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.loadpath
+.recommenders/
+.externalToolBuilders/
+*.launch
+
+# IntelliJ IDEA
+out/
+.idea_modules/
+
+# NetBeans
+nbproject/private/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*.log
+
+# Application
+logs/
+*.log
+log/
+application-local.yml
+application-*.yml.local
+
+# Database
+*.db
+*.sqlite
+
+# JBoss/WildFly (legacy - removed)
+wildfly/
+.wildfly*/
+jboss/
+${jboss.server.log.dir}/
+
+# Sensitive
+*.key
+*.pem
+*.crt
+*.p12
+*.jks
+secrets.yml
+.env
+.env.local
+
+# Test
+coverage/
+test-results/
+.pytest_cache/
