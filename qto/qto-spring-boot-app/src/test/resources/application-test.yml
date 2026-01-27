@@ -1,0 +1,39 @@
+# Test Profile Configuration
+spring:
+  application:
+    name: qto-application-test
+
+  # Disable datasource for tests
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
+
+  liquibase:
+    enabled: false
+
+# Server Configuration
+server:
+  port: 0  # Random port for parallel test execution
+
+# Management Endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+      base-path: /actuator
+
+# Logging Configuration - Less verbose for tests
+logging:
+  level:
+    root: WARN
+    com.endeavorms.qto: INFO
+    org.springframework: WARN
+
+# Application-specific configuration
+qto:
+  version: 1.18.1-SNAPSHOT-TEST
+  migration:
+    phase: 1-foundation-test
+    description: "Test profile configuration"
