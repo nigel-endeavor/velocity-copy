@@ -91,3 +91,7 @@ coverage/
 
 # Claude Code
 .claude/
+
+# Runtime process IDs
+.qto-backend.pid
+.qto-frontend.pid
