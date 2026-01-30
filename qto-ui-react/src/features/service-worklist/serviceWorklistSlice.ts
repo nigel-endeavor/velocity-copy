@@ -3,7 +3,8 @@
  * State management for service worklist feature
  */
 
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '@/store';
 import { ServiceSearchCriteria, ServiceWorklistState } from './types';
 import apiClient from '@/services/apiClient';
