@@ -17,10 +17,10 @@ export default defineConfig({
     },
   },
   server: {
-    port: 7887,
+    port: 4200,
     proxy: {
       '/qto/api': {
-        target: 'https://127.0.0.1:8443',
+        target: 'http://localhost:8080',
         changeOrigin: true,
         secure: false,
       },
