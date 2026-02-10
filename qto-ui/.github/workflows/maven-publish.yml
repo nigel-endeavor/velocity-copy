@@ -1,7 +1,6 @@
-# This workflow will build a package using Maven and then publish it to GitHub packages when a release is created
-# For more information see: https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#apache-maven-with-a-settings-path
+# Build and publish qto-ui using npm and Gradle
 
-name: Maven Package
+name: Gradle Package
 
 on:
   push:
@@ -12,11 +11,14 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: qto-ui
     steps:
-     - uses: actions/checkout@v3
-     - uses: actions/setup-node@v3
+     - uses: actions/checkout@v4
+     - uses: actions/setup-node@v4
        with:
-        node-version: 16
+        node-version: 20
      - run: npm ci
      - run: npm run build --omit=dev
      - name: Get NPM Version
@@ -26,10 +28,16 @@ jobs:
        run: |
         cd dist/qto-ui
         zip -r qto-ui-${{steps.package-version.outputs.current-version}}-SNAPSHOT.zip .
-     - name: Publish to GitHub Packages Apache Maven
-       run: |
-        REPO="https://maven.pkg.github.com/${GITHUB_REPOSITORY}"
-        mvn deploy:deploy-file -s $GITHUB_WORKSPACE/.github/workflows/maven-settings.xml -DgroupId=com.vertek.corporate -DartifactId=qto-ui -Dversion=${{steps.package-version.outputs.current-version}}-SNAPSHOT -Dpackaging=zip -Dfile=dist/qto-ui/qto-ui-${{steps.package-version.outputs.current-version}}-SNAPSHOT.zip -Durl="${REPO}" -Dregistry="${REPO}" -DrepositoryId=github
+     - name: Set up JDK 17
+       uses: actions/setup-java@v4
+       with:
+         java-version: '17'
+         distribution: 'temurin'
+         cache: 'gradle'
+     - name: Publish to GitHub Packages with Gradle
+       working-directory: qto-ui
        env:
-         GITHUB_USER_REF: mwelicka
-         GITHUB_TOKEN_REF: ${{ secrets.RC_PACKAGES_READ_WRITE_TOKEN }}
+         PUBLISH_VERSION: ${{ steps.package-version.outputs.current-version }}-SNAPSHOT
+         USERNAME: ${{ github.actor }}
+         TOKEN: ${{ secrets.GITHUB_TOKEN }}
+       run: gradle publish -PpublishVersion="$PUBLISH_VERSION"

@@ -1,4 +1,4 @@
-name: Maven Package - Prod Snapshot
+name: Gradle Package - Prod Snapshot
 
 on:
   workflow_dispatch:
@@ -6,6 +6,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: qto-ui
     steps:
      - uses: actions/checkout@v3
      - uses: actions/setup-node@v3
@@ -20,10 +23,16 @@ jobs:
        run: |
         cd dist/qto-ui
         zip -r qto-ui-${{steps.package-version.outputs.current-version}}-PROD-SNAPSHOT.zip .
-     - name: Publish to GitHub Packages Apache Maven
-       run: |
-        REPO="https://maven.pkg.github.com/${GITHUB_REPOSITORY}"
-        mvn deploy:deploy-file -s $GITHUB_WORKSPACE/.github/workflows/maven-settings.xml -DgroupId=com.vertek.corporate -DartifactId=qto-ui -Dversion=${{steps.package-version.outputs.current-version}}-PROD-SNAPSHOT -Dpackaging=zip -Dfile=dist/qto-ui/qto-ui-${{steps.package-version.outputs.current-version}}-PROD-SNAPSHOT.zip -Durl="${REPO}" -Dregistry="${REPO}" -DrepositoryId=github
+     - name: Set up JDK 17
+       uses: actions/setup-java@v4
+       with:
+         java-version: '17'
+         distribution: 'temurin'
+         cache: 'gradle'
+     - name: Publish to GitHub Packages with Gradle
+       working-directory: qto-ui
        env:
-         GITHUB_USER_REF: mwelicka
-         GITHUB_TOKEN_REF: ${{ secrets.RC_PACKAGES_READ_WRITE_TOKEN }}
+         PUBLISH_VERSION: ${{ steps.package-version.outputs.current-version }}-PROD-SNAPSHOT
+         USERNAME: ${{ github.actor }}
+         TOKEN: ${{ secrets.GITHUB_TOKEN }}
+       run: gradle publish -PpublishVersion="$PUBLISH_VERSION"

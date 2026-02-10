@@ -1,4 +1,4 @@
-name: Maven Release
+name: Gradle Release
 
 on:
   workflow_dispatch:
@@ -9,18 +9,17 @@ jobs:
     steps:
       - name: Checkout project
         uses: actions/checkout@v4
-      - name: Setup Java JDK
+      - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
-          java-version: '11'
+          java-version: '17'
           distribution: 'temurin'
-          server-id: github
+          cache: 'gradle'
       - name: Configure Git user
         run: |
           git config user.email "actions@github.com"
           git config user.name "GitHub Actions"
-      - name: Publish
-        run: mvn -B release:prepare release:perform -s $GITHUB_WORKSPACE/.github/workflows/maven-settings.xml
-        env:
-          GITHUB_USER_REF: mwelicka
-          GITHUB_TOKEN_REF: ${{ secrets.RC_PACKAGES_READ_WRITE_TOKEN }}
+      - name: Grant execute permission for gradlew
+        run: chmod +x qto/qto-spring-boot-app/gradlew
+      - name: Build with Gradle
+        run: qto/qto-spring-boot-app/gradlew -p qto/qto-spring-boot-app clean build

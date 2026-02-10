@@ -2,23 +2,23 @@
 
 ## Project Overview
 
-**QTO Platform** is an enterprise Java EE service orchestration and order management system for telecommunications and cybersecurity services lifecycle management.
+**QTO Platform** is an enterprise Spring Boot service orchestration and order management system for telecommunications and cybersecurity services lifecycle management.
 
 - **Version**: 1.18.1-SNAPSHOT
-- **Group ID**: com.vertek.corporate
-- **Architecture**: Multi-tier Java EE with multi-tenancy
+- **Group ID**: com.endeavor-ms
+- **Architecture**: Spring Boot with multi-tenancy
 - **Scale**: 140+ JPA entities, 90+ REST endpoints, 15+ service types
-- **Build System**: Maven multi-module project
+- **Build System**: Gradle with Kotlin DSL
 
 ## Technology Stack
 
 ### Core Technologies
-- **Java**: 11 (source & target)
-- **Java EE**: 8.0
-- **Application Server**: WildFly (bundled in `/wildfly` directory)
-- **Database**: MySQL (with JTA datasources)
-- **ORM**: JPA 2.2 / Hibernate 6.2
-- **REST API**: JAX-RS (RESTEasy)
+- **Java**: 17
+- **Spring Boot**: 3.2.2
+- **Application Server**: Embedded Tomcat
+- **Database**: PostgreSQL
+- **ORM**: Spring Data JPA / Hibernate
+- **REST API**: Spring MVC REST
 - **Security**: Apache Shiro + Azure AD OAuth 2.0
 - **Scheduler**: Quartz 2.3.2
 - **Database Migrations**: Liquibase 4.23.0
@@ -36,275 +36,79 @@
 
 ```
 qto/
-├── pom.xml                          # Parent POM (aggregator)
-├── wildfly/                         # Bundled WildFly application server
-│   ├── bin/                         # Server scripts (standalone.sh, jboss-cli.sh)
-│   └── standalone/
-│       └── configuration/           # Server configuration files
-│           └── standalone.xml       # Main server config (datasources, security)
-├── qto-database/                    # Database migrations module
-│   └── src/main/resources/database/
-│       └── [version]/               # Liquibase changelogs by version
-├── qto-core/                        # Core domain entities and services
-│   └── src/main/java/
-│       └── com/vertek/corporate/qto/
-│           ├── common/              # Common utilities and base classes
-│           ├── service/             # Service domain (DIA, Broadband, etc.)
-│           ├── order/               # Order management
-│           ├── location/            # Location management
-│           ├── activation/          # Activation workflows
-│           ├── invoicing/           # Billing and invoicing
-│           └── ...                  # Other business domains
-├── qto-rest-api/                    # REST API endpoints
-│   └── src/main/
-│       ├── java/                    # JAX-RS resources
-│       └── resources/
-│           └── META-INF/
-│               └── persistence.xml  # JPA configuration
-├── qto-help-desk/                   # Help desk functionality module
-├── qto-war/                         # Web application packaging
-│   └── src/main/webapp/
-│       └── WEB-INF/
-│           ├── web.xml              # Servlet configuration
-│           ├── jboss-web.xml        # JBoss-specific config
-│           └── jboss-deployment-structure.xml  # Module dependencies
-└── qto-spring-boot/                 # Spring Boot module (experimental)
+├── build.gradle.kts                 # Gradle build configuration
+├── qto-spring-boot-app/              # Main Spring Boot application
+│   ├── build.gradle.kts             # Gradle build with Kotlin DSL
+│   ├── src/main/java/
+│   │   └── com/endeavorms/qto/
+│   │       ├── QtoApplication.java   # Main application class
+│   │       └── controller/          # Spring REST controllers
+│   └── src/main/resources/
+│       ├── application.yml           # Base configuration
+│       ├── application-dev.yml      # Dev profile (no database)
+│       └── db/changelog/            # Liquibase migrations
+└── .github/                         # GitHub workflows
 ```
 
 ## Prerequisites
 
 ### Required Software
-- **Java JDK**: 11 or higher
-- **Maven**: 3.6+
-- **MySQL**: 5.7+ or 8.0+
-- **WildFly**: Bundled in project at `wildfly/` directory
+- **Java JDK**: 17 or higher
+- **Gradle**: 8.5+ (wrapper included)
+- **PostgreSQL**: 12+ (optional for dev profile)
 
 ### Environment Variables
 ```bash
-export JAVA_HOME=/path/to/jdk-11
-export MAVEN_HOME=/path/to/maven
-export PATH=$JAVA_HOME/bin:$MAVEN_HOME/bin:$PATH
+export JAVA_HOME=/path/to/jdk-17
+export PATH=$JAVA_HOME/bin:$PATH
 ```
 
 ## Database Setup
 
-### 1. Create MySQL Databases
-
-QTO uses **two databases** with separate datasources:
+### 1. Create PostgreSQL Database
 
 ```sql
--- Main tenant-specific database
-CREATE DATABASE qto CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- Platform-level multi-tenant database
-CREATE DATABASE platform CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- Create database user
-CREATE USER 'qto_user'@'localhost' IDENTIFIED BY 'your_password';
-GRANT ALL PRIVILEGES ON qto.* TO 'qto_user'@'localhost';
-GRANT ALL PRIVILEGES ON platform.* TO 'qto_user'@'localhost';
-FLUSH PRIVILEGES;
+CREATE DATABASE qto ENCODING 'UTF8';
+CREATE USER qto_user WITH PASSWORD 'your_password';
+GRANT ALL PRIVILEGES ON DATABASE qto TO qto_user;
 ```
 
-### 2. Configure WildFly Datasources
+### 2. Configure Application
 
-Edit `wildfly/standalone/configuration/standalone.xml` and add/configure datasources:
-
-```xml
-<subsystem xmlns="urn:jboss:domain:datasources:6.0">
-    <datasources>
-        <!-- Main QTO Datasource -->
-        <datasource jndi-name="java:jboss/datasources/qto"
-                    pool-name="qto"
-                    enabled="true">
-            <connection-url>jdbc:mysql://localhost:3306/qto?useSSL=false</connection-url>
-            <driver>mysql</driver>
-            <security>
-                <user-name>qto_user</user-name>
-                <password>your_password</password>
-            </security>
-            <validation>
-                <valid-connection-checker class-name="org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLValidConnectionChecker"/>
-                <exception-sorter class-name="org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLExceptionSorter"/>
-            </validation>
-        </datasource>
-
-        <!-- Platform Datasource -->
-        <datasource jndi-name="java:jboss/datasources/platform"
-                    pool-name="platform"
-                    enabled="true">
-            <connection-url>jdbc:mysql://localhost:3306/platform?useSSL=false</connection-url>
-            <driver>mysql</driver>
-            <security>
-                <user-name>qto_user</user-name>
-                <password>your_password</password>
-            </security>
-        </datasource>
-
-        <drivers>
-            <driver name="mysql" module="com.mysql"/>
-        </drivers>
-    </datasources>
-</subsystem>
-```
-
-### 3. Deploy MySQL JDBC Driver to WildFly
+Database configuration is in `application.yml`. Use environment variables:
 
 ```bash
-# Download MySQL Connector/J
-wget https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-j-8.0.33.jar
-
-# Deploy to WildFly
-cp mysql-connector-j-8.0.33.jar wildfly/standalone/deployments/
-touch wildfly/standalone/deployments/mysql-connector-j-8.0.33.jar.dodeploy
+export DB_HOST=localhost
+export DB_PORT=5432
+export DB_NAME=qto
+export DB_USER=qto_user
+export DB_PASSWORD=your_password
 ```
 
-### 4. Run Liquibase Migrations
+### 3. Liquibase Migrations
 
-Migrations are applied automatically on application startup via the `qto-database` module. Alternatively, run manually:
-
-```bash
-cd qto-database
-mvn liquibase:update
-```
+Migrations are applied automatically on application startup.
 
 ## Build Instructions
 
-### Complete Build (All Modules)
+### Build and Run
 
 ```bash
-# From qto/ directory
-mvn clean install
+cd qto-spring-boot-app
 
-# Skip tests for faster build
-mvn clean install -DskipTests
+# Build
+./gradlew clean build
 
-# Build with specific profile
-mvn clean install -P production
-```
+# Run with dev profile (no database required)
+./gradlew bootRun --args='--spring.profiles.active=dev'
 
-### Build Individual Modules
-
-```bash
-# Core business logic only
-mvn clean install -pl qto-core
-
-# REST API only
-mvn clean install -pl qto-rest-api -am
-
-# WAR package only (requires core and api built first)
-mvn clean install -pl qto-war -am
+# Run with database
+./gradlew bootRun
 ```
 
 ### Build Output
 
-- **WAR file**: `qto-war/target/qto-war-1.18.1-SNAPSHOT.war`
-- **JAR modules**: Each module's `target/` directory
-
-## WildFly Configuration
-
-### Start WildFly Server
-
-```bash
-# Navigate to WildFly bin directory
-cd wildfly/bin
-
-# Start in standalone mode (foreground)
-./standalone.sh
-
-# Start in background
-./standalone.sh &
-
-# Start with custom configuration
-./standalone.sh -c standalone-full.xml
-
-# Start with debug port
-./standalone.sh --debug
-```
-
-### WildFly Admin Console
-
-1. Create admin user (first time):
-```bash
-cd wildfly/bin
-./add-user.sh
-# Follow prompts to create management user
-```
-
-2. Access console: http://localhost:9990/console
-
-### Configure WildFly for QTO
-
-Required configurations in `standalone.xml`:
-
-1. **Datasources** (see Database Setup above)
-2. **Security Realm** (Azure AD integration)
-3. **Logging** configuration
-4. **JMS Queues** (for async processing)
-5. **Resource Adapters** (if needed)
-
-## Deployment Instructions
-
-### Deploy to WildFly
-
-#### Option 1: Maven Plugin (Recommended)
-
-```bash
-# From qto-war/ directory
-mvn clean install wildfly:deploy
-
-# Redeploy existing application
-mvn wildfly:redeploy
-
-# Undeploy
-mvn wildfly:undeploy
-```
-
-#### Option 2: Manual Deployment
-
-```bash
-# Copy WAR to deployments directory
-cp qto-war/target/qto-war-1.18.1-SNAPSHOT.war wildfly/standalone/deployments/
-
-# Create .dodeploy marker file to trigger deployment
-touch wildfly/standalone/deployments/qto-war-1.18.1-SNAPSHOT.war.dodeploy
-
-# Monitor deployment logs
-tail -f wildfly/standalone/log/server.log
-```
-
-#### Option 3: JBoss CLI
-
-```bash
-cd wildfly/bin
-./jboss-cli.sh --connect
-
-# Deploy
-[standalone@localhost:9990 /] deploy /path/to/qto-war-1.18.1-SNAPSHOT.war
-
-# Redeploy
-[standalone@localhost:9990 /] deploy --force /path/to/qto-war-1.18.1-SNAPSHOT.war
-
-# Undeploy
-[standalone@localhost:9990 /] undeploy qto-war-1.18.1-SNAPSHOT.war
-```
-
-### Deployment Verification
-
-1. Check deployment status:
-```bash
-ls -la wildfly/standalone/deployments/qto-war-*.deployed
-```
-
-2. Check server logs:
-```bash
-tail -f wildfly/standalone/log/server.log
-```
-
-3. Verify REST API accessibility:
-```bash
-curl http://localhost:8080/qto/api/health
-```
+- **Executable JAR**: `build/libs/qto-spring-boot-app-1.18.1-SNAPSHOT.jar`
 
 ## Running the Application
 
@@ -312,7 +116,6 @@ curl http://localhost:8080/qto/api/health
 
 - **Application Root**: http://localhost:8080/qto
 - **REST API Base**: http://localhost:8080/qto/api
-- **WildFly Console**: http://localhost:9990/console
 
 ### Key API Endpoints
 
@@ -345,74 +148,47 @@ QTO uses **Apache Shiro + Azure AD OAuth 2.0**:
 
 ## Testing
 
-### Run Unit Tests
+### Run Tests
 
 ```bash
-# All modules
-mvn test
+# All tests
+./gradlew test
 
-# Specific module
-mvn test -pl qto-core
-
-# Single test class
-mvn test -Dtest=OrderManagerTest
+# Specific test class
+./gradlew test --tests StatusControllerTest
 
 # With coverage report
-mvn test jacoco:report
-```
-
-### Integration Tests
-
-```bash
-# Run integration tests (Arquillian)
-mvn verify -P integration-tests
-
-# With WildFly Managed Container
-mvn verify -P wildfly-managed
+./gradlew test jacocoTestReport
 ```
 
 ### REST API Testing
 
 ```bash
 # Using curl
-curl -X GET http://localhost:8080/qto/api/orders
-
-# Using REST Assured (in tests)
-given()
-    .auth().oauth2(token)
-    .when()
-    .get("/api/orders")
-    .then()
-    .statusCode(200)
+curl -X GET http://localhost:8080/qto/api/status
+curl -X GET http://localhost:8080/qto/api/status/ping
 ```
 
-## Common Maven Commands
+## Common Gradle Commands
 
 ```bash
 # Clean build
-mvn clean
+./gradlew clean
 
 # Compile only
-mvn compile
+./gradlew compileJava
 
-# Package without tests
-mvn package -DskipTests
+# Build without tests
+./gradlew build -x test
 
-# Install to local Maven repo
-mvn install
+# Run application
+./gradlew bootRun
 
 # Dependency tree
-mvn dependency:tree
+./gradlew dependencies
 
-# Check for dependency updates
-mvn versions:display-dependency-updates
-
-# Generate QueryDSL Q-classes
-mvn clean compile -pl qto-core
-
-# Run specific goal
-mvn liquibase:update
-mvn wildfly:deploy
+# List all tasks
+./gradlew tasks
 ```
 
 ## Development Workflow
@@ -420,110 +196,62 @@ mvn wildfly:deploy
 ### 1. Code Changes
 
 ```bash
-# Make code changes in qto-core, qto-rest-api, etc.
-vim qto-core/src/main/java/.../YourClass.java
+# Make code changes in src/main/java/com/endeavorms/qto/
 ```
 
-### 2. Build Changed Module
+### 2. Build and Run
 
 ```bash
-# Build specific module with dependencies
-mvn clean install -pl qto-core,qto-rest-api -am
+./gradlew clean build
+./gradlew bootRun --args='--spring.profiles.active=dev'
 ```
 
-### 3. Hot Deploy to WildFly
+### 3. Hot Reload
 
-```bash
-# Redeploy WAR
-cd qto-war
-mvn wildfly:redeploy
-```
-
-### 4. Monitor Logs
-
-```bash
-tail -f wildfly/standalone/log/server.log
-```
+Spring DevTools enables automatic restart when code changes.
 
 ## Troubleshooting
 
 ### Build Issues
 
-**Problem**: Maven build fails with dependency resolution errors
+**Problem**: Gradle build fails
 ```bash
-# Solution: Clean local Maven cache and rebuild
-rm -rf ~/.m2/repository/com/vertek/corporate/qto
-mvn clean install -U
+# Solution: Clean and rebuild
+./gradlew clean build --refresh-dependencies
 ```
-
-**Problem**: QueryDSL Q-classes not generated
-```bash
-# Solution: Run annotation processing
-mvn clean compile -pl qto-core
-```
-
-### Deployment Issues
-
-**Problem**: Deployment fails with ClassNotFoundException
-- Check `jboss-deployment-structure.xml` for missing module dependencies
-- Verify all required JARs are in `WEB-INF/lib`
-
-**Problem**: Datasource not found (JNDI lookup fails)
-- Verify datasource configuration in `standalone.xml`
-- Check JNDI name matches `persistence.xml` configuration
-- Ensure MySQL driver is deployed
 
 **Problem**: Port already in use (8080)
 ```bash
-# Find process using port
 lsof -i :8080
 kill -9 <PID>
 
-# Or change WildFly port in standalone.xml
+# Or change port in application.yml: server.port: 8081
 ```
 
 ### Database Issues
 
 **Problem**: Liquibase migration fails
-```bash
-# Manually run migrations with verbose output
-cd qto-database
-mvn liquibase:update -X
-
-# Rollback last changeset
-mvn liquibase:rollback -Dliquibase.rollbackCount=1
-```
+- Check PostgreSQL is running and credentials are correct
+- Use dev profile to run without database: `--spring.profiles.active=dev`
 
 **Problem**: Connection pool exhausted
-- Increase pool size in datasource configuration
-- Check for connection leaks in code (unclosed EntityManagers)
+- Adjust Hikari pool settings in `application.yml`
 
 ### Runtime Issues
 
 **Problem**: OutOfMemoryError
 ```bash
-# Increase WildFly heap size
-export JAVA_OPTS="-Xms2g -Xmx4g -XX:MetaspaceSize=512m"
-./standalone.sh
+./gradlew bootRun -Dspring-boot.run.jvmArguments="-Xms2g -Xmx4g"
 ```
-
-**Problem**: Azure AD authentication fails
-- Verify Azure AD configuration in system properties
-- Check tenant ID, client ID, and client secret
-- Ensure redirect URIs are configured in Azure portal
 
 ## Key Configuration Files
 
 | File | Purpose |
 |------|---------|
-| `pom.xml` | Maven project configuration and dependencies |
-| `persistence.xml` | JPA configuration and entity mappings |
-| `web.xml` | Servlet and web application configuration |
-| `jboss-deployment-structure.xml` | WildFly module dependencies |
-| `jboss-web.xml` | JBoss-specific web configuration |
-| `standalone.xml` | WildFly server configuration |
-| `shiro.ini` | Apache Shiro security configuration |
-| `quartz.properties` | Quartz scheduler configuration |
+| `build.gradle.kts` | Gradle build configuration |
+| `application.yml` | Spring Boot configuration |
+| `application-dev.yml` | Development profile (no database) |
+| `db/changelog/db.changelog-master.xml` | Liquibase migrations |
 
 ## Multi-Tenant Architecture
 
@@ -550,44 +278,42 @@ Start/stop jobs via REST API or JMX console.
 1. **Azure AD / Microsoft Graph API**: User authentication and profile management
 2. **FTDI Field Services**: Dispatch and appointment management
 3. **CRM / Dataverse**: Customer data synchronization
-4. **JMS Queues**: Asynchronous bulk import operations
+4. **Message Queues**: Asynchronous bulk import operations
 
 ## Performance Optimization
 
 - Enable **Hibernate 2nd-level cache** for frequently accessed entities
 - Use **QueryDSL** for type-safe, optimized queries
 - Configure **connection pooling** appropriately
-- Enable **HTTP compression** in WildFly
+- Enable **HTTP compression** in Spring Boot/Tomcat
 - Use **async processing** for long-running operations
 
 ## Code Quality Tools
 
 ```bash
 # Static analysis
-mvn sonar:sonar
+./gradlew sonarqube
 
 # Code coverage
-mvn jacoco:report
+./gradlew jacocoTestReport
 
 # Security scanning
-mvn dependency-check:check
+./gradlew dependencyCheckAnalyze
 
 # Code formatting
-mvn spotless:apply
+./gradlew spotlessApply
 ```
 
 ## CI/CD Pipeline
 
 GitHub Actions workflows in `.github/workflows/`:
 
-- `maven-publish.yml`: Build and publish releases
-- `maven-publish-test-snapshot.yml`: Publish snapshots
-- `maven-deploy-release.yml`: Deploy releases
+- `gradle-publish.yml`: Build and publish releases
+- Gradle-based workflows for CI/CD
 
 ## Additional Resources
 
-- **WildFly Documentation**: https://docs.wildfly.org/
-- **Java EE 8 Tutorial**: https://javaee.github.io/tutorial/
+- **Spring Boot Documentation**: https://docs.spring.io/spring-boot/
 - **Hibernate ORM**: https://hibernate.org/orm/documentation/
 - **Apache Shiro**: https://shiro.apache.org/documentation.html
 - **Liquibase**: https://docs.liquibase.com/
@@ -606,26 +332,16 @@ For AI assistants working on this codebase:
 ## Quick Start Summary
 
 ```bash
-# 1. Set up databases
-mysql -u root -p < setup-databases.sql
+# 1. Build
+cd qto-spring-boot-app
+./gradlew clean build
 
-# 2. Configure WildFly datasources
-vim wildfly/standalone/configuration/standalone.xml
+# 2. Run (dev profile - no database required)
+./gradlew bootRun --args='--spring.profiles.active=dev'
 
-# 3. Start WildFly
-cd wildfly/bin && ./standalone.sh &
-
-# 4. Build and deploy
-cd qto
-mvn clean install
-cd qto-war
-mvn wildfly:deploy
-
-# 5. Verify deployment
-curl http://localhost:8080/qto/api/health
-
-# 6. Monitor logs
-tail -f wildfly/standalone/log/server.log
+# 3. Verify
+curl http://localhost:8080/qto/api/status
+curl http://localhost:8080/qto/actuator/health
 ```
 
 ---

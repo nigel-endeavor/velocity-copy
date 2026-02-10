@@ -1,4 +1,4 @@
-# Maven
+# Maven (legacy - project uses Gradle)
 target/
 pom.xml.tag
 pom.xml.releaseBackup
@@ -14,13 +14,6 @@ buildNumber.properties
 .gradle/
 build/
 !gradle/wrapper/gradle-wrapper.jar
-
-# WildFly / JBoss
-.wildfly*/
-wildfly*/
-jboss*/
-standalone/
-domain/
 
 # Node.js / Angular
 node_modules/

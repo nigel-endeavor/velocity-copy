@@ -196,7 +196,7 @@ Spring DevTools enables automatic restart when code changes:
 - ⏳ **Phase 2: Database** - Dual datasource configuration
 - ⏳ **Phase 3: JPA Repositories** - Data access layer
 - ⏳ **Phase 4: Service Layer** - Business logic
-- ⏳ **Phase 5: REST API** - Migrate JAX-RS to Spring REST
+- ⏳ **Phase 5: REST API** - Spring REST endpoints
 - ⏳ **Phase 6: Security** - Spring Security integration
 
 ## Troubleshooting

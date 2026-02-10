@@ -189,11 +189,11 @@ docker run -p 8080:8080 \
 
 ✅ **Phase 1 Complete**: Spring Boot Foundation
 - Migrated from Maven to Gradle
-- Migrated from Java EE/WildFly to Spring Boot
+- Migrated to Spring Boot
 - Refactored packages from `com.vertek.corporate.qto` to `com.endeavorms.qto`
 - Created comprehensive test suite (40 tests)
 - Added multi-database support (MySQL & PostgreSQL)
-- Removed all legacy JBoss/Maven dependencies
+- Removed legacy Maven dependencies
 
 See [MIGRATION.md](qto-spring-boot-app/MIGRATION.md) for migration strategy.
 

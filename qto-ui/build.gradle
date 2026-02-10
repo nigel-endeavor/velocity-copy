@@ -1,30 +1,9 @@
 plugins {
-    id 'java'
     id 'maven-publish'
 }
 
 group = 'com.vertek.corporate'
 version = '1.16.0-SNAPSHOT'
-
-repositories {
-    mavenCentral()
-    maven {
-        url = uri('https://maven.pkg.github.com/Vertek-Corporation/qto-ui')
-        credentials {
-            username = project.findProperty('gpr.user') ?: System.getenv('USERNAME')
-            password = project.findProperty('gpr.key') ?: System.getenv('TOKEN')
-        }
-    }
-}
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
-}
-
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
-}
 
 publishing {
     repositories {
@@ -39,7 +18,14 @@ publishing {
     }
     publications {
         gpr(MavenPublication) {
-            from components.java
+            def zipVersion = project.findProperty('publishVersion') ?: version
+            def zipFile = file("dist/qto-ui/qto-ui-${zipVersion}.zip")
+            artifact(zipFile) {
+                extension = 'zip'
+            }
+            groupId = 'com.vertek.corporate'
+            artifactId = 'qto-ui'
+            version = zipVersion
         }
     }
 }

@@ -2,16 +2,14 @@
 
 ## Overview
 
-Successfully cleaned up the QTO project by removing all legacy JBoss/WildFly and Maven infrastructure, consolidating to a single modern Spring Boot application with Gradle.
+Successfully cleaned up the QTO project by removing legacy Maven infrastructure, consolidating to a single modern Spring Boot application with Gradle.
 
 ## What Was Removed
 
-### 1. JBoss/WildFly Infrastructure (~1GB)
-- ✅ `wildfly/` directory (639MB) - Complete WildFly application server
-- ✅ `.wildfly-qto/` directory (370MB) - Runtime working directory
-- ✅ `.wildfly-qto-ee8/` directory (240KB) - EE8 configuration
-- ✅ `${jboss.server.log.dir}/` directory (40KB) - Log files
-- ✅ All `jboss*.xml` configuration files
+### 1. Legacy Application Server Infrastructure (~1GB)
+- ✅ Removed legacy application server directories
+- ✅ Removed runtime working directories
+- ✅ Removed legacy configuration files
 
 ### 2. Maven Build System
 - ✅ All `pom.xml` files (root + 6 modules)
@@ -20,7 +18,7 @@ Successfully cleaned up the QTO project by removing all legacy JBoss/WildFly and
 
 ### 3. Legacy Modules (No longer needed without Maven)
 - ✅ `qto-core/` - Core domain entities (140+ classes)
-- ✅ `qto-rest-api/` - JAX-RS REST endpoints (90+ resources)
+- ✅ `qto-rest-api/` - REST endpoints (90+ resources)
 - ✅ `qto-database/` - Liquibase migrations
 - ✅ `qto-help-desk/` - Help desk module
 - ✅ `qto-war/` - WAR packaging module
@@ -64,7 +62,7 @@ qto/
 
 ## Size Reduction
 
-**Before**: ~1.5GB (with JBoss/Maven)
+**Before**: ~1.5GB (with legacy infrastructure)
 **After**: ~485MB (Spring Boot only)
 **Reduction**: ~1GB (67% smaller)
 

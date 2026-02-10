@@ -68,8 +68,8 @@ The following modules still need migration:
 
 2. **qto-rest-api** (REST endpoints)
    - ~100+ Java files
-   - JAX-RS resources
-   - JMS listeners
+   - Spring REST controllers
+   - Async message processing
 
 3. **qto-database** (Database scripts)
    - Liquibase changelogs
@@ -141,7 +141,7 @@ For each module:
 
 Update all references:
 - `application.yml` / `application.properties`
-- `web.xml` / `beans.xml`
+- XML configuration files
 - `quartz-jobs.xml`
 - Any XML configuration files
 

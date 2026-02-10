@@ -74,12 +74,6 @@ application-*.yml.local
 *.db
 *.sqlite
 
-# JBoss/WildFly (legacy - removed)
-wildfly/
-.wildfly*/
-jboss/
-${jboss.server.log.dir}/
-
 # Sensitive
 *.key
 *.pem
