@@ -1,7 +1,6 @@
-# This workflow will build a package using Maven and then publish it to GitHub packages when a release is created
-# For more information see: https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#apache-maven-with-a-settings-path
+# Build and publish QTO with Gradle to GitHub Packages
 
-name: Maven Publish
+name: Gradle Publish
 
 on:
   push:
@@ -13,23 +12,16 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out the repo under $GITHUB_WORKSPACE
+      - name: Check out the repo
         uses: actions/checkout@v4
       - name: Set up Java JDK
         uses: actions/setup-java@v4
         with:
-          java-version: '11'
+          java-version: '21'
           distribution: 'temurin'
-          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
-      - name: print out file
-        run: cat $GITHUB_WORKSPACE/.github/workflows/maven-settings.xml
-      - name: Build with Maven
-        run: mvn clean install -s $GITHUB_WORKSPACE/.github/workflows/maven-settings.xml
+          cache: 'gradle'
+      - name: Build with Gradle
+        run: ./gradlew clean build publish -x test
         env:
-          GITHUB_USER_REF: mwelicka
-          GITHUB_TOKEN_REF: ${{ secrets.RC_PACKAGES_READ_WRITE_TOKEN }}
-      - name: Publish to GitHub Packages
-        run: mvn deploy -s $GITHUB_WORKSPACE/.github/workflows/maven-settings.xml
-        env:
-          GITHUB_USER_REF: mwelicka
-          GITHUB_TOKEN_REF: ${{ secrets.RC_PACKAGES_READ_WRITE_TOKEN }}
+          GITHUB_ACTOR: mwelicka
+          GITHUB_TOKEN: ${{ secrets.RC_PACKAGES_READ_WRITE_TOKEN }}

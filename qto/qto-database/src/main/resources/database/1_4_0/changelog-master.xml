@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="1_4_0-001" author="rcasey">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_service_inventory_v5.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_4_0-002" author="rcasey">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_location_inventory_v5.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_4_0-003" author="rcasey">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_disconnects_v4.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_4_0-004" author="rcasey">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_services_v26.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_4_0-005" author="rcasey">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_services_v27.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_4_0-006" author="rcasey">
+        <sql>
+            INSERT INTO cost_history (service_id, cost_type, new_value, change_reason, update_date, master_customer_id, tenant_id, type_carrier)
+            SELECT s.service_id, 'MRC', s.service_mrc, 'Initial Cost', now(), s.master_customer_id, s.tenant_id, CONCAT(s.service_type, ': ', s.carrier)
+            FROM service s
+                     JOIN inventory_location_service ils ON s.service_id = ils.service_id
+            WHERE s.service_id NOT IN (
+                SELECT service_id FROM cost_history WHERE change_reason = 'Initial Cost'
+            );
+        </sql>
+    </changeSet>
+
+      <changeSet id="1_4_0-005" author="mwelicka">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile endDelimiter="//"
+                 path="data/create_get_location_tree_root_procedure.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_4_0-007" author="rcasey">
+        <addColumn tableName="dispute">
+            <column name="realized_credit" type="decimal(19,2)"/>
+            <column name="realized_mrc_adjustment" type="decimal(19,2)"/>
+            <column name="annualized_mrc_save" type="decimal(19,2)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_4_0-008" author="rcasey">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_disputes_v5.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_4_0-009" author="rcasey">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_service_history_v2.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_4_0-010" author="rcasey">
+        <addColumn tableName="activation_attempt">
+            <column name="same_day_schedule" type="bit" defaultValueBoolean="false"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_4_0-011" author="rcasey">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/pbi_iss_activation_attempts.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+      <changeSet id="1_4_0-006" author="mwelicka">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_service_history_v3.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_4_0-007" author="mwelicka" context="common">
+        <comment>Update config key for Endeavor Proxy.</comment>
+        <insert tableName="company_config_property">
+            <column name="company_id"
+                    valueComputed="(Select company_id from company where company_name = 'Endeavor' and company_type = 'Vertek Client')"/>
+            <column name="config_property_key" value="CLIENT_ID_UNIQUE_CONSTRAINT"/>
+            <column name="config_property_value" value="False"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="1_4_0-008" author="mwelicka" context="common">
+        <comment>Update config key for Endeavor Proxy.</comment>
+        <insert tableName="company_config_property">
+            <column name="company_id"
+                    valueComputed="(Select company_id from company where company_name = 'Demo Tenant' and company_type = 'Vertek Client')"/>
+            <column name="config_property_key" value="CLIENT_ID_UNIQUE_CONSTRAINT"/>
+            <column name="config_property_value" value="True"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Demo Tenant')"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="1_4_0-012" author="rcasey">
+        <sql>
+            UPDATE lookup_value SET
+                lookup_display = 'Replace Service - Change in floor/suite/MPOE/campus building',
+                lookup_value = 'Replace Service - Change in floor/suite/MPOE/campus building'
+            WHERE lookup_display = 'New Service - Change in floor/suite/MPOE/campus building'
+                AND lookup_value = 'New Service - Change in floor/suite/MPOE/campus building';
+            UPDATE lookup_value SET
+                lookup_display = 'Replace Service - Change in main address',
+                lookup_value = 'Replace Service - Change in main address'
+            WHERE lookup_display = 'New Service - Change in main address'
+                AND lookup_value = 'New Service - Change in main address';
+            UPDATE lookup_value SET
+                lookup_display = 'Replace Service - Change Carrier/Vendor',
+                lookup_value = 'Replace Service - Change Carrier/Vendor'
+            WHERE lookup_display = 'New Service - Change carrier'
+              AND lookup_value = 'New Service - Change carrier';
+            UPDATE lookup_value SET
+                lookup_display = 'Replace Service - Speed change',
+                lookup_value = 'Replace Service - Speed change'
+            WHERE lookup_display = 'New Service - Speed change'
+              AND lookup_value = 'New Service - Speed change';
+            INSERT INTO lookup_value (lookup_type_id, lookup_display, lookup_value, sort_seq, modifiable, lookup_value_active, parent_lookup_value_id)
+            VALUES (
+                    (SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'SUB_ORDER_TYPE'),
+                    'Replace Service - Same Carrier/Vendor', 'Replace Service - Same Carrier/Vendor', 10, 1, 1,
+                    (
+                        SELECT lv.lookup_value_id
+                        FROM lookup_value lv
+                        WHERE lv.lookup_type_id = (
+                            SELECT lt.lookup_type_id
+                            FROM lookup_type lt
+                            WHERE lt.lookup_type_code = 'ORDER_TYPE'
+                        ) AND lv.lookup_value = 'Change'
+                        LIMIT 1
+                   )
+                   );
+            set @tenantId = (select tenant_id from v_tenant where name = 'QTO First Tenant');
+            INSERT INTO tenant_lookup_value (lookup_value_id, tenant_id)
+            SELECT lookup_value_id, @tenantId
+            FROM lookup_value
+            WHERE lookup_value = 'Replace Service - Same Carrier/Vendor';
+            set @tenantId = (select tenant_id from v_tenant where name = 'Endeavor');
+            INSERT INTO tenant_lookup_value (lookup_value_id, tenant_id)
+            SELECT lookup_value_id, @tenantId
+            FROM lookup_value
+            WHERE lookup_value = 'Replace Service - Same Carrier/Vendor';
+        </sql>
+    </changeSet>
+    
+    <changeSet id="1_4_0-013" author="rcasey">
+        <createTable tableName="inventory_history">
+            <column name="inventory_history_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="snapshot_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="location_count" type="int"/>
+            <column name="service_count" type="int"/>
+            <column name="mrc" type="decimal(19,2)"/>
+            <column name="nrc" type="decimal(19,2)"/>
+            <column name="osp" type="decimal(19,2)"/>
+            <column name="icb" type="decimal(19,2)"/>
+            <column name="dispute_mrc" type="decimal(19,2)"/>
+            <column name="dispute_nrc" type="decimal(19,2)"/>
+            <column name="tenant_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version" type="int" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1_4_0-014" author="rcasey">
+        <sql>
+            UPDATE service s
+            SET s.sub_order_type = null
+            WHERE s.sub_order_type = '';
+        </sql>
+    </changeSet>
+    
+    <changeSet id="1_4_0-015" author="rcasey">
+        <addColumn tableName="service">
+            <column name="client_service_info" type="varchar(100)"/>
+            <column name="client_service_type" type="varchar(100)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_4_0-016" author="rcasey">
+        <sql>
+            UPDATE service s
+            JOIN location l ON s.location_id = l.location_id
+            SET s.client_service_info = l.client_location_info,
+                s.client_service_type = l.client_location_type;
+
+            UPDATE location l
+            SET l.client_location_info = null,
+                l.client_location_type = null;
+        </sql>
+    </changeSet>
+
+    <changeSet id="1_4_0-017" author="rcasey">
+        <addColumn tableName="service">
+            <column name="account_passcode" type="varchar(100)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_4_0-015" author="mwelicka">
+        <addColumn tableName="contact">
+            <column name="parent_contact_id" type="int"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_4_0-018" author="rcasey">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/insert_project_name_lookup.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+    
+    <changeSet id="1_4_0-019" author="rcasey">
+        <addColumn tableName="service">
+            <column name="project_name" type="varchar(100)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_4_0-020" author="rcasey">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_services_v28.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_4_0-021" author="rcasey">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_disconnects_v5.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_4_0-016" author="mwelicka">
+        <comment>Drop Foreign Key</comment>
+        <dropForeignKeyConstraint baseTableName="interval_instance"
+                                  constraintName="FK_interval_instance_close_milestone_instance"/>
+    </changeSet>
+
+
+     <changeSet id="1_4_0-017" author="mwelicka">
+        <createTable tableName="master_customer_contact">
+            <column name="master_customer_contact_id" type="int">
+                <constraints nullable="false" foreignKeyName="FK_master_customer_contact" references="company(company_id)"/>
+            </column>
+            <column name="contact_id" type="int">
+                <constraints nullable="false" foreignKeyName="FK_contact_master_customer" references="contact(contact_id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1_4_0-018" author="mwelicka">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/pbi_pmv_view_service_v6.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_4_0-019" author="mwelicka">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/pbi_iss_service_v4.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+
+</databaseChangeLog>

@@ -1,7 +1,6 @@
-# This workflow will build a package using Maven and then publish it to GitHub packages when a release is created
-# For more information see: https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#apache-maven-with-a-settings-path
+# Build and publish help-desk-ui with npm + Gradle
 
-name: Maven Package
+name: Gradle Package
 
 on:
   push:
@@ -12,24 +11,31 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: help-desk-ui
     steps:
-     - uses: actions/checkout@v3
-     - uses: actions/setup-node@v3
-       with:
-        node-version: 16
-     - run: npm ci
-     - run: npm run build --omit=dev
-     - name: Get NPM Version
-       id: package-version
-       uses: martinbeentjes/npm-get-version-action@main
-     - name: Create zip
-       run: |
-        cd dist/help-desk-ui
-        zip -r help-desk-ui-${{steps.package-version.outputs.current-version}}-SNAPSHOT.zip .
-     - name: Publish to GitHub Packages Apache Maven
-       run: |
-        REPO="https://maven.pkg.github.com/${GITHUB_REPOSITORY}"
-        mvn deploy:deploy-file -s $GITHUB_WORKSPACE/.github/workflows/maven-settings.xml -DgroupId=com.vertek.corporate -DartifactId=help-desk-ui -Dversion=${{steps.package-version.outputs.current-version}}-SNAPSHOT -Dpackaging=zip -Dfile=dist/help-desk-ui/help-desk-ui-${{steps.package-version.outputs.current-version}}-SNAPSHOT.zip -Durl="${REPO}" -Dregistry="${REPO}" -DrepositoryId=github
-       env:
-         GITHUB_USER_REF: rcasey-vertek
-         GITHUB_TOKEN_REF: ${{ secrets.RC_PACKAGES_READ_WRITE_TOKEN }}
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - name: Set up Java for Gradle
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'gradle'
+      - run: npm ci
+      - run: npm run build --omit=dev
+      - name: Get NPM Version
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@main
+      - name: Create zip
+        run: |
+          cd dist/help-desk-ui
+          zip -r help-desk-ui-${{steps.package-version.outputs.current-version}}-SNAPSHOT.zip .
+      - name: Publish to GitHub Packages with Gradle
+        run: ../qto/gradlew -p . publishGprPublicationToGitHubPackagesRepository -PpublishVersion=${{steps.package-version.outputs.current-version}}-SNAPSHOT
+        env:
+          GITHUB_ACTOR: rcasey-vertek
+          GITHUB_TOKEN: ${{ secrets.RC_PACKAGES_READ_WRITE_TOKEN }}

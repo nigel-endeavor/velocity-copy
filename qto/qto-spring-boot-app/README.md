@@ -20,7 +20,7 @@ Modern Spring Boot implementation of the Quantum Task Orchestrator (QTO) platfor
 
 - Java 17 or higher
 - Gradle 8.5+ (or use included wrapper)
-- MySQL 8.0+ (for production profile only)
+- PostgreSQL 12+ (for production)
 
 ### Development Mode (No Database Required)
 
@@ -31,11 +31,11 @@ Modern Spring Boot implementation of the Quantum Task Orchestrator (QTO) platfor
 # Application starts on http://localhost:8080/qto
 ```
 
-### Production Mode (MySQL Required)
+### Production Mode (PostgreSQL Required)
 
 ```bash
 # Set database password
-export QTO_DB_PASSWORD=your_password
+export DB_PASSWORD=your_password
 
 # Run with default profile
 ./gradlew bootRun
@@ -79,7 +79,7 @@ curl http://localhost:8080/qto/actuator/health
 ### Profiles
 
 - **dev** - Development mode without database (default for local development)
-- **default** - Standard mode with MySQL database
+- **default** - Standard mode with PostgreSQL database
 - **prod** - Production mode (to be configured in Phase 6)
 
 ### Application Properties
@@ -91,7 +91,7 @@ spring:
   application:
     name: qto-application
   datasource:
-    url: jdbc:mysql://localhost:3306/qto
+    url: jdbc:postgresql://localhost:5432/qto
     username: qto_user
     password: ${QTO_DB_PASSWORD}
 
@@ -203,9 +203,9 @@ Spring DevTools enables automatic restart when code changes:
 
 ### Application won't start
 
-**Problem**: `Cannot load driver class: com.mysql.cj.jdbc.Driver`
+**Problem**: `Cannot load driver class: org.postgresql.Driver`
 
-**Solution**: Use dev profile or ensure MySQL is running:
+**Solution**: Use dev profile or ensure PostgreSQL is running:
 ```bash
 ./gradlew bootRun --args='--spring.profiles.active=dev'
 ```
@@ -300,7 +300,7 @@ curl http://localhost:8080/qto/actuator/health
 
 This project has been migrated from Maven to Gradle:
 - All `pom.xml` files replaced with `build.gradle.kts`
-- Package structure updated from `com.vertek.corporate` to `com.endeavorms`
+- Package structure updated from `com.endeavorms.velocity` to `com.endeavorms`
 - Build commands changed from `mvn` to `./gradlew`
 
 ## Support

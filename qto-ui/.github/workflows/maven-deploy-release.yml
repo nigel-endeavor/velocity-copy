@@ -1,4 +1,6 @@
-name: Maven Deploy Release
+# Build and publish qto-ui release with npm + Gradle
+
+name: Gradle Deploy Release
 
 on:
   workflow_dispatch:
@@ -6,12 +8,21 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: qto-ui
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: 16
           registry-url: https://npm.pkg.github.com/
+      - name: Set up Java for Gradle
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'gradle'
       - run: |
           echo "@vertek-corporation:registry=https://npm.pkg.github.com" >> .npmrc
           echo "//npm.pkg.github.com/:_authToken=${{ secrets.RC_PACKAGES_READ_WRITE_TOKEN }}" >> .npmrc
@@ -24,10 +35,8 @@ jobs:
         run: |
           cd dist/qto-ui
           zip -r qto-ui-${{steps.package-version.outputs.current-version}}.zip .
-      - name: Publish to GitHub Packages Apache Maven
-        run: |
-          REPO="https://maven.pkg.github.com/${GITHUB_REPOSITORY}"
-          mvn deploy:deploy-file -s $GITHUB_WORKSPACE/.github/workflows/maven-settings.xml -DgroupId=com.vertek.corporate -DartifactId=qto-ui -Dversion=${{steps.package-version.outputs.current-version}} -Dpackaging=zip -Dfile=dist/qto-ui/qto-ui-${{steps.package-version.outputs.current-version}}.zip -Durl="${REPO}" -Dregistry="${REPO}" -DrepositoryId=github
+      - name: Publish to GitHub Packages with Gradle
+        run: ../qto/gradlew -p . publishGprPublicationToGitHubPackagesRepository -PpublishVersion=${{steps.package-version.outputs.current-version}}
         env:
-          GITHUB_USER_REF: mwelicka
-          GITHUB_TOKEN_REF: ${{ secrets.RC_PACKAGES_READ_WRITE_TOKEN }}
+          GITHUB_ACTOR: mwelicka
+          GITHUB_TOKEN: ${{ secrets.RC_PACKAGES_READ_WRITE_TOKEN }}

@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+
+    <changeSet id="1_11_0-001" author="rcasey">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/pbi_iss_service_v8.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/pbi_iss_pmv_service_report_v11.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/pbi_iss_location_v7.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/pbi_iss_pmv_report_v7.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_11_0-002" author="rcasey">
+        <addColumn tableName="company">
+            <column name="i90_project_manager" type="int"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_11_0-003" author="fcurran">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/pbi_iss_location_v8.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_11_0-004" author="rcasey">
+        <sql>
+            INSERT INTO lookup_type (lookup_type_descr, lookup_type_code, lookup_type_active, modifiable, sort_strategy, category)
+            VALUES ('Service Sub-Status', 'SERVICE_SUB_STATUS', 1, 1, 0, 'Location/Service General');
+        </sql>
+    </changeSet>
+
+    <changeSet id="1_11_0-005" author="rcasey">
+        <sql>
+            INSERT INTO company_config_property (company_id, config_property_key, config_property_value, modifiable, description, type, tenant_id)
+            VALUES ((SELECT company_id FROM company WHERE company_name = 'QTO First Tenant' AND company_type = 'Vertek Client'), 'NOTE_INTERNAL_ONLY_DEFAULT', 'False', true, 'Note Internal Only default value', 'boolean', (SELECT tenant_id FROM v_tenant WHERE name = 'QTO First Tenant')),
+                   ((SELECT company_id FROM company WHERE company_name = 'Demo Tenant' AND company_type = 'Vertek Client'), 'NOTE_INTERNAL_ONLY_DEFAULT', 'False', true, 'Note Internal Only default value', 'boolean', (SELECT tenant_id FROM v_tenant WHERE name = 'Demo Tenant')),
+                   ((SELECT company_id FROM company WHERE company_name = 'Endeavor' AND company_type = 'Vertek Client'), 'NOTE_INTERNAL_ONLY_DEFAULT', 'False', true, 'Note Internal Only default value', 'boolean', (SELECT tenant_id FROM v_tenant WHERE name = 'Endeavor')),
+                   ((SELECT company_id FROM company WHERE company_name = 'QTO First Tenant' AND company_type = 'Vertek Client'), 'DISPUTE_NOTE_INTERNAL_ONLY_DEFAULT', 'False', true, 'Dispute Note Internal Only default value', 'boolean', (SELECT tenant_id FROM v_tenant WHERE name = 'QTO First Tenant')),
+                   ((SELECT company_id FROM company WHERE company_name = 'Demo Tenant' AND company_type = 'Vertek Client'), 'DISPUTE_NOTE_INTERNAL_ONLY_DEFAULT', 'False', true, 'Dispute Note Internal Only default value', 'boolean', (SELECT tenant_id FROM v_tenant WHERE name = 'Demo Tenant')),
+                   ((SELECT company_id FROM company WHERE company_name = 'Endeavor' AND company_type = 'Vertek Client'), 'DISPUTE_NOTE_INTERNAL_ONLY_DEFAULT', 'False', true, 'Dispute Note Internal Only default value', 'boolean', (SELECT tenant_id FROM v_tenant WHERE name = 'Endeavor'));
+        </sql>
+    </changeSet>
+
+    <changeSet id="1_11_0-006" author="fcurran">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/pbi_iss_activation_attempts_v6.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_11_0-007" author="mwelicka">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/iss_ouput_file_v13.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_11_0-008" author="rcasey">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/address_refactor.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_11_0-008" author="bmccormick">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_service_inventory_v16.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_11_0-009" author="bmccormick">
+        <addColumn tableName="service">
+            <column name="customer_billing_instructions" type="varchar(100)"/>
+            <column name="external_order_reference" type="varchar(100)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_11_0-010" author="bmccormick">
+        <sql>
+        INSERT INTO lookup_type (lookup_type_descr, lookup_type_code, lookup_type_active, modifiable, sort_strategy, version, category)
+        VALUES ('Customer Billing Instructions', 'CUSTOMER_BILLING_INSTRUCTIONS', 1, 1, 0, 1, 'Location/Service General');
+        SET @lookupTypeId = (SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'CUSTOMER_BILLING_INSTRUCTIONS');
+        </sql>
+    </changeSet>
+
+    <changeSet id="1_11_0-009" author="rcasey">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_disputes_v11.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/v_manage_disconnects_v8.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/v_manage_service_inventory_v17.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/v_manage_services_v34.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/v_manage_location_inventory_v16.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/v_manage_locations_v32.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_11_0-010" author="rcasey">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_address_v1.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_11_0-011" author="rcasey">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/custom_field_schema.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_11_0-012" author="rcasey">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/custom_field_insert_demo_tenant.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_11_0-013" author="rcasey">
+        <sql>
+            INSERT INTO lookup_type (lookup_type_descr, lookup_type_code, lookup_type_active, modifiable, sort_strategy, category)
+            VALUES ('Lumen Region', 'LUMEN_REGION', 1, 1, 0, 'Custom Fields');
+        </sql>
+    </changeSet>
+  
+    <changeSet id="1_11_0-011" author="bmccormick">
+        <addColumn tableName="service">
+            <column name="field_services_provider" type="varchar(100)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_11_0-012" author="bmccormick">
+        <sql>
+            INSERT INTO lookup_type (lookup_type_descr, lookup_type_code, lookup_type_active, modifiable, sort_strategy, version, category)
+            VALUES ('Field Services Provider', 'FIELD_SERVICES_PROVIDER', 1, 1, 0, 1, 'Location/Service General');
+            SET @lookupTypeId = (SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'FIELD_SERVICES_PROVIDER');
+        </sql>
+    </changeSet>
+
+    <changeSet id="1_11_0-011" author="mwelicka">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/pbi_i90_4g5g_service_v1.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/pbi_i90_activation_attempts_v1.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/pbi_i90_activation_issues_v1.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/pbi_i90_broadband_service_v1.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/pbi_i90_cost_history_v1.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/pbi_i90_cross_connect_service_v1.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/pbi_i90_dia_service_v1.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/pbi_i90_dispute_notes_v1.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/pbi_i90_dispute_v1.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/pbi_i90_end_company_v1.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/pbi_i90_ethernet_service_v1.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/pbi_i90_location_contacts_v1.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/pbi_i90_location_jeops_v1.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/pbi_i90_location_milestones_v1.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/pbi_i90_location_notes_v1.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/pbi_i90_location_v1.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/pbi_i90_master_company_v1.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/pbi_i90_mpls_service_v1.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/pbi_i90_service_interval_v1.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/pbi_i90_service_jeops_v1.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/pbi_i90_service_milestones_v1.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/pbi_i90_service_notes_v1.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/pbi_i90_service_v1.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/pbi_i90_television_service_v1.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/pbi_i90_ucass_service_v1.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/pbi_iss_location_v9.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/pbi_iss_pmv_report_v8.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/pbi_iss_pmv_service_report_v12.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/v_activations_email_template_v6.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/v_wip_reports_v11.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_11_0-011" author="fcurran">
+        <comment>Break out service brokerage info.</comment>
+        <createTable tableName="service_brokerage">
+            <column name="service_brokerage_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="service_id" type="int">
+                <constraints nullable="false" foreignKeyName="FK_brokerage_service"
+                             references="service(service_id)"/>
+            </column>
+            <!-- unchanged existing columns -->
+            <column name="submitted_in_adv_to_provider" type="boolean" defaultValueBoolean="false"/>
+            <column name="parent_tsd" type="varchar(100)"/>
+            <column name="submitted_in_adv_to_tsd" type="boolean" defaultValueBoolean="false"/>
+            <column name="cie_teamed_deal_info" type="varchar(100)"/>
+            <column name="sfa_opportunity_num" type="varchar(100)"/>
+            <column name="net_provider_points" type="varchar(100)"/>
+            <column name="promotions" type="varchar(500)"/>
+            <column name="commissionable_mrc" type="decimal(19,2)" defaultValueNumeric="0"/>
+            <column name="commissionable_nrc" type="decimal(19,2)" defaultValueNumeric="0"/>
+            <column name="commissionable_arc" type="decimal(19,2)" defaultValueNumeric="0"/>
+            <!-- new columns -->
+            <!-- brokerage and agency -->
+            <column name="commissions_supplier" type="varchar(100)"/>
+            <column name="commissions_account_number" type="varchar(100)"/>
+            <column name="sub_agent_percent" type="decimal(5,2)"/>
+            <column name="sub_agent" type="varchar(100)"/>
+            <column name="sub_agent_rep" type="varchar(100)"/>
+            <column name="secondary_agency" type="varchar(100)"/>
+            <column name="secondary_agency_rep" type="varchar(100)"/>
+            <column name="tertiary_agency" type="varchar(100)"/>
+            <column name="tertiary_agency_rep" type="varchar(100)"/>
+            <column name="referral" type="bit" defaultValueBoolean="false"/>
+            <column name="referral_name" type="varchar(100)"/>
+            <column name="company_referral_percent" type="decimal(5,2)"/>
+            <!-- order details -->
+            <column name="spiff_amount" type="decimal(19,2)" defaultValueNumeric="0"/>
+            <column name="customer_order_alias" type="varchar(100)"/>
+            <column name="engineer_resource" type="bit" defaultValueBoolean="false"/>
+            <column name="engineer_resource_allocation" type="decimal(5,2)"/>
+            <!-- commissions -->
+            <column name="commission_payment_type" type="varchar(100)"/>
+            <column name="expected_commission" type="decimal(19,2)" defaultValueNumeric="0"/>
+            <column name="commission_reduction_percent" type="decimal(5,2)"/>
+            <column name="commission_icb" type="bit" defaultValueBoolean="false"/>
+            <column name="internal_commissions_comments" type="varchar(500)"/>
+            <!-- profit monitoring -->
+            <column name="gross_profit_mrc_multiplier" type="decimal(5,2)"/>
+            <column name="percent_resides_from_carrier" type="varchar(100)"/>
+            <column name="gross_profit_mrc" type="decimal(19,2)" defaultValueNumeric="0"/>
+            <column name="gross_profit" type="decimal(19,2)" defaultValueNumeric="0"/>
+            <column name="gross_profit_mrc_needs_to_be_edited" type="bit" defaultValueBoolean="false"/>
+            <column name="gross_profit_needs_to_be_edited" type="bit" defaultValueBoolean="false"/>
+            <column name="gross_profit_mrc_override" type="decimal(19,2)" defaultValueNumeric="0"/>
+            <column name="gross_profit_override" type="decimal(19,2)" defaultValueNumeric="0"/>
+            <column name="rep_gross_profit_production" type="decimal(19,2)" defaultValueNumeric="0"/>
+            <column name="total_contract_value" type="decimal(19,2)" defaultValueNumeric="0"/>
+            <column name="uplift_mrc" type="decimal(19,2)" defaultValueNumeric="0"/>
+            <column name="subaccount_mrc" type="decimal(19,2)" defaultValueNumeric="0"/>
+            <column name="master_customer_id" type="int"/>
+            <column name="tenant_id" type="int"/>
+            <column name="version" type="int"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1_11_0-12" author="fcurran">
+        <sql>
+            ALTER TABLE service
+            DROP COLUMN submitted_in_adv_to_provider,
+            DROP COLUMN parent_tsd,
+            DROP COLUMN submitted_in_adv_to_tsd,
+            DROP COLUMN cie_teamed_deal_info,
+            DROP COLUMN commission_reduction_percent,
+            DROP COLUMN sfa_opportunity_num,
+            DROP COLUMN net_provider_points,
+            DROP COLUMN promotions,
+            DROP COLUMN spiff_details,
+            DROP COLUMN commissionable_mrc,
+            DROP COLUMN commissionable_nrc,
+            DROP COLUMN commissionable_arc;
+        </sql>
+    </changeSet>
+
+    <changeSet id="1_11_0-013" author="fcurran">
+        <comment>Break out service brokerage info.</comment>
+        <addColumn tableName="location">
+            <column name="gross_profit_mrc_override" type="decimal(19,2)" defaultValueNumeric="0"/>
+            <column name="gross_profit_override" type="decimal(19,2)" defaultValueNumeric="0"/>
+            <column name="rep_gross_profit_production" type="decimal(19,2)" defaultValueNumeric="0"/>
+            <column name="total_contract_value" type="decimal(19,2)" defaultValueNumeric="0"/>
+            <column name="uplift_mrc" type="decimal(19,2)" defaultValueNumeric="0"/>
+            <column name="subaccount_mrc" type="decimal(19,2)" defaultValueNumeric="0"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_11_0-14" author="mwelicka">
+        <sql>
+            INSERT INTO lookup_type (lookup_type_descr, lookup_type_code, lookup_type_active, modifiable, sort_strategy)
+            VALUES ('Sub Agent', 'SUB_AGENT', 1, 1, 0),
+                   ('Commissions Payment Type', 'COMMISSIONS_PAYMENT_TYPE', 1, 1, 0);
+        </sql>
+    </changeSet>
+
+    <changeSet id="1_11_0-015" author="fcurran">
+        <addColumn tableName="service_brokerage">
+            <column name="rep_gross_profit_needs_to_be_edited" type="bit" defaultValueBoolean="false"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_11_0-16" author="fcurran">
+        <sql>
+            UPDATE lookup_type set category = 'Brokerage' where lookup_type_code in ('SUB_AGENT', 'BROKERAGE', 'COMMISSIONS_PAYMENT_TYPE');
+            INSERT INTO lookup_type (lookup_type_descr, lookup_type_code, lookup_type_active, modifiable, sort_strategy, category)
+            VALUES ('Commissions Supplier', 'COMMISSIONS_SUPPLIER', 1, 1, 0, 'Brokerage');
+            UPDATE lookup_type set lookup_type_code = 'AGENCY_NAME', lookup_type_descr = 'Agency Name' where lookup_type_code = 'SUB_AGENT';
+            INSERT INTO lookup_type (lookup_type_descr, lookup_type_code, lookup_type_active, modifiable, sort_strategy, category, parent_lookup_type_id)
+            SELECT 'Agency Rep', 'AGENCY_REP', 1, 1, 0, 'Brokerage', parent.lookup_type_id
+            FROM (SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'AGENCY_NAME') as parent;
+        </sql>
+    </changeSet>
+
+    <changeSet id="1_11_0-017" author="mwelicka">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/custom_field_insert_new_order_Demo.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_11_0-014" author="rcasey">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_activations_v11.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_11_0-018" author="fcurran">
+        <sql>
+            UPDATE lookup_type set lookup_type_code = 'PARENT_TSD', lookup_type_descr = 'Parent TSD' where lookup_type_code = 'BROKERAGE';
+        </sql>
+    </changeSet>
+
+    <changeSet id="1_11_0-019" author="fcurran">
+        <comment>Do not need these columns.</comment>
+        <dropColumn tableName="location" columnName="gross_profit_mrc_override"/>
+        <dropColumn tableName="location" columnName="gross_profit_override"/>
+        <dropColumn tableName="location" columnName="rep_gross_profit_production"/>
+        <dropColumn tableName="location" columnName="total_contract_value"/>
+        <dropColumn tableName="location" columnName="uplift_mrc"/>
+        <dropColumn tableName="location" columnName="subaccount_mrc"/>
+    </changeSet>
+
+    <changeSet id="1_11_0-019" author="rcasey">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_address_v2.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+</databaseChangeLog>

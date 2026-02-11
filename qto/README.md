@@ -11,13 +11,7 @@ cd qto-spring-boot-app
 # Run without database (development mode)
 ./gradlew bootRun --args='--spring.profiles.active=dev'
 
-# Run with MySQL
-export SPRING_PROFILES_ACTIVE=mysql
-export DB_PASSWORD=your_password
-./gradlew bootRun
-
 # Run with PostgreSQL
-export SPRING_PROFILES_ACTIVE=postgres
 export DB_PASSWORD=your_password
 ./gradlew bootRun
 
@@ -27,10 +21,10 @@ export DB_PASSWORD=your_password
 
 ## Technology Stack
 
-- **Java**: 17
+- **Java**: 21
 - **Spring Boot**: 3.2.2
 - **Build**: Gradle 8.5 (Kotlin DSL)
-- **Database**: MySQL 8+ or PostgreSQL 12+ (configurable)
+- **Database**: PostgreSQL 12+
 - **ORM**: Spring Data JPA / Hibernate
 - **Testing**: JUnit 5, MockMvc, TestRestTemplate
 - **Monitoring**: Spring Actuator
@@ -58,8 +52,7 @@ qto/
     │   │   └── resources/
     │   │       ├── application.yml             # Base configuration
     │   │       ├── application-dev.yml         # Dev profile (no DB)
-    │   │       ├── application-mysql.yml       # MySQL configuration
-    │   │       ├── application-postgres.yml    # PostgreSQL configuration
+    │   │       ├── application.yml             # PostgreSQL configuration
     │   │       └── application-test.yml        # Test profile
     │   └── test/
     │       └── java/com/endeavorms/qto/        # Comprehensive test suite
@@ -79,27 +72,15 @@ qto/
 
 ## Database Configuration
 
-The application supports **both MySQL and PostgreSQL** through Spring profiles.
+The application uses **PostgreSQL** (migrated from MySQL).
 
 ### Development (No Database)
 ```bash
 ./gradlew bootRun --args='--spring.profiles.active=dev'
 ```
 
-### MySQL
-```bash
-export SPRING_PROFILES_ACTIVE=mysql
-export DB_HOST=localhost
-export DB_PORT=3306
-export DB_NAME=qto
-export DB_USER=qto_user
-export DB_PASSWORD=your_password
-./gradlew bootRun
-```
-
 ### PostgreSQL
 ```bash
-export SPRING_PROFILES_ACTIVE=postgres
 export DB_HOST=localhost
 export DB_PORT=5432
 export DB_NAME=qto
@@ -136,9 +117,9 @@ See [TEST-SUMMARY.md](qto-spring-boot-app/TEST-SUMMARY.md) for detailed test doc
 ## Development
 
 ### Prerequisites
-- **Java**: JDK 17 or higher
+- **Java**: JDK 21 or higher
 - **Gradle**: 8.5+ (wrapper included)
-- **Database**: MySQL 8+ or PostgreSQL 12+ (optional for dev)
+- **Database**: PostgreSQL 12+ (optional for dev)
 
 ### Build Commands
 ```bash
@@ -170,29 +151,38 @@ See [TEST-SUMMARY.md](qto-spring-boot-app/TEST-SUMMARY.md) for detailed test doc
 
 ## Docker
 
+Full stack (QTO app + PostgreSQL) via Docker Compose:
+
 ```bash
-# Build
-docker build -t qto-app:latest qto-spring-boot-app/
+# From qto/ directory - build and run
+docker compose up -d
 
-# Run with dev profile (no database)
-docker run -p 8080:8080 -e SPRING_PROFILES_ACTIVE=dev qto-app:latest
-
-# Run with MySQL
-docker run -p 8080:8080 \
-  -e SPRING_PROFILES_ACTIVE=mysql \
-  -e DB_HOST=host.docker.internal \
-  -e DB_PASSWORD=your_password \
-  qto-app:latest
+# App: http://localhost:8080/qto
+# API status: http://localhost:8080/qto/api/status
+# Health: http://localhost:8080/qto/actuator/health
 ```
+
+```bash
+# Build only (no run)
+docker compose build
+
+# Stop
+docker compose down
+
+# View logs
+docker compose logs -f qto-app
+```
+
+The `Dockerfile` uses a multi-stage build (Java 21) and runs the app as a non-root user. PostgreSQL 16 is used with a health check so the app waits for the database before starting.
 
 ## Migration Status
 
 ✅ **Phase 1 Complete**: Spring Boot Foundation
 - Migrated from Maven to Gradle
 - Migrated from Java EE/WildFly to Spring Boot
-- Refactored packages from `com.vertek.corporate.qto` to `com.endeavorms.qto`
+- Refactored packages from `com.vertek.corporate.qto` to `com.endeavorms.velocity.qto`
 - Created comprehensive test suite (40 tests)
-- Added multi-database support (MySQL & PostgreSQL)
+- Migrated to PostgreSQL (from MySQL)
 - Removed all legacy JBoss/Maven dependencies
 
 See [MIGRATION.md](qto-spring-boot-app/MIGRATION.md) for migration strategy.

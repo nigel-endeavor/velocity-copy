@@ -1,0 +1,135 @@
+CREATE OR REPLACE VIEW v_manage_cyber_services AS
+SELECT s.service_id,
+       s.location_id,
+       o.order_id,
+       l.client_location_id,
+       mc.company_name AS parent_company_name,
+       mc.company_id AS master_customer_id,
+       mc.client_id AS parent_company_client_id,
+       ec.company_name,
+       ec.company_id,
+       ec.client_id AS end_customer_client_id,
+       s.service_type,
+       CONCAT(IFNULL(l.address_1, ''),
+              IF(LENGTH(l.address_2), CONCAT(' ', l.address_2), ''),
+              '\n',
+              IFNULL(l.city, ''), ', ',
+              IFNULL(l.state_province, ''), ' ',
+              IFNULL(l.postal_code, '')
+       ) AS address,
+       l.address_1,
+       l.address_2,
+       l.city,
+       l.state_province,
+       l.postal_code,
+       s.service_status,
+       s.follow_up_date,
+       COALESCE((SELECT display_name FROM v_subject WHERE subject_id = o.provisioner), 'Unassigned') AS provisioner,
+       COALESCE((SELECT display_name FROM v_subject WHERE subject_id = o.vertek_project_manager),
+                'Unassigned') AS i90_project_manager,
+       s.progress_percentage,
+       s.provider,
+       COALESCE(DATEDIFF(NOW(), last_status_change), 0) AS status_age,
+       s.service_mrc,
+       s.service_nrc,
+       (SELECT milestone_name
+        FROM v_service_milestone_instance smi
+        WHERE smi.service_id = s.service_id
+        ORDER BY milestone_instance_id DESC
+        LIMIT 1) AS greatest_milestone_name,
+       (SELECT milestone_date
+        FROM v_service_milestone_instance smi
+        WHERE smi.service_id = s.service_id
+        ORDER BY milestone_instance_id DESC
+        LIMIT 1) AS greatest_milestone_date,
+       s.version,
+       s.tenant_id,
+       s.active,
+       SUBSTRING((SELECT note FROM note WHERE note_id = latest_note.note_id), 1, 500) AS latest_note,
+       linked,
+       bundled,
+       linked_bundled_parent,
+       linked_bundled_parent_id,
+       equip.equipment_count,
+       equip.equipment_types,
+       vsmi.customer_requested_install,
+       vsmi.created,
+       vsmi.tech_data_gathering_form_sent,
+       vsmi.tech_data_gathering_meeting_scheduled,
+       vsmi.tech_data_gathering_meeting_completed,
+       vsmi.email_usm_anywhere_template_requirements,
+       vsmi.inventory_assignment_verified,
+       vsmi.new_usm_anywhere_server_build,
+       vsmi.implementation_qa,
+       vsmi.verify_assets_in_siem_db,
+       vsmi.verify_logging_data_source,
+       vsmi.schedule_vulnerability_scans,
+       vsmi.bulk_alarm_tuning_phase,
+       vsmi.siem_event_filtering,
+       vsmi.filters_built_for_reports,
+       vsmi.default_alarm_rule_additions,
+       vsmi.custom_alarm_rule_additions,
+       vsmi.forward_alarms_to_usm_central,
+       vsmi.forward_alarms_to_d3Soc_live,
+       s.order_type
+FROM service s
+     JOIN location l ON s.location_id = l.location_id
+     JOIN orders o ON l.order_id = o.order_id
+     JOIN company ec ON o.company_id = ec.company_id
+     LEFT JOIN company mc ON ec.master_customer_id = mc.company_id
+     LEFT JOIN
+     (SELECT se.service_id,
+             COUNT(e.equipment_id) as equipment_count,
+             GROUP_CONCAT(DISTINCT e.equipment_type) AS equipment_types
+      FROM service_equipment se
+           JOIN equipment e ON se.equipment_id = e.equipment_id
+      GROUP BY se.service_id) equip ON s.service_id = equip.service_id
+     LEFT JOIN (SELECT s.service_id,
+                       MAX(CASE WHEN vsmi.milestone_code = 'CUSTOMER_REQUESTED_INSTALL'
+	                                THEN vsmi.milestone_date END) AS customer_requested_install,
+                       MAX(CASE WHEN vsmi.milestone_code = 'CREATED'
+	                                THEN vsmi.milestone_date END) AS created,
+                       MAX(CASE WHEN vsmi.milestone_code = 'TECH_DATA_GATHERING_FORM_SENT'
+	                                THEN vsmi.milestone_date END) AS tech_data_gathering_form_sent,
+                       MAX(CASE WHEN vsmi.milestone_code = 'TECH_DATA_GATHERING_MEETING_SCHEDULED'
+	                                THEN vsmi.milestone_date END) AS tech_data_gathering_meeting_scheduled,
+                       MAX(CASE WHEN vsmi.milestone_code = 'TECH_DATA_GATHERING_MEETING_COMPLETED'
+	                                THEN vsmi.milestone_date END) AS tech_data_gathering_meeting_completed,
+                       MAX(CASE WHEN vsmi.milestone_code = 'EMAIL_USM_TEMPLATE_REQ'
+	                                THEN vsmi.milestone_date END) AS email_usm_anywhere_template_requirements,
+                       MAX(CASE WHEN vsmi.milestone_code = 'INVENTORY_ASSIGNMENT_VERIFIED'
+	                                THEN vsmi.milestone_date END) AS inventory_assignment_verified,
+                       MAX(CASE WHEN vsmi.milestone_code = 'NEW_USM_SERVER_BUILD'
+	                                THEN vsmi.milestone_date END) AS new_usm_anywhere_server_build,
+                       MAX(CASE WHEN vsmi.milestone_code = 'IMPLEMENTATION_QA'
+	                                THEN vsmi.milestone_date END) AS implementation_qa,
+                       MAX(CASE WHEN vsmi.milestone_code = 'VERIFY_ASSETS_SIEM_DB'
+	                                THEN vsmi.milestone_date END) AS verify_assets_in_siem_db,
+                       MAX(CASE WHEN vsmi.milestone_code = 'VERIFY_LOGGING_DATA_SOURCES'
+	                                THEN vsmi.milestone_date END) AS verify_logging_data_source,
+                       MAX(CASE WHEN vsmi.milestone_code = 'SCHEDULE_VULNERABILITY_SCANS'
+	                                THEN vsmi.milestone_date END) AS schedule_vulnerability_scans,
+                       MAX(CASE WHEN vsmi.milestone_code = 'BULK_ALARM_TUNING_PHASE'
+	                                THEN vsmi.milestone_date END) AS bulk_alarm_tuning_phase,
+                       MAX(CASE WHEN vsmi.milestone_code = 'SIEM_EVENT_FILTERING'
+	                                THEN vsmi.milestone_date END) AS siem_event_filtering,
+                       MAX(CASE WHEN vsmi.milestone_code = 'FILTERS_BUILT_FOR_REPORTS'
+	                                THEN vsmi.milestone_date END) AS filters_built_for_reports,
+                       MAX(CASE WHEN vsmi.milestone_code = 'DEFAULT_ALARM_RULE_ADDITIONS'
+	                                THEN vsmi.milestone_date END) AS default_alarm_rule_additions,
+                       MAX(CASE WHEN vsmi.milestone_code = 'CUSTOM_ALARM_RULE_ADDITIONS'
+	                                THEN vsmi.milestone_date END) AS custom_alarm_rule_additions,
+                       MAX(CASE WHEN vsmi.milestone_code = 'FORWARD_ALARMS_TO_USM_CENTRAL'
+	                                THEN vsmi.milestone_date END) AS forward_alarms_to_usm_central,
+                       MAX(CASE WHEN vsmi.milestone_code = 'FORWARD_ALARMS_TO_D3_SOC_LIVE'
+	                                THEN vsmi.milestone_date END) AS forward_alarms_to_d3Soc_live,
+                       MAX(CASE WHEN vsmi.milestone_code = 'ON_HOLD'
+	                                THEN vsmi.milestone_date END) AS on_hold
+                FROM v_service_milestone_instance vsmi
+                     INNER JOIN service s ON vsmi.service_id = s.service_id
+                GROUP BY s.service_id) vsmi ON s.service_id = vsmi.service_id
+     LEFT JOIN (SELECT MAX(n.note_id) AS note_id, service_id
+                FROM note n
+                     JOIN service_note sn ON n.note_id = sn.note_id
+                GROUP BY service_id) latest_note ON s.service_id = latest_note.service_id
+WHERE s.current_inventory = FALSE;

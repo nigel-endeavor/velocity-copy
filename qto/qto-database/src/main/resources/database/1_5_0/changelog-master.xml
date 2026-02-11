@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="1_5_0-001" author="rcasey">
+        <addColumn tableName="company">
+            <column name="inventory_location_count" type="int"/>
+            <column name="inventory_mrc" type="decimal(19,2)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_5_0-002" author="rcasey">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_company.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_5_0-003" author="rcasey">
+        <sql>
+            UPDATE company SET company_active = true;
+        </sql>
+    </changeSet>
+
+    <changeSet id="1_5_0-004" author="rcasey">
+        <dropNotNullConstraint tableName="contact" columnName="first_name" columnDataType="varchar(100)"/>
+    </changeSet>
+
+    <changeSet id="1_5_0-005" author="rcasey">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/update_service_property_name_mapping.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_5_0-006" author="fcurran">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <comment>Add parent company name (master customer name) to activations view</comment>
+        <sqlFile path="data/v_manage_activations_v9.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_5_0-007" author="fcurran">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <comment>Add cross connect.</comment>
+        <sqlFile path="data/cross_connect_service.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_5_0-008" author="fcurran">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <comment>Add cross connect type lookup.</comment>
+        <sqlFile path="data/insert_cross_connect_type_lookup.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_5_0-009" author="fcurran">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <comment>Add cross connect milestone display set.</comment>
+        <sqlFile path="data/cross_connect_milestone_display_set.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_5_0-010" author="rcasey">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <comment>Add ethernet service</comment>
+        <sqlFile path="data/ethernet_service.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_5_0-011" author="rcasey">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <comment>Add ethernet service lookups</comment>
+        <sqlFile path="data/insert_ethernet_service_lookups.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_5_0-012" author="rcasey">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <comment>Add ethernet milestone display set.</comment>
+        <sqlFile path="data/ethernet_milestone_display_set.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_5_0-013" author="rcasey">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_locations_v24.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_5_0-014" author="rcasey">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_location_inventory_v6.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_5_0-015" author="fcurran">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/update_service_property_name_mapping_v2.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_5_0-016" author="fcurran">
+        <modifyDataType tableName="config_property" columnName="config_property_value" newDataType="text"/>
+    </changeSet>
+
+    <changeSet id="1_5_0-017" author="fcurran">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/update_service_property_name_mapping_v3.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_5_0-018" author="fcurran">
+        <addColumn tableName="ethernet_service">
+            <column name="access_speed" type="varchar(100)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_5_0-019" author="fcurran">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/update_service_property_name_mapping_v4.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+
+    <changeSet id="1_5_0-006" author="mwelicka">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/pbi_pmv_view_service_v7.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+
+    <changeSet id="1_5_0-007" author="mwelicka">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_pbi_iss_activation_attempts_v5.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_5_0-008" author="mwelicka">
+            <addColumn tableName="milestone_display_set_include">
+            <column name="inventory_flag" type="bit" defaultValueBoolean="false"/>
+            <column name="progress_percentage" type="int"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_5_0-0010" author="mwelicka">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/set_milestone_display_set_include_defaults.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_5_0-011" author="mwelicka">
+            <addColumn tableName="milestone_display_set">
+            <column name="display_type" type="varchar(100)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_5_0-0012" author="mwelicka">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/update_milestone_display_group.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_5_0-0013" author="mwelicka">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/update_milestone_flags.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_5_0-0014" author="rcasey">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/add_engineer_assigned_to_service_milestones.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_5_0-0015" author="rcasey">
+        <sql>
+            SET @lookupTypeId = (SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'ACCESS_TYPE');
+            DELETE FROM tenant_lookup_value WHERE lookup_value_id IN (SELECT lookup_value_id FROM lookup_value WHERE lookup_type_id = @lookupTypeId);
+            DELETE FROM lookup_value WHERE lookup_type_id = @lookupTypeId;
+
+            INSERT INTO lookup_value (lookup_type_id, lookup_display, lookup_value, sort_seq, lookup_value_active)
+            VALUES (@lookupTypeId, 'Ethernet Over Fiber', 'Ethernet Over Fiber', 10, 1),
+                (@lookupTypeId, 'Ethernet Over Copper', 'Ethernet Over Copper', 20, 1),
+                (@lookupTypeId, 'Ethernet Over DS-3', 'Ethernet Over DS-3', 30, 1),
+                (@lookupTypeId, 'Ethernet Over T-1', 'Ethernet Over T-1', 40, 1),
+                (@lookupTypeId, 'Ethernet Over Copper - Phone Lines', 'Ethernet Over Copper - Phone Lines', 50, 1);
+
+            INSERT INTO tenant_lookup_value (lookup_value_id, tenant_id)
+            SELECT lookup_value_id, t.tenant_id
+            FROM lookup_value
+                     join v_tenant t
+            WHERE lookup_type_id = @lookupTypeId;
+        </sql>
+    </changeSet>
+
+    <changeSet id="1_5_0-016" author="mwelicka">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/pbi_iss_service_notes.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_5_0-021" author="rcasey">
+        <sql>
+            UPDATE milestone_display_set_include
+                SET status = 'Pending Assignment'
+            WHERE milestone_id = (
+                SELECT milestone_id FROM milestone WHERE milestone_code = 'RECEIVED'
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="1_5_0-022" author="bmccormick">
+        <renameColumn tableName="service" oldColumnName="circuit_owner"
+                      newColumnName="service_billed_to" columnDataType="varchar(100)"/>
+    </changeSet>
+</databaseChangeLog>

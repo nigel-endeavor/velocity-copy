@@ -7,13 +7,13 @@ Quick reference guide for building and running the QTO application.
 ## 📋 Prerequisites
 
 ### Required Software
-- **Java 17+** - for Spring Boot backend
-- **Bun 1.3+** - for frontend development
+- **Java 21+** - for Spring Boot backend
+- **Bun 1.3+** - for frontend development (qto-ui-react)
 - **Git** - for version control
 
 ### Verify Installation
 ```bash
-java -version    # Should show Java 17 or higher
+java -version    # Should show Java 21 or higher
 bun --version    # Should show 1.3.0 or higher
 ```
 
@@ -23,18 +23,36 @@ bun --version    # Should show 1.3.0 or higher
 
 ### Start Everything
 ```bash
-cd /Users/johnnycrupi/Documents/devel/KickAnalytics/EndeavorVelocity/velocity-jan-2026/velocity
+cd /path/to/velocity
 ./START_ALL.sh
 ```
 
 This starts both:
-- **Backend** (Spring Boot) on http://localhost:8080
+- **Backend** (Spring Boot) on http://localhost:8080/qto
 - **Frontend** (React) on http://localhost:7887/qto-ops/
 
 ### Stop Everything
 ```bash
 ./STOP_ALL.sh
 ```
+
+### Access the Application
+- **Frontend (React)**: http://localhost:7887/qto-ops/
+- **Service Worklist**: http://localhost:7887/qto-ops/#/services
+- **Backend API**: http://localhost:8080/qto
+- **Health Check**: http://localhost:8080/qto/actuator/health
+- **Status Endpoint**: http://localhost:8080/qto/api/status
+
+---
+
+## 🏗️ Build System (Gradle)
+
+The project has **fully migrated from Maven to Gradle**. All backend and UI builds use Gradle.
+
+### Package & Group
+- **Group ID**: `com.endeavorms.velocity`
+- **Package**: `com.endeavorms.velocity.qto` (backend core, database, rest-api)
+- **Spring Boot App**: `com.endeavorms.qto`
 
 ---
 
@@ -44,15 +62,15 @@ This starts both:
 
 **Location**: `qto/qto-spring-boot-app/`
 
-#### Build the Backend
+#### Build the Backend (from qto root)
 ```bash
-cd qto/qto-spring-boot-app
-./gradlew clean build
+cd qto
+./gradlew clean build -x test
 ```
 
 #### Run the Backend
 ```bash
-# Development mode
+cd qto/qto-spring-boot-app
 ./gradlew bootRun --args='--spring.profiles.active=dev'
 
 # Or use the convenience script
@@ -61,6 +79,7 @@ cd qto/qto-spring-boot-app
 
 #### Run Backend Tests
 ```bash
+cd qto/qto-spring-boot-app
 ./gradlew test
 ```
 
@@ -113,22 +132,65 @@ bun run build
 
 ```
 velocity/
-├── qto/
-│   └── qto-spring-boot-app/     # Spring Boot backend
+├── qto/                           # Backend (multi-module Gradle)
+│   ├── build.gradle.kts           # Root Gradle config
+│   ├── settings.gradle.kts
+│   ├── gradlew
+│   ├── qto-core/                  # Core domain, managers, JPA entities
+│   ├── qto-database/              # Liquibase migrations, DB scripts
+│   ├── qto-rest-api/              # REST resources (JAX-RS + Spring MVC)
+│   └── qto-spring-boot-app/       # Main Spring Boot application
 │       ├── src/
-│       ├── build.gradle          # Gradle configuration
-│       ├── start.sh              # Backend start script
-│       └── stop.sh               # Backend stop script
+│       ├── build.gradle.kts
+│       ├── start.sh
+│       └── stop.sh
 │
-├── qto-ui-react/                 # React frontend
+├── qto-ui-react/                  # React frontend (primary UI)
 │   ├── src/
-│   ├── package.json              # Dependencies
-│   ├── vite.config.ts            # Vite configuration
-│   └── tsconfig.json             # TypeScript config
+│   ├── package.json
+│   ├── vite.config.ts
+│   └── QUICK_START.md
 │
-├── START_ALL.sh                  # Start both services
-├── STOP_ALL.sh                   # Stop both services
-└── README-Nigel.md               # This file
+├── qto-ui/                        # Angular frontend (legacy)
+│   └── build.gradle
+│
+├── help-desk-ui/                  # Angular help desk UI
+│   └── build.gradle
+│
+├── START_ALL.sh                   # Start backend + frontend
+├── STOP_ALL.sh                    # Stop both services
+├── RUN_INSTRUCTIONS.md            # Detailed run instructions
+└── README-Nigel.md                # This file
+```
+
+---
+
+## 🖥️ UI Options for Testing the Backend
+
+| UI | Tech | URL | Purpose |
+|----|------|-----|---------|
+| **qto-ui-react** | React 19 | http://localhost:7887/qto-ops/ | Primary UI – Service Worklist, etc. |
+| **qto-ui** | Angular 16 | (build & serve separately) | Legacy Angular UI |
+| **help-desk-ui** | Angular 16 | (build & serve separately) | Help desk interface |
+
+**Recommended**: Use **qto-ui-react** for testing the backend.
+
+---
+
+## 🔌 Backend API Endpoints
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/qto/api/status` | GET | Application status and version |
+| `/qto/api/status/ping` | GET | Simple connectivity check |
+| `/qto/actuator/health` | GET | Health check |
+| `/qto/actuator/info` | GET | Application info |
+| `/qto/actuator/metrics` | GET | Application metrics |
+
+```bash
+# Quick test
+curl http://localhost:8080/qto/api/status
+curl http://localhost:8080/qto/actuator/health
 ```
 
 ---
@@ -160,12 +222,14 @@ bun run lint
 ## 🔧 Technology Stack
 
 ### Backend
-- **Java 17**
+- **Java 21**
 - **Spring Boot 3.2.2**
-- **Gradle 8.5**
+- **Gradle 8.5** (no Maven)
+- **Database**: PostgreSQL 12+
+- **Package**: `com.endeavorms.velocity.qto`
 - **Port**: 8080
 
-### Frontend
+### Frontend (qto-ui-react)
 - **React 19.2** with TypeScript
 - **Vite 7.3** (build tool)
 - **Bun 1.3** (package manager & runtime)
@@ -190,14 +254,19 @@ chmod +x stop.sh
 
 **Problem**: Port 8080 already in use
 ```bash
-# Find and kill the process
 lsof -ti:8080 | xargs kill -9
 ```
 
 **Problem**: Tests failing
 ```bash
-# Clean and rebuild
+cd qto/qto-spring-boot-app
 ./gradlew clean test
+```
+
+**Problem**: Build fails – clean and rebuild
+```bash
+cd qto
+./gradlew clean build -x test
 ```
 
 ### Frontend Issues
@@ -210,12 +279,7 @@ curl -fsSL https://bun.sh/install | bash
 
 **Problem**: Port 7887 already in use
 ```bash
-# Find and kill the process
 lsof -ti:7887 | xargs kill -9
-
-# Or check PID file
-cat /Users/johnnycrupi/Documents/devel/KickAnalytics/EndeavorVelocity/velocity-jan-2026/velocity/.qto-frontend.pid
-kill <PID>
 ```
 
 **Problem**: Module import errors
@@ -228,12 +292,15 @@ bun --bun dev
 
 **Problem**: ESLint errors
 ```bash
-# Check what's wrong
 bun run lint
-
-# Auto-fix where possible
 bun run lint --fix
 ```
+
+**Problem**: Vite Node version error
+```
+Error: Vite requires Node.js version 20.19+
+```
+**Solution**: Use `bun --bun dev` instead of `bun dev`
 
 ---
 
@@ -317,6 +384,10 @@ cd qto/qto-spring-boot-app
 ./stop.sh                     # Stop
 ./gradlew test                # Test
 
+# Build entire backend from qto root
+cd qto
+./gradlew clean build -x test
+
 # Frontend only
 cd qto-ui-react
 bun --bun dev                 # Start
@@ -327,6 +398,12 @@ bun run build                 # Build for production
 lsof -ti:8080                 # Backend port
 lsof -ti:7887                 # Frontend port
 ```
+
+### Documentation
+- **RUN_INSTRUCTIONS.md** – detailed run instructions
+- **qto-ui-react/QUICK_START.md** – frontend quick start
+- **qto-ui-react/COMPONENT_LIBRARY.md** – component usage
+- **qto/qto-spring-boot-app/README.md** – backend details
 
 ### Logs
 - **Backend**: Check terminal output or `qto/qto-spring-boot-app/logs/`
@@ -341,8 +418,11 @@ lsof -ti:7887                 # Frontend port
 3. **Mock data** is used when backend API fails (see `qto-ui-react/src/features/service-worklist/mockData.ts`)
 4. **Type imports** must use `import type { ... }` syntax for Vite compatibility
 5. **Clear Vite cache** if you see weird module errors: `rm -rf node_modules/.vite`
+6. **Gradle only** – no Maven; all `pom.xml` files have been removed
+7. **PostgreSQL only** – database migrated from MySQL
 
 ---
 
-**Last Updated**: 2026-01-29
-**Tested On**: macOS with Java 17, Bun 1.3
+**Last Updated**: 2026-02-10
+**Tested On**: macOS with Java 21, Bun 1.3
+**Build System**: Gradle 8.5 (Maven removed)

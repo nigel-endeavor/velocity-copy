@@ -1,0 +1,3503 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet author="mwelicka" id="1_0_0-001" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/01_address.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-002" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/02_company.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-002-2" context="common">
+        <sql>
+
+            SET
+            @tenantName = 'QTO First Tenant';
+            INSERT INTO platform.tenant (name)
+            VALUES (@tenantName);
+            INSERT INTO qto.company (company_name, company_type, company_uuid, tenant_id)
+            VALUES (@tenantName, 'Vertek Client', @tenantName,
+                    (SELECT tenant.tenant_id FROM platform.tenant WHERE name = @tenantName));
+
+            SET
+            @tenantName = 'Endeavor';
+            INSERT INTO platform.tenant (name)
+            VALUES (@tenantName);
+            INSERT INTO qto.company (company_name, company_type, company_uuid, tenant_id)
+            VALUES (@tenantName, 'Vertek Client', @tenantName,
+                    (SELECT tenant.tenant_id FROM platform.tenant WHERE name = @tenantName));
+
+            SET
+            @tenantName = 'Demo Tenant';
+            INSERT INTO platform.tenant (name)
+            VALUES (@tenantName);
+            INSERT INTO qto.company (company_name, company_type, company_uuid, tenant_id)
+            VALUES (@tenantName, 'Vertek Client', @tenantName,
+                    (SELECT tenant.tenant_id FROM platform.tenant WHERE name = @tenantName));
+        </sql>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-003" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/03_note.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-004" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/04_jeop.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-005" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/05_shipment_tracking.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-006" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/06_milestone.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-007" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/07_activation_attempt.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-008" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/08_contact.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-009" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/09_file_attachment.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-010" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/10_lookup.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-011" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/11_order.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-012" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/12_location.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-013" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/13_service.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-014" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/14_service_broadband.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-015" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/15_service_dia.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-016" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/16_config.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-017" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/17_intervals.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-018" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/18_import_activity.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-019" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/19_v_tenant.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-019-2" author="mwelicka" context="prod">
+    <preConditions onFail="CONTINUE">
+        <dbms type="postgresql"/>
+    </preConditions>
+    <sqlFile path="data/19_v_tenant_prod.sql"
+             relativeToChangelogFile="true"
+             stripComments="true"
+             splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-022" context="common">
+        <comment>Drop cols from jeop Instance.</comment>
+        <dropColumn tableName="jeop_instance" columnName="assigned_subject_id"/>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-023" context="common">
+        <comment>add col to jeop Instance.</comment>
+        <addColumn tableName="jeop_instance">
+            <column name="assigned_to" type="varchar(250)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-024" context="common">
+        <comment>Drop cols from jeop Instance.</comment>
+        <dropColumn tableName="lookup_type" columnName="sortStrategy"/>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-025" context="common">
+        <comment>add col to jeop Instance.</comment>
+        <addColumn tableName="lookup_type">
+            <column name="sort_strategy" type="tinyInt"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-026" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/insert_lookup.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-027" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/insert_milestones.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-028" context="common">
+        <update tableName="lookup_type">
+            <column name="sort_strategy" valueNumeric='0'/>
+            <where>lookup_type_code = 'ORDER_JEOPARDY'</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-029" context="common">
+        <addColumn tableName="service">
+            <column name="order_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-020" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/19_jeops_union.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+
+    <changeSet author="mwelicka" id="1_0_0-021" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/21_v_manage_locations.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-030" context="common">
+        <addColumn tableName="note">
+            <column defaultValueBoolean="false" name="internal_only" type="BIT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-031" context="common">
+        <addColumn tableName="milestone_display_set_include">
+            <column name="status" type="varchar(250)"/>
+        </addColumn>
+    </changeSet>
+
+
+    <changeSet author="mwelicka" id="1_0_0-032" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/21_v_manage_locations_v2.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-033" context="common">
+        <createTable tableName="tenant_lookup_value">
+            <column name="lookup_value_id" type="INT">
+                <constraints nullable="false" foreignKeyName="FK_tenant_lookup_value_lookup_value"
+                             references="lookup_value(lookup_value_id)"/>
+            </column>
+            <column name="tenant_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1_0_0-034" author="rcasey">
+        <comment>Add service_type col to service</comment>
+        <addColumn tableName="service">
+            <column name="service_type" type="varchar(100)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_0_0-035" author="rcasey">
+        <comment>Add timezone, phone_number cols to location</comment>
+        <addColumn tableName="location">
+            <column name="timezone" type="varchar(50)"/>
+            <column name="phone_number" type="varchar(100)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_0_0-036" author="llevit">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/22_v_note_union.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-037" author="fcurran">
+        <comment>Add last mile carrier to dia service.</comment>
+        <addColumn tableName="dia_service">
+            <column name="last_mile_carrier" type="varchar(100)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_0_0-038" author="fcurran">
+        <comment>Add validated flag to address.</comment>
+        <addColumn tableName="address">
+            <column name="validated" type="bit"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_0_0-039" author="fcurran">
+        <comment>Add quote currency to service.</comment>
+        <addColumn tableName="service">
+            <column name="currency" type="varchar(50)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_0_0-040" author="fcurran">
+        <comment>Add quote number to order.</comment>
+        <addColumn tableName="orders">
+            <column name="quote_number" type="varchar(100)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_0_0-041" author="fcurran">
+        <comment>Add location information.</comment>
+        <addColumn tableName="location">
+            <column name="client_location_type" type="varchar(100)"/>
+            <column name="client_location_info" type="varchar(100)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="fcurran" id="1_0_0-042">
+        <sqlFile path="data/42_quartz_init.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-042" author="rcasey">
+        <addColumn tableName="address">
+            <column name="company_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_0_0-043" author="rcasey">
+        <addDefaultValue tableName="address" columnName="validated" defaultValueBoolean="false"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-044" author="rcasey">
+        <dropColumn tableName="dia_service" columnName="dia_service_id"/>
+        <dropColumn tableName="broadband_service" columnName="broadband_service_id"/>
+    </changeSet>
+
+
+    <changeSet id="1_0_0-044" author="mwelicka">
+        <dropColumn tableName="dia_service" columnName="on_net"/>
+        <dropColumn tableName="broadband_service" columnName="on_net"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-045" author="mwelicka">
+        <comment>Add location information.</comment>
+        <addColumn tableName="service">
+            <column name="building_status" type="varchar(100)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_0_0-046" author="mwelicka">
+        <comment>Add location information.</comment>
+        <addColumn tableName="dia_service">
+            <column name="new_access_circuit_id" type="varchar(100)"/>
+            <column name="burstable_speed" type="varchar(100)"/>
+        </addColumn>
+    </changeSet>
+
+
+    <changeSet id="1_0_0-047" author="mwelicka">
+        <dropColumn tableName="dia_service" columnName="building_status"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-048" author="mwelicka">
+        <addColumn tableName="dia_service">
+            <column name="burstable_speed_cost" type="decimal(19, 2)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_0_0-49" author="rcasey">
+        <addColumn tableName="broadband_service">
+            <column name="network_protocol" type="varchar(100)"/>
+            <column name="pppoe_username" type="varchar(100)"/>
+            <column name="pppoe_password" type="varchar(100)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_0_0-50" author="rcasey">
+        <addColumn tableName="service">
+            <column name="ip_format" type="varchar(5)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_0_0-051" author="mwelicka">
+        <dropColumn tableName="service" columnName="expedite_order"/>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-052" context="common">
+        <addColumn tableName="service">
+            <column defaultValueBoolean="false" name="expedite_order" type="BIT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="rcasey" id="1_0_0-51" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/insert_lookup_2.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-52" author="rcasey">
+        <modifyDataType tableName="service" columnName="product_install_interval" newDataType="varchar(100)"/>
+    </changeSet>
+
+    <changeSet author="rcasey" id="1_0_0-53" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/insert_lookup_3.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-54" author="rcasey">
+        <addColumn tableName="service">
+            <column name="service_description" type="varchar(500)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_0_0-55" author="rcasey">
+        <addUniqueConstraint tableName="company" columnNames="company_name, tenant_id"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-56" author="rcasey">
+        <addColumn tableName="orders">
+            <column name="last_update_by" type="varchar(100)"/>
+            <column name="last_update_date" type="datetime"/>
+        </addColumn>
+        <addColumn tableName="location">
+            <column name="last_update_by" type="varchar(100)"/>
+            <column name="last_update_date" type="datetime"/>
+        </addColumn>
+        <addColumn tableName="service">
+            <column name="last_update_by" type="varchar(100)"/>
+            <column name="last_update_date" type="datetime"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_0_0-57" author="rcasey">
+        <addColumn tableName="milestone">
+            <column name="description" type="varchar(250)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_0_0-58" author="rcasey">
+        <createTable tableName="milestone_instance_history">
+            <column name="milestone_instance_history_id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="milestone_instance_id" type="int">
+                <constraints nullable="false"
+                             foreignKeyName="FK_milestone_instance"
+                             references="milestone_instance(milestone_instance_id)"/>
+            </column>
+            <column name="old_date" type="datetime"/>
+            <column name="new_date" type="datetime"/>
+            <column name="note" type="varchar(250)"/>
+            <column name="update_by" type="varchar(100)"/>
+            <column name="version" type="int" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="rcasey" id="1_0_0-59" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/insert_milestones_2.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="rcasey" author="1_0_0-60">
+        <comment>fixes typo</comment>
+        <update tableName="milestone">
+            <column name="milestone_name" value="Site Survey Submit"/>
+            <where>milestone_code = 'SITE_SURVEY_SUBMIT'</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="rcasey" id="1_0_0-61" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_service_milestone_instance.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="rcasey" id="1_0_0-62" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_services.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-63" author="rcasey">
+        <update tableName="milestone_display_set_include">
+            <column name="milestone_sequence" value="1010"/>
+            <where>milestone_display_set_id = 2 and milestone_id = 6</where>
+        </update>
+        <update tableName="milestone_display_set_include">
+            <column name="milestone_sequence" value="1020"/>
+            <where>milestone_display_set_id = 2 and milestone_id = 7</where>
+        </update>
+    </changeSet>
+
+    <changeSet id="1_0_0-64" author="rcasey">
+        <renameColumn tableName="service" oldColumnName="new_circuit_id"
+                      newColumnName="carrier_circuit_id" columnDataType="varchar(100)"/>
+    </changeSet>
+
+    <changeSet author="rcasey" id="1_0_0-65" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_locations_v3.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-59" author="bmccormick">
+        <sql>update orders SET provisioner = null </sql>
+        <modifyDataType tableName="orders" columnName="provisioner" newDataType="int"/>
+        <sql>update orders SET project_manager = null </sql>
+        <modifyDataType tableName="orders" columnName="project_manager" newDataType="int"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-60" author="rcasey">
+        <addColumn tableName="activation_attempt">
+            <column name="service_id" type="int">
+                <constraints nullable="false" foreignKeyName="FK_activation_attempt_service"
+                             references="service(service_id)"/>
+            </column>
+            <column name="scheduled_check_in_time" type="datetime"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="rcasey" id="1_0_0-67" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/insert_activation_status_lookups.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="rcasey" id="1_0_0-68" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_activations.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-69" author="rcasey">
+        <createTable tableName="requirement_template">
+            <column name="requirement_template_id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="company_id" type="int">
+                <constraints nullable="false" foreignKeyName="FK_requirement_template_company"
+                             references="company(company_id)"/>
+            </column>
+            <column name="template_name" type="varchar(100)"/>
+            <column name="global" type="bit" defaultValueBoolean="false"/>
+            <column name="is_default" type="bit" defaultValueBoolean="false"/>
+            <column name="ttu_equivalent" type="decimal(19, 2)"/>
+            <column name="active" type="bit" defaultValueBoolean="true"/>
+            <column name="version" type="int" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addUniqueConstraint tableName="requirement_template" columnNames="company_id, template_name"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-70" author="rcasey">
+        <createTable tableName="requirement">
+            <column name="requirement_id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="requirement_template_id" type="int">
+                <constraints foreignKeyName="FK_requirement_requirement_template"
+                             references="requirement_template(requirement_template_id)"/>
+            </column>
+            <column name="lookup_value_id" type="int">
+                <constraints foreignKeyName="FK_requirement_lookup_value"
+                             references="lookup_value(lookup_value_id)"/>
+            </column>
+            <column name="sort_order" type="int"/>
+            <column name="required" type="bit" defaultValueBoolean="true"/>
+            <column name="version" type="int" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1_0_0-71" author="rcasey">
+        <createTable tableName="activation_attempt_requirement">
+            <column name="activation_attempt_requirement_id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="activation_attempt_id" type="int">
+                <constraints nullable="false" foreignKeyName="FK_activation_attempt_requirement_activation_attempt"
+                             references="activation_attempt(activation_attempt_id)"/>
+            </column>
+            <column name="requirement_id" type="int">
+                <constraints nullable="false" foreignKeyName="FK_activation_attempt_requirement_requirement"
+                             references="requirement(requirement_id)"/>
+            </column>
+            <column name="complete" type="bit" defaultValueBoolean="false"/>
+            <column name="comment" type="varchar(500)"/>
+            <column name="version" type="int" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1_0_0-72" author="rcasey">
+        <addColumn tableName="location">
+            <column name="requirement_template_id" type="int">
+                <constraints foreignKeyName="FK_location_requirement_template"
+                             references="requirement_template(requirement_template_id)"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="rcasey" id="1_0_0-73" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/insert_activation_requirements_lookup.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="llevit" id="1_0_0-063" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/insert_lookup_4.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="llevit" id="1_0_0-064" context="common">
+        <comment>add col to jeop Instance.</comment>
+        <addColumn tableName="jeop_instance">
+            <column name="calendar_days_open" type="int" defaultValueNumeric="0"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="llevit" id="1_0_0-065" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <comment>Run union again after adding column</comment>
+        <sqlFile path="data/19_jeops_union.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-66" author="bmccormick">
+      <renameColumn tableName="orders" oldColumnName="project_manager" newColumnName="client_project_manager"
+                    columnDataType="int"/>
+        <addColumn tableName="orders">
+            <column name="vertek_project_manager" type="int"></column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="bmccormick" id="1_0_0-067">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_locations_v4.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="rcasey" id="1_0_0-74" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_services_v2.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="rcasey" id="1_0_0-75">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_locations_v5.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="rcasey" id="1_0_0-76">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_locations_v6.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="rcasey" id="1_0_0-77">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_locations_v7.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="rcasey" id="1_0_0-78">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_services_v3.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-076" author="mwelicka">
+        <comment>QTO-206 Add Circuit Term End Date</comment>
+        <addColumn tableName="service">
+            <column name="circuit_term_end_date" type="date"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_0_0-79" author="rcasey">
+        <dropTable tableName="interval_type_close"/>
+        <dropTable tableName="interval_instance"/>
+        <dropTable tableName="interval_type"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-80" author="rcasey">
+        <createTable tableName="interval_type">
+            <column name="interval_type_id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="interval_type_desc" type="varchar(100)"/>
+            <column name="interval_type_code" type="varchar(100)"/>
+            <column name="open_milestone_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="close_milestone_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version" type="int" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="interval_type" baseColumnNames="open_milestone_id"
+                                 constraintName="FK_interval_type_open_milestone"
+                                 referencedTableName="milestone" referencedColumnNames="milestone_id"/>
+        <addForeignKeyConstraint baseTableName="interval_type" baseColumnNames="close_milestone_id"
+                                 constraintName="FK_interval_type_close_milestone"
+                                 referencedTableName="milestone" referencedColumnNames="milestone_id"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-81" author="rcasey">
+        <createTable tableName="interval_instance">
+            <column name="interval_instance_id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="interval_type_id" type="int">
+                <constraints nullable="false" foreignKeyName="FK_interval_instance_interval_type"
+                             references="interval_type(interval_type_id)"/>
+            </column>
+            <column name="open_milestone_instance_id" type="int">
+                <constraints foreignKeyName="FK_interval_instance_open_milestone_instance"
+                             references="milestone_instance(milestone_instance_id)"/>
+            </column>
+            <column name="close_milestone_instance_id" type="int">
+                <constraints foreignKeyName="FK_interval_instance_close_milestone_instance"
+                             references="milestone_instance(milestone_instance_id)"/>
+            </column>
+            <column name="business_day_interval_time" type="decimal(12,2)"/>
+            <column name="calendar_day_interval_time" type="decimal(12,2)"/>
+            <column name="client_business_day_deduct_time" type="decimal(12,2)"/>
+            <column name="client_calendar_day_deduct_time" type="decimal(12,2)"/>
+            <column name="customer_business_day_deduct_time" type="decimal(12,2)"/>
+            <column name="customer_calendar_day_deduct_time" type="decimal(12,2)"/>
+            <column name="carrier_business_day_deduct_time" type="decimal(12,2)"/>
+            <column name="carrier_calendar_day_deduct_time" type="decimal(12,2)"/>
+            <column name="version" type="int" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1_0_0-82" author="rcasey">
+        <createTable tableName="service_interval_instance">
+            <column name="service_id" type="int">
+                <constraints nullable="false" foreignKeyName="FK_service_interval_instance_service"
+                             references="service(service_id)"/>
+            </column>
+            <column name="interval_instance_id" type="int">
+                <constraints nullable="false" foreignKeyName="FK_service_interval_instance_interval_instance"
+                             references="interval_instance(interval_instance_id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1_0_0-83" author="rcasey">
+        <createTable tableName="location_interval_instance">
+            <column name="location_id" type="int">
+                <constraints nullable="false" foreignKeyName="FK_location_interval_instance_location"
+                             references="location(location_id)"/>
+            </column>
+            <column name="interval_instance_id" type="int">
+                <constraints nullable="false" foreignKeyName="FK_location_interval_instance_interval_instance"
+                             references="interval_instance(interval_instance_id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="rcasey" id="1_0_0-84">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/insert_interval_types.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-79" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_services_v4.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-080" context="common">
+        <comment>Drop/recreate cost column to set default.</comment>
+        <dropColumn tableName="dia_service" columnName="burstable_speed_cost"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-081" author="mwelicka">
+        <comment>Drop/recreate cost column to set default.</comment>
+        <addColumn tableName="dia_service">
+            <column name="burstable_speed_cost" type="decimal(19, 2)" defaultValue="0.00"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_0_0-082" author="mwelicka">
+        <comment>Drop Foreign Key</comment>
+        <dropForeignKeyConstraint baseTableName="milestone_instance_history" constraintName="FK_milestone_instance"/>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-083" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <comment>Set milestone adjustable and workflow flags</comment>
+        <sqlFile path="data/update_milestones.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-084" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <comment>adding Service Jeops</comment>
+        <sqlFile path="data/insert_lookup_5.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="bmccormick" id="1_0_0-85">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_services_v5.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="rcasey" id="1_0_0-86">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/insert_country_state_lookups.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-079" author="llevit">
+        <addColumn tableName="location">
+            <column name="active" type="bit" defaultValueBoolean="true"/>
+        </addColumn>
+        <addColumn tableName="service">
+            <column name="active" type="bit" defaultValueBoolean="true"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_0_0-80"  author="llevit">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_wip_reports.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-87" author="rcasey">
+        <createTable tableName="activation_schedule">
+            <column name="activation_schedule_id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="service_id" type="int">
+                <constraints nullable="false" foreignKeyName="FK_activation_schedule_service"
+                             references="service(service_id)"/>
+            </column>
+            <column name="vendor" type="varchar(100)"/>
+            <column name="requested_date" type="datetime"/>
+            <column name="version" type="int" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1_0_0-88" author="rcasey">
+        <addColumn tableName="activation_attempt">
+            <column name="activation_schedule_id" type="int"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="fcurran" id="1_0_0-087">
+        <comment>Create vendor quote schema.</comment>
+        <createTable tableName="quote">
+            <column autoIncrement="true" name="quote_id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="vendor_quote_id" type="INT">
+                <constraints unique="true"/>
+            </column>
+            <column name="account_id" type="INT"/>
+            <column name="account_name" type="VARCHAR(100)"/>
+            <column name="user_email" type="VARCHAR(100)"/>
+            <column name="user_name" type="VARCHAR(100)"/>
+            <column name="order_id" type="INT"/>
+            <column name="quote_number" type="VARCHAR(100)"/>
+            <column name="additional_properties" type="text"/>
+            <column name="quote_string" type="text"/>
+            <column name="quote_handled_time" type="datetime"/>
+            <column name="tenant_id" type="INT"/>
+            <column name="quote_provider" type="VARCHAR(100)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="fcurran" id="1_0_0-088">
+        <comment>Create vendor solution schema.</comment>
+        <createTable tableName="solution">
+            <column autoIncrement="true" name="solution_id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="vendor_solution_id" type="INT">
+                <constraints unique="true"/>
+            </column>
+            <column name="quote_id" type="INT">
+                <constraints nullable="false"
+                             foreignKeyName="FK_solution_quote_id"
+                             references="quote(quote_id)"/>
+            </column>
+            <column name="price_state" type="VARCHAR(100)"/>
+            <column name="term" type="VARCHAR(100)"/>
+            <column name="location_id" type="INT"/>
+            <column name="customer_location_id" type="VARCHAR(100)"/>
+            <column name="note" type="longtext"/>
+            <column name="provider" type="VARCHAR(100)"/>
+            <column name="mrc" type="decimal(19,4)"/>
+            <column name="mrc_cost" type="decimal(19,4)"/>
+            <column name="mrc_total_price" type="decimal(19,4)"/>
+            <column name="nrc" type="decimal(19,4)"/>
+            <column name="nrc_cost" type="decimal(19,4)"/>
+            <column name="nrc_total_price" type="decimal(19,4)"/>
+            <column name="base_currency_id" type="INT"/>
+            <column name="address" type="VARCHAR(100)"/>
+            <column name="city" type="VARCHAR(100)"/>
+            <column name="state" type="VARCHAR(100)"/>
+            <column name="zip" type="VARCHAR(100)"/>
+            <column name="address_valid" type="INT"/>
+            <column name="secondary_designator" type="VARCHAR(100)"/>
+            <column name="secondary_number" type="VARCHAR(100)"/>
+            <column name="latitude" type="VARCHAR(100)"/>
+            <column name="longitude" type="VARCHAR(100)"/>
+            <column name="unique_key" type="VARCHAR(100)"/>
+            <column name="global_location_id" type="VARCHAR(100)"/>
+            <column name="country_code" type="VARCHAR(100)"/>
+            <column name="preferred_supplier" type="INT"/>
+            <column name="custom_product_name" type="VARCHAR(100)"/>
+            <column name="product" type="VARCHAR(100)"/>
+            <column name="api_product_name" type="VARCHAR(100)"/>
+            <column name="speed" type="VARCHAR(100)"/>
+            <column name="upload_speed" type="INT"/>
+            <column name="download_speed" type="INT"/>
+            <column name="media_type" type="VARCHAR(100)"/>
+            <column name="net_status" type="VARCHAR(100)"/>
+            <column name="bldg_status" type="VARCHAR(100)"/>
+            <column name="status" type="VARCHAR(100)"/>
+            <column name="disposition_code" type="VARCHAR(100)"/>
+            <column name="install_interval" type="INT"/>
+            <column name="building_competitive_rating" type="VARCHAR(100)"/>
+            <column name="pricing_type" type="VARCHAR(100)"/>
+            <column name="created_date" type="DATETIME"/>
+            <column name="created_by" type="VARCHAR(100)"/>
+            <column name="address_status_id" type="INT"/>
+            <column name="lastmile_supplier" type="VARCHAR(100)"/>
+            <column name="catalog" type="VARCHAR(100)"/>
+            <column name="base_currency" type="VARCHAR(100)"/>
+            <column name="quote_currency" type="VARCHAR(100)"/>
+            <column name="additional_properties" type="text"/>
+            <column name="site_name" type="varchar(100)"/>
+            <column name="site_id" type="varchar(100)"/>
+            <column name="flex_field_1" type="varchar(100)"/>
+            <column name="flex_field_2" type="varchar(100)"/>
+            <column name="vendor_quote_id" type="INT">
+                <constraints nullable="false"
+                             foreignKeyName="FK_solution_vendor_quote_id"
+                             references="quote(vendor_quote_id)"/>
+            </column>
+            <column name="solution_handled_time" type="datetime"/>
+            <column name="tenant_id" type="INT"/>
+        </createTable>
+    </changeSet>
+
+        <changeSet id="1_0_0-089" author="mwelicka">
+        <addColumn tableName="activation_attempt">
+            <column name="attempt_number" type="INT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_0_0-090" author="rcasey">
+        <addColumn tableName="lookup_value">
+            <column name="parent_lookup_value_id" type="int"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_0_0-090" author="mwelicka">
+        <modifyDataType tableName="orders" columnName="quote_id" newDataType="VARCHAR(50)"/>
+        <modifyDataType tableName="location" columnName="quote_location_id" newDataType="VARCHAR(50)"/>
+        <modifyDataType tableName="service" columnName="quote_solution_id" newDataType="VARCHAR(50)"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-090"  author="llevit">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <comment>rerun the wip script to add active flag and data_provisioning_complete date</comment>
+        <sqlFile path="data/v_wip_reports_v2.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+
+    <changeSet author="mwelicka" id="1_0_0-091">
+        <comment>Drop Foreign Key</comment>
+        <dropForeignKeyConstraint baseTableName="solution" constraintName="FK_solution_vendor_quote_id"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-91"  author="rcasey">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/insert_activation_issues_lookups.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-091"  author="llevit">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <comment>add carrier reports view</comment>
+        <sqlFile path="data/v_carrier_reports.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-092">
+        <modifyDataType tableName="quote" columnName="vendor_quote_id" newDataType="VARCHAR(50)"/>
+        <modifyDataType tableName="solution" columnName="vendor_quote_id" newDataType="VARCHAR(50)"/>
+        <modifyDataType tableName="solution" columnName="location_id" newDataType="VARCHAR(50)"/>
+        <modifyDataType tableName="solution" columnName="vendor_solution_id" newDataType="VARCHAR(50)"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-92" author="rcasey">
+        <createTable tableName="activation_issue">
+            <column autoIncrement="true" name="activation_issue_id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="activation_attempt_id" type="int">
+                <constraints nullable="false" foreignKeyName="activation_issue_activation_attempt"
+                             references="activation_attempt(activation_attempt_id)"/>
+            </column>
+            <column name="primary_root_cause" type="varchar(100)"/>
+            <column name="secondary_root_cause" type="varchar(100)"/>
+            <column name="tertiary_root_cause" type="varchar(100)"/>
+            <column name="rank" type="int"/>
+            <column name="note" type="varchar(200)"/>
+            <column name="version" type="int" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-093">
+        <comment>Adding Foreign Key back</comment>
+        <addForeignKeyConstraint baseTableName="solution"
+                                 baseColumnNames="vendor_quote_id"
+                                 constraintName="FK_solution_vendor_quote_id"
+                                 referencedTableName="quote"
+                                 referencedColumnNames="vendor_quote_id"/>
+    </changeSet>
+
+    <changeSet author="fcurran" id="1_0_0-094" context="common">
+        <comment>Drop description from milestone.</comment>
+        <dropColumn tableName="milestone" columnName="description"/>
+        <addColumn tableName="milestone_display_set_include">
+            <column name="description" type="varchar(250)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_0_0-095"  author="fcurran">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/milestone_descriptions.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="bmccormick" id="1_0_0-096">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_services_v6.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="bmccormick" id="1_0_0-097" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/insert_lookup_6.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+
+     <changeSet author="mwelicka" id="1_0_0-100">
+        <comment>Create ftdi tables.</comment>
+        <createTable tableName="ftdi_order_type">
+            <column autoIncrement="true" name="ftdi_order_type_id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="vendor_order_type_id" type="varchar(100)"/>
+            <column name="vendor_name"  type="varchar(100)"/>
+            <column name="category"  type="varchar(100)"/>
+            <column name="org_id"  type="varchar(100)"/>
+            <column name="sort1"  type="varchar(100)"/>
+            <column name="sort2"  type="varchar(100)"/>
+            <column name="order_type"  type="varchar(100)"/>
+            <column name="last_update" type="date"/>
+            <column name="active" type="bit" defaultValueBoolean="true"/>
+            <column name="version" type="int" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+     </changeSet>
+
+     <changeSet author="mwelicka" id="1_0_0-101">
+        <comment>Create ftdi tables.</comment>
+        <createTable tableName="ftdi_custom_fields">
+            <column autoIncrement="true" name="ftdi_custom_field_id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="field_name"  type="varchar(100)"/>
+            <column name="data_type"  type="varchar(100)"/>
+            <column name="active" type="bit" defaultValueBoolean="true"/>
+            <column name="version" type="int" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+     </changeSet>
+
+     <changeSet author="mwelicka" id="1_0_0-102">
+        <comment>Create ftdi tables.</comment>
+        <createTable tableName="ftdi_custom_field_values">
+            <column autoIncrement="true" name="ftdi_custom_field_value_id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="custom_field_id" type="Int"/>
+            <column name="field_value"  type="varchar(100)"/>
+            <column name="version" type="int" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+     </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-0103">
+        <comment>Create ftdi tables.</comment>
+        <createTable tableName="ftdi_equipment_type">
+            <column autoIncrement="true" name="ftdi_equipment_type_id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="equipment_type"  type="varchar(100)"/>
+            <column name="part_number"  type="varchar(100)"/>
+            <column name="client_part_number"  type="varchar(100)"/>
+            <column name="item_number"  type="varchar(100)"/>
+            <column name="active" type="bit" defaultValueBoolean="true"/>
+            <column name="version" type="int" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+     </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-104">
+        <comment>Create ftdi tables.</comment>
+        <createTable tableName="ftdi_order_type_equipment">
+            <column name="ftdi_order_type_id" type="Int">
+             <constraints nullable="false"
+                             foreignKeyName="FK_ftdi_order_type_ftdi_equipment"
+                             references="ftdi_order_type(ftdi_order_type_id)"/>
+            </column>
+            <column name="ftdi_equipment_type_id"  type="Int">
+                     <constraints nullable="false"
+                             foreignKeyName="FK_ftdi_equipment_ftdi_order_type"
+                             references="ftdi_equipment_type(ftdi_equipment_type_id)"/>
+            </column>
+        </createTable>
+     </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-105">
+        <comment>Create ftdi tables.</comment>
+        <createTable tableName="ftdi_order_type_custom_fields">
+            <column name="ftdi_order_type_id" type="Int">
+             <constraints nullable="false"
+                             foreignKeyName="FK_ftdi_order_type_ftdi_custom_fields"
+                             references="ftdi_order_type(ftdi_order_type_id)"/>
+            </column>
+            <column name="ftdi_custom_field_id"  type="Int">
+                     <constraints nullable="false"
+                             foreignKeyName="FK_ftdi_custom_fields_ftdi_order_type"
+                             references="ftdi_custom_fields(ftdi_custom_field_id)"/>
+            </column>
+        </createTable>
+     </changeSet>
+
+    <changeSet author="bmccormick" id="1_0_0-106" context="common">
+      <modifyDataType tableName="orders" columnName="client_project_manager" newDataType="varchar(100)"/>
+    </changeSet>
+
+    <changeSet author="bmccormick" id="1_0_0-107" context="common">
+        <modifyDataType tableName="orders" columnName="activation_engineer" newDataType="int"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-108" author="rcasey">
+        <update tableName="lookup_value">
+            <column name="lookup_display" value="60-90 days"/>
+            <column name="lookup_value" value="60-90 days"/>
+            <where>lookup_display = '0-90 days'
+                AND lookup_type_id = (SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'OSP_CONS_INTERVAL')</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="bmccormick" id="1_0_0-109" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/insert_lookup_7.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="fcurran" id="1_0_0-096" context="common">
+        <comment>Contacts should be tenant owned.</comment>
+        <addColumn tableName="contact">
+            <column name="tenant_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_0_0-097" author="fcurran" context="common">
+        <addColumn tableName="contact">
+            <column name="last_update_by" type="varchar(100)"/>
+            <column name="last_update_date" type="datetime"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="rcasey" id="1_0_0-110" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_locations_v8.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="rcasey" id="1_0_0-111" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_services_v7.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="fcurran" id="1_0_0-112">
+        <comment>Not null constraint preventing cascade delete.</comment>
+        <dropNotNullConstraint tableName="contact_info" columnName="contact_id" columnDataType="int"/>
+    </changeSet>
+
+    <changeSet author="rcasey" id="1_0_0-112" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_services_v8.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-113" author="rcasey">
+        <update tableName="milestone_display_set_include">
+            <column name="milestone_sequence" value="1030"/>
+            <where>
+                milestone_display_set_id = (SELECT milestone_display_set_id FROM milestone_display_set WHERE display_group = 'LOCATION_MILESTONE')
+                AND milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'CHANGE_IN_ASSIGNMENT')
+            </where>
+        </update>
+    </changeSet>
+
+    <changeSet author="bmccormick" id="1_0_0-114" context="common">
+        <comment>add col to activation attempt.</comment>
+        <addColumn tableName="activation_attempt">
+            <column name="replace_cradlepoint" type="datetime"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-115" context="common">
+        <comment>add cols to activation schedule table.</comment>
+        <addColumn tableName="activation_schedule">
+            <column name="ftdi_order_type_id" type="Int"/>
+            <column name="latest_requested_date" type="datetime"/>
+            <column name="requested_days" type="varchar(100)"/>
+            <column name="technical_note" type="varchar(500)"/>
+            <column name="description" type="varchar(500)"/>
+            <column name="ctn_id" type="Int"/>
+            <column name="on_hold" type="bit"/>
+        </addColumn>
+    </changeSet>
+
+     <changeSet id="1_0_0-116" author="mwelicka">
+        <createTable tableName="activation_schedule_custom">
+            <column name="activation_schedule_custom_id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="activation_schedule_id" type="int">
+                <constraints nullable="false" foreignKeyName="FK_activation_schedule_custom_activation_schedule"
+                             references="activation_schedule(activation_schedule_id)"/>
+            </column>
+            <column name="field_name" type="varchar(100)"/>
+            <column name="field_value" type="varchar(100)"/>
+            <column name="version" type="int" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1_0_0-117" author="mwelicka">
+        <createTable tableName="activation_schedule_equipment">
+            <column name="activation_schedule_equipment_id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="activation_schedule_id" type="int">
+                <constraints nullable="false" foreignKeyName="FK_activation_schedule_equipment_activation_schedule"
+                             references="activation_schedule(activation_schedule_id)"/>
+            </column>
+            <column name="equipment_type" type="varchar(100)"/>
+            <column name="quantity" type="int"/>
+            <column name="version" type="int" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="llevit" id="1_0_0-118" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <comment>Added active flag to services view</comment>
+        <sqlFile path="data/v_manage_services_v9.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="rcasey" id="1_0_0-118" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/insert_ftdi_lookups.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="llevit" id="1_0_0-119" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <comment>Added active flag to locations view</comment>
+        <sqlFile path="data/v_manage_locations_v9.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-119" author="rcasey">
+        <addColumn tableName="activation_schedule_equipment">
+            <column name="item_number" type="varchar(100)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="rcasey" id="1_0_0-120" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/insert_lookup_8.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-118" author="fcurran" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/insert_lookup_9.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-119" author="fcurran" context="common">
+        <comment>Add column for contact role..</comment>
+        <addColumn tableName="contact">
+            <column name="role" type="varchar(100)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_0_0-121" author="rcasey" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/add_tenant_id_col.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-122" author="rcasey" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_note_union_v2.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-121" author="fcurran">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <comment>rerun the wip script to add mrc and complete date</comment>
+        <sqlFile path="data/v_wip_reports_v3.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+
+    <changeSet author="mwelicka" id="1_0_0-122" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <comment>Run union again after tenant_ID</comment>
+        <sqlFile path="data/19_jeops_union.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="rcasey" author="1_0_0-123">
+        <addColumn tableName="broadband_service">
+            <column name="modem_serial_number" type="varchar(100)"/>
+        </addColumn>
+        <addColumn tableName="dia_service">
+            <column name="router_serial_number" type="varchar(100)"/>
+            <column name="router_mac_address" type="varchar(100)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-123" context="common">
+        <addColumn tableName="contact">
+            <column name="phone" type="varchar(100)"/>
+            <column name="email" type="varchar(100)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_0_0-124" author="rcasey">
+        <addColumn tableName="activation_attempt">
+            <column name="network_cutover_date" type="date"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_0_0-125" author="rcasey">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/update_jeop_lookups.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-126" author="rcasey">
+        <createTable tableName="message_thread">
+            <column name="message_thread_id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="location_id" type="int">
+                <constraints nullable="false"
+                             foreignKeyName="FK_message_thread_location"
+                             references="location(location_id)"/>
+            </column>
+            <column name="created_by" type="int"/>
+            <column name="created_date" type="datetime"/>
+            <column name="title" type="varchar(250)"/>
+            <column name="version" type="int" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tenant_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1_0_0-127" author="rcasey">
+        <createTable tableName="message">
+            <column name="message_id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="message_thread_id" type="int">
+                <constraints nullable="false"
+                             foreignKeyName="FK_message_message_thread"
+                             references="message_thread(message_thread_id)"/>
+            </column>
+            <column name="created_by" type="int"/>
+            <column name="created_date" type="datetime"/>
+            <column name="body" type="longtext"/>
+            <column name="version" type="int" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1_0_0-128" author="rcasey">
+        <createTable tableName="message_thread_watcher">
+            <column name="message_thread_watcher_id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="message_thread_id" type="int">
+                <constraints foreignKeyName="FK_message_thread_subject_message_thread"
+                             references="message_thread(message_thread_id)"/>
+            </column>
+            <column name="subject_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version" type="int" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="fcurran" id="1_0_0-129" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_activations_v2.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+        <changeSet author="mwelicka" id="1_0_0-121" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/ISS_lookups.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="bmccormick" id="1_0_0-130" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_activation_attempt.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-125" author="mwelicka">
+        <comment>FTDI Order Types should be tenant owned.</comment>
+        <addColumn tableName="ftdi_order_type">
+            <column name="tenant_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_0_0-126" author="mwelicka">
+        <dropTable tableName="ftdi_order_type_equipment"/>
+        <dropTable tableName="ftdi_order_type_custom_fields"/>
+    </changeSet>
+
+
+    <changeSet author="mwelicka" id="1_0_0-127">
+        <comment>Create ftdi tables.</comment>
+        <createTable tableName="ftdi_order_type_equipment">
+            <column name="ftdi_order_type_equipment_id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="ftdi_order_type_id" type="Int">
+                <constraints nullable="false"
+                             foreignKeyName="FK_ftdi_order_type_ftdi_equipment"
+                             references="ftdi_order_type(ftdi_order_type_id)"/>
+            </column>
+            <column name="ftdi_equipment_type_id" type="Int">
+                <constraints nullable="false"
+                             foreignKeyName="FK_ftdi_equipment_ftdi_order_type"
+                             references="ftdi_equipment_type(ftdi_equipment_type_id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-128">
+        <comment>Create ftdi tables.</comment>
+        <createTable tableName="ftdi_order_type_custom_fields">
+            <column name="ftdi_order_type_custom_fields_id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="ftdi_order_type_id" type="Int">
+                <constraints nullable="false"
+                             foreignKeyName="FK_ftdi_order_type_ftdi_custom_fields"
+                             references="ftdi_order_type(ftdi_order_type_id)"/>
+            </column>
+            <column name="ftdi_custom_field_id" type="Int">
+                <constraints nullable="false"
+                             foreignKeyName="FK_ftdi_custom_fields_ftdi_order_type"
+                             references="ftdi_custom_fields(ftdi_custom_field_id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-130" context="common">
+        <dropColumn tableName="activation_schedule" columnName="ctn_id"/>
+        <addColumn tableName="activation_schedule">
+            <column name="vendor_dispatch_id" type="varchar(250)"/>
+            <column name="vendor_status" type="varchar(250)"/>
+            <column name="vendor_sr" type="varchar(250)"/>
+            <column name="vendor_subject" type="varchar(250)"/>
+            <column name="vendor_error_string" type="text"/>
+            <column name="vendor_result_id" type="int"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-131" context="common">
+        <createTable tableName="ftdi_appointment">
+            <column name="ftdi_appointment_id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="schedule_id" type="int"/>
+            <column name="sr" type="int"/>
+            <column name="status" type="varchar(100)"/>
+            <column name="appointment_date" type="datetime"/>
+            <column name="time_on_site" type="datetime"/>
+            <column name="time_off_site" type="datetime"/>
+            <column name="eta" type="datetime"/>
+            <column name="window_start" type="datetime"/>
+            <column name="window_end" type="datetime"/>
+            <column name="mod_time_off_site" type="datetime"/>
+            <column name="tech_name" type="varchar(100)"/>
+            <column name="tech_cell" type="varchar(100)"/>
+            <column name="version" type="int" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+
+    <changeSet author="mwelicka" id="1_0_0-133" context="common">
+        <addColumn tableName="ftdi_appointment">
+            <column name="vendor_name" type="varchar(50)"/>
+
+        </addColumn>
+    </changeSet>
+
+     <changeSet author="mwelicka" id="1_0_0-134" context="common">
+        <createTable tableName="ftdi_note">
+            <column name="ftdi_note_id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="schedule_id" type="int"/>
+            <column name="sr" type="int"/>
+            <column name="dispatch_vendor_id" type="int"/>
+            <column name="note" type="text"/>
+            <column name="post_date" type="date"/>
+            <column name="posted_by" type="varchar(100)"/>
+            <column name="level" type="varchar(100)"/>
+            <column name="end_id" type="int"/>
+            <column name="note_parsed" type="int"/>
+            <column name="version" type="int" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-135" context="common">
+        <createTable tableName="ftdi_shipment">
+            <column name="ftdi_shipment_id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="schedule_id" type="int"/>
+            <column name="tracking_number" type="varchar(50)"/>
+            <column name="shipment_status" type="varchar(50)"/>
+            <column name="shipment_date" type="date"/>
+            <column name="delivered" type="bit"/>
+            <column name="delivery_date" type="date"/>
+            <column name="signed_by" type="varchar(100)"/>
+            <column name="return_shipment" type="bit"/>
+            <column name="version" type="int" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-136" context="common">
+        <addColumn tableName="ftdi_shipment">
+            <column name="courier" type="varchar(50)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-137" context="common">
+        <createTable tableName="ftdi_dispatch">
+            <column name="ftdi_dispatch_id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="schedule_id" type="int"/>
+            <column name="vendor" type="varchar(50)"/>
+            <column name="dispatch_id" type="varchar(50)"/>
+            <column name="parent_dispatch_id" type="varchar(50)"/>
+            <column name="order_type_id" type="int"/>
+            <column name="status" type="varchar(50)"/>
+            <column name="sr" type="varchar(50)"/>
+            <column name="po" type="varchar(50)"/>
+            <column name="subject" type="varchar(50)"/>
+            <column name="on_hold" type="bit"/>
+            <column name="error_string" type="text"/>
+            <column name="result_id" type="int"/>
+            <column name="order_create_date" type="date"/>
+            <column name="version" type="int" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-138" context="common">
+        <comment>Drop cols from activation schedule table.</comment>
+        <dropColumn tableName="activation_schedule" columnName="vendor_dispatch_id"/>
+        <dropColumn tableName="activation_schedule" columnName="vendor_status"/>
+        <dropColumn tableName="activation_schedule" columnName="vendor_sr"/>
+        <dropColumn tableName="activation_schedule" columnName="vendor_subject"/>
+        <dropColumn tableName="activation_schedule" columnName="vendor_error_string"/>
+        <dropColumn tableName="activation_schedule" columnName="vendor_result_id"/>
+        <dropColumn tableName="activation_schedule" columnName="on_hold"/>
+        <dropColumn tableName="ftdi_shipment" columnName="schedule_id"/>
+        <dropColumn tableName="ftdi_note" columnName="schedule_id"/>
+        <dropColumn tableName="ftdi_appointment" columnName="schedule_id"/>
+        <addColumn tableName="ftdi_shipment">
+            <column name="ftdi_dispatch_id" type="int"/>
+        </addColumn>
+        <addColumn tableName="ftdi_note">
+            <column name="ftdi_dispatch_id" type="int"/>
+        </addColumn>
+        <addColumn tableName="ftdi_appointment">
+            <column name="ftdi_dispatch_id" type="int"/>
+        </addColumn>
+    </changeSet>
+
+
+    <changeSet author="mwelicka" id="1_0_0-132" context="common">
+        <sql>ALTER TABLE ftdi_dispatch AUTO_INCREMENT = 600100;</sql>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-140" context="common">
+        <addDefaultValue tableName="ftdi_dispatch" columnName="on_hold" defaultValueBoolean="false"/>
+    </changeSet>
+
+     <changeSet author="mwelicka" id="1_0_0-141" context="common">
+         <renameColumn tableName="ftdi_dispatch" oldColumnName="dispatch_id" newColumnName="vendor_dispatch_id"
+                       columnDataType="varchar(50)"/>
+     </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-142" context="common">
+        <renameColumn tableName="ftdi_dispatch" oldColumnName="parent_dispatch_id"
+                      newColumnName="parent_vendor_dispatch_id" columnDataType="varchar(50)"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-131" author="rcasey">
+        <update tableName="lookup_value">
+            <column name="lookup_value" value="Incomplete - Pending Re-Schedule"/>
+            <column name="lookup_display" value="Incomplete - Pending Re-Schedule"/>
+            <where>lookup_value = "Incomplete-Pending Reschedule"</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="rcasey" id="1_0_0-132" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_activations_v3.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="rcasey" id="1_0_0-133" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_wip_reports_v4.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="rcasey" id="1_0_0-134" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_carrier_reports_v2.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="rcasey" id="1_0_0-144" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/populate_tenant_lookup_values.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="rcasey" id="1_0_0-145" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_locations_v10.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="rcasey" id="1_0_0-146" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_services_v10.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-147" author="rcasey">
+        <addColumn tableName="service">
+            <column name="last_status_change" type="date"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="rcasey" id="1_0_0-148" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_services_v11.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="rcasey" author="1_0_0-149">
+        <renameColumn tableName="activation_attempt" oldColumnName="replace_cradlepoint" newColumnName="replace_4g_5g" columnDataType="varchar(100)"/>
+        <addColumn tableName="activation_attempt">
+            <column name="primary_uid" type="varchar(100)"/>
+            <column name="secondary_uid" type="varchar(100)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="rcasey" id="1_0_0-150" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/insert_lookup_10.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="rcasey" id="1_0_0-151" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/insert_lookup_11.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="rcasey" author="1_0_0-152">
+        <addColumn tableName="service">
+            <column name="lan_block" type="varchar(100)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_0_0-153" author="rcasey">
+        <addColumn tableName="company">
+            <column name="parent_company_id" type="int"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_0_0-149" author="mwelicka">
+        <addColumn tableName="activation_attempt">
+            <column name="ftdi_appointment_id" type="int"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_0_0-150" author="mwelicka">
+        <addColumn tableName="activation_attempt">
+            <column name="ftdi_vendor_id" type="varchar(50)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-151" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_activations_v4.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="rcasey" id="1_0_0-154" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_services_v12.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="rcasey" id="1_0_0-155" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_locations_v11.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="rcasey" id="1_0_0-156">
+        <comment>Not null constraint preventing cascade delete.</comment>
+        <dropNotNullConstraint tableName="activation_attempt_requirement" columnName="activation_attempt_id" columnDataType="int"/>
+    </changeSet>
+
+    <changeSet author="rcasey" id="1_0_0-157" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/service_ucaas.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="rcasey" id="1_0_0-158" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/service_ucaas_milestones.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="rcasey" id="1_0_0-159" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/update_service_milestone_sequence.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-159" context="common">
+        <addColumn tableName="service">
+            <column name="progress_percentage" type="int" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-160" context="common">
+        <addColumn tableName="location">
+            <column name="progress_percentage" type="int" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="rcasey" id="1_0_0-160" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/service_4g5g.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="rcasey" id="1_0_0-161" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/service_4g5g_milestones.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-161" author="fcurran">
+        <comment>Create tables for email templates.</comment>
+        <createTable tableName="email_template">
+            <column name="email_template_id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(100)"/>
+            <column name="subject" type="text"/>
+            <column name="body" type="text"/>
+            <column name="last_update_by" type="varchar(100)"/>
+            <column name="last_update_date" type="datetime"/>
+            <column name="template_type" type="varchar(100)"/>
+            <column name="tenant_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version" type="int" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="template_variable">
+            <column name="template_variable_id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="label" type="VARCHAR(50)"/>
+            <column name="path" type="VARCHAR(50)"/>
+            <column name="type" type="VARCHAR(50)"/>
+            <column name="template_type" type="varchar(100)"/>
+            <column name="version" type="int" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <comment>add activations email template view</comment>
+        <sqlFile path="data/template_activations_view.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-162" author="fcurran">
+        <comment>Populate template related tables with initial set.</comment>
+        <insert tableName="template_variable">
+            <column name="label" value="Activation Attempt ID"/>
+            <column name="path" value="activationAttemptId"/>
+            <column name="type" value="int"/>
+            <column name="template_type" value="ACTIVATION"/>
+        </insert>
+        <insert tableName="template_variable">
+            <column name="label" value="Address 1"/>
+            <column name="path" value="address1"/>
+            <column name="type" value="string"/>
+            <column name="template_type" value="ACTIVATION"/>
+        </insert>
+        <insert tableName="template_variable">
+            <column name="label" value="City"/>
+            <column name="path" value="city"/>
+            <column name="type" value="string"/>
+            <column name="template_type" value="ACTIVATION"/>
+        </insert>
+        <insert tableName="template_variable">
+            <column name="label" value="State/Province/Region"/>
+            <column name="path" value="stateProvince"/>
+            <column name="type" value="string"/>
+            <column name="template_type" value="ACTIVATION"/>
+        </insert>
+        <insert tableName="template_variable">
+            <column name="label" value="ZIP/Postal Code"/>
+            <column name="path" value="postalCode"/>
+            <column name="type" value="string"/>
+            <column name="template_type" value="ACTIVATION"/>
+        </insert>
+        <insert tableName="template_variable">
+            <column name="label" value="Country"/>
+            <column name="path" value="country"/>
+            <column name="type" value="string"/>
+            <column name="template_type" value="ACTIVATION"/>
+        </insert>
+        <insert tableName="template_variable">
+            <column name="label" value="Client Service ID"/>
+            <column name="path" value="clientServiceId"/>
+            <column name="type" value="string"/>
+            <column name="template_type" value="ACTIVATION"/>
+        </insert>
+        <insert tableName="template_variable">
+            <column name="label" value="Client Location ID"/>
+            <column name="path" value="clientLocationId"/>
+            <column name="type" value="string"/>
+            <column name="template_type" value="ACTIVATION"/>
+        </insert>
+        <insert tableName="template_variable">
+            <column name="label" value="Client Location Info"/>
+            <column name="path" value="clientLocationInfo"/>
+            <column name="type" value="string"/>
+            <column name="template_type" value="ACTIVATION"/>
+        </insert>
+        <insert tableName="template_variable">
+            <column name="label" value="Carrier"/>
+            <column name="path" value="carrier"/>
+            <column name="type" value="string"/>
+            <column name="template_type" value="ACTIVATION"/>
+        </insert>
+        <insert tableName="template_variable">
+            <column name="label" value="Total Appointment Time"/>
+            <column name="path" value="totalAppointmentTime"/>
+            <column name="type" value="string"/>
+            <column name="template_type" value="ACTIVATION"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="1_0_0-163" author="fcurran">
+        <comment>Populate template related tables with initial set.</comment>
+        <sqlFile path="data/populate_email_templates.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-162" author="rcasey">
+        <createTable tableName="notification">
+            <column name="notification_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="subject_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="header" type="varchar(100)"/>
+            <column name="body" type="varchar(250)"/>
+            <column name="icon" type="varchar(100)"/>
+            <column name="dismissed" type="boolean" defaultValueBoolean="false"/>
+            <column name="link_to" type="varchar(500)"/>
+            <column name="created_date" type="datetime"/>
+            <column name="version" type="int" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1_0_0-155" author="mwelicka">
+        <addColumn tableName="service">
+            <column name="ticket_number" type="varchar(50)"/>
+        </addColumn>
+    </changeSet>
+
+
+    <changeSet id="1_0_0-156" author="mwelicka">
+        <addColumn tableName="service">
+            <column defaultValueBoolean="false" name="update_client" type="BIT"/>
+        </addColumn>
+    </changeSet>
+
+
+    <changeSet id="1_0_0-157" author="mwelicka">
+        <addColumn tableName="note">
+            <column defaultValueBoolean="false" name="update_client" type="BIT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_0_0-161" author="mwelicka">
+        <addColumn tableName="service">
+            <column name="circuit_owner" type="varchar(100)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-163" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/ISS_port_add_legacy_ids.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-164" author="mwelicka">
+        <addColumn tableName="service">
+            <column name="job_number" type="varchar(100)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_0_0-165" author="mwelicka">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_locations_v12.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+      <changeSet id="1_0_0-180" author="mwelicka">
+        <addColumn tableName="location">
+            <column name="legacy_transaction_type" type="varchar(100)"/>
+            <column name="legacy_transaction_amount" type="decimal(9,4)"/>
+        </addColumn>
+    </changeSet>
+
+
+    <changeSet author="bmccormick" id="1_0_0-166" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_services_v13.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/v_manage_locations_v13.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-167" author="rcasey" context="dev,test">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_subject_local_uat.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+  <changeSet author="rcasey" id="1_0_0-163" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_services_v13.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-168" author="rcasey" context="prod">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_subject_prod.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+  <changeSet author="rcasey" id="1_0_0-164" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_services_v14.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-169" author="rcasey">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_locations_v13-2.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-170" author="rcasey">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_services_v13-2.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+  </changeSet>
+
+      <changeSet id="1_0_0-165" author="rcasey">
+        <dropNotNullConstraint tableName="message" columnName="message_thread_id" columnDataType="int"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-166" author="rcasey">
+        <addColumn tableName="activation_schedule">
+            <column name="cancelled_date" type="datetime"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_0_0-171" author="rcasey">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/speed_lookup_sort_order.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-172" author="rcasey">
+        <dropColumn tableName="orders" columnName="order_mrc"/>
+        <dropColumn tableName="orders" columnName="order_nrc"/>
+        <dropColumn tableName="orders" columnName="order_icb"/>
+        <dropColumn tableName="orders" columnName="order_osp"/>
+        <dropColumn tableName="location" columnName="location_mrc"/>
+        <dropColumn tableName="location" columnName="location_nrc"/>
+        <dropColumn tableName="location" columnName="location_icb"/>
+        <dropColumn tableName="location" columnName="location_osp"/>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-166" context="common">
+        <dropColumn tableName="service" columnName="legacy_id"/>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-167" context="common">
+        <addColumn tableName="service">
+            <column name="legacy_id" type="varchar(25)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-168" context="common">
+        <addColumn tableName="service">
+            <column name="legacy_equipment" type="varchar(1000)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-169" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/insert_jeop.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-170" context="common">
+        <addColumn tableName="activation_schedule">
+            <column name="legacy_dispatch_id" type="int"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-171" context="common">
+        <dropColumn tableName="location" columnName="legacy_id"/>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-172" context="common">
+        <addColumn tableName="location">
+            <column name="legacy_id" type="varchar(25)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-173" context="common">
+        <addColumn tableName="tenant_lookup_value">
+            <column name="tenant_lookup_value_id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+        <changeSet author="mwelicka" id="1_0_0-174" context="common">
+        <dropColumn tableName="activation_issue" columnName="rank"/>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-175" context="common">
+        <addColumn tableName="activation_issue">
+            <column name="issue_rank" type="int"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-176" context="common">
+        <addColumn tableName="activation_schedule">
+            <column name="legacy_ctn_id" type="int"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-177" context="common">
+        <modifyDataType tableName="ftdi_dispatch" columnName="subject" newDataType="varchar(250)"/>
+    </changeSet>
+
+        <changeSet author="mwelicka" id="1_0_0-178" context="common">
+        <addColumn tableName="service">
+            <column defaultValueBoolean="false" name="eligible_for_update" type="BIT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_0_0-173" author="rcasey">
+        <addColumn tableName="location">
+            <column name="level_of_effort" type="varchar(100)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_0_0-174" author="fcurran">
+        <createTable tableName="invoice">
+            <column name="invoice_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="invoice_number" type="varchar(50)"/>
+            <column name="invoice_status" type="varchar(50)"/>
+            <column name="total_charges" type="decimal(19,4)"/>
+            <column name="invoice_start" type="datetime"/>
+            <column name="invoice_end" type="datetime"/>
+            <column name="generated_by" type="varchar(100)"/>
+            <column name="generated_date" type="datetime"/>
+            <column name="version" type="int" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tenant_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1_0_0-175" author="fcurran">
+        <createTable tableName="invoice_charge">
+            <column name="invoice_charge_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="invoice_id" type="int">
+                <constraints nullable="false" foreignKeyName="FK_invoice_charge_invoice"
+                             references="invoice(invoice_id)"/>
+            </column>
+            <column name="location_id" type="int">
+                <constraints nullable="false" foreignKeyName="FK_invoice_charge_location"
+                             references="location(location_id)"/>
+            </column>
+            <column name="charge_credit" type="varchar(50)"/>
+            <column name="unit_cost" type="decimal(19, 2)"/>
+            <column name="total_amount" type="decimal(19, 2)"/>
+            <column name="invoiced_amount" type="decimal(19, 2)"/>
+            <column name="item_desc" type="varchar(250)"/>
+            <column name="charge_desc" type="varchar(250)"/>
+            <column name="charge_type" type="varchar(50)"/>
+            <column name="charge_level" type="varchar(50)"/>
+            <column name="master_customer_name" type="varchar(100)"/>
+            <column name="end_customer_name" type="varchar(100)"/>
+            <column name="billable_event_milestone_description" type="varchar(100)"/>
+            <column name="billable_event_date" type="datetime"/>
+            <column name="version" type="int" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tenant_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1_0_0-176" author="fcurran">
+        <createTable tableName="surcharge_type">
+            <column name="surcharge_type_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="surcharge_type" type="varchar(250)"/>
+            <column name="surcharge_level" type="varchar(50)"/>
+            <column name="surcharge_amount" type="decimal(19,4)"/>
+            <column name="start_date" type="datetime"/>
+            <column name="end_date" type="datetime"/>
+            <column name="version" type="int" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tenant_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1_0_0-177" author="fcurran">
+        <sql>insert into surcharge_type (surcharge_level, surcharge_amount, start_date, tenant_id, surcharge_type) select 'Basic', 30, '2023-08-01', tenant_id, 'Intercept Referral (when bundled w/ disconnect transaction)' from v_tenant</sql>
+        <sql>insert into surcharge_type (surcharge_level, surcharge_amount, start_date, tenant_id, surcharge_type) select 'Basic', 30, '2023-08-01', tenant_id, 'Ordering expedite request to carrier' from v_tenant</sql>
+        <sql>insert into surcharge_type (surcharge_level, surcharge_amount, start_date, tenant_id, surcharge_type) select 'Basic', 30, '2023-08-01', tenant_id, 'Post Activation QC Call,  Additional Pre-Act Alarm/BB' from v_tenant</sql>
+        <sql>insert into surcharge_type (surcharge_level, surcharge_amount, start_date, tenant_id, surcharge_type) select 'Basic', 30, '2023-08-01', tenant_id, 'Technical Pre or Post-Activation Call &amp; Triage (troubleshoot issue and resolve or hand off to appropriate resolution team)' from v_tenant</sql>
+        <sql>insert into surcharge_type (surcharge_level, surcharge_amount, start_date, tenant_id, surcharge_type) select 'Basic', 30, '2023-08-01', tenant_id, 'Telephone Site Survey' from v_tenant</sql>
+        <sql>insert into surcharge_type (surcharge_level, surcharge_amount, start_date, tenant_id, surcharge_type) select 'Basic', 30, '2023-08-01', tenant_id, 'Third Party Activation Requirement on a Turn-Up' from v_tenant</sql>
+        <sql>insert into surcharge_type (surcharge_level, surcharge_amount, start_date, tenant_id, surcharge_type) select 'Basic', 30, '2023-08-01', tenant_id, 'Turn-Up Event Cancel Request (&lt;24 Hours from Scheduled turn-up event)' from v_tenant</sql>
+        <sql>insert into surcharge_type (surcharge_level, surcharge_amount, start_date, tenant_id, surcharge_type) select 'Basic', 30, '2023-08-01', tenant_id, 'Turn-Up Event Expedite Request (&lt;24 Hours from request to turn-up event)' from v_tenant</sql>
+
+        <sql>insert into surcharge_type (surcharge_level, surcharge_amount, start_date, tenant_id, surcharge_type) select 'Standard', 50, '2023-08-01', tenant_id, 'Additional Test &amp; Turn-Up Truck Roll (3rd Truck Roll or Greater)' from v_tenant</sql>
+        <sql>insert into surcharge_type (surcharge_level, surcharge_amount, start_date, tenant_id, surcharge_type) select 'Standard', 50, '2023-08-01', tenant_id, 'Enhanced Inside Wire with Known Service Provider' from v_tenant</sql>
+        <sql>insert into surcharge_type (surcharge_level, surcharge_amount, start_date, tenant_id, surcharge_type) select 'Standard', 50, '2023-08-01', tenant_id, 'In Flight Portability Change' from v_tenant</sql>
+        <sql>insert into surcharge_type (surcharge_level, surcharge_amount, start_date, tenant_id, surcharge_type) select 'Standard', 50, '2023-08-01', tenant_id, 'In-Flight Order Support' from v_tenant</sql>
+        <sql>insert into surcharge_type (surcharge_level, surcharge_amount, start_date, tenant_id, surcharge_type) select 'Standard', 50, '2023-08-01', tenant_id, 'Lifecycle Circuit Resolution' from v_tenant</sql>
+        <sql>insert into surcharge_type (surcharge_level, surcharge_amount, start_date, tenant_id, surcharge_type) select 'Standard', 50, '2023-08-01', tenant_id, 'Mall/Airport Site' from v_tenant</sql>
+        <sql>insert into surcharge_type (surcharge_level, surcharge_amount, start_date, tenant_id, surcharge_type) select 'Standard', 50, '2023-08-01', tenant_id, 'Multi-Line Phone Testing 3-5 Lines' from v_tenant</sql>
+        <sql>insert into surcharge_type (surcharge_level, surcharge_amount, start_date, tenant_id, surcharge_type) select 'Standard', 50, '2023-08-01', tenant_id, 'Multi-Line Phone Testing 6-10 Lines' from v_tenant</sql>
+        <sql>insert into surcharge_type (surcharge_level, surcharge_amount, start_date, tenant_id, surcharge_type) select 'Standard', 50, '2023-08-01', tenant_id, 'Test &amp; Turn Up Hot Cuts' from v_tenant</sql>
+        <sql>insert into surcharge_type (surcharge_level, surcharge_amount, start_date, tenant_id, surcharge_type) select 'Standard', 50, '2023-08-01', tenant_id, 'Vendor Meet Coordination Request' from v_tenant</sql>
+
+        <sql>insert into surcharge_type (surcharge_level, surcharge_amount, start_date, tenant_id, surcharge_type) select 'Advanced', 85, '2023-08-01', tenant_id, '2nd Carrier Order Placement due to circuit performance (includes disconnect of original circuit)' from v_tenant</sql>
+        <sql>insert into surcharge_type (surcharge_level, surcharge_amount, start_date, tenant_id, surcharge_type) select 'Advanced', 85, '2023-08-01', tenant_id, 'Client-Requested Second Truck Roll' from v_tenant</sql>
+        <sql>insert into surcharge_type (surcharge_level, surcharge_amount, start_date, tenant_id, surcharge_type) select 'Advanced', 85, '2023-08-01', tenant_id, 'Enhanced Inside Wire with Outside Contractor' from v_tenant</sql>
+        <sql>insert into surcharge_type (surcharge_level, surcharge_amount, start_date, tenant_id, surcharge_type) select 'Advanced', 85, '2023-08-01', tenant_id, 'ICB Order' from v_tenant</sql>
+        <sql>insert into surcharge_type (surcharge_level, surcharge_amount, start_date, tenant_id, surcharge_type) select 'Advanced', 85, '2023-08-01', tenant_id, 'LOA/ROE Coordination' from v_tenant</sql>
+        <sql>insert into surcharge_type (surcharge_level, surcharge_amount, start_date, tenant_id, surcharge_type) select 'Advanced', 85, '2023-08-01', tenant_id, 'Multi-Line Phone Testing 11-15+ Lines' from v_tenant</sql>
+        <sql>insert into surcharge_type (surcharge_level, surcharge_amount, start_date, tenant_id, surcharge_type) select 'Advanced', 85, '2023-08-01', tenant_id, 'TTU Support Outside Business Hours' from v_tenant</sql>
+    </changeSet>
+
+    <changeSet id="1_0_0-178" author="fcurran">
+        <createTable tableName="surcharge">
+            <column name="surcharge_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="location_id" type="int">
+                <constraints nullable="false" foreignKeyName="FK_surcharge_location"
+                             references="location(location_id)"/>
+            </column>
+            <column name="service_id" type="int">
+                <constraints nullable="false" foreignKeyName="FK_surcharge_service"
+                             references="service(service_id)"/>
+            </column>
+            <column name="surcharge_type_id" type="int">
+                <constraints nullable="false" foreignKeyName="FK_surcharge_surcharge_type"
+                             references="surcharge_type(surcharge_type_id)"/>
+            </column>
+            <column name="surcharge_date" type="datetime"/>
+            <column name="added_by" type="varchar(100)"/>
+            <column name="invoice_charge_id" type="int">
+                <constraints nullable="true" foreignKeyName="FK_surcharge_invoice_charge"
+                             references="invoice_charge(invoice_charge_id)"/>
+            </column>
+            <column name="version" type="int" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tenant_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1_0_0-179" author="fcurran">
+        <createTable tableName="level_of_effort">
+            <column name="level_of_effort_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="level_of_effort" type="varchar(50)"/>
+            <column name="amount" type="decimal(19,4)"/>
+            <column name="start_date" type="datetime"/>
+            <column name="end_date" type="datetime"/>
+            <column name="version" type="int" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tenant_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1_0_0-180" author="fcurran">
+        <sql>insert into level_of_effort (level_of_effort, amount, start_date, tenant_id) select 'Basic', 130, '2023-08-01', tenant_id from v_tenant</sql>
+        <sql>insert into level_of_effort (level_of_effort, amount, start_date, tenant_id) select 'Standard', 255, '2023-08-01', tenant_id from v_tenant</sql>
+        <sql>insert into level_of_effort (level_of_effort, amount, start_date, tenant_id) select 'Advanced', 345, '2023-08-01', tenant_id from v_tenant</sql>
+        <sql>insert into level_of_effort (level_of_effort, amount, start_date, tenant_id) select 'MACD', 165, '2023-08-01', tenant_id from v_tenant</sql>
+    </changeSet>
+
+    <changeSet id="1_0_0-181" author="fcurran">
+        <createTable tableName="billable_milestone">
+            <column name="billable_milestone_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="milestone_id" type="int">
+                <constraints nullable="false" foreignKeyName="FK_billable_milestone_milestone"
+                             references="milestone(milestone_id)"/>
+            </column>
+            <column name="milestone_level" type="varchar(50)"/>
+            <column name="percentage" type="int" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version" type="int" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tenant_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1_0_0-182" author="fcurran">
+        <sql>insert into billable_milestone (milestone_id, milestone_level, percentage, tenant_id) select (SELECT milestone_id from milestone where milestone_code='SITE_SURVEY_SUBMIT'), 'Service', 50, tenant_id from v_tenant</sql>
+        <sql>insert into billable_milestone (milestone_id, milestone_level, percentage, tenant_id) select (SELECT milestone_id from milestone where milestone_code='NETWORK_PROVIDER_CONSTRUCTION_START'), 'Service', 50, tenant_id from v_tenant</sql>
+        <sql>insert into billable_milestone (milestone_id, milestone_level, percentage, tenant_id) select (SELECT milestone_id from milestone where milestone_code='CARRIER_ORDER_SUBMITTED'), 'Service', 50, tenant_id from v_tenant</sql>
+        <sql>insert into billable_milestone (milestone_id, milestone_level, percentage, tenant_id) select (SELECT milestone_id from milestone where milestone_code='COMPLETE'), 'Location', 100, tenant_id from v_tenant</sql>
+    </changeSet>
+
+    <changeSet id="1_0_0-183" author="fcurran">
+        <addColumn tableName="milestone_instance">
+            <column name="invoice_charge_id" type="int">
+                <constraints nullable="true" foreignKeyName="FK_milestone_instance_invoice_charge"
+                             references="invoice_charge(invoice_charge_id)"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_0_0-184" author="fcurran">
+        <!-- Add a new column to hold the converted values -->
+        <addColumn tableName="service">
+            <column name="has_osp_new" type="tinyint" defaultValueNumeric="0"/>
+        </addColumn>
+
+        <!-- Update the new column with converted values -->
+        <sql>
+            UPDATE service
+            SET has_osp_new = (CASE
+                                   WHEN has_osp = 'Yes' THEN 1
+                                   ELSE 0
+                END)
+        </sql>
+
+        <!-- Drop the old column -->
+        <dropColumn tableName="service" columnName="has_osp"/>
+
+        <!-- Rename the new column to the original column name -->
+        <renameColumn tableName="service" oldColumnName="has_osp_new" newColumnName="has_osp"
+                      columnDataType="tinyint"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-185" author="fcurran">
+        <!-- Add a new column to hold the converted values -->
+        <addColumn tableName="service">
+            <column name="has_icb_new" type="tinyint" defaultValueNumeric="0"/>
+        </addColumn>
+
+        <!-- Update the new column with converted values -->
+        <sql>
+            UPDATE service
+            SET has_icb_new = (CASE
+                                   WHEN has_icb = 'Yes' THEN 1
+                                   ELSE 0
+                END)
+        </sql>
+
+        <!-- Drop the old column -->
+        <dropColumn tableName="service" columnName="has_icb"/>
+
+        <!-- Rename the new column to the original column name -->
+        <renameColumn tableName="service" oldColumnName="has_icb_new" newColumnName="has_icb"
+                      columnDataType="tinyint"/>
+    </changeSet>
+
+    <changeSet author="rcasey" id="1_0_0-186" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_activation_attempt_v2.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="rcasey" id="1_0_0-187" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_carrier_reports_v3.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="rcasey" id="1_0_0-188" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_wip_reports_v5.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-189" author="rcasey">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_activations_v5.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+     <changeSet author="mwelicka" id="1_0_0-190" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_services_v15.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="rcasey" id="1_0_0-191" context="common">
+        <addColumn tableName="location_milestone_instance">
+            <column name="milestone_id" type="int"/>
+        </addColumn>
+        <addColumn tableName="service_milestone_instance">
+            <column name="milestone_id" type="int"/>
+        </addColumn>
+        <sql>
+            UPDATE location_milestone_instance lmi SET milestone_id = (SELECT milestone_id FROM milestone_instance mi WHERE lmi.milestone_instance_id = mi.milestone_instance_id);
+            UPDATE service_milestone_instance smi SET milestone_id = (SELECT milestone_id FROM milestone_instance mi WHERE smi.milestone_instance_id = mi.milestone_instance_id);
+            DELETE lmi1 FROM location_milestone_instance lmi1, location_milestone_instance lmi2 WHERE lmi1.milestone_instance_id > lmi2.milestone_instance_id AND lmi1.location_id = lmi2.location_id AND lmi1.milestone_id = lmi2.milestone_id;
+            DELETE smi1 FROM service_milestone_instance smi1, service_milestone_instance smi2 WHERE smi1.milestone_instance_id > smi2.milestone_instance_id AND smi1.service_id = smi2.service_id AND smi1.milestone_id = smi2.milestone_id;
+            DELETE ii, sii FROM interval_instance ii JOIN service_interval_instance sii ON ii.interval_instance_id = sii.interval_instance_id
+                   WHERE ii.open_milestone_instance_id NOT IN (SELECT milestone_instance_id FROM location_milestone_instance UNION SELECT milestone_instance_id FROM service_milestone_instance)
+                      OR ii.close_milestone_instance_id NOT IN (SELECT milestone_instance_id FROM location_milestone_instance UNION SELECT milestone_instance_id FROM service_milestone_instance);
+            DELETE FROM milestone_instance WHERE milestone_instance_id NOT IN (SELECT milestone_instance_id FROM location_milestone_instance UNION SELECT milestone_instance_id FROM service_milestone_instance UNION SELECT milestone_instance_id FROM order_milestone_instance);
+        </sql>
+        <addUniqueConstraint tableName="location_milestone_instance" columnNames="location_id, milestone_id" constraintName="UQ_location_milestone_instance_location_id_milestone_id"/>
+        <addUniqueConstraint tableName="service_milestone_instance" columnNames="service_id, milestone_id" constraintName="UQ_service_milestone_instance_service_id_milestone_id"/>
+    </changeSet>
+
+    <changeSet id="rcasey" author="1_0_0-192">
+        <sql>
+            INSERT INTO milestone (milestone_name, milestone_code) VALUES ('Site Access Confirmed', 'SITE_ACCESS_CONFIRMED');
+            SET @displaySetId = (SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'BROADBAND_SERVICE_MILESTONE');
+            INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
+                                                       milestone_required, adjustable, workflow_driven, has_time, disallow_future)
+            VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'SITE_ACCESS_CONFIRMED'), 1, 1065, 1, 1, 0, 0, 0);
+            SET @displaySetId = (SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'DIA_SERVICE_MILESTONE');
+            INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
+                                                       milestone_required, adjustable, workflow_driven, has_time, disallow_future)
+            VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'SITE_ACCESS_CONFIRMED'), 1, 1065, 1, 1, 0, 0, 0);
+        </sql>
+    </changeSet>
+
+    <changeSet id="mwelicka" author="1_0_0-190-1">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+            <sqlCheck expectedResult="0">SELECT COUNT(*) FROM company WHERE company_name = 'QTO First Tenant' AND company_type = 'Vertek Client'</sqlCheck>
+        </preConditions>
+        <sql>
+            INSERT INTO company (company_name, company_type, company_uuid, tenant_id)
+                (SELECT 'QTO First Tenant', 'Vertek Client', 'qft', tenant_id FROM v_tenant t WHERE t.name = 'QTO First Tenant');
+        </sql>
+    </changeSet>
+
+    <changeSet id="mwelicka" author="1_0_0-190-2">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+            <sqlCheck expectedResult="0">SELECT COUNT(*) FROM company WHERE company_name = 'Endeavor' AND company_type = 'Vertek Client'</sqlCheck>
+        </preConditions>
+        <sql>
+            INSERT INTO company (company_name, company_type, company_uuid, tenant_id)
+                (SELECT 'Endeavor', 'Vertek Client', 'Endeavor', tenant_id FROM v_tenant t WHERE t.name = 'Endeavor');
+        </sql>
+    </changeSet>
+
+    <changeSet id="mwelicka" author="1_0_0-190-3">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+            <sqlCheck expectedResult="0">SELECT COUNT(*) FROM v_tenant WHERE name = 'Demo Tenant'</sqlCheck>
+        </preConditions>
+        <sql>
+            INSERT INTO company (company_name, company_type, company_uuid, tenant_id)
+                (SELECT 'Demo Tenant', 'Vertek Client', 'dt', tenant_id FROM v_tenant t WHERE t.name = 'Demo Tenant');
+        </sql>
+    </changeSet>
+
+    <changeSet id="1_0_0-186" author="fcurran">
+        <createTable tableName="service_surcharge">
+            <column name="service_id" type="int">
+                <constraints nullable="false" foreignKeyName="FK_service_surcharge_service"
+                             references="service(service_id)"/>
+            </column>
+            <column name="surcharge_id" type="int">
+                <constraints nullable="false" foreignKeyName="FK_service_surcharge_surcharge"
+                             references="surcharge(surcharge_id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1_0_0-187" author="fcurran">
+        <sql>insert into service_surcharge (service_id, surcharge_id) select service_id, surcharge_id from surcharge</sql>
+        <dropForeignKeyConstraint baseTableName="surcharge" constraintName="FK_surcharge_service"/>
+        <dropForeignKeyConstraint baseTableName="surcharge" constraintName="FK_surcharge_location"/>
+        <dropColumn tableName="surcharge" columnName="service_id"/>
+        <dropColumn tableName="surcharge" columnName="location_id"/>
+    </changeSet>
+    <changeSet id="1_0_0-193" author="mwelicka">
+        <addColumn tableName="activation_attempt">
+            <column name="ftdi_dispatch_id" type="int"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="rcasey" id="1_0_0-196" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_activations_v6.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-197" author="fcurran">
+        <comment>Populate template related tables with an updated set.</comment>
+        <sqlFile path="data/populate_email_templates_v2.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_0_0-198" author="rcasey">
+        <sql>
+            INSERT INTO lookup_type (lookup_type_descr, lookup_type_code, lookup_type_active, modifiable, sort_strategy)
+            VALUES ('Service Owner', 'SERVICE_OWNER', 1, 1, 1);
+            SET @lookupTypeId = (SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'SERVICE_OWNER');
+            INSERT INTO lookup_value (lookup_type_id, lookup_display, lookup_value, sort_seq, lookup_value_active)
+            VALUES (@lookupTypeId, 'Endeavor', 'Endeavor', 10, 1),
+                   (@lookupTypeId, 'Customer', 'Customer', 20, 1);
+            set @tenantId = (select tenant_id from v_tenant where name = 'QTO First Tenant');
+            INSERT INTO tenant_lookup_value (lookup_value_id, tenant_id)
+            SELECT lookup_value_id, @tenantId
+            FROM lookup_value
+            WHERE lookup_type_id = @lookupTypeId;
+            set @tenantId = (select tenant_id from v_tenant where name = 'Endeavor');
+            INSERT INTO tenant_lookup_value (lookup_value_id, tenant_id)
+            SELECT lookup_value_id, @tenantId
+            FROM lookup_value
+            WHERE lookup_type_id = @lookupTypeId;
+        </sql>
+    </changeSet>
+
+
+    <changeSet id="1_0_0-198" author="fcurran">
+        <comment>Creating and populate mapping tables to support ISS statuses and product types.</comment>
+        <createTable tableName="iss_status_mapping">
+            <column name="iss_status_mapping_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="iss_status" type="varchar(50)"/>
+            <column name="vertek_status" type="varchar(50)"/>
+            <column name="version" type="int" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tenant_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="iss_product_type_mapping">
+            <column name="iss_product_type_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="iss_product_type" type="varchar(100)"/>
+            <column name="vertek_product_type" type="varchar(100)"/>
+            <column name="version" type="int" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tenant_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <insert tableName="iss_status_mapping">
+            <column name="iss_status" value="ACTIVATION REQUESTED"/>
+            <column name="vertek_status" value="Activation Requested"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_status_mapping">
+            <column name="iss_status" value="ACTIVATION SCHEDULED"/>
+            <column name="vertek_status" value="Activation Scheduled"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_status_mapping">
+            <column name="iss_status" value="CANCELLED"/>
+            <column name="vertek_status" value="Cancelled"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_status_mapping">
+            <column name="iss_status" value="CHANGE IN ASSIGNMENT"/>
+            <column name="vertek_status" value="Change in Assigment"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_status_mapping">
+            <column name="iss_status" value="CIRCUIT COMPLETE"/>
+            <column name="vertek_status" value="Circuit Complete"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_status_mapping">
+            <column name="iss_status" value="CIRCUIT PENDING"/>
+            <column name="vertek_status" value="Site Survey In Progress"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_status_mapping">
+            <column name="iss_status" value="CIRCUIT PENDING"/>
+            <column name="vertek_status" value="Site Survey Complete"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_status_mapping">
+            <column name="iss_status" value="CIRCUIT PENDING"/>
+            <column name="vertek_status" value="Network Provider Construction"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_status_mapping">
+            <column name="iss_status" value="COMPLETE"/>
+            <column name="vertek_status" value="Service Complete"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_status_mapping">
+            <column name="iss_status" value="IN PROGRESS"/>
+            <column name="vertek_status" value="Engineer Assigned"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_status_mapping">
+            <column name="iss_status" value="INSTALLATION ISSUE"/>
+            <column name="vertek_status" value="Installation Issue"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_status_mapping">
+            <column name="iss_status" value="ON HOLD"/>
+            <column name="vertek_status" value="On Hold"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_status_mapping">
+            <column name="iss_status" value="ORDER RECEIVED"/>
+            <column name="vertek_status" value="Pending assigment"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_status_mapping">
+            <column name="iss_status" value="PROVISIONING"/>
+            <column name="vertek_status" value="Provisioning"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="CABLE BROADBAND BIA 100M / 10M"/>
+            <column name="vertek_product_type" value="Coax Broadband 100M/10M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="CABLE BROADBAND BIA 100.0M / 20.0M"/>
+            <column name="vertek_product_type" value="Coax Broadband 100M/20M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="CABLE BROADBAND BIA 15.0M / 1.5M"/>
+            <column name="vertek_product_type" value="Coax Broadband 15M/1.5M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="CABLE BROADBAND BIA 15.0M / 1.0M"/>
+            <column name="vertek_product_type" value="Coax Broadband 15M/1M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="CABLE BROADBAND BIA 200.0M / 10.0M"/>
+            <column name="vertek_product_type" value="Coax Broadband 200M/10M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="CABLE BROADBAND BIA 200.0M / 20.0M"/>
+            <column name="vertek_product_type" value="Coax Broadband 200M/20M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="CABLE BROADBAND BIA 250.0M / 25.0M"/>
+            <column name="vertek_product_type" value="Coax Broadband 250M/25M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="CABLE BROADBAND BIA 25.0M / 5.0M"/>
+            <column name="vertek_product_type" value="Coax Broadband 25M/5M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="CABLE BROADBAND BIA 25.0M / 5.0M STATIC"/>
+            <column name="vertek_product_type" value="Coax Broadband 25M/5M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="CABLE BROADBAND BIA 300M / 50M"/>
+            <column name="vertek_product_type" value="Coax Broadband 300M/50M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="CABLE BROADBAND BIA 30.0M / 5.0M"/>
+            <column name="vertek_product_type" value="Coax Broadband 30M/5M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="CABLE BROADBAND BIA 35.0M / 5.0M"/>
+            <column name="vertek_product_type" value="Coax Broadband 35M/5M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="CABLE BROADBAND BIA 50.0M / 10.0M"/>
+            <column name="vertek_product_type" value="Coax Broadband 50M/10M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="CABLE BROADBAND BIA 50.0M / 5.0M"/>
+            <column name="vertek_product_type" value="Coax Broadband 50M/5M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="CABLE BROADBAND BIA 55.0M / 10.0M"/>
+            <column name="vertek_product_type" value="Coax Broadband 55M/10M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="CABLE BROADBAND BIA 8.0M / 2.0M"/>
+            <column name="vertek_product_type" value="Coax Broadband 8M/2M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="ADSL NSL BIA 1.5M / 384K"/>
+            <column name="vertek_product_type" value="Copper Broadband 1.5M/384K"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="ADSL NSL BIA 12.0M / 1.0M"/>
+            <column name="vertek_product_type" value="Copper Broadband 12M/1M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="ADSL NSL BIA 12.0M / 1.0M STATIC IP"/>
+            <column name="vertek_product_type" value="Copper Broadband 12M/1M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="ADSL NSL BIA 18.0M / 1.5M STATIC IP"/>
+            <column name="vertek_product_type" value="Copper Broadband 18M/1.5M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="ADSL NSL BIA 20.0M / 1.5M"/>
+            <column name="vertek_product_type" value="Copper Broadband 20M/1.5M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="ADSL NSL BIA 24.0M / 3.0M STATIC IP"/>
+            <column name="vertek_product_type" value="Copper Broadband 24M/3M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="ADSL NSL BIA 25.0M / 1.5M"/>
+            <column name="vertek_product_type" value="Copper Broadband 25M/1.5M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="ADSL NSL BIA 25.0M / 10.0M"/>
+            <column name="vertek_product_type" value="Copper Broadband 25M/10M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="ADSL NSL BIA 30.0M / 2.0M"/>
+            <column name="vertek_product_type" value="Copper Broadband 30M/2M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="ADSL NSL BIA 3.0M / 384K"/>
+            <column name="vertek_product_type" value="Copper Broadband 3M/384K"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="ADSL NSL BIA 50.0M / 10.0M"/>
+            <column name="vertek_product_type" value="Copper Broadband 50M/10M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="ADSL NSL BIA 50.0M / 10.0M STATIC"/>
+            <column name="vertek_product_type" value="Copper Broadband 50M/10M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="ADSL NSL BIA 50.0M / 4.0M"/>
+            <column name="vertek_product_type" value="Copper Broadband 50M/4M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="ADSL NSL BIA 6.0M / 512K"/>
+            <column name="vertek_product_type" value="Copper Broadband 6M/512K"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="ADSL NSL BIA 75.0M / 8.0M"/>
+            <column name="vertek_product_type" value="Copper Broadband 75M/8M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="ADSL NSL BIA 75.0M / 8.0M STATIC IP"/>
+            <column name="vertek_product_type" value="Copper Broadband 75M/8M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="DS-1 T1 ATMODSL 1.5M / 1.5M"/>
+            <column name="vertek_product_type" value="Copper DIA 1.5M/1.5M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="DS-1 T1 BIA 1.5M / 1.5M"/>
+            <column name="vertek_product_type" value="Copper DIA 1.5M/1.5M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="T-1 1.5M / 1.5M METRO"/>
+            <column name="vertek_product_type" value="Copper DIA 1.5M/1.5M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="FIBER BROADBAND BIA 100.0M / 100.0M"/>
+            <column name="vertek_product_type" value="Fiber Broadband 100M/100M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="FIOS BROADBAND BIA 100.0M / 100.0M"/>
+            <column name="vertek_product_type" value="Fiber Broadband 100M/100M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="FIBER BROADBAND BIA 100.0M / 10.0M"/>
+            <column name="vertek_product_type" value="Fiber Broadband 100M/10M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="FIBER BROADBAND BIA 10.0M / 10.0M"/>
+            <column name="vertek_product_type" value="Fiber Broadband 10M/10M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="FIBER BROADBAND BIA 150.0M / 150.0M"/>
+            <column name="vertek_product_type" value="Fiber Broadband 150M/150M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="FIBER BROADBAND BIA 150.0M / 4.0M"/>
+            <column name="vertek_product_type" value="Fiber Broadband 150M/4M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="FIBER BROADBAND BIA 15.0M / 15.0M"/>
+            <column name="vertek_product_type" value="Fiber Broadband 15M/15M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="FIBER BROADBAND 1.0G / 1.0G"/>
+            <column name="vertek_product_type" value="Fiber Broadband 1G/1G"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="FIBER BROADBAND BIA 200.0M / 10.0M"/>
+            <column name="vertek_product_type" value="Fiber Broadband 200M/10M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="FIBER BROADBAND BIA 200.0M / 200.0M"/>
+            <column name="vertek_product_type" value="Fiber Broadband 200M/200M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="FIOS BROADBAND BIA 200.0M / 200.0M"/>
+            <column name="vertek_product_type" value="Fiber Broadband 200M/200M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="FIBER BROADBAND BIA 20.0M / 20.0M"/>
+            <column name="vertek_product_type" value="Fiber Broadband 20M/20M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="FIBER BROADBAND BIA 250.0M / 250.0M"/>
+            <column name="vertek_product_type" value="Fiber Broadband 250M/250M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="FIBER BROADBAND BIA 25.0M / 25.0M"/>
+            <column name="vertek_product_type" value="Fiber Broadband 25M/25M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="FIBER BROADBAND BIA 25.0M / 5.0M"/>
+            <column name="vertek_product_type" value="Fiber Broadband 25M/5M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="FIBER BROADBAND BIA 300.0M / 300.0M"/>
+            <column name="vertek_product_type" value="Fiber Broadband 300M/300M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="FIBER BROADBAND BIA 30.0M / 10.0M"/>
+            <column name="vertek_product_type" value="Fiber Broadband 30M/10M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="FIBER BROADBAND BIA 3.0M / 3.0M"/>
+            <column name="vertek_product_type" value="Fiber Broadband 3M/3M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="FIBER BROADBAND BIA 500.0M / 500.0M"/>
+            <column name="vertek_product_type" value="Fiber Broadband 500M/500M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="FIBER BROADBAND BIA 50.0M / 10.0M"/>
+            <column name="vertek_product_type" value="Fiber Broadband 50M/10M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="FIBER BROADBAND BIA 50.0M / 50.0M"/>
+            <column name="vertek_product_type" value="Fiber Broadband 50M/50M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="FIOS BROADBAND BIA 75.0M / 75.0M"/>
+            <column name="vertek_product_type" value="Fiber Broadband 75M/75M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="DIA 100MB"/>
+            <column name="vertek_product_type" value="Fiber DIA 100M/100M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="DIA 10.0M / 10.0M"/>
+            <column name="vertek_product_type" value="Fiber DIA 10M/10M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="DIA 1G / 1G"/>
+            <column name="vertek_product_type" value="Fiber DIA 1G/1G"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="DIA 20.0M / 20.0M"/>
+            <column name="vertek_product_type" value="Fiber DIA 20M/20M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+        <insert tableName="iss_product_type_mapping">
+            <column name="iss_product_type" value="DIA 50.0M / 50.0M"/>
+            <column name="vertek_product_type" value="Fiber DIA 50M/50M"/>
+            <column name="tenant_id" valueComputed="(select tenant_id from v_tenant where name like 'Endeavor')"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="1_0_0-200" author="rcasey">
+        <sql>
+            INSERT INTO lookup_type (lookup_type_descr, lookup_type_code, lookup_type_active, modifiable, sort_strategy)
+            VALUES ('Circuit Priority', 'CIRCUIT_PRIORITY', 1, 1, 1);
+            SET @lookupTypeId = (SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'CIRCUIT_PRIORITY');
+            INSERT INTO lookup_value (lookup_type_id, lookup_display, lookup_value, sort_seq, lookup_value_active)
+            VALUES (@lookupTypeId, 'Primary', 'Primary', 10, 1),
+                   (@lookupTypeId, 'Failover', 'Failover', 20, 1);
+            set @tenantId = (select tenant_id from v_tenant where name = 'QTO First Tenant');
+            INSERT INTO tenant_lookup_value (lookup_value_id, tenant_id)
+            SELECT lookup_value_id, @tenantId
+            FROM lookup_value
+            WHERE lookup_type_id = @lookupTypeId;
+            set @tenantId = (select tenant_id from v_tenant where name = 'Endeavor');
+            INSERT INTO tenant_lookup_value (lookup_value_id, tenant_id)
+            SELECT lookup_value_id, @tenantId
+            FROM lookup_value
+            WHERE lookup_type_id = @lookupTypeId;
+        </sql>
+    </changeSet>
+
+    <changeSet id="1_0_0-201" author="rcasey">
+        <addColumn tableName="4g5g_service">
+            <column name="circuit_priority" type="varchar(100)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="rcasey" id="1_0_0-202" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <comment>Update the view to use the mappings.</comment>
+        <sqlFile path="data/v_manage_services_v16.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-202" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <comment>Update the view to use the mappings.</comment>
+        <sqlFile path="data/pbi_location_views_v1.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="mwelicka" id="1_0_0-203" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <comment>Update the view to use the mappings.</comment>
+        <sqlFile path="data/pbi_service_views_v1.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+
+
+    <changeSet author="mwelicka" id="1_0_0-204" context="common">
+        <preConditions onFail="CONTINUE">
+            <dbms type="postgresql"/>
+        </preConditions>
+        <comment>Update the view to use the mappings.</comment>
+        <sqlFile path="data/pbi_service_views_v2.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,23 @@
+# Build outputs
+build/
+.gradle/
+**/build/
+**/target/
+
+# IDE and OS
+.idea/
+.vscode/
+*.iml
+.DS_Store
+
+# Git
+.git/
+.gitignore
+
+# Documentation and misc
+*.md
+!gradle/wrapper/gradle-wrapper.jar
+
+# Test artifacts (we skip tests in build)
+**/test-output/
+**/reports/

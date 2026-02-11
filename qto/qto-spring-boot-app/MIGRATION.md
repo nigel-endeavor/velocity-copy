@@ -7,7 +7,7 @@
 This module has been fully migrated from Maven to Gradle with the new package structure.
 
 #### Package Structure
-- **Old**: `com.vertek.corporate.qto`
+- **Old**: `com.endeavorms.velocity.qto`
 - **New**: `com.endeavorms.qto`
 
 #### Build System
@@ -32,7 +32,7 @@ This module has been fully migrated from Maven to Gradle with the new package st
 - ❌ Deleted old package directory structure
 
 **Configuration Files**:
-- ✅ Updated `application.yml` - Changed logging package from `com.vertek.corporate.qto` to `com.endeavorms.qto`
+- ✅ Updated `application.yml` - Changed logging package from `com.endeavorms.velocity.qto` to `com.endeavorms.qto`
 - ✅ Updated `application-dev.yml` - Changed logging package
 - ✅ Updated `README.md` - Reflected Gradle commands and new package structure
 

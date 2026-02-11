@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="1_14_0-01" author="fcurran">
+        <addColumn tableName="note">
+            <column name="subject_id" type="int"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_14_0-02" author="fcurran">
+        <comment>Update old notes subject_id based on created_by where possible.</comment>
+        <sql>
+            update note as n1
+                inner join (
+                select n.note_id, s.subject_id from note n
+                inner join v_subject s on s.display_name = n.created_by
+                ) as n2 on n1.note_id = n2.note_id
+                set n1.subject_id = n2.subject_id;
+        </sql>
+    </changeSet>
+
+    <changeSet id="1_14_0-03" author="fcurran">
+        <addColumn tableName="note">
+            <column name="edited_by" type="varchar(200)"/>
+            <column name="edited_date" type="datetime"/>
+        </addColumn>
+        <renameColumn tableName="note" oldColumnName="subject_id" newColumnName="created_by_id" columnDataType="int"/>
+    </changeSet>
+
+    <changeSet id="1_14_0-04" author="fcurran">
+        <preConditions onFail="CONTINUE">
+            <dbms type="mysql"/>
+        </preConditions>
+        <sqlFile path="data/v_note_union_v5.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_14_0-05" author="mwelicka">
+        <sql>
+            ALTER TABLE company DROP COLUMN address_id;
+            ALTER TABLE contact DROP FOREIGN KEY fk_contact_address;
+            ALTER TABLE contact DROP COLUMN address_id;
+            ALTER TABLE ethernet_service DROP COLUMN z_address_id;
+            ALTER TABLE location DROP COLUMN address_id;
+            ALTER TABLE service DROP COLUMN billing_address_id;
+            DROP TABLE IF EXISTS address;
+            DROP TABLE IF EXISTS inventory_location_service;
+        </sql>
+    </changeSet>
+
+    <changeSet id="1_14_0-06" author="mwelicka">
+        <preConditions onFail="CONTINUE">
+            <dbms type="mysql"/>
+        </preConditions>
+        <sqlFile path="data/v_company_v3.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+
+
+    <changeSet id="1_14_0-07" author="mwelicka">
+        <addColumn tableName="custom_field">
+            <column name="generic_name" type="varchar(100)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_14_0-08" author="mwelicka">
+            <sql>
+                update custom_field set generic_name = 'Custom 1' where name = 'LUMEN_CIE_REP';
+                update custom_field set generic_name = 'Custom 2' where name = 'LUMEN_REGION';
+                update custom_field set generic_name = 'Custom 3' where name = 'LUMEN_CORE_NUMBER';
+                update custom_field set generic_name = 'Custom 4' where name = 'LUMEN_AG_ORDER';
+                update custom_field set generic_name = 'Custom 5' where name = 'LUMEN_CIE_APPROVAL_NUMBER';
+                update custom_field set generic_name = 'Custom 6' where name = 'IN_REGION_NEED_TAX_ID';
+                update custom_field set generic_name = 'Custom 7' where name = 'IN_OUT_REGION_NEED_SALES_ID';
+                update custom_field set generic_name = 'Custom 8' where name = 'LUMEN_AG';
+                update custom_field set generic_name = 'Custom 9' where name = 'LUMEN_RELATED_ORDER_NUMBER';
+                update custom_field set generic_name = 'Custom 10' where name = 'CIE_TEAMED_DEAL_INFO';
+                update custom_field set generic_name = 'Custom 11' where name = 'INTERNET_DEDICATED_SERVICES_SERVICE_ID';
+                update custom_field set generic_name = 'Custom 12' where name = 'ORDER_REQUEST_ID';
+                update custom_field set generic_name = 'Custom 13' where name = 'TELARUS_ID_NUMBER';
+                update custom_field set generic_name = 'Custom 14' where name = 'SUBACCOUNT_NUMBER';
+                update custom_field set generic_name = 'Custom 15' where name = 'ORIGINAL_REPORTED_MRC';
+                update custom_field set generic_name = 'Custom 16' where name = 'ORDER_NUMBER';
+                update custom_field set generic_name = 'Custom 17' where name = 'BTN';
+            </sql>
+    </changeSet>
+
+    <changeSet id="1_14_0-09" author="mwelicka">
+        <preConditions onFail="CONTINUE">
+            <dbms type="mysql"/>
+        </preConditions>
+        <sqlFile path="data/pbi_i90_activation_attempts_v2.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/pbi_i90_dia_service_v2.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/pbi_i90_end_company_v2.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/pbi_i90_location_contacts_v2.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/pbi_i90_location_custom_fields_v1.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/pbi_i90_location_v2.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/pbi_i90_master_company_v2.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/pbi_i90_service_brokerage_v1.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/pbi_i90_service_custom_fields_v1.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/pbi_i90_service_milestones_v2.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/pbi_i90_service_v2.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/pbi_i90_ucass_service_v2.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+        <sqlFile path="data/pbi_iss_ucaas_v4.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+     <changeSet id="1_14_0-10" author="mwelicka">
+        <preConditions onFail="CONTINUE">
+            <dbms type="mysql"/>
+        </preConditions>
+        <sqlFile path="data/pbi_iss_ucaas_v4.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+     <changeSet id="1_14_0-11" author="mwelicka">
+        <preConditions onFail="CONTINUE">
+            <dbms type="mysql"/>
+        </preConditions>
+        <sqlFile path="data/pbi_i90_service_brokerage_v2.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+     <changeSet id="1_14_0-12" author="mwelicka">
+        <preConditions onFail="CONTINUE">
+            <dbms type="mysql"/>
+        </preConditions>
+        <sqlFile path="data/pbi_i90_dispute_v2.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+
+</databaseChangeLog>

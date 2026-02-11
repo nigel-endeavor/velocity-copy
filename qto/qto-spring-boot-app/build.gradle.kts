@@ -4,11 +4,9 @@ plugins {
     id("io.spring.dependency-management") version "1.1.4"
 }
 
-group = "com.endeavor-ms"
-version = "1.18.1-SNAPSHOT"
-
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 configurations {
@@ -17,33 +15,30 @@ configurations {
     }
 }
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
-    // Spring Boot Starters
+    implementation(project(":qto-rest-api"))
+
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.springframework.boot:spring-boot-starter-artemis")
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter-quartz")
 
-    // Database Driver (PostgreSQL only)
     runtimeOnly("org.postgresql:postgresql")
-
-    // Liquibase
     implementation("org.liquibase:liquibase-core")
 
-    // Development Tools
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
-    // Lombok
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
 
-    // Testing
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation(project(":qto-core"))
+    testImplementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+    testImplementation("com.querydsl:querydsl-core:5.0.0")
 }
 
 tasks.withType<Test> {

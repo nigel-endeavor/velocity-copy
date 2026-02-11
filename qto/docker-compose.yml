@@ -1,0 +1,44 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: qto-postgres
+    environment:
+      POSTGRES_DB: qto
+      POSTGRES_USER: qto_user
+      POSTGRES_PASSWORD: changeme
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data  # Persistent DB data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U qto_user -d qto"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  qto-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: qto-app
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: qto
+      DB_USER: qto_user
+      DB_PASSWORD: changeme
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - qto-files:/var/qto/files  # Persistent file storage
+
+# Named volumes persist data across container restarts and removals.
+# Data survives `docker compose down` (use `docker compose down -v` to remove).
+volumes:
+  postgres-data:
+    driver: local
+  qto-files:
+    driver: local

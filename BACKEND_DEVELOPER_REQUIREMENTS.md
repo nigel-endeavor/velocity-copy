@@ -34,7 +34,7 @@ We're seeking an experienced **Backend Developer** to build, test, and deploy th
 - Integrate with Azure AD for authentication and Microsoft Graph API for user management
 
 **Database & Persistence**:
-- Design and maintain MySQL database schema with 140+ tables
+- Design and maintain PostgreSQL database schema with 140+ tables
 - Create and manage Liquibase migration scripts for version-controlled schema changes
 - Optimize database queries and implement efficient data access patterns
 - Develop database views for reporting and analytics
@@ -58,7 +58,7 @@ We're seeking an experienced **Backend Developer** to build, test, and deploy th
 - Write unit tests for Manager/Service layer using JUnit 5 and Mockito
 - Develop integration tests for EJB container-managed components using Arquillian
 - Create REST API endpoint tests using REST Assured
-- Implement database integration tests with Testcontainers (MySQL)
+- Implement database integration tests with Testcontainers (PostgreSQL)
 - Achieve minimum 70% code coverage across core business logic
 - Perform code reviews ensuring test quality and maintainability
 - Debug and troubleshoot complex multi-tier application issues
@@ -108,7 +108,7 @@ We're seeking an experienced **Backend Developer** to build, test, and deploy th
   - CDI 2.0 (Dependency injection and lifecycle management)
   - JTA (Distributed transactions)
 - **Maven 3.x** multi-module project management
-- **SQL proficiency** with MySQL or similar relational databases
+- **SQL proficiency** with PostgreSQL or similar relational databases
 
 ### Application Server
 - **WildFly, JBoss EAP, or similar Java EE containers**

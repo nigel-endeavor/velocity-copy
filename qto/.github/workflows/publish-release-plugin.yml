@@ -1,4 +1,8 @@
-name: Maven Release
+# Release workflow - uses Gradle for build and publish
+# Note: For version bumping and tagging, consider using a Gradle release plugin
+# or manual version updates. This workflow publishes the current version.
+
+name: Gradle Release
 
 on:
   workflow_dispatch:
@@ -12,15 +16,15 @@ jobs:
       - name: Setup Java JDK
         uses: actions/setup-java@v4
         with:
-          java-version: '11'
+          java-version: '21'
           distribution: 'temurin'
-          server-id: github
+          cache: 'gradle'
       - name: Configure Git user
         run: |
           git config user.email "actions@github.com"
           git config user.name "GitHub Actions"
-      - name: Publish
-        run: mvn -B release:prepare release:perform -s $GITHUB_WORKSPACE/.github/workflows/maven-settings.xml
+      - name: Build and Publish with Gradle
+        run: ./gradlew clean build publish -x test
         env:
-          GITHUB_USER_REF: mwelicka
-          GITHUB_TOKEN_REF: ${{ secrets.RC_PACKAGES_READ_WRITE_TOKEN }}
+          GITHUB_ACTOR: mwelicka
+          GITHUB_TOKEN: ${{ secrets.RC_PACKAGES_READ_WRITE_TOKEN }}

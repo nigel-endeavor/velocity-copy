@@ -1,0 +1,698 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="1_15_0-01" author="fcurran">
+        <comment>This structure is nearly identical to tasks.</comment>
+        <createTable tableName="task_group">
+            <column name="task_group_id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="template_name" type="varchar(100)"/>
+            <column name="is_default" type="bit" defaultValueBoolean="false"/>
+            <column name="active" type="bit" defaultValueBoolean="true"/>
+            <column name="version" type="int" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+            <column name="master_customer_id" type="int"/>
+            <column name="tenant_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addUniqueConstraint tableName="task_group" columnNames="tenant_id, template_name"/>
+    </changeSet>
+
+    <changeSet id="1_15_0-02" author="fcurran">
+        <comment>This structure is nearly identical to tasks.</comment>
+        <createTable tableName="task">
+            <column name="task_id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="task_group_id" type="int">
+                <constraints foreignKeyName="FK_task_task_group"
+                             references="task_group(task_group_id)"/>
+            </column>
+            <column name="lookup_value_id" type="int">
+                <constraints foreignKeyName="FK_task_lookup_value"
+                             references="lookup_value(lookup_value_id)"/>
+            </column>
+            <column name="value" type="varchar(100)"/>
+            <column name="sort_order" type="int"/>
+            <column name="required" type="bit" defaultValueBoolean="true"/>
+            <column name="version" type="int" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1_15_0-03" author="fcurran">
+        <comment>This structure is nearly identical to tasks, however, we're using dates</comment>
+        <createTable tableName="company_task">
+            <column name="company_task_id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="company_id" type="int">
+                <constraints nullable="false" foreignKeyName="FK_company_task_company"
+                             references="company(company_id)"/>
+            </column>
+            <column name="task_id" type="int"/>
+            <column name="value" type="varchar(100)"/>
+            <column name="complete_date" type="datetime"/>
+            <column name="comment" type="varchar(500)"/>
+            <column name="assigned_to" type="varchar(100)"/>
+            <column name="sort_order" type="int"/>
+            <column name="version" type="int" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+            <column name="master_customer_id" type="int"/>
+            <column name="tenant_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1_15_0-04" author="fcurran">
+        <addColumn tableName="company">
+            <column name="task_group_id" type="int">
+                <constraints foreignKeyName="FK_company_task_group"
+                             references="task_group(task_group_id)"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_15_0-05" author="fcurran">
+        <preConditions>
+            <dbms type="mysql"/>
+        </preConditions>
+        <sql>INSERT INTO lookup_type (lookup_type_descr, lookup_type_code, lookup_type_active, modifiable, sort_strategy, category)
+             VALUES ('Account Onboarding Tasks', 'ACCOUNT_ONBOARDING_TASKS', 1, 1, 1, 'Customer');
+        </sql>
+    </changeSet>
+
+    <changeSet id="1_15_0-06" author="fcurran">
+        <preConditions onFail="CONTINUE">
+            <dbms type="mysql"/>
+        </preConditions>
+        <sqlFile path="data/v_company_v4.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_15_0-07" author="fcurran">
+        <sql>
+            INSERT INTO company_config_property (company_id, config_property_key, config_property_value, tenant_id, modifiable, type)
+            VALUES ((SELECT company_id FROM company WHERE company_name = 'QTO First Tenant' AND company_type = 'Vertek Client'), 'TELECOM_CLIENT', 'True', (SELECT tenant_id FROM v_tenant WHERE name = 'QTO First Tenant'), false, 'boolean'),
+                   ((SELECT company_id FROM company WHERE company_name = 'QTO First Tenant' AND company_type = 'Vertek Client'), 'CYBER_SECURITY_CLIENT', 'False', (SELECT tenant_id FROM v_tenant WHERE name = 'QTO First Tenant'), false, 'boolean'),
+                   ((SELECT company_id FROM company WHERE company_name = 'Demo Tenant' AND company_type = 'Vertek Client'), 'TELECOM_CLIENT', 'True', (SELECT tenant_id FROM v_tenant WHERE name = 'Demo Tenant'), false, 'boolean'),
+                   ((SELECT company_id FROM company WHERE company_name = 'Demo Tenant' AND company_type = 'Vertek Client'), 'CYBER_SECURITY_CLIENT', 'False', (SELECT tenant_id FROM v_tenant WHERE name = 'Demo Tenant'), false, 'boolean'),
+                   ((SELECT company_id FROM company WHERE company_name = 'Endeavor' AND company_type = 'Vertek Client'), 'TELECOM_CLIENT', 'True', (SELECT tenant_id FROM v_tenant WHERE name = 'Endeavor'), false, 'boolean'),
+                   ((SELECT company_id FROM company WHERE company_name = 'Endeavor' AND company_type = 'Vertek Client'), 'CYBER_SECURITY_CLIENT', 'False', (SELECT tenant_id FROM v_tenant WHERE name = 'Endeavor'), false, 'boolean');
+        </sql>
+    </changeSet>
+
+    <changeSet id="1_15_0-08" author="fcurran">
+        <comment>AB#2322</comment>
+        <createTable tableName="equipment">
+            <column name="equipment_id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="equipment_type" type="varchar(100)"/>
+            <column name="equipment_subtype" type="varchar(100)"/>
+            <column name="make" type="varchar(100)"/>
+            <column name="model" type="varchar(100)"/>
+            <column name="serial_number" type="varchar(100)"/>
+            <column name="mac_address" type="varchar(100)"/>
+            <column name="ownership" type="varchar(100)"/>
+            <column name="tracking_info" type="varchar(100)"/>
+            <column name="ship_date" type="datetime"/>
+            <column name="delivered_date" type="datetime"/>
+            <column name="description" type="varchar(500)"/>
+            <column name="network_ip_range" type="varchar(100)"/>
+            <column name="ip_address" type="varchar(100)"/>
+            <column name="gateway" type="varchar(100)"/>
+            <column name="dns1" type="varchar(100)"/>
+            <column name="dns2" type="varchar(100)"/>
+            <column name="version" type="int" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+            <column name="master_customer_id" type="int"/>
+            <column name="tenant_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1_15_0-09" author="fcurran">
+        <preConditions>
+            <dbms type="mysql"/>
+        </preConditions>
+        <comment>AB#2322</comment>
+        <sql>
+            CREATE TABLE service_equipment
+            (
+                service_id int NOT NULL,
+                equipment_id    int NOT NULL,
+                CONSTRAINT FK_service_equipment_service
+                    FOREIGN KEY (service_id) REFERENCES service (service_id),
+                CONSTRAINT FK_service_equipment_equipment
+                    FOREIGN KEY (equipment_id) REFERENCES equipment (equipment_id)
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="1_15_0-10" author="fcurran">
+        <addColumn tableName="service">
+            <column name="shipping_address_1" type="varchar(100)"/>
+            <column name="shipping_address_2" type="varchar(100)"/>
+            <column name="shipping_city" type="varchar(100)"/>
+            <column name="shipping_state_province" type="varchar(100)"/>
+            <column name="shipping_postal_code" type="varchar(20)"/>
+            <column name="shipping_country" type="varchar(100)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_15_0-11" author="fcurran">
+        <addColumn tableName="service">
+            <column name="ship_to" type="varchar(100)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_15_0-12" author="fcurran">
+        <addColumn tableName="equipment">
+            <column name="shipping_method" type="varchar(100)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_15_0-13" author="fcurran">
+        <preConditions>
+            <dbms type="mysql"/>
+        </preConditions>
+        <sql>
+            INSERT INTO lookup_type (lookup_type_descr, lookup_type_code, lookup_type_active, modifiable, sort_strategy, category)
+            VALUES ('Equipment Type', 'EQUIPMENT_TYPE', 1, 1, 0, 'Equipment');
+            INSERT INTO lookup_type (lookup_type_descr, lookup_type_code, lookup_type_active, modifiable, sort_strategy, category)
+            VALUES ('Equipment Sub Type', 'EQUIPMENT_SUB_TYPE', 1, 1, 0, 'Equipment');
+            INSERT INTO lookup_type (lookup_type_descr, lookup_type_code, lookup_type_active, modifiable, sort_strategy, category)
+            VALUES ('Ownership', 'OWNERSHIP', 1, 1, 0, 'Equipment');
+            INSERT INTO lookup_type (lookup_type_descr, lookup_type_code, lookup_type_active, modifiable, sort_strategy, category)
+            VALUES ('Shipping Method', 'SHIPPING_METHOD', 1, 1, 0, 'Equipment');
+        </sql>
+    </changeSet>
+
+    <changeSet id="1_15_0-08" author="bmccormick">
+        <preConditions onFail="CONTINUE">
+            <dbms type="mysql"/>
+        </preConditions>
+        <comment>Adding threatMDR.</comment>
+        <sqlFile path="data/service_threatMDR.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="bmccormick" id="1_15_0-09">
+        <preConditions onFail="CONTINUE">
+            <dbms type="mysql"/>
+        </preConditions>
+        <sqlFile path="data/insert_lookup_12.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_15_0-10" author="bmccormick">
+        <preConditions onFail="CONTINUE">
+            <dbms type="mysql"/>
+        </preConditions>
+        <comment>Add television milestone display set.</comment>
+        <sqlFile path="data/threatMDR_milestone_display_set.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_15_0-11" author="bmccormick">
+        <preConditions>
+            <dbms type="mysql"/>
+        </preConditions>
+        <sql>INSERT INTO lookup_type (lookup_type_descr, lookup_type_code, lookup_type_active, modifiable, sort_strategy, category)
+            VALUES ('USM Anywhere Control Node', 'USM_ANYWHERE_CONTROL_NODE', 1, 1, 1, 'Service Technical - Product Specific');
+        </sql>
+        <sql>INSERT INTO lookup_type (lookup_type_descr, lookup_type_code, lookup_type_active, modifiable, sort_strategy, category)
+            VALUES ('Hot Storage Retention', 'HOT_STORAGE_RETENTION', 1, 1, 1, 'Service Technical - Product Specific');
+        </sql>
+    </changeSet>
+
+    <changeSet id="1_15_0-08" author="mwelicka">
+        <preConditions onFail="CONTINUE">
+            <dbms type="mysql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_cyber_services_v1.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_15_0-11" author="mwelicka">
+        <preConditions onFail="CONTINUE">
+            <dbms type="mysql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_cyber_services_v2.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_15_0-14" author="fcurran">
+        <preConditions onFail="CONTINUE">
+            <dbms type="mysql"/>
+        </preConditions>
+        <sqlFile path="data/v_company_v5.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_15_0-15" author="bmccormick">
+        <sql>
+            SET @displaySetId = (SELECT milestone_display_set_id FROM milestone_display_set WHERE display_group = 'THREATMDR_SERVICE_MILESTONE');
+            UPDATE milestone_display_set_include
+            SET milestone_sequence = 5010
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'TECH_DATA_GATHERING_FORM_SENT')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET milestone_sequence = 5020
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'TECH_DATA_GATHERING_MEETING_SCHEDULED')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET milestone_sequence = 5030
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'TECH_DATA_GATHERING_MEETING_COMPLETED')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET milestone_sequence = 5040
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'EMAIL_USM_TEMPLATE_REQ')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET milestone_sequence = 5050
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'INVENTORY_ASSIGNMENT_VERIFIED')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET milestone_sequence = 5060
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'NEW_USM_SERVER_BUILD')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET milestone_sequence = 5070
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'IMPLEMENTATION_QA')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET milestone_sequence = 5080
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'VERIFY_ASSETS_SIEM_DB')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET milestone_sequence = 5090
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'VERIFY_LOGGING_DATA_SOURCES')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET milestone_sequence = 5100
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'SCHEDULE_VULNERABILITY_SCANS')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET milestone_sequence = 5110
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'BULK_ALARM_TUNING_PHASE')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET milestone_sequence = 5120
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'SIEM_EVENT_FILTERING')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET milestone_sequence = 5130
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'FILTERS_BUILT_FOR_REPORTS')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET milestone_sequence = 5140
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'DEFAULT_ALARM_RULE_ADDITIONS')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET milestone_sequence = 5150
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'CUSTOM_ALARM_RULE_ADDITIONS')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET milestone_sequence = 5160
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'FORWARD_ALARMS_TO_USM_CENTRAL')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET milestone_sequence = 5170
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'FORWARD_ALARMS_TO_D3_SOC_LIVE')
+            AND milestone_display_set_id = @displaySetId;
+        </sql>
+    </changeSet>
+
+    <changeSet id="1_15_0-16" author="bmccormick">
+        <addColumn tableName="service_threatmdr">
+            <column name="technical_notes" type="varchar(1000)"/>
+            <column name="tier_expansion_storage_size" type="varchar(100)"/>
+            <column name="log_retention_requirement" type="varchar(100)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1_15_0-17" author="bmccormick">
+        <preConditions>
+            <dbms type="mysql"/>
+        </preConditions>
+        <sql>INSERT INTO lookup_type (lookup_type_descr, lookup_type_code, lookup_type_active, modifiable, sort_strategy, category)
+            VALUES ('Tier Expansion Storage Size', 'TIER_EXPANSION_STORAGE_SIZE', 1, 1, 1, 'Service Technical - Product Specific');
+        </sql>
+    </changeSet>
+
+    <changeSet id="1_15_0-15" author="mwelicka">
+        <comment>AB#2322</comment>
+        <createTable tableName="subject_custom_worklist">
+            <column name="subject_custom_worklist_id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="author_id" type="long"/>
+            <column name="content" type="longtext"/>
+            <column name="shared" type="bit" defaultValueBoolean="false"/>
+            <column name="worklist_name" type="varchar(100)"/>
+            <column name="name" type="varchar(100)"/>
+            <column name="version" type="int" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tenant_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1_15_0-18" author="bmccormick">
+    <preConditions>
+        <dbms type="mysql"/>
+    </preConditions>
+    <sql>
+        SET @displaySetId = (SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'THREATMDR_SERVICE_MILESTONE');
+        INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
+        milestone_required, adjustable, workflow_driven, has_time, disallow_future, description, inventory_flag, progress_percentage, status)
+        VALUES
+        (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'ENGINEER_ASSIGNED'), 1, 40, 1, 0, 1, 0, 0, 'Engineer Assigned', 0, 5, 'Engineer Assigned')
+    </sql>
+    </changeSet>
+
+    <changeSet id="1_15_19" author="mwelicka">
+        <sql>
+
+CREATE TABLE company_file_attachment
+(
+	company_id        int NOT NULL,
+	file_attachment_id int NOT NULL,
+	CONSTRAINT FK_company_file_attachment_file_attachment
+		FOREIGN KEY (file_attachment_id) REFERENCES file_attachment (file_attachment_id),
+	CONSTRAINT FK_company_file_attachment_company
+		FOREIGN KEY (company_id) REFERENCES company (company_id)
+);
+        </sql>
+    </changeSet>
+
+    <changeSet id="1_15_0-20" author="mwelicka">
+        <sql>
+            SET @displaySetId = (SELECT milestone_display_set_id FROM milestone_display_set WHERE display_group = 'THREATMDR_SERVICE_MILESTONE');
+            UPDATE milestone_display_set_include
+            SET milestone_sequence = 2500
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'TECH_DATA_GATHERING_FORM_SENT')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET milestone_sequence = 2510
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'TECH_DATA_GATHERING_MEETING_SCHEDULED')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET milestone_sequence = 2520
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'TECH_DATA_GATHERING_MEETING_COMPLETED')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET milestone_sequence = 2530
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'EMAIL_USM_TEMPLATE_REQ')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET milestone_sequence = 2540
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'INVENTORY_ASSIGNMENT_VERIFIED')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET milestone_sequence = 2550
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'NEW_USM_SERVER_BUILD')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET milestone_sequence = 2560
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'IMPLEMENTATION_QA')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET milestone_sequence = 2570
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'VERIFY_ASSETS_SIEM_DB')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET milestone_sequence = 2580
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'VERIFY_LOGGING_DATA_SOURCES')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET milestone_sequence = 2590
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'SCHEDULE_VULNERABILITY_SCANS')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET milestone_sequence = 2600
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'BULK_ALARM_TUNING_PHASE')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET milestone_sequence = 2610
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'SIEM_EVENT_FILTERING')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET milestone_sequence = 2620
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'FILTERS_BUILT_FOR_REPORTS')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET milestone_sequence = 2630
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'DEFAULT_ALARM_RULE_ADDITIONS')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET milestone_sequence = 2640
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'CUSTOM_ALARM_RULE_ADDITIONS')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET milestone_sequence = 2650
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'FORWARD_ALARMS_TO_USM_CENTRAL')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET milestone_sequence = 2660
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'FORWARD_ALARMS_TO_D3_SOC_LIVE')
+            AND milestone_display_set_id = @displaySetId;
+        </sql>
+    </changeSet>
+
+    <changeSet id="1_15_0-21" author="mwelicka">
+        <preConditions onFail="CONTINUE">
+            <dbms type="mysql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_cyber_services_v3.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_15_0-22" author="mwelicka">
+        <preConditions onFail="CONTINUE">
+            <dbms type="mysql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_location_inventory_v18.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_15_0-23" author="mwelicka">
+        <preConditions onFail="CONTINUE">
+            <dbms type="mysql"/>
+        </preConditions>
+        <sqlFile path="data/v_manage_locations_v33.sql"
+                 relativeToChangelogFile="true"
+                 stripComments="true"
+                 splitStatements="true"/>
+    </changeSet>
+
+    <changeSet id="1_15_0-24" author="mwelicka">
+        <sql>
+            SET @typeId = (SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'EQUIPMENT_TYPE');
+            UPDATE lookup_type SET parent_lookup_type_id = @typeId WHERE lookup_type_code = 'EQUIPMENT_SUB_TYPE';
+        </sql>
+
+    </changeSet>
+
+    <changeSet id="1_15_0-25" author="mwelicka">
+        <sql>
+            SET @displaySetId = (SELECT milestone_display_set_id FROM milestone_display_set WHERE display_group = 'THREATMDR_SERVICE_MILESTONE');
+            UPDATE milestone_display_set_include
+            SET adjustable = true
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'TECH_DATA_GATHERING_FORM_SENT')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET adjustable = true
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'TECH_DATA_GATHERING_MEETING_SCHEDULED')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET adjustable = true
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'TECH_DATA_GATHERING_MEETING_COMPLETED')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET adjustable = true
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'EMAIL_USM_TEMPLATE_REQ')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET adjustable = true
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'INVENTORY_ASSIGNMENT_VERIFIED')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET adjustable = true
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'NEW_USM_SERVER_BUILD')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET adjustable = true
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'IMPLEMENTATION_QA')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET adjustable = true
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'VERIFY_ASSETS_SIEM_DB')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET adjustable = true
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'VERIFY_LOGGING_DATA_SOURCES')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET adjustable = true
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'SCHEDULE_VULNERABILITY_SCANS')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET adjustable = true
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'BULK_ALARM_TUNING_PHASE')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET adjustable = true
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'SIEM_EVENT_FILTERING')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET adjustable = true
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'FILTERS_BUILT_FOR_REPORTS')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET adjustable = true
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'DEFAULT_ALARM_RULE_ADDITIONS')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET adjustable = true
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'CUSTOM_ALARM_RULE_ADDITIONS')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET adjustable = true
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'FORWARD_ALARMS_TO_USM_CENTRAL')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET adjustable = true
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'FORWARD_ALARMS_TO_D3_SOC_LIVE')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET adjustable = true
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'RECEIVED')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET adjustable = true
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'CUSTOMER_REQUESTED_INSTALL')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET adjustable = true
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'ON_HOLD')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET adjustable = true
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'COMPLETE')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET adjustable = true
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'CANCELLED')
+            AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET adjustable = true
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'CHANGE_IN_ASSIGNMENT')
+            AND milestone_display_set_id = @displaySetId;
+        </sql>
+
+    </changeSet>
+
+    <changeSet id="1_15_0-26" author="mwelicka">
+        <sql>
+            SET
+            @displaySetId = (SELECT milestone_display_set_id FROM milestone_display_set WHERE display_group = 'THREATMDR_SERVICE_MILESTONE');
+
+            UPDATE milestone_display_set_include
+            SET progress_percentage = 50
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'BULK_ALARM_TUNING_PHASE')
+              AND milestone_display_set_id = @displaySetId;
+
+            UPDATE milestone_display_set_include
+            SET progress_percentage = 10
+            WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'EMAIL_USM_TEMPLATE_REQ')
+              AND milestone_display_set_id = @displaySetId;
+        </sql>
+    </changeSet>
+</databaseChangeLog>

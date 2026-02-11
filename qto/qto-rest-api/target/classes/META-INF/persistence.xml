@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+    <persistence-unit name="qto">
+        <jta-data-source>java:jboss/datasources/qto</jta-data-source>
+
+        <class>com.vertek.corporate.qto.address.AddressView</class>
+        <class>com.vertek.corporate.qto.activation.attempt.ActivationAttempt</class>
+        <class>com.vertek.corporate.qto.activation.issue.ActivationIssue</class>
+        <class>com.vertek.corporate.qto.activation.schedule.ActivationSchedule</class>
+        <class>com.vertek.corporate.qto.activation.schedule.ActivationScheduleCustom</class>
+        <class>com.vertek.corporate.qto.activation.schedule.ActivationScheduleEquipment</class>
+        <class>com.vertek.corporate.qto.activation.ActivationView</class>
+        <class>com.vertek.corporate.qto.company.Company</class>
+        <class>com.vertek.corporate.qto.contact.location.LocationContact</class>
+        <class>com.vertek.corporate.qto.contact.Contact</class>
+        <class>com.vertek.corporate.qto.contact.order.OrderContact</class>
+        <class>com.vertek.corporate.qto.contact.masterCustomer.MasterCustomerContact</class>
+        <class>com.vertek.corporate.qto.location.Location</class>
+        <class>com.vertek.corporate.qto.location.view.LocationView</class>
+        <class>com.vertek.corporate.qto.location.inventoryview.LocationInventoryView</class>
+        <class>com.vertek.corporate.qto.order.Order</class>
+        <class>com.vertek.corporate.qto.service.Service</class>
+        <class>com.vertek.corporate.qto.brokerage.ServiceBrokerage</class>
+        <class>com.vertek.corporate.qto.service.view.ServiceView</class>
+        <class>com.vertek.corporate.qto.service.inventoryview.ServiceInventoryView</class>
+        <class>com.vertek.corporate.qto.service.dia.DiaService</class>
+        <class>com.vertek.corporate.qto.service.broadband.BroadbandService</class>
+        <class>com.vertek.corporate.qto.service.crossconnect.CrossConnectService</class>
+        <class>com.vertek.corporate.qto.service.ethernet.EthernetService</class>
+        <class>com.vertek.corporate.qto.service.ucaas.UcaasService</class>
+        <class>com.vertek.corporate.qto.service._4g5g.GService</class>
+        <class>com.vertek.corporate.qto.note.Note</class>
+        <class>com.vertek.corporate.qto.note.JeopNote</class>
+        <class>com.vertek.corporate.qto.note.LocationNote</class>
+        <class>com.vertek.corporate.qto.note.OrderNote</class>
+        <class>com.vertek.corporate.qto.note.ServiceNote</class>
+        <class>com.vertek.corporate.qto.note.NoteUnionView</class>
+        <class>com.vertek.corporate.qto.attachment.FileAttachment</class>
+        <class>com.vertek.corporate.qto.attachment.FileAttachmentContent</class>
+        <class>com.vertek.corporate.qto.attachment.LocationFileAttachment</class>
+        <class>com.vertek.corporate.qto.attachment.ServiceFileAttachment</class>
+        <class>com.vertek.corporate.qto.attachment.CompanyFileAttachment</class>
+        <class>com.vertek.corporate.qto.message.Message</class>
+        <class>com.vertek.corporate.qto.message.MessageThread</class>
+        <class>com.vertek.corporate.qto.message.MessageThreadWatcher</class>
+        <class>com.vertek.corporate.qto.milestone.Milestone</class>
+        <class>com.vertek.corporate.qto.milestone.MilestoneInstance</class>
+        <class>com.vertek.corporate.qto.milestone.MilestoneInstanceHistory</class>
+        <class>com.vertek.corporate.qto.milestone.MilestoneSet</class>
+        <class>com.vertek.corporate.qto.milestone.MilestoneDisplaySet</class>
+        <class>com.vertek.corporate.qto.milestone.MilestoneDisplaySetInclude</class>
+        <class>com.vertek.corporate.qto.notification.Notification</class>
+        <class>com.vertek.corporate.qto.milestone.OrderMilestoneInstance</class>
+        <class>com.vertek.corporate.qto.milestone.LocationMilestoneInstance</class>
+        <class>com.vertek.corporate.qto.milestone.ServiceMilestoneInstance</class>
+        <class>com.vertek.corporate.qto.common.lookup.LookupType</class>
+        <class>com.vertek.corporate.qto.common.lookup.LookupValue</class>
+        <class>com.vertek.corporate.qto.common.TenantView</class>
+        <class>com.vertek.corporate.qto.activation.requirement.RequirementTemplate</class>
+        <class>com.vertek.corporate.qto.activation.requirement.Requirement</class>
+        <class>com.vertek.corporate.qto.activation.requirement.ActivationAttemptRequirement</class>
+        <class>com.vertek.corporate.qto.company.task.TaskGroup</class>
+        <class>com.vertek.corporate.qto.company.task.Task</class>
+        <class>com.vertek.corporate.qto.company.task.CompanyTask</class>
+        <class>com.vertek.corporate.qto.jeop.Jeop</class>
+        <class>com.vertek.corporate.qto.jeop.JeopUnionView</class>
+        <class>com.vertek.corporate.qto.jeop.LocationJeop</class>
+        <class>com.vertek.corporate.qto.jeop.ServiceJeop</class>
+        <class>com.vertek.corporate.qto.jeop.OrderJeop</class>
+        <class>com.vertek.corporate.qto.interval.IntervalType</class>
+        <class>com.vertek.corporate.qto.interval.IntervalInstance</class>
+        <class>com.vertek.corporate.qto.interval.ServiceIntervalInstance</class>
+        <class>com.vertek.corporate.qto.interval.LocationIntervalInstance</class>
+        <class>com.vertek.corporate.qto.report.WipServiceView</class>
+        <class>com.vertek.corporate.qto.report.WipServiceJeopView</class>
+        <class>com.vertek.corporate.qto.report.WipLocationJeopView</class>
+        <class>com.vertek.corporate.qto.report.ProviderIntervalsView</class>
+        <class>com.vertek.corporate.qto.quote.Quote</class>
+        <class>com.vertek.corporate.qto.solution.Solution</class>
+        <class>com.vertek.corporate.qto.ftdi.FtdiOrderType</class>
+        <class>com.vertek.corporate.qto.ftdi.FtdiEquipmentType</class>
+        <class>com.vertek.corporate.qto.ftdi.FtdiCustomField</class>
+        <class>com.vertek.corporate.qto.ftdi.FtdiCustomFieldValue</class>
+        <class>com.vertek.corporate.qto.report.ActivationAttemptView</class>
+<!--        <class>com.vertek.corporate.qto.subject.Subject</class>-->
+        <class>com.vertek.corporate.qto.ftdi.FtdiOrderTypeEquipment</class>
+        <class>com.vertek.corporate.qto.ftdi.FtdiOrderTypeCustomFields</class>
+        <class>com.vertek.corporate.qto.ftdi.FtdiDispatch</class>
+        <class>com.vertek.corporate.qto.ftdi.FtdiShipment</class>
+        <class>com.vertek.corporate.qto.ftdi.FtdiAppointment</class>
+        <class>com.vertek.corporate.qto.ftdi.FtdiNote</class>
+        <class>com.vertek.corporate.qto.config.ConfigurationProperty</class>
+        <class>com.vertek.corporate.qto.config.CompanyConfigurationProperty</class>
+        <class>com.vertek.corporate.qto.config.CompanyConfigurationProperty</class>
+        <class>com.vertek.corporate.qto.template.email.EmailTemplate</class>
+        <class>com.vertek.corporate.qto.template.variable.TemplateVariable</class>
+        <class>com.vertek.corporate.qto.activation.attempt.emailView.ActivationAttemptEmailView</class>
+        <class>com.vertek.corporate.qto.invoicing.levelOfEffort.LevelOfEffort</class>
+        <class>com.vertek.corporate.qto.invoicing.surcharge.Surcharge</class>
+        <class>com.vertek.corporate.qto.invoicing.surcharge.service.ServiceSurcharge</class>
+        <class>com.vertek.corporate.qto.invoicing.surchargeType.SurchargeType</class>
+        <class>com.vertek.corporate.qto.invoicing.invoice.Invoice</class>
+        <class>com.vertek.corporate.qto.invoicing.invoiceCharge.InvoiceCharge</class>
+        <class>com.vertek.corporate.qto.invoicing.billableMilestone.BillableMilestone</class>
+        <class>com.vertek.corporate.qto.fileimport.importactivity.ImportActivity</class>
+        <class>com.vertek.corporate.qto.dispute.Dispute</class>
+        <class>com.vertek.corporate.qto.dispute.DisputeView</class>
+        <class>com.vertek.corporate.qto.note.DisputeNote</class>
+        <class>com.vertek.corporate.qto.subject.CompanySubject</class>
+        <class>com.vertek.corporate.qto.subject.SubjectView</class>
+        <class>com.vertek.corporate.qto.disconnect.DisconnectView</class>
+        <class>com.vertek.corporate.qto.service.historyview.ServiceHistoryView</class>
+        <class>com.vertek.corporate.qto.inventory.PendingDisconnect</class>
+        <class>com.vertek.corporate.qto.costhistory.CostHistory</class>
+        <class>com.vertek.corporate.qto.company.CompanyView</class>
+        <class>com.vertek.corporate.qto.service.television.TelevisionService</class>
+        <class>com.vertek.corporate.qto.service.threatMDR.ThreatMDRService</class>
+        <class>com.vertek.corporate.qto.service.riskMDR.RiskMDRService</class>
+        <class>com.vertek.corporate.qto.service.ransomMDR.RansomMDRService</class>
+        <class>com.vertek.corporate.qto.service.engineeringIAM.EngineeringIAMService</class>
+        <class>com.vertek.corporate.qto.service.engineeringMDM.EngineeringMDMService</class>
+        <class>com.vertek.corporate.qto.service.engineeringEmailMessaging.EngineeringEmailMessagingService</class>
+        <class>com.vertek.corporate.qto.service.microsoftLicenses.MicrosoftLicensesService</class>
+        <class>com.vertek.corporate.qto.service.snapshot.ServiceSnapshot</class>
+        <class>com.vertek.corporate.qto.service.mpls.MplsService</class>
+        <class>com.vertek.corporate.qto.customfield.field.CustomField</class>
+        <class>com.vertek.corporate.qto.customfield.field.CustomFieldTab</class>
+        <class>com.vertek.corporate.qto.customfield.value.CustomFieldValue</class>
+        <class>com.vertek.corporate.qto.customfield.value.ServiceCustomFieldValue</class>
+        <class>com.vertek.corporate.qto.customfield.value.LocationCustomFieldValue</class>
+        <class>com.vertek.corporate.qto.report.ReportMetaData</class>
+        <class>com.vertek.corporate.qto.equipment.Equipment</class>
+        <class>com.vertek.corporate.qto.equipment.ServiceEquipment</class>
+        <class>com.vertek.corporate.qto.service.cyberView.ServiceCyberView</class>
+        <class>com.vertek.corporate.qto.subject.SubjectCustomWorklist</class>
+        <class>com.vertek.corporate.qto.subject.CustomWorklist</class>
+        <class>com.vertek.corporate.qto.service.engineeringEndpoint.EngineeringEndpointService</class>
+        <class>com.vertek.corporate.qto.service.cyber360MXDR.Cyber360MXDRService</class>
+        <class>com.vertek.corporate.qto.service.engineeringInfoProtection.EngineeringInfoProtectionService</class>
+        <class>com.vertek.corporate.qto.dataverse.CrmIntegration</class>
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+        <properties>
+            <!--
+              To show Hibernate SQL at runtime w/out rebuilding, enable a JBoss logging category for
+              org.hibernate.SQL with log level ALL: (Profile -> Core -> Logging -> Log Categories)
+              Please do not commit this file with hibernate.show_sql=true as this may
+              make it into prod with no way to turn it off except to produce a new release.
+            -->
+            <property name="hibernate.show_sql" value="false"/>
+            <property name="hibernate.generate_statistics" value="false"/>
+            <property name="hibernate.use_sql_comments" value="true"/>
+        </properties>
+    </persistence-unit>
+
+    <persistence-unit name="platform">
+        <jta-data-source>java:jboss/datasources/platform</jta-data-source>
+
+        <class>com.vertek.corporate.qto.common.Tenant</class>
+        <class>com.vertek.corporate.qto.common.TenantOwnedCompany</class>
+        <class>com.vertek.corporate.qto.subject.TenantSubject</class>
+        <class>com.vertek.corporate.qto.subject.Subject</class>
+
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+        <properties>
+            <property name="hibernate.show_sql" value="false"/>
+            <property name="hibernate.generate_statistics" value="false"/>
+            <property name="hibernate.use_sql_comments" value="true"/>
+        </properties>
+    </persistence-unit>
+</persistence>

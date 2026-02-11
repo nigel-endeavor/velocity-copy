@@ -1,22 +1,24 @@
 # QTO (Quantum Task Orchestrator) - AI Development Guide
 
+> **Migration Notice (2026)**: The project has migrated to **Spring Boot**, **Gradle**, and **PostgreSQL**. The qto-spring-boot-app is the main deployment. Legacy Java EE/WildFly/MySQL sections below are for reference only.
+
 ## Project Overview
 
-**QTO Platform** is an enterprise Java EE service orchestration and order management system for telecommunications and cybersecurity services lifecycle management.
+**QTO Platform** is an enterprise service orchestration and order management system for telecommunications and cybersecurity services lifecycle management.
 
 - **Version**: 1.18.1-SNAPSHOT
-- **Group ID**: com.vertek.corporate
-- **Architecture**: Multi-tier Java EE with multi-tenancy
+- **Group ID**: com.endeavorms.velocity
+- **Architecture**: Spring Boot with multi-tenancy
 - **Scale**: 140+ JPA entities, 90+ REST endpoints, 15+ service types
-- **Build System**: Maven multi-module project
+- **Build System**: Gradle
+- **Database**: PostgreSQL 12+
 
 ## Technology Stack
 
-### Core Technologies
-- **Java**: 11 (source & target)
-- **Java EE**: 8.0
-- **Application Server**: WildFly (bundled in `/wildfly` directory)
-- **Database**: MySQL (with JTA datasources)
+### Core Technologies (Current)
+- **Java**: 21
+- **Framework**: Spring Boot 3.2.2
+- **Database**: PostgreSQL 12+
 - **ORM**: JPA 2.2 / Hibernate 6.2
 - **REST API**: JAX-RS (RESTEasy)
 - **Security**: Apache Shiro + Azure AD OAuth 2.0
@@ -74,10 +76,9 @@ qto/
 ## Prerequisites
 
 ### Required Software
-- **Java JDK**: 11 or higher
-- **Maven**: 3.6+
-- **MySQL**: 5.7+ or 8.0+
-- **WildFly**: Bundled in project at `wildfly/` directory
+- **Java JDK**: 21 or higher
+- **Gradle**: 8.5+ (wrapper included)
+- **PostgreSQL**: 12+
 
 ### Environment Variables
 ```bash

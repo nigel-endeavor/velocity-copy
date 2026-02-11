@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+    <persistence-unit name="qto">
+        <jta-data-source>java:jboss/datasources/qto</jta-data-source>
+
+        <class>com.endeavorms.velocity.qto.address.AddressView</class>
+        <class>com.endeavorms.velocity.qto.activation.attempt.ActivationAttempt</class>
+        <class>com.endeavorms.velocity.qto.activation.issue.ActivationIssue</class>
+        <class>com.endeavorms.velocity.qto.activation.schedule.ActivationSchedule</class>
+        <class>com.endeavorms.velocity.qto.activation.schedule.ActivationScheduleCustom</class>
+        <class>com.endeavorms.velocity.qto.activation.schedule.ActivationScheduleEquipment</class>
+        <class>com.endeavorms.velocity.qto.activation.ActivationView</class>
+        <class>com.endeavorms.velocity.qto.company.Company</class>
+        <class>com.endeavorms.velocity.qto.contact.location.LocationContact</class>
+        <class>com.endeavorms.velocity.qto.contact.Contact</class>
+        <class>com.endeavorms.velocity.qto.contact.order.OrderContact</class>
+        <class>com.endeavorms.velocity.qto.contact.masterCustomer.MasterCustomerContact</class>
+        <class>com.endeavorms.velocity.qto.location.Location</class>
+        <class>com.endeavorms.velocity.qto.location.view.LocationView</class>
+        <class>com.endeavorms.velocity.qto.location.inventoryview.LocationInventoryView</class>
+        <class>com.endeavorms.velocity.qto.order.Order</class>
+        <class>com.endeavorms.velocity.qto.service.Service</class>
+        <class>com.endeavorms.velocity.qto.brokerage.ServiceBrokerage</class>
+        <class>com.endeavorms.velocity.qto.service.view.ServiceView</class>
+        <class>com.endeavorms.velocity.qto.service.inventoryview.ServiceInventoryView</class>
+        <class>com.endeavorms.velocity.qto.service.dia.DiaService</class>
+        <class>com.endeavorms.velocity.qto.service.broadband.BroadbandService</class>
+        <class>com.endeavorms.velocity.qto.service.crossconnect.CrossConnectService</class>
+        <class>com.endeavorms.velocity.qto.service.ethernet.EthernetService</class>
+        <class>com.endeavorms.velocity.qto.service.ucaas.UcaasService</class>
+        <class>com.endeavorms.velocity.qto.service._4g5g.GService</class>
+        <class>com.endeavorms.velocity.qto.note.Note</class>
+        <class>com.endeavorms.velocity.qto.note.JeopNote</class>
+        <class>com.endeavorms.velocity.qto.note.LocationNote</class>
+        <class>com.endeavorms.velocity.qto.note.OrderNote</class>
+        <class>com.endeavorms.velocity.qto.note.ServiceNote</class>
+        <class>com.endeavorms.velocity.qto.note.NoteUnionView</class>
+        <class>com.endeavorms.velocity.qto.attachment.FileAttachment</class>
+        <class>com.endeavorms.velocity.qto.attachment.FileAttachmentContent</class>
+        <class>com.endeavorms.velocity.qto.attachment.LocationFileAttachment</class>
+        <class>com.endeavorms.velocity.qto.attachment.ServiceFileAttachment</class>
+        <class>com.endeavorms.velocity.qto.attachment.CompanyFileAttachment</class>
+        <class>com.endeavorms.velocity.qto.message.Message</class>
+        <class>com.endeavorms.velocity.qto.message.MessageThread</class>
+        <class>com.endeavorms.velocity.qto.message.MessageThreadWatcher</class>
+        <class>com.endeavorms.velocity.qto.milestone.Milestone</class>
+        <class>com.endeavorms.velocity.qto.milestone.MilestoneInstance</class>
+        <class>com.endeavorms.velocity.qto.milestone.MilestoneInstanceHistory</class>
+        <class>com.endeavorms.velocity.qto.milestone.MilestoneSet</class>
+        <class>com.endeavorms.velocity.qto.milestone.MilestoneDisplaySet</class>
+        <class>com.endeavorms.velocity.qto.milestone.MilestoneDisplaySetInclude</class>
+        <class>com.endeavorms.velocity.qto.notification.Notification</class>
+        <class>com.endeavorms.velocity.qto.milestone.OrderMilestoneInstance</class>
+        <class>com.endeavorms.velocity.qto.milestone.LocationMilestoneInstance</class>
+        <class>com.endeavorms.velocity.qto.milestone.ServiceMilestoneInstance</class>
+        <class>com.endeavorms.velocity.qto.common.lookup.LookupType</class>
+        <class>com.endeavorms.velocity.qto.common.lookup.LookupValue</class>
+        <class>com.endeavorms.velocity.qto.common.TenantView</class>
+        <class>com.endeavorms.velocity.qto.activation.requirement.RequirementTemplate</class>
+        <class>com.endeavorms.velocity.qto.activation.requirement.Requirement</class>
+        <class>com.endeavorms.velocity.qto.activation.requirement.ActivationAttemptRequirement</class>
+        <class>com.endeavorms.velocity.qto.company.task.TaskGroup</class>
+        <class>com.endeavorms.velocity.qto.company.task.Task</class>
+        <class>com.endeavorms.velocity.qto.company.task.CompanyTask</class>
+        <class>com.endeavorms.velocity.qto.jeop.Jeop</class>
+        <class>com.endeavorms.velocity.qto.jeop.JeopUnionView</class>
+        <class>com.endeavorms.velocity.qto.jeop.LocationJeop</class>
+        <class>com.endeavorms.velocity.qto.jeop.ServiceJeop</class>
+        <class>com.endeavorms.velocity.qto.jeop.OrderJeop</class>
+        <class>com.endeavorms.velocity.qto.interval.IntervalType</class>
+        <class>com.endeavorms.velocity.qto.interval.IntervalInstance</class>
+        <class>com.endeavorms.velocity.qto.interval.ServiceIntervalInstance</class>
+        <class>com.endeavorms.velocity.qto.interval.LocationIntervalInstance</class>
+        <class>com.endeavorms.velocity.qto.report.WipServiceView</class>
+        <class>com.endeavorms.velocity.qto.report.WipServiceJeopView</class>
+        <class>com.endeavorms.velocity.qto.report.WipLocationJeopView</class>
+        <class>com.endeavorms.velocity.qto.report.ProviderIntervalsView</class>
+        <class>com.endeavorms.velocity.qto.quote.Quote</class>
+        <class>com.endeavorms.velocity.qto.solution.Solution</class>
+        <class>com.endeavorms.velocity.qto.ftdi.FtdiOrderType</class>
+        <class>com.endeavorms.velocity.qto.ftdi.FtdiEquipmentType</class>
+        <class>com.endeavorms.velocity.qto.ftdi.FtdiCustomField</class>
+        <class>com.endeavorms.velocity.qto.ftdi.FtdiCustomFieldValue</class>
+        <class>com.endeavorms.velocity.qto.report.ActivationAttemptView</class>
+<!--        <class>com.endeavorms.velocity.qto.subject.Subject</class>-->
+        <class>com.endeavorms.velocity.qto.ftdi.FtdiOrderTypeEquipment</class>
+        <class>com.endeavorms.velocity.qto.ftdi.FtdiOrderTypeCustomFields</class>
+        <class>com.endeavorms.velocity.qto.ftdi.FtdiDispatch</class>
+        <class>com.endeavorms.velocity.qto.ftdi.FtdiShipment</class>
+        <class>com.endeavorms.velocity.qto.ftdi.FtdiAppointment</class>
+        <class>com.endeavorms.velocity.qto.ftdi.FtdiNote</class>
+        <class>com.endeavorms.velocity.qto.config.ConfigurationProperty</class>
+        <class>com.endeavorms.velocity.qto.config.CompanyConfigurationProperty</class>
+        <class>com.endeavorms.velocity.qto.config.CompanyConfigurationProperty</class>
+        <class>com.endeavorms.velocity.qto.template.email.EmailTemplate</class>
+        <class>com.endeavorms.velocity.qto.template.variable.TemplateVariable</class>
+        <class>com.endeavorms.velocity.qto.activation.attempt.emailView.ActivationAttemptEmailView</class>
+        <class>com.endeavorms.velocity.qto.invoicing.levelOfEffort.LevelOfEffort</class>
+        <class>com.endeavorms.velocity.qto.invoicing.surcharge.Surcharge</class>
+        <class>com.endeavorms.velocity.qto.invoicing.surcharge.service.ServiceSurcharge</class>
+        <class>com.endeavorms.velocity.qto.invoicing.surchargeType.SurchargeType</class>
+        <class>com.endeavorms.velocity.qto.invoicing.invoice.Invoice</class>
+        <class>com.endeavorms.velocity.qto.invoicing.invoiceCharge.InvoiceCharge</class>
+        <class>com.endeavorms.velocity.qto.invoicing.billableMilestone.BillableMilestone</class>
+        <class>com.endeavorms.velocity.qto.fileimport.importactivity.ImportActivity</class>
+        <class>com.endeavorms.velocity.qto.dispute.Dispute</class>
+        <class>com.endeavorms.velocity.qto.dispute.DisputeView</class>
+        <class>com.endeavorms.velocity.qto.note.DisputeNote</class>
+        <class>com.endeavorms.velocity.qto.subject.CompanySubject</class>
+        <class>com.endeavorms.velocity.qto.subject.SubjectView</class>
+        <class>com.endeavorms.velocity.qto.disconnect.DisconnectView</class>
+        <class>com.endeavorms.velocity.qto.service.historyview.ServiceHistoryView</class>
+        <class>com.endeavorms.velocity.qto.inventory.PendingDisconnect</class>
+        <class>com.endeavorms.velocity.qto.costhistory.CostHistory</class>
+        <class>com.endeavorms.velocity.qto.company.CompanyView</class>
+        <class>com.endeavorms.velocity.qto.service.television.TelevisionService</class>
+        <class>com.endeavorms.velocity.qto.service.threatMDR.ThreatMDRService</class>
+        <class>com.endeavorms.velocity.qto.service.riskMDR.RiskMDRService</class>
+        <class>com.endeavorms.velocity.qto.service.ransomMDR.RansomMDRService</class>
+        <class>com.endeavorms.velocity.qto.service.engineeringIAM.EngineeringIAMService</class>
+        <class>com.endeavorms.velocity.qto.service.engineeringMDM.EngineeringMDMService</class>
+        <class>com.endeavorms.velocity.qto.service.engineeringEmailMessaging.EngineeringEmailMessagingService</class>
+        <class>com.endeavorms.velocity.qto.service.microsoftLicenses.MicrosoftLicensesService</class>
+        <class>com.endeavorms.velocity.qto.service.snapshot.ServiceSnapshot</class>
+        <class>com.endeavorms.velocity.qto.service.mpls.MplsService</class>
+        <class>com.endeavorms.velocity.qto.customfield.field.CustomField</class>
+        <class>com.endeavorms.velocity.qto.customfield.field.CustomFieldTab</class>
+        <class>com.endeavorms.velocity.qto.customfield.value.CustomFieldValue</class>
+        <class>com.endeavorms.velocity.qto.customfield.value.ServiceCustomFieldValue</class>
+        <class>com.endeavorms.velocity.qto.customfield.value.LocationCustomFieldValue</class>
+        <class>com.endeavorms.velocity.qto.report.ReportMetaData</class>
+        <class>com.endeavorms.velocity.qto.equipment.Equipment</class>
+        <class>com.endeavorms.velocity.qto.equipment.ServiceEquipment</class>
+        <class>com.endeavorms.velocity.qto.service.cyberView.ServiceCyberView</class>
+        <class>com.endeavorms.velocity.qto.subject.SubjectCustomWorklist</class>
+        <class>com.endeavorms.velocity.qto.subject.CustomWorklist</class>
+        <class>com.endeavorms.velocity.qto.service.engineeringEndpoint.EngineeringEndpointService</class>
+        <class>com.endeavorms.velocity.qto.service.cyber360MXDR.Cyber360MXDRService</class>
+        <class>com.endeavorms.velocity.qto.service.engineeringInfoProtection.EngineeringInfoProtectionService</class>
+        <class>com.endeavorms.velocity.qto.dataverse.CrmIntegration</class>
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+        <properties>
+            <!--
+              To show Hibernate SQL at runtime w/out rebuilding, enable a JBoss logging category for
+              org.hibernate.SQL with log level ALL: (Profile -> Core -> Logging -> Log Categories)
+              Please do not commit this file with hibernate.show_sql=true as this may
+              make it into prod with no way to turn it off except to produce a new release.
+            -->
+            <property name="hibernate.show_sql" value="false"/>
+            <property name="hibernate.generate_statistics" value="false"/>
+            <property name="hibernate.use_sql_comments" value="true"/>
+        </properties>
+    </persistence-unit>
+
+    <persistence-unit name="platform">
+        <jta-data-source>java:jboss/datasources/platform</jta-data-source>
+
+        <class>com.endeavorms.velocity.qto.common.Tenant</class>
+        <class>com.endeavorms.velocity.qto.common.TenantOwnedCompany</class>
+        <class>com.endeavorms.velocity.qto.subject.TenantSubject</class>
+        <class>com.endeavorms.velocity.qto.subject.Subject</class>
+
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+        <properties>
+            <property name="hibernate.show_sql" value="false"/>
+            <property name="hibernate.generate_statistics" value="false"/>
+            <property name="hibernate.use_sql_comments" value="true"/>
+        </properties>
+    </persistence-unit>
+</persistence>

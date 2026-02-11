@@ -1,16 +1,25 @@
 # Test Profile Configuration
 spring:
+  main:
+    allow-circular-references: true
+
   application:
     name: qto-application-test
 
-  # Disable datasource for tests
+  # Disable datasource and JMS for tests
   autoconfigure:
     exclude:
       - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
       - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
+      - org.springframework.boot.autoconfigure.jms.JmsAutoConfiguration
+      - org.springframework.boot.autoconfigure.jms.artemis.ArtemisAutoConfiguration
 
   liquibase:
     enabled: false
+
+  jms:
+    cache:
+      enabled: false
 
 # Server Configuration
 server:
