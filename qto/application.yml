@@ -1,0 +1,6 @@
+export DB_HOST=localhost
+export DB_PORT=5432
+export DB_NAME=qto
+export DB_USER=qto_user
+export DB_PASSWORD=changeme
+export QTO_FILE_STORAGE=/tmp/qto-files 

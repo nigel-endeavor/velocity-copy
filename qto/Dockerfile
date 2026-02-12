@@ -18,6 +18,7 @@ COPY qto-rest-api qto-rest-api
 COPY qto-spring-boot-app qto-spring-boot-app
 
 # Build the boot JAR (skip tests for faster image build)
+RUN sed -i 's/\r$//' gradlew && chmod +x gradlew
 RUN ./gradlew :qto-spring-boot-app:bootJar --no-daemon -x test
 
 # Runtime stage
