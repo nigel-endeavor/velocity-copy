@@ -1,8 +1,8 @@
 {
-  "name": "@Vertek-Corporation/qto-ui",
+  "name": "@endeavorms/velocity-qto-ui",
   "version": "1.18.0",
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/Vertek-Corporation"
+    "registry": "https://npm.pkg.github.com/Endeavor-Managed-Services"
   },
   "scripts": {
     "ng": "ng",

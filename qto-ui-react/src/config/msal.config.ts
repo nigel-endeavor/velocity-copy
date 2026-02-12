@@ -72,7 +72,7 @@ export const tokenRequest = {
  */
 export const protectedResources = {
   qtoApi: {
-    endpoint: import.meta.env.VITE_API_URL || 'http://localhost:8080/qto/api',
+    endpoint: import.meta.env.VITE_API_URL || 'http://localhost:3000',
     scopes: ['User.Read'],
   },
 };

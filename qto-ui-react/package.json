@@ -1,11 +1,13 @@
 {
-  "name": "qto-ui-react",
+  "name": "@endeavorms/velocity-qto-ui-react",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "start": "vite",
+    "dev:full": "concurrently \"bun run server\" \"bun run dev\"",
+    "server": "bun run server/index.ts",
     "build": "tsc -b && vite build",
     "build:prod": "tsc -b && vite build --mode production",
     "lint": "eslint .",
@@ -13,6 +15,8 @@
     "test": "vitest"
   },
   "dependencies": {
+    "@elysiajs/cors": "^1.3.0",
+    "@elysiajs/eden": "^1.3.0",
     "@azure/msal-browser": "^5.1.0",
     "@azure/msal-react": "^5.0.3",
     "@radix-ui/react-accordion": "^1.2.12",
@@ -36,6 +40,8 @@
     "tailwind-merge": "^3.4.0"
   },
   "devDependencies": {
+    "concurrently": "^9.1.0",
+    "elysia": "^1.3.0",
     "@eslint/js": "^9.39.1",
     "@hookform/resolvers": "^5.2.2",
     "@playwright/test": "^1.58.1",

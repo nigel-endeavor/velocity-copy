@@ -1,6 +1,15 @@
-# QTO UI - React + TypeScript + Vite + Bun
+# QTO UI - BREE Stack
 
-Modern React frontend for the Quantum Task Orchestrator (QTO) application, migrated from Angular 16.
+Modern React frontend for the Quantum Task Orchestrator (QTO) application.
+
+## 🦊 BREE: Bun, React, Elysia, Eden Treaty
+
+| Letter | Technology | Role |
+|--------|------------|------|
+| **B** | **Bun** | Runtime, package manager, runs Elysia BFF |
+| **R** | **React** | Frontend UI |
+| **E** | **Elysia** | BFF (Backend for Frontend) - proxies to Spring Boot |
+| **E** | **Eden Treaty** | Type-safe API client |
 
 ## 🚀 Tech Stack
 
@@ -12,7 +21,7 @@ Modern React frontend for the Quantum Task Orchestrator (QTO) application, migra
 - **Redux Toolkit**: 2.11+ for state management
 - **React Router**: 7.13+ for routing (hash-based)
 - **Azure MSAL**: 5+ for authentication
-- **Axios**: 1.13+ for API calls
+- **Elysia + Eden Treaty**: BFF with type-safe API client
 
 ## 📦 Quick Start
 
@@ -27,10 +36,12 @@ Modern React frontend for the Quantum Task Orchestrator (QTO) application, migra
 # Install dependencies
 bun install
 
-# Start development server (port 4200)
-bun --bun dev
-# or
-bun start
+# Option A: Run BFF + React together
+bun run dev:full
+
+# Option B: Run separately (two terminals)
+bun run server   # Elysia BFF on port 3000
+bun --bun dev    # Vite on port 4200
 
 # Build for production
 bun run build
@@ -46,8 +57,8 @@ bun run lint
 ```
 
 The application will be available at:
-- **Dev**: http://localhost:4200/qto-ops/
-- **API Proxy**: Configured for https://127.0.0.1:8443/qto/api
+- **Frontend**: http://localhost:4200/qto-ops/
+- **BFF**: http://localhost:3000 (proxies to Spring Boot :8080)
 
 ## 📁 Project Structure
 

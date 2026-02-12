@@ -1,0 +1,39 @@
+# Build and publish qto-ui PROD-SNAPSHOT with Bun + Gradle
+
+name: Gradle Package - Prod Snapshot
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: qto-ui
+    steps:
+      - uses: actions/checkout@v3
+      - uses: oven-sh/setup-bun@v2
+        with:
+          registries: |
+            @endeavorms:https://npm.pkg.github.com/|${{ secrets.RC_PACKAGES_READ_WRITE_TOKEN }}
+      - name: Set up Java for Gradle
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'gradle'
+      - run: bun install
+      - run: bun run build:prod --omit=dev
+      - name: Get package version
+        id: package-version
+        run: echo "current-version=$(jq -r .version package.json)" >> $GITHUB_OUTPUT
+      - name: Create zip
+        run: |
+          cd dist/qto-ui
+          zip -r qto-ui-${{steps.package-version.outputs.current-version}}-PROD-SNAPSHOT.zip .
+      - name: Publish to GitHub Packages with Gradle
+        run: ../qto/gradlew -p . publishGprPublicationToGitHubPackagesRepository -PpublishVersion=${{steps.package-version.outputs.current-version}}-PROD-SNAPSHOT
+        env:
+          GITHUB_ACTOR: mwelicka
+          GITHUB_TOKEN: ${{ secrets.RC_PACKAGES_READ_WRITE_TOKEN }}

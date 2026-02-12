@@ -1,4 +1,10 @@
-import apiClient from './apiClient';
+/**
+ * Status Service - BREE (Eden Treaty)
+ *
+ * Type-safe status endpoints via Treaty client.
+ */
+
+import { treatyClient } from './treatyClient';
 
 export interface StatusResponse {
   application: string;
@@ -16,13 +22,15 @@ export interface PingResponse {
 
 export const statusService = {
   getStatus: async (): Promise<StatusResponse> => {
-    const response = await apiClient.get<StatusResponse>('/status');
-    return response.data;
+    const { data, error } = await treatyClient.status.get();
+    if (error) throw error;
+    return data as StatusResponse;
   },
 
   ping: async (): Promise<PingResponse> => {
-    const response = await apiClient.get<PingResponse>('/status/ping');
-    return response.data;
+    const { data, error } = await treatyClient.status.ping.get();
+    if (error) throw error;
+    return data as PingResponse;
   },
 };
 

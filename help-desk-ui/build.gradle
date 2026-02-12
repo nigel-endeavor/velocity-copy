@@ -14,7 +14,7 @@ publishing {
     repositories {
         maven {
             name = "GitHubPackages"
-            url = uri('https://maven.pkg.github.com/Vertek-Corporation/help-desk-ui')
+            url = uri('https://maven.pkg.github.com/Endeavor-Managed-Services/velocity')
             credentials {
                 username = project.findProperty('gpr.user') ?: System.getenv('GITHUB_ACTOR')
                 password = project.findProperty('gpr.key') ?: System.getenv('GITHUB_TOKEN')

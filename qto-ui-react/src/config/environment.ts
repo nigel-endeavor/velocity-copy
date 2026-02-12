@@ -18,22 +18,22 @@ const isProduction = import.meta.env.MODE === 'production';
 const isTest = import.meta.env.MODE === 'test';
 
 /**
- * Development Environment
+ * Development Environment (BREE - BFF at 3000)
  */
 const developmentEnv: Environment = {
   production: false,
-  appUrl: import.meta.env.VITE_API_URL || 'http://localhost:8080/qto/api',
+  appUrl: import.meta.env.VITE_API_URL || 'http://localhost:3000',
   wsUrl: import.meta.env.VITE_WS_URL || 'ws://localhost:8080/qto',
   publicUrl: import.meta.env.VITE_PUBLIC_URL || 'http://localhost:8080/public',
   baseHref: '/qto-ops/',
 };
 
 /**
- * Test Environment
+ * Test Environment (BREE)
  */
 const testEnv: Environment = {
   production: false,
-  appUrl: import.meta.env.VITE_API_URL || 'http://localhost:8080/qto/api',
+  appUrl: import.meta.env.VITE_API_URL || 'http://localhost:3000',
   wsUrl: import.meta.env.VITE_WS_URL || 'ws://localhost:8080/qto',
   publicUrl: import.meta.env.VITE_PUBLIC_URL || 'http://localhost:8080/public',
   baseHref: '/qto-ops/',

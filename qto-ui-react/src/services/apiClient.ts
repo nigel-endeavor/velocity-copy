@@ -1,5 +1,5 @@
 import { PublicClientApplication } from '@azure/msal-browser';
-import { msalConfig, tokenRequest } from '../config/authConfig';
+import { msalConfig, tokenRequest } from '../config/msal.config';
 import { environment } from '../config/environment';
 
 const msalInstance = new PublicClientApplication(msalConfig);
