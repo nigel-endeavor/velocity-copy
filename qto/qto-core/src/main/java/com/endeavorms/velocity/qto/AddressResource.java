@@ -5,23 +5,21 @@ import com.endeavorms.velocity.qto.address.AddressViewManager;
 import com.endeavorms.velocity.qto.address.AddressViewSearchCriteria;
 import com.endeavorms.velocity.qto.common.AbstractResource;
 import com.endeavorms.velocity.qto.common.PaginatedResult;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.jboss.resteasy.annotations.Form;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Response;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author rcasey
  * @since 2/6/2023
  */
-@Path("/addresses")
-@Consumes("application/json")
-@Produces("application/json")
+@RestController
+@RequestMapping("/api/addresses")
 public class AddressResource extends AbstractResource<AddressView> {
 
     @Override
@@ -29,20 +27,13 @@ public class AddressResource extends AbstractResource<AddressView> {
         return "/addresses";
     }
 
-    /** Business methods for AddressViews. */
-    @Inject
+    @Autowired
     private AddressViewManager manager;
 
-    /**
-     * Retrieves all addresses matching the given criteria.
-     * @param criteria the criteria to filter by.
-     * @return matching addresses.
-     */
-    @GET
+    @GetMapping
     @PreAuthorize("hasAnyAuthority('inventory:read','order:read')")
-    public Response getAddresses(@Form final AddressViewSearchCriteria criteria) {
+    public ResponseEntity<?> getAddresses(@ModelAttribute final AddressViewSearchCriteria criteria) {
         PaginatedResult<AddressView> result = manager.findBySearchCriteria(criteria);
-        return toResponse(getCollectionResource(result, criteria, getLocation(AddressResource.class)));
+        return getCollectionResource(result, criteria, getLocation(AddressResource.class));
     }
-
 }

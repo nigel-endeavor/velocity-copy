@@ -5,43 +5,34 @@ import com.endeavorms.velocity.qto.common.PaginatedResult;
 import com.endeavorms.velocity.qto.template.variable.TemplateVariable;
 import com.endeavorms.velocity.qto.template.variable.TemplateVariableManager;
 import com.endeavorms.velocity.qto.template.variable.TemplateVariableSearchCriteria;
-import org.jboss.resteasy.annotations.Form;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Response;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * REST API for template variables.
  */
-@Path("/templateVariables")
-@Consumes("application/json")
-@Produces("application/json")
+@RestController
+@RequestMapping("/api/templateVariables")
 public class TemplateVariableResource extends AbstractResource<TemplateVariable> {
 
     @Override
     protected String getResourcePath() {
         return "/templateVariables";
     }
-    /** Business logic layer for Template Variables. */
-    @Inject
+
+    @Autowired
     private TemplateVariableManager manager;
 
-    /**
-     * API endpoint that returns all template variables for a given template type.
-     * @param templateType the type of template to return variables for.
-     * @param criteria the search criteria to use.
-     * @return a response containing the matching template variables.
-     */
-     @GET
-     @Path("/{templateType}")
-     public Response getTemplateVariables(@PathParam("templateType") final String templateType,
-                                          @Form final TemplateVariableSearchCriteria criteria) {
-         PaginatedResult<TemplateVariable> result = manager.getTemplateVariablesByType(templateType);
-         return toResponse(getCollectionResource(result, criteria, getLocation(TemplateVariableResource.class)));
-     }
+    @GetMapping("/{templateType}")
+    public ResponseEntity<?> getTemplateVariables(@PathVariable("templateType") final String templateType,
+                                                 @ModelAttribute final TemplateVariableSearchCriteria criteria) {
+        PaginatedResult<TemplateVariable> result = manager.getTemplateVariablesByType(templateType);
+        return getCollectionResource(result, criteria, getLocation(TemplateVariableResource.class));
+    }
 }

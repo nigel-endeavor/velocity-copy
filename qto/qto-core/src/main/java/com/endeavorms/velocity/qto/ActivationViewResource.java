@@ -6,23 +6,21 @@ import com.endeavorms.velocity.qto.activation.ActivationViewSearchCriteria;
 import com.endeavorms.velocity.qto.activation.ActivationWorklistMeta;
 import com.endeavorms.velocity.qto.common.AbstractResource;
 import com.endeavorms.velocity.qto.common.PaginatedResult;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.jboss.resteasy.annotations.Form;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Response;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author rcasey
  * @since 3/1/2023
  */
-@Path("/activationViews")
-@Consumes("application/json")
-@Produces({"application/json", "application/vnd.ms-excel"})
+@RestController
+@RequestMapping("/api/activationViews")
 public class ActivationViewResource extends AbstractResource<ActivationView> {
 
     @Override
@@ -30,20 +28,19 @@ public class ActivationViewResource extends AbstractResource<ActivationView> {
         return "/activationViews";
     }
 
-    @Inject
+    @Autowired
     private ActivationViewManager manager;
 
-    @GET
-    public Response getActivationViews(@Form final ActivationViewSearchCriteria criteria) {
+    @GetMapping
+    public ResponseEntity<?> getActivationViews(@ModelAttribute final ActivationViewSearchCriteria criteria) {
         ActivationViewSearchCriteria crit = getExportCriteria(criteria);
         PaginatedResult<ActivationView> result = manager.findBySearchCriteria(crit);
-        return toResponse(getCollectionResource(result, crit, getLocation(ActivationViewResource.class)));
+        return getCollectionResource(result, crit, getLocation(ActivationViewResource.class));
     }
 
-    @GET
-    @Path("/meta")
-    public Response getActivationWorklistMeta(@Form final ActivationViewSearchCriteria criteria) {
+    @GetMapping("/meta")
+    public ResponseEntity<?> getActivationWorklistMeta(@ModelAttribute final ActivationViewSearchCriteria criteria) {
         ActivationWorklistMeta meta = manager.getWorklistMeta(criteria);
-        return Response.ok(meta).build();
+        return ResponseEntity.ok(meta);
     }
 }

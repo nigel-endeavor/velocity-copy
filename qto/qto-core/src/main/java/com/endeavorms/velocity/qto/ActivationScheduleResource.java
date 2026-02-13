@@ -4,47 +4,34 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.endeavorms.velocity.qto.activation.schedule.ActivationSchedule;
 import com.endeavorms.velocity.qto.activation.schedule.ActivationScheduleManager;
-import com.endeavorms.velocity.qto.authentication.Permissions;
+import com.endeavorms.velocity.qto.common.BadRequestError;
+import com.endeavorms.velocity.qto.common.ValidationError;
+import com.endeavorms.velocity.qto.interceptors.ActivationScheduleInterceptor;
 import com.endeavorms.velocity.qto.common.AbstractResource;
 import com.endeavorms.velocity.qto.company.CompanyManager;
 import com.endeavorms.velocity.qto.config.CompanyConfigKey;
 import com.endeavorms.velocity.qto.config.CompanyConfigPropertyManager;
-import org.apache.http.HttpEntity;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.TrustStrategy;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.ssl.SSLContexts;
-import org.apache.http.util.EntityUtils;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.inject.Inject;
-import javax.net.ssl.SSLContext;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.PUT;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
-import jakarta.ws.rs.core.Response;
-import java.io.IOException;
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.List;
 
 /**
  * @author rcasey
  * @since 3/22/2023
  */
-@Path("/activationSchedules")
-@Consumes("application/json")
-@Produces("application/json")
+@RestController
+@RequestMapping("/api/activationSchedules")
 public class ActivationScheduleResource extends AbstractResource {
 
     @Override
@@ -52,138 +39,68 @@ public class ActivationScheduleResource extends AbstractResource {
         return "/activationSchedules";
     }
 
-    /**
-     * Business methods for ActivationSchedules.
-     */
-    @Inject
+    @Autowired
     private ActivationScheduleManager manager;
 
-    @Inject
+    @Autowired
     private CompanyConfigPropertyManager<CompanyConfigKey> companyConfigPropertyManager;
 
-    @Inject
+    @Autowired
     private CompanyManager companyManager;
 
+    @Autowired
+    private ActivationScheduleInterceptor activationScheduleInterceptor;
 
-    /**
-     * ObjectMapper.
-     */
     private static ObjectMapper mapper;
 
-    @GET
+    @GetMapping
     @PreAuthorize("hasAnyAuthority('inventory:read','order:read')")
-    public Response getSchedules(@QueryParam("serviceId") final Long serviceId) {
+    public ResponseEntity<?> getSchedules(@RequestParam("serviceId") final Long serviceId) {
         List<ActivationSchedule> schedules = manager.findByServiceId(serviceId);
-        return Response.ok(schedules).build();
+        return ResponseEntity.ok(schedules);
     }
 
-    @GET
-    @Path("/{id: \\d+}")
+    @GetMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('inventory:read','order:read')")
-    public Response getSchedule(@PathParam("id") final Long id) {
+    public ResponseEntity<?> getSchedule(@PathVariable("id") final Long id) {
         ActivationSchedule schedule = manager.retrieve(id);
-        return Response.ok(schedule).build();
+        return ResponseEntity.ok(schedule);
     }
 
-    @POST
+    @PostMapping
     @PreAuthorize("hasAnyAuthority('inventory:write','order:write')")
-    public Response create(final ActivationSchedule schedule) {
+    public ResponseEntity<?> create(@RequestBody final ActivationSchedule schedule) {
+        BadRequestError validationError = activationScheduleInterceptor.validate(schedule);
+        if (validationError != null) {
+            return ResponseEntity.badRequest().body(validationError);
+        }
         try {
             ActivationSchedule created = manager.create(schedule);
-
-            return Response.ok(created).build();
+            return ResponseEntity.ok(created);
         } catch (Exception e) {
-            return Response.serverError().entity(e.getMessage()).build();
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 
-    @PUT
-    @Path("/{id: \\d+}")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('inventory:write','order:write')")
-    public Response edit(@PathParam("id") final Long id, final ActivationSchedule schedule) {
+    public ResponseEntity<?> edit(@PathVariable("id") final Long id, @RequestBody final ActivationSchedule schedule) {
+        if (!id.equals(schedule.getId())) {
+            return ResponseEntity.badRequest().body(new BadRequestError(
+                List.of(new ValidationError("id", "identifier in path does not match that of passed entity"))));
+        }
+        BadRequestError validationError = activationScheduleInterceptor.validate(schedule);
+        if (validationError != null) {
+            return ResponseEntity.badRequest().body(validationError);
+        }
         try {
-            if (!id.equals(schedule.getId())) {
-                throw new IllegalArgumentException("identifier in path does not match that of passed entity");
-            }
             ActivationSchedule updated = manager.edit(schedule);
-            return Response.ok(updated).build();
+            return ResponseEntity.ok(updated);
         } catch (Exception e) {
-            return Response.serverError().entity(e.getMessage()).build();
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 
-//    @Interceptors({ActivationScheduleInterceptor.class})
-//    @PUT
-//    @Path("/pushToFtdi")
-//    @RequiresPermissions(value = {
-//            Permissions.ORDER_WRITE,
-//            Permissions.INVENTORY_WRITE}, logical = Logical.OR)
-//    public Response submitToFtdi(final ActivationSchedule schedule) {
-//        try {
-//
-//            ActivationSchedule updated = manager.edit(schedule);
-//            for (FtdiDispatch ftdiDispatch : schedule.getDispatches()) {
-//                if (ftdiDispatch != null && ftdiDispatch.getVendorDispatchId() == null) {
-//
-//                    Company company = companyManager.getCompanyIdForTenant(updated.getTenantId());
-//                    String url = companyConfigPropertyManager.getString(company.getId(), CompanyConfigKey.ENDEAVOR_PROXY_URL);
-//
-////                    manager.sendDispatchToQueue(schedule, ftdiDispatch);
-//                    callFieldTechDispatch(url + "?dispatchId=" + ftdiDispatch.getId() + "&tenantId=" + updated.getTenantId());
-//
-//
-//                }
-//
-//            }
-//            return Response.ok(updated).build();
-//        } catch (Exception e) {
-//            LOGGER.debug(e.getMessage());
-//            return Response.serverError().entity(e.getMessage()).build();
-//        }
-//    }
-
-    private String callFieldTechDispatch(String url) {
-
-        SSLContext sslContext = null;
-        try {
-            sslContext = SSLContexts.custom().loadTrustMaterial(null,
-                            (TrustStrategy) (chain, authType) -> true)
-                    .build();
-            HttpPost request = new HttpPost(url);
-            SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslContext);
-
-            CloseableHttpClient httpClient = HttpClientBuilder.create().setSSLSocketFactory(sslsf).build();
-            CloseableHttpResponse response = httpClient.execute(request);
-            System.out.println(response.getStatusLine().getStatusCode());
-
-            HttpEntity entity = response.getEntity();
-            if (entity != null) {
-                // return it as a String
-                String result = EntityUtils.toString(entity);
-                System.out.println(result);
-            }
-
-        } catch (ClientProtocolException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        } catch (KeyStoreException e) {
-            throw new RuntimeException(e);
-        } catch (KeyManagementException e) {
-            throw new RuntimeException(e);
-        }
-
-        return "Done";
-    }
-
-
-    /**
-     * Get configured Object Mapper.
-     *
-     * @return ObjectMapper
-     */
     public static synchronized ObjectMapper getMapper() {
         if (mapper == null) {
             mapper = new ObjectMapper();

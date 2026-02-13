@@ -6,25 +6,24 @@ import com.endeavorms.velocity.qto.jeop.JeopUnionView;
 import com.endeavorms.velocity.qto.jeop.JeopUnionViewSearchCriteria;
 import com.endeavorms.velocity.qto.jeop.ServiceJeop;
 import com.endeavorms.velocity.qto.jeop.ServiceJeopManager;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.jboss.resteasy.annotations.Form;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.PUT;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Response;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author llevit
  */
-@Path("/serviceJeops")
-@Consumes("application/json")
-@Produces("application/json")
+@RestController
+@RequestMapping("/api/serviceJeops")
 public class ServiceJeopResource extends AbstractResource<JeopUnionView> {
 
     @Override
@@ -32,54 +31,44 @@ public class ServiceJeopResource extends AbstractResource<JeopUnionView> {
         return "/serviceJeops";
     }
 
-    /** Business methods for Services. */
-    @Inject
+    @Autowired
     private ServiceJeopManager manager;
 
-    /**
-     * Retrieves all ServiceJeops matching the given criteria.
-     * @param criteria the criteria to filter by.
-     * @return matching serviceJeops.
-     */
-    @GET
+    @GetMapping
     @PreAuthorize("hasAnyAuthority('inventory:read','order:read')")
-    public Response getServiceJeops(@Form final JeopUnionViewSearchCriteria criteria) {
+    public ResponseEntity<?> getServiceJeops(@ModelAttribute final JeopUnionViewSearchCriteria criteria) {
         PaginatedResult<JeopUnionView> result = manager.findBySearchCriteria(criteria);
-        return toResponse(getCollectionResource(result, criteria, getLocation(ServiceJeopResource.class)));
+        return getCollectionResource(result, criteria, getLocation(ServiceJeopResource.class));
     }
 
-    @POST
+    @PostMapping
     @PreAuthorize("hasAnyAuthority('inventory:write','order:write')")
-    public Response create(final ServiceJeop jeop) {
+    public ResponseEntity<?> create(@RequestBody final ServiceJeop jeop) {
         try {
-            ServiceJeop returnedJeop;
             if (jeop.getServiceId() == null) {
                 throw new IllegalArgumentException("Missing serviceId.");
-            } else {
-                returnedJeop = manager.create(jeop);
             }
-            return Response.ok(returnedJeop).build();
+            ServiceJeop returnedJeop = manager.create(jeop);
+            return ResponseEntity.ok(returnedJeop);
         } catch (Exception e) {
-            return Response.serverError().entity(e.getMessage()).build();
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 
-    @PUT
-    @Path("/{id: \\d+}")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('inventory:write','order:write')")
-    public Response edit(@PathParam("id") final Long id, final ServiceJeop jeop) {
+    public ResponseEntity<?> edit(@PathVariable("id") final Long id, @RequestBody final ServiceJeop jeop) {
         try {
-            ServiceJeop returnedJeop;
             if (!id.equals(jeop.getId())) {
                 throw new IllegalArgumentException("identifier in path does not match that of passed entity");
-            } else if (jeop.getServiceId() == null) {
-                throw new IllegalArgumentException("Missing serviceId.");
-            } else {
-                returnedJeop = manager.edit(jeop);
             }
-            return Response.ok(returnedJeop).build();
+            if (jeop.getServiceId() == null) {
+                throw new IllegalArgumentException("Missing serviceId.");
+            }
+            ServiceJeop returnedJeop = manager.edit(jeop);
+            return ResponseEntity.ok(returnedJeop);
         } catch (Exception e) {
-            return Response.serverError().entity(e.getMessage()).build();
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 }

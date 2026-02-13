@@ -5,20 +5,19 @@ import com.endeavorms.velocity.qto.common.PreconditionsUtil;
 import com.endeavorms.velocity.qto.customfield.field.CustomField;
 import com.endeavorms.velocity.qto.customfield.field.CustomFieldManager;
 import com.endeavorms.velocity.qto.customfield.field.CustomFieldTabValue;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
-import jakarta.ws.rs.core.Response;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.List;
 
-@Path("/customfields")
-@Consumes("application/json")
-@Produces("application/json")
+@RestController
+@RequestMapping("/api/customfields")
 public class CustomFieldResource extends AbstractResource<CustomField> {
 
     @Override
@@ -26,19 +25,18 @@ public class CustomFieldResource extends AbstractResource<CustomField> {
         return "/customfields";
     }
 
-    @Inject
+    @Autowired
     private CustomFieldManager manager;
 
-    @GET
+    @GetMapping
     @PreAuthorize("hasAnyAuthority('inventory:read','order:read')")
-    public Response getCustomFields(@QueryParam("tab") final CustomFieldTabValue tab) {
+    public ResponseEntity<?> getCustomFields(@RequestParam("tab") final CustomFieldTabValue tab) {
         try {
             PreconditionsUtil.checkArgument(tab, "tab is required");
             List<CustomField> customFields = manager.findActiveByTab(tab);
-            return Response.ok().entity(customFields).build();
+            return ResponseEntity.ok(customFields);
         } catch (Exception e) {
-            return Response.serverError().entity(e.getMessage()).build();
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
-
 }

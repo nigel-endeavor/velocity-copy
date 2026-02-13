@@ -12,10 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.stereotype.Component;
 
-import jakarta.inject.Inject;
-import jakarta.interceptor.AroundInvoke;
-import jakarta.interceptor.InvocationContext;
-import jakarta.ws.rs.core.Response;
+import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,47 +23,11 @@ public class CompanyInterceptor {
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(CompanyInterceptor.class);
 
-    /**
-     * the error list.
-     */
-    private List<ValidationError> errors;
-
-    @Inject
+    @Autowired
     private CompanyManager companyManager;
 
-    @Inject
+    @Autowired
     private OrderManager orderManager;
-
-    @AroundInvoke
-    public Object validate(final InvocationContext context) throws Exception {
-        LOGGER.info("CompanyInterceptor.validate() called");
-        List<ValidationError> errors = Lists.newArrayList();
-        for (Object param : context.getParameters()) {
-            if (param instanceof Long) {
-                Company company = companyManager.retrieve((Long) param);
-                if ("End Customer".equalsIgnoreCase(company.getType())) {
-                    List<Order> orders = orderManager.findByComapnyId(company.getId());
-                    if (orders != null && !orders.isEmpty()) {
-                        errors.add(new ValidationError("company", "Cannot delete an End Company with Orders"));
-                    }
-                } else {
-                    List<Company> companies = companyManager.findByEndCustomerByParentId(company.getId());
-                    if (companies != null && !companies.isEmpty()) {
-                        errors.add(new ValidationError("company", "Cannot delete a Master Customer with End Customers"));
-                    }
-                }
-            }
-        }
-
-        if (errors.size() > 0) {
-            BadRequestError error = new BadRequestError(errors);
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity(error)
-                    .build();
-        }
-
-        return context.proceed();
-    }
 
     /**
      * Validates company deletion for Spring MVC controllers.

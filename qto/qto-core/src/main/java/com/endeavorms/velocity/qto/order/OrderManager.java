@@ -77,7 +77,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.stereotype.Component;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.BadRequestException;
+import com.endeavorms.velocity.qto.common.BadRequestException;
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

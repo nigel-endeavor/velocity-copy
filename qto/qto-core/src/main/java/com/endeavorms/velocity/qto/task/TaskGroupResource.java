@@ -1,33 +1,32 @@
 package com.endeavorms.velocity.qto.task;
 
 import com.endeavorms.velocity.qto.common.AbstractResource;
+import com.endeavorms.velocity.qto.common.BadRequestError;
 import com.endeavorms.velocity.qto.common.PaginatedResult;
 import com.endeavorms.velocity.qto.company.task.TaskGroup;
 import com.endeavorms.velocity.qto.company.task.TaskGroupManager;
 import com.endeavorms.velocity.qto.company.task.TaskGroupSearchCriteria;
 import com.endeavorms.velocity.qto.interceptors.TaskGroupInterceptor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.jboss.resteasy.annotations.Form;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.inject.Inject;
-import jakarta.interceptor.Interceptors;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.DELETE;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.PUT;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Response;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author fcurran
  * @since 9/5/2024
  */
-@Path("/taskGroups")
-@Consumes("application/json")
-@Produces("application/json")
+@RestController
+@RequestMapping("/api/taskGroups")
 public class TaskGroupResource extends AbstractResource<TaskGroup> {
 
     @Override
@@ -35,89 +34,71 @@ public class TaskGroupResource extends AbstractResource<TaskGroup> {
         return "/taskGroups";
     }
 
-    /** Business methods for TaskGroups. */
-    @Inject
+    @Autowired
     private TaskGroupManager manager;
 
-    /**
-     * Retrieves all TaskGroups matching the given criteria.
-     * @param criteria the criteria to filter by.
-     * @return matching task groups.
-     */
-    @GET
+    @Autowired
+    private TaskGroupInterceptor taskGroupInterceptor;
+
+    @GetMapping
     @PreAuthorize("hasAnyAuthority('inventory:read','order:read')")
-    public Response getTaskGroups(@Form final TaskGroupSearchCriteria criteria) {
+    public ResponseEntity<?> getTaskGroups(@ModelAttribute final TaskGroupSearchCriteria criteria) {
         PaginatedResult<TaskGroup> templates = manager.findBySearchCriteria(criteria);
-        return toResponse(getCollectionResource(templates, criteria, getLocation(TaskGroupResource.class)));
+        return getCollectionResource(templates, criteria, getLocation(TaskGroupResource.class));
     }
 
-    /**
-     * Retrieves a single TaskGroup by its identifier.
-     * @param id the identifier of the TaskGroup to retrieve.
-     * @return the TaskGroup, if found.
-     */
-    @GET
-    @Path("/{id: \\d+}")
+    @GetMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('inventory:read','order:read')")
-    public Response retrieve(@PathParam("id") final Long id) {
+    public ResponseEntity<?> retrieve(@PathVariable("id") final Long id) {
         TaskGroup retrieved = manager.retrieve(id);
-        return Response.ok(retrieved).build();
+        return ResponseEntity.ok(retrieved);
     }
 
-    /**
-     * Creates a new TaskGroup.
-     * @param template the TaskGroup to create.
-     * @return the created TaskGroup.
-     */
-    @POST
+    @PostMapping
     @PreAuthorize("hasAnyAuthority('inventory:write','order:write')")
-    @Interceptors({ TaskGroupInterceptor.class })
-    public Response create(final TaskGroup template) {
+    public ResponseEntity<?> create(@RequestBody final TaskGroup template) {
         try {
+            BadRequestError validationError = taskGroupInterceptor.validateForCreateOrEdit(template);
+            if (validationError != null) {
+                return ResponseEntity.badRequest().body(validationError);
+            }
             TaskGroup created = manager.create(template);
-            return Response.ok(created).build();
+            return ResponseEntity.ok(created);
         } catch (Exception e) {
-            return Response.serverError().entity(e.getMessage()).build();
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 
-    /**
-     * Updates a TaskGroup.
-     * @param id the identifier of the TaskGroup to update.
-     * @param template the TaskGroup to update.
-     * @return the updated TaskGroup.
-     */
-    @PUT
-    @Path("/{id: \\d+}")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('inventory:write','order:write')")
-    @Interceptors({ TaskGroupInterceptor.class })
-    public Response edit(@PathParam("id") final Long id, final TaskGroup template) {
+    public ResponseEntity<?> edit(@PathVariable("id") final Long id, @RequestBody final TaskGroup template) {
         try {
+            BadRequestError validationError = taskGroupInterceptor.validateForCreateOrEdit(template);
+            if (validationError != null) {
+                return ResponseEntity.badRequest().body(validationError);
+            }
             if (!id.equals(template.getId())) {
                 throw new IllegalArgumentException("identifier in path does not match that of passed entity");
             }
             TaskGroup updated = manager.edit(template);
-            return Response.ok(updated).build();
+            return ResponseEntity.ok(updated);
         } catch (Exception e) {
-            return Response.serverError().entity(e.getMessage()).build();
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 
-    /**
-     * Removes a TaskGroup.
-     * @param id the identifier of the TaskGroup to remove.
-     * @return a 204 response.
-     */
-    @DELETE
-    @Path("/{id: \\d+}")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('inventory:write','order:write')")
-    @Interceptors({ TaskGroupInterceptor.class })
-    public Response remove(@PathParam("id") final Long id) {
+    public ResponseEntity<?> remove(@PathVariable("id") final Long id) {
         try {
+            BadRequestError validationError = taskGroupInterceptor.validateForRemove(id);
+            if (validationError != null) {
+                return ResponseEntity.badRequest().body(validationError);
+            }
             manager.remove(id);
-            return Response.noContent().build();
+            return ResponseEntity.noContent().build();
         } catch (Exception e) {
-            return Response.serverError().entity(e.getMessage()).build();
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 }

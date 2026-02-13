@@ -4,7 +4,6 @@ import com.endeavorms.velocity.qto.common.BaseSearchCriteria;
 import com.endeavorms.velocity.qto.common.DateRangeType;
 import com.endeavorms.velocity.qto.common.RangeType;
 
-import jakarta.ws.rs.QueryParam;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -14,137 +13,93 @@ import java.util.List;
  * @since 1/9/2023
  */
 public class LocationViewSearchCriteria extends BaseSearchCriteria<LocationView> {
-    @QueryParam("search")
     private String search;
 
     /** Allows filtering by a location ID. */
-    @QueryParam("id")
     private Long id;
 
-    @QueryParam("companyName")
     private List<String> companyName;
 
-    @QueryParam("endCustomerClientId")
     private String endCustomerClientId;
 
-    @QueryParam("address")
     private String address;
 
-    @QueryParam("address1")
     private String address1;
 
-    @QueryParam("address2")
     private String address2;
 
-    @QueryParam("city")
     private String city;
 
-    @QueryParam("stateProvince")
     private String stateProvince;
 
-    @QueryParam("postalCode")
     private String postalCode;
 
-    @QueryParam("parentCompanyName")
     private List<String> parentCompanyName;
 
-    @QueryParam("parentCompanyClientId")
     private String parentCompanyClientId;
 
-    @QueryParam("relocateLocationId")
     private Long relocateLocationId;
 
-    @QueryParam("parentCompanyId")
     private Long parentCompanyId;
 
-    @QueryParam("provisioner")
     private List<String> provisioner;
 
-    @QueryParam("clientOrderId")
     private String clientOrderId;
 
-    @QueryParam("clientLocationId")
     private String clientLocationId;
 
-    @QueryParam("locationName")
     private String locationName;
 
-    @QueryParam("locationStatus")
     private List<String> locationStatus;
 
-    @QueryParam("countServices")
     private List<Long> countServices;
 
-    @QueryParam("services")
     private List<String> services;
 
-    @QueryParam("completionDate")
     private List<Date> completionDate;
 
-    @QueryParam("completionDate-comparison")
     private List<DateRangeType> completionDateComparison;
 
-    @QueryParam("openJeops")
     private String openJeops;
 
-    @QueryParam("openJeopResponsibilities")
     private List<String> openJeopResponsibilities;
 
-    @QueryParam("hideTerminalStatuses")
     private boolean hideTerminalStatuses;
 
-    @QueryParam("activeOnly")
     private boolean activeOnly;
 
-    @QueryParam("macOnly")
     private boolean macOnly;
 
-    @QueryParam("orderId")
     private Long orderId;
 
-    @QueryParam("recordSource")
     private String recordSource;
 
-    @QueryParam("clientProjectManager")
     private String clientProjectManager;
 
-    @QueryParam("vertekProjectManager")
     private String vertekProjectManager;
 
-    @QueryParam("clientLocationInfo")
     private String clientLocationInfo;
 
-    @QueryParam("clientLocationType")
     private String clientLocationType;
 
-    @QueryParam("mrc")
     private List<BigDecimal> mrc;
 
-    @QueryParam("mrc-comparison")
     private List<RangeType> mrcRange;
 
-    @QueryParam("nrc")
     private List<BigDecimal> nrc;
 
-    @QueryParam("nrc-comparison")
     private List<RangeType> nrcRange;
 
-    @QueryParam("mrr")
     private List<BigDecimal> mrr;
 
-    @QueryParam("mrr-comparison")
     private List<RangeType> mrrRange;
 
-    @QueryParam("nrr")
     private List<BigDecimal> nrr;
 
-    @QueryParam("nrr-comparison")
     private List<RangeType> nrrRange;
 
-    @QueryParam("annualRecurringCost")
     private List<BigDecimal> annualRecurringCost;
 
-    @QueryParam("annualRecurringCost-comparison")
     private List<RangeType> annualRecurringCostRange;
 
     public String getSearch() {

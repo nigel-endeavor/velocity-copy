@@ -3,42 +3,30 @@ package com.endeavorms.velocity.qto.invoicing.invoiceCharge;
 import com.endeavorms.velocity.qto.common.BaseSearchCriteria;
 import com.endeavorms.velocity.qto.common.DateRangeType;
 
-import jakarta.ws.rs.QueryParam;
 import java.util.Date;
 import java.util.List;
 
 public class InvoiceChargeSearchCriteria extends BaseSearchCriteria<InvoiceCharge> {
-    @QueryParam("search")
     private String search;
 
-    @QueryParam("invoiceId")
     private Long invoiceId;
 
-    @QueryParam("itemDesc")
     private String itemDesc;
 
-    @QueryParam("chargeDesc")
     private String chargeDesc;
 
-    @QueryParam("chargeType")
     private String chargeType;
 
-    @QueryParam("chargeLevel")
     private String chargeLevel;
 
-    @QueryParam("masterCustomer")
     private String masterCustomer;
 
-    @QueryParam("endCustomer")
     private String endCustomer;
 
-    @QueryParam("billableEvent")
     private String billableEvent;
 
-    @QueryParam("billableEventDate")
     private List<Date> billableEventDate;
 
-    @QueryParam("billableEventDate-comparison")
     private List<DateRangeType> billableEventDateRange;
 
     public String getSearch() {

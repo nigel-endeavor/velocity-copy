@@ -2,20 +2,15 @@ package com.endeavorms.velocity.qto.jeop;
 
 import com.endeavorms.velocity.qto.common.BaseSearchCriteria;
 
-import jakarta.ws.rs.QueryParam;
 
 public class JeopUnionViewSearchCriteria extends BaseSearchCriteria<JeopUnionView> {
 
-    @QueryParam("orderId")
     private Long orderId;
 
-    @QueryParam("locationId")
     private Long locationId;
 
-    @QueryParam("serviceId")
     private Long serviceId;
 
-    @QueryParam("isOpen")
     private Boolean isOpen;
 
     public Long getOrderId() {

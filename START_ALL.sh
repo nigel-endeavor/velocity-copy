@@ -10,7 +10,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 # Start Frontend in background
 echo "⚛️  Starting Frontend (React on port 7887)..."
-cd "$SCRIPT_DIR/qto-ui-react"
+cd "$SCRIPT_DIR/qto-ui"
 bun --bun dev > /dev/null 2>&1 &
 FRONTEND_PID=$!
 echo "   Frontend PID: $FRONTEND_PID"

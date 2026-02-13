@@ -2,7 +2,6 @@ package com.endeavorms.velocity.qto.common.lookup;
 
 import com.endeavorms.velocity.qto.common.BaseSearchCriteria;
 
-import jakarta.ws.rs.QueryParam;
 
 /**
  * Simple Search Criteria for LookupValues.
@@ -12,23 +11,18 @@ import jakarta.ws.rs.QueryParam;
 public class LookupValueSearchCriteria extends BaseSearchCriteria<LookupValue> {
 
     /** The LookupType type code.*/
-    @QueryParam("typeCode")
     private String typeCode;
 
     /** Active flag.*/
-    @QueryParam("active")
     private Boolean active;
 
     /** The value to filter on. */
-    @QueryParam("value")
     protected String value;
 
     /** The lookup value parent id. */
-    @QueryParam("parentId")
     private Long parentId;
 
     /** Lookup value company id, used to determine tenant. */
-    @QueryParam("companyId")
     private Long companyId;
 
 

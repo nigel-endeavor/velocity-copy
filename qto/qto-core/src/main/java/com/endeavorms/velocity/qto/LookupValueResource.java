@@ -4,19 +4,17 @@ import com.endeavorms.velocity.qto.common.lookup.LookupValue;
 import com.endeavorms.velocity.qto.common.lookup.LookupValueManager;
 
 import org.springframework.stereotype.Component;
-import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Component
-@Path("/lookupValues")
-@Consumes("application/json")
-@Produces("application/json")
+@RestController
+@RequestMapping("/api/lookupValues")
 public class LookupValueResource extends AbstractLookupValueResource<LookupValue> {
 
-    /** Business logic for manage lookupvalue. */
-    @Inject
+    @Autowired
     private LookupValueManager manager;
 
     @Override

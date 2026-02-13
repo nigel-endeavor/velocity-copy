@@ -3,7 +3,6 @@ package com.endeavorms.velocity.qto.activation;
 import com.endeavorms.velocity.qto.common.BaseSearchCriteria;
 import com.endeavorms.velocity.qto.common.DateRangeType;
 
-import jakarta.ws.rs.QueryParam;
 import java.util.Date;
 import java.util.List;
 
@@ -12,34 +11,24 @@ import java.util.List;
  * @since 3/1/2023
  */
 public class ActivationViewSearchCriteria extends BaseSearchCriteria<ActivationView> {
-    @QueryParam("search")
     private String search;
 
-    @QueryParam("clientServiceId")
     private String clientServiceId;
 
-    @QueryParam("scheduledAttemptStatus")
     private List<String> scheduledAttemptStatus;
 
-    @QueryParam("internalTechAssigned")
     private String internalTechAssigned;
 
-    @QueryParam("scheduledCheckInTime")
     private List<Date> scheduledCheckInTime;
 
-    @QueryParam("scheduledCheckInTime-comparison")
     private List<DateRangeType> scheduledCheckInTimeRange;
 
-    @QueryParam("lastUpdateBy")
     private String lastUpdateBy;
 
-    @QueryParam("clientLocationType")
     private String clientLocationType;
 
-    @QueryParam("clientLocationInfo")
     private String clientLocationInfo;
 
-    @QueryParam("parentCompanyName")
     private List<String> parentCompanyName;
 
     public String getSearch() {

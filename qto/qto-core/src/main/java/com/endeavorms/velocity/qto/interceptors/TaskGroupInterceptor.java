@@ -10,67 +10,72 @@ import com.endeavorms.velocity.qto.company.task.TaskGroupManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jakarta.inject.Inject;
-import jakarta.interceptor.AroundInvoke;
-import jakarta.interceptor.InvocationContext;
-import jakarta.ws.rs.core.Response;
+import org.springframework.stereotype.Component;
+
 import java.util.List;
 
 /**
  * Intercepts API calls related to Task Groups.
  */
+@Component
 public class TaskGroupInterceptor {
-    /**
-     * Logging Facade.
-     */
     private static final Logger LOGGER = LoggerFactory.getLogger(TaskGroupInterceptor.class);
 
-    /** Business logic for surcharges. */
-    @Inject
-    private TaskGroupManager taskGroupManager;
+    private final TaskGroupManager taskGroupManager;
+    private final CompanyManager companyManager;
 
-    @Inject
-    private CompanyManager companyManager;
+    public TaskGroupInterceptor(TaskGroupManager taskGroupManager, CompanyManager companyManager) {
+        this.taskGroupManager = taskGroupManager;
+        this.companyManager = companyManager;
+    }
 
     /**
-     * Validates the incoming Surcharge.
-     * @param context the context of the invocation.
-     * @return the result of the invocation.
-     * @throws Exception if the invocation fails.
+     * Validates a TaskGroup for create or edit.
+     * @return list of validation errors, empty if valid.
      */
-    @AroundInvoke
-    public Object validate(final InvocationContext context) throws Exception {
+    public List<ValidationError> validateTaskGroup(TaskGroup entity) {
         List<ValidationError> errors = Lists.newArrayList();
-        for (Object param : context.getParameters()) {
-            if (param instanceof TaskGroup) {
-                TaskGroup entity = (TaskGroup) param;
-                if (entity.isDefault()) {
-                    TaskGroup existingDefault = taskGroupManager.getDefaultTaskGroup(null);
-                    if (existingDefault != null
-                            && (entity.getId() == null || !existingDefault.getId().equals(entity.getId()))) {
-                        LOGGER.debug("active default task group already exists with id: {}, " +
-                                "default task group will not be updated", existingDefault.getId());
-                        errors.add(new ValidationError("default",
-                                existingDefault.getName() + " is already the active default task group."));
-                    }
-                }
-            } else if (param instanceof Long && context.getMethod().getName().contains("remove")) {
-                Long id = (Long) param;
-                TaskGroup entity = taskGroupManager.retrieve(id);
-                List<Company> companies = companyManager.findUsedTaskGroups(id, entity.getTenantId());
-                if (!companies.isEmpty()) {
-                    errors.add(new ValidationError("Delete Failure",
-                            entity.getName() + " is assigned to one or more Master/End Customers."));
-                }
+        if (entity.isDefault()) {
+            TaskGroup existingDefault = taskGroupManager.getDefaultTaskGroup(null);
+            if (existingDefault != null
+                    && (entity.getId() == null || !existingDefault.getId().equals(entity.getId()))) {
+                LOGGER.debug("active default task group already exists with id: {}, " +
+                        "default task group will not be updated", existingDefault.getId());
+                errors.add(new ValidationError("default",
+                        existingDefault.getName() + " is already the active default task group."));
             }
         }
+        return errors;
+    }
 
-        if (errors.size() > 0) {
-            BadRequestError error = new BadRequestError(errors);
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity(error)
-                    .build();
+    /**
+     * Validates a TaskGroup for removal.
+     * @return list of validation errors, empty if valid.
+     */
+    public List<ValidationError> validateRemove(Long id) {
+        List<ValidationError> errors = Lists.newArrayList();
+        TaskGroup entity = taskGroupManager.retrieve(id);
+        List<Company> companies = companyManager.findUsedTaskGroups(id, entity.getTenantId());
+        if (!companies.isEmpty()) {
+            errors.add(new ValidationError("Delete Failure",
+                    entity.getName() + " is assigned to one or more Master/End Customers."));
         }
-        return context.proceed();
+        return errors;
+    }
+
+    /**
+     * Returns BadRequestError if validation fails, null otherwise.
+     */
+    public BadRequestError validateForCreateOrEdit(TaskGroup entity) {
+        List<ValidationError> errors = validateTaskGroup(entity);
+        return errors.isEmpty() ? null : new BadRequestError(errors);
+    }
+
+    /**
+     * Returns BadRequestError if remove validation fails, null otherwise.
+     */
+    public BadRequestError validateForRemove(Long id) {
+        List<ValidationError> errors = validateRemove(id);
+        return errors.isEmpty() ? null : new BadRequestError(errors);
     }
 }

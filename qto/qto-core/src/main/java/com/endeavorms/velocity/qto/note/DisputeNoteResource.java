@@ -6,27 +6,27 @@ import com.endeavorms.velocity.qto.common.PreconditionsUtil;
 import com.endeavorms.velocity.qto.common.SecurityUtils;
 import com.endeavorms.velocity.qto.subject.Subject;
 import com.endeavorms.velocity.qto.subject.SubjectManager;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.jboss.resteasy.annotations.Form;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.PUT;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Response;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.Date;
 
 /**
  * @author fcurran
  * @since 9/28/2023
  */
-@Path("/disputeNotes")
-@Consumes("application/json")
-@Produces("application/json")
+@RestController
+@RequestMapping("/api/disputeNotes")
 public class DisputeNoteResource extends AbstractResource<DisputeNote> {
 
     @Override
@@ -34,28 +34,21 @@ public class DisputeNoteResource extends AbstractResource<DisputeNote> {
         return "/disputeNotes";
     }
 
-    /** Business methods for services. */
-    @Inject
+    @Autowired
     private DisputeNoteManager manager;
 
-    /** Business methods for subjects. */
-    @Inject
+    @Autowired
     private SubjectManager subjectManager;
 
-    /**
-     * Retrieves all ServiceNotes matching the given criteria.
-     * @param criteria the criteria to filter by.
-     * @return matching serviceNotes.
-     */
-    @GET
-    public Response getDisputeNotes(@Form final DisputeNoteSearchCriteria criteria) {
+    @GetMapping
+    public ResponseEntity<?> getDisputeNotes(@ModelAttribute final DisputeNoteSearchCriteria criteria) {
         PaginatedResult<DisputeNote> result = manager.findBySearchCriteria(criteria);
-        return toResponse(getCollectionResource(result, criteria, getLocation(DisputeNoteResource.class)));
+        return getCollectionResource(result, criteria, getLocation(DisputeNoteResource.class));
     }
 
-    @POST
+    @PostMapping
     @PreAuthorize("hasAuthority('inventory:write')")
-    public Response create(final DisputeNote note) {
+    public ResponseEntity<?> create(@RequestBody final DisputeNote note) {
         try {
             PreconditionsUtil.checkArgument(note.getDisputeId(), "A disputeId is required");
             String loggedInUser = SecurityUtils.getLoggedInUser();
@@ -64,35 +57,28 @@ public class DisputeNoteResource extends AbstractResource<DisputeNote> {
             note.setCreatedById(subject.getId());
             note.setCreatedBy(loggedInUser);
             note.setCreatedDate(new Date());
-            return Response.ok(manager.create(note)).build();
+            return ResponseEntity.ok(manager.create(note));
         } catch (IllegalArgumentException e) {
-            return Response.serverError().entity(e.getMessage()).build();
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 
-    /**
-     * Edit a dispute note.
-     * @param id the note id.
-     * @param note the note to edit.
-     * @return the edited note.
-     */
-    @PUT
-    @Path("/{id: \\d+}")
-    public Response edit(@PathParam("id") final Long id, final DisputeNote note) {
+    @PutMapping("/{id}")
+    public ResponseEntity<?> edit(@PathVariable("id") final Long id, @RequestBody final DisputeNote note) {
         try {
             PreconditionsUtil.checkArgument(note.getId(), "A note ID is required");
             DisputeNote existing = manager.retrieve(note.getId());
             if (!manager.determineEditability(existing)) {
-                return Response.serverError().entity("You do not have permission to edit this note.").build();
+                return ResponseEntity.internalServerError().body("You do not have permission to edit this note.");
             }
             String loggedInUser = SecurityUtils.getLoggedInUser();
             Subject subject = subjectManager.findByUsername(loggedInUser);
             loggedInUser = subject.getDisplayName();
             note.setEditedBy(loggedInUser);
             note.setEditedDate(new Date());
-            return Response.ok(manager.edit(note)).build();
+            return ResponseEntity.ok(manager.edit(note));
         } catch (IllegalArgumentException e) {
-            return Response.serverError().entity(e.getMessage()).build();
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 }

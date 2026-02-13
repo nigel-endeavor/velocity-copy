@@ -3,22 +3,16 @@ package com.endeavorms.velocity.qto.common;
 import com.querydsl.core.types.Order;
 
 import java.io.Serializable;
-import jakarta.ws.rs.QueryParam;
 
 /**
  * from vertek-commons.
  * @param <T>
  */
 public abstract class BaseSearchCriteria<T extends BaseEntity<? extends Serializable>> extends PaginatedResult<T> {
-    @QueryParam("sortField")
     protected String sortField;
-    @QueryParam("sortDir")
     protected Order sortDirection;
-    @QueryParam("format")
     private String format;
-    @QueryParam("fields")
     private String fields;
-    @QueryParam("headers")
     private String headers;
 
     public BaseSearchCriteria() {

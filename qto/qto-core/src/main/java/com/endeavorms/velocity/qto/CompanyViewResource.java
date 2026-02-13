@@ -6,19 +6,17 @@ import com.endeavorms.velocity.qto.company.CompanyView;
 import com.endeavorms.velocity.qto.company.CompanyViewManager;
 import com.endeavorms.velocity.qto.company.CompanyViewSearchCriteria;
 import com.endeavorms.velocity.qto.company.MasterCustomerWorklistMeta;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.jboss.resteasy.annotations.Form;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Response;
+import org.springframework.beans.factory.annotation.Autowired;
 
-@Path("/companyViews")
-@Consumes("application/json")
-@Produces({"application/json", "application/vnd.ms-excel"})
+@RestController
+@RequestMapping("/api/companyViews")
 @PreAuthorize("hasAnyAuthority('inventory:read','order:read')")
 public class CompanyViewResource extends AbstractResource<CompanyView> {
 
@@ -27,19 +25,18 @@ public class CompanyViewResource extends AbstractResource<CompanyView> {
         return "/companyViews";
     }
 
-    @Inject
+    @Autowired
     private CompanyViewManager companyViewManager;
 
-    @GET
-    public Response findBySearchCriteria(@Form final CompanyViewSearchCriteria criteria) {
+    @GetMapping
+    public ResponseEntity<?> findBySearchCriteria(@ModelAttribute final CompanyViewSearchCriteria criteria) {
         PaginatedResult<CompanyView> result = companyViewManager.findBySearchCriteria(criteria);
-        return toResponse(getCollectionResource(result, criteria, getLocation(CompanyViewResource.class)));
+        return getCollectionResource(result, criteria, getLocation(CompanyViewResource.class));
     }
 
-    @GET
-    @Path("/meta")
-    public Response getMasterCustomerWorklistMeta(@Form final CompanyViewSearchCriteria criteria) {
+    @GetMapping("/meta")
+    public ResponseEntity<?> getMasterCustomerWorklistMeta(@ModelAttribute final CompanyViewSearchCriteria criteria) {
         MasterCustomerWorklistMeta meta = companyViewManager.getMasterCustomerWorklistMeta(criteria);
-        return Response.ok(meta).build();
+        return ResponseEntity.ok(meta);
     }
 }

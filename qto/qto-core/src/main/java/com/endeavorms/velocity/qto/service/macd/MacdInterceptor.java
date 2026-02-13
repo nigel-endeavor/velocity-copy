@@ -7,50 +7,26 @@ import com.endeavorms.velocity.qto.service.macd.request.MacdRequestDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jakarta.inject.Inject;
-import jakarta.interceptor.AroundInvoke;
-import jakarta.interceptor.InvocationContext;
-import jakarta.ws.rs.core.Response;
-import java.util.Arrays;
+import org.springframework.stereotype.Component;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.List;
 
 /**
  * Intercepts calls for MACD creation.
- * @since 1.3.0
  */
+@Component
 public class MacdInterceptor {
-    /**
-     * Logging Facade.
-     */
+
     private static final Logger LOGGER = LoggerFactory.getLogger(MacdInterceptor.class);
 
-    /** Business logic for services. */
-    @Inject
+    @Autowired
     private ServiceManager serviceManager;
 
-    /**
-     * Validates the incoming MACD request.
-     * @param context the context of the invocation.
-     * @return the result of the invocation.
-     * @throws Exception if the invocation fails.
-     */
-    @AroundInvoke
-    public Object validate(final InvocationContext context) throws Exception {
+    public BadRequestError validate(MacdRequestDto request) {
         LOGGER.debug("MacdInterceptor.validate() called");
-        for (Object param : context.getParameters()) {
-            if (param instanceof MacdRequestDto) {
-                MacdRequestDto request = (MacdRequestDto) param;
-                List<ValidationError> errorList = serviceManager.validateMacdRequest(request);
-
-                if (!errorList.isEmpty()) {
-                    BadRequestError errors = new BadRequestError(errorList);
-                    return Response.status(Response.Status.BAD_REQUEST)
-                            .entity(errors)
-                            .build();
-                }
-            }
-        }
-
-        return context.proceed();
+        List<ValidationError> errorList = serviceManager.validateMacdRequest(request);
+        return errorList.isEmpty() ? null : new BadRequestError(errorList);
     }
 }

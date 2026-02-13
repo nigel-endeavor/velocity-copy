@@ -4,37 +4,36 @@ import com.endeavorms.velocity.qto.common.AbstractResource;
 import com.endeavorms.velocity.qto.common.PreconditionsUtil;
 import com.endeavorms.velocity.qto.company.task.CompanyTask;
 import com.endeavorms.velocity.qto.company.task.CompanyTaskManager;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.PUT;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Response;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * REST API for CompanyTask entities.
  */
-@Path("/companyTasks")
-@Consumes("application/json")
-@Produces("application/json")
+@RestController
+@RequestMapping("/api/companyTasks")
 public class CompanyTaskResource extends AbstractResource<CompanyTask> {
 
     @Override
     protected String getResourcePath() {
         return "/companyTasks";
     }
-    @Inject
+
+    @Autowired
     private CompanyTaskManager manager;
 
-    @PUT
-    @Path("/{id}")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('inventory:write','order:write')")
-    public Response updateCompanyTask(@PathParam("id") final Long companyTaskId, final CompanyTask companyTask) {
+    public ResponseEntity<?> updateCompanyTask(@PathVariable("id") final Long companyTaskId, @RequestBody final CompanyTask companyTask) {
         PreconditionsUtil.checkArgument(companyTaskId, "Customer Task ID is required");
         CompanyTask updatedCompanyTask = manager.edit(companyTask);
-        return Response.ok(updatedCompanyTask).build();
+        return ResponseEntity.ok(updatedCompanyTask);
     }
 }

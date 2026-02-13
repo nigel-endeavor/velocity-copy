@@ -4,25 +4,22 @@ import com.endeavorms.velocity.qto.common.AbstractResource;
 import com.endeavorms.velocity.qto.report.ActivationAttemptView;
 import com.endeavorms.velocity.qto.report.ActivationAttemptViewManager;
 import com.endeavorms.velocity.qto.report.DashboardSearchCriteria;
-import org.jboss.resteasy.annotations.Form;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
-import jakarta.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.Arrays;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.List;
 
 /**
  * @author bmccormick
  */
-@Path("/activationViews")
-@Consumes("application/json")
-@Produces({"application/json", "application/vnd.ms-excel"})
+@RestController
+@RequestMapping("/api/activationViews")
 public class ActivationAttemptViewResource extends AbstractResource<ActivationAttemptView> {
 
     @Override
@@ -30,22 +27,13 @@ public class ActivationAttemptViewResource extends AbstractResource<ActivationAt
         return "/activationViews";
     }
 
-    @Inject
+    @Autowired
     private ActivationAttemptViewManager activationAttemptManager;
 
-
-    /**
-     * Returns activation attempts that meet the conditions of the Activation Event length dashboard.
-     * @return matching services.
-     */
-    @GET
-    @Path("/activationIntervals")
-    public Response getServiceIntervals(@Form final DashboardSearchCriteria criteria,
-                                        @QueryParam("numOfMonths") final int numOfMonths) {
-//        List<String> companyNamesList = companyNames != null ? Arrays.asList(companyNames.split(", ")) : new ArrayList<>();
-//        List<String> masterCompanyNamesList = masterCompanyNames != null ? Arrays.asList(masterCompanyNames.split(", ")) : new ArrayList<>();
-//        List<String> tenantNamesList = tenantNames != null ? Arrays.asList(tenantNames.split(", ")) : new ArrayList<>();
+    @GetMapping("/activationIntervals")
+    public ResponseEntity<?> getServiceIntervals(@ModelAttribute final DashboardSearchCriteria criteria,
+                                                 @RequestParam("numOfMonths") final int numOfMonths) {
         List<ActivationAttemptView> activationAttempts = activationAttemptManager.getServiceIntervals(criteria, numOfMonths);
-        return Response.ok(activationAttempts).build();
+        return ResponseEntity.ok(activationAttempts);
     }
 }

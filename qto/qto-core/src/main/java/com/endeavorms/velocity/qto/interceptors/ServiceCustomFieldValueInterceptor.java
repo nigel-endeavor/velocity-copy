@@ -6,53 +6,44 @@ import com.endeavorms.velocity.qto.customfield.value.ServiceCustomFieldValue;
 import com.endeavorms.velocity.qto.customfield.value.ServiceCustomFieldValueListDto;
 import com.endeavorms.velocity.qto.customfield.value.ServiceCustomFieldValueManager;
 import com.endeavorms.velocity.qto.note.ServiceNoteManager;
-import com.endeavorms.velocity.qto.service.ServiceManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jakarta.inject.Inject;
-import jakarta.interceptor.AroundInvoke;
-import jakarta.interceptor.InvocationContext;
+import org.springframework.stereotype.Component;
+
 import java.util.List;
 
+@Component
 public class ServiceCustomFieldValueInterceptor {
     /** Logging Facade. */
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceCustomFieldValueInterceptor.class);
 
-    @Inject
-    private CustomFieldManager customFieldManager;
-    @Inject
-    private ServiceCustomFieldValueManager serviceCustomFieldValueManager;
+    private final CustomFieldManager customFieldManager;
+    private final ServiceCustomFieldValueManager serviceCustomFieldValueManager;
+    private final ServiceNoteManager serviceNoteManager;
 
-    /** The manager for ServiceNotes. */
-    @Inject
-    private ServiceNoteManager serviceNoteManager;
+    public ServiceCustomFieldValueInterceptor(CustomFieldManager customFieldManager,
+                                              ServiceCustomFieldValueManager serviceCustomFieldValueManager,
+                                              ServiceNoteManager serviceNoteManager) {
+        this.customFieldManager = customFieldManager;
+        this.serviceCustomFieldValueManager = serviceCustomFieldValueManager;
+        this.serviceNoteManager = serviceNoteManager;
+    }
 
     /**
-     * Validates the incoming ServiceCustomFieldValueListDto.
-     *
-     * @param context the context of the invocation.
-     * @return the result of the invocation.
-     * @throws Exception if the invocation fails.
+     * Performs audit logging for custom field value changes. Call this before saveValues.
      */
-    @AroundInvoke
-    public Object validate(final InvocationContext context) throws Exception {
-        LOGGER.info("ServiceCustomFieldValueInterceptor.validate() called");
-        for (Object param : context.getParameters()) {
-            if (param instanceof ServiceCustomFieldValueListDto) {
-                ServiceCustomFieldValueListDto entity = (ServiceCustomFieldValueListDto) param;
-                if (entity.getValues().isEmpty()) {
-                    break;
-                }
-                Long serviceId = entity.getValues().get(0).getServiceId();
-                List<ServiceCustomFieldValue> existingFields = serviceCustomFieldValueManager.findByRecordId(serviceId);
-                String auditString = getAuditString(entity, existingFields, "Service");
-                if (auditString.length() > 0) {
-                    serviceNoteManager.create(serviceId, auditString, "Audit");
-                }
-            }
+    public void validateBeforeSave(final ServiceCustomFieldValueListDto entity) {
+        LOGGER.info("ServiceCustomFieldValueInterceptor.validateBeforeSave() called");
+        if (entity.getValues().isEmpty()) {
+            return;
         }
-        return context.proceed();
+        Long serviceId = entity.getValues().get(0).getServiceId();
+        List<ServiceCustomFieldValue> existingFields = serviceCustomFieldValueManager.findByRecordId(serviceId);
+        String auditString = getAuditString(entity, existingFields, "Service");
+        if (auditString.length() > 0) {
+            serviceNoteManager.create(serviceId, auditString, "Audit");
+        }
     }
 
     private String getAuditString(final ServiceCustomFieldValueListDto entity,

@@ -4,7 +4,6 @@ import com.endeavorms.velocity.qto.common.BaseSearchCriteria;
 import com.endeavorms.velocity.qto.common.DateRangeType;
 import com.endeavorms.velocity.qto.common.RangeType;
 
-import jakarta.ws.rs.QueryParam;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -14,223 +13,150 @@ import java.util.List;
  * @since 2/23/2023
  */
 public class ServiceViewSearchCriteria extends BaseSearchCriteria<ServiceView> {
-    @QueryParam("search")
     private String search;
 
-    @QueryParam("locationId")
     private Long locationId;
 
-    @QueryParam("locationId-comparison")
     private List<RangeType> locationIdRange;
 
-    @QueryParam("address")
     private String address;
 
-    @QueryParam("address1")
     private String address1;
 
-    @QueryParam("address2")
     private String address2;
 
-    @QueryParam("city")
     private String city;
 
-    @QueryParam("stateProvince")
     private String stateProvince;
 
-    @QueryParam("postalCode")
     private String postalCode;
 
-    @QueryParam("status")
     private List<String> status;
 
-    @QueryParam("provisioner")
     private List<String> provisioner;
 
-    @QueryParam("projectManager")
     private List<String> projectManager;
 
-    @QueryParam("vertekProjectManager")
     private List<String> vertekProjectManager;
 
-    @QueryParam("provider")
     private List<String> provider;
 
-    @QueryParam("customerRequestedInstall")
     private List<Date> customerRequestedInstall;
 
-    @QueryParam("customerRequestedInstall-comparison")
     private List<DateRangeType> customerRequestedInstallRange;
 
-    @QueryParam("siteSurveyDue")
     private List<Date> siteSurveyDue;
 
-    @QueryParam("siteSurveyDue-comparison")
     private List<DateRangeType> siteSurveyDueRange;
 
-    @QueryParam("siteSurveySubmit")
     private List<Date> siteSurveySubmit;
 
-    @QueryParam("siteSurveySubmit-comparison")
     private List<DateRangeType> siteSurveySubmitRange;
 
-    @QueryParam("providerOrderSubmitted")
     private List<Date> providerOrderSubmitted;
 
-    @QueryParam("providerOrderSubmitted-comparison")
     private List<DateRangeType> providerOrderSubmittedRange;
 
-    @QueryParam("networkProviderFoc")
     private List<Date> networkProviderFoc;
 
-    @QueryParam("networkProviderFoc-comparison")
     private List<DateRangeType> networkProviderFocRange;
 
-    @QueryParam("dataProvisioningComplete")
     private List<Date> dataProvisioningComplete;
 
-    @QueryParam("dataProvisioningComplete-comparison")
     private List<DateRangeType> dataProvisioningCompleteRange;
 
-    @QueryParam("followUpDate")
     private List<Date> followUpDate;
 
-    @QueryParam("followUpDate-comparison")
     private List<DateRangeType> followUpDateRange;
 
-    @QueryParam("clientLocationType")
     private String clientLocationType;
 
-    @QueryParam("clientLocationInfo")
     private String clientLocationInfo;
 
-    @QueryParam("hideTerminalStatuses")
     private boolean hideTerminalStatuses;
 
-    @QueryParam("activeOnly")
     private boolean activeOnly;
 
-    @QueryParam("created")
     private List<Date> created;
 
-    @QueryParam("created-comparison")
     private List<DateRangeType> createdRange;
 
-    @QueryParam("clientServiceId")
     private String clientServiceId;
 
-    @QueryParam("clientLocationId")
     private String clientLocationId;
 
-    @QueryParam("companyName")
     private List<String> companyName;
 
-    @QueryParam("parentCompanyName")
     private List<String> parentCompanyName;
 
-    @QueryParam("statusAge")
     private List<Long> statusAge;
 
-    @QueryParam("statusAge-comparison")
     private List<RangeType> statusAgeRange;
 
-    @QueryParam("serviceType")
     private List<String> serviceType;
 
-    @QueryParam("serviceBilledTo")
     private List<String> serviceBilledTo;
 
-    @QueryParam("mrc")
     private List<BigDecimal> mrc;
 
-    @QueryParam("mrc-comparison")
     private List<RangeType> mrcRange;
 
-    @QueryParam("nrc")
     private List<BigDecimal> nrc;
 
-    @QueryParam("nrc-comparison")
     private List<RangeType> nrcRange;
 
-    @QueryParam("mrr")
     private List<BigDecimal> mrr;
 
-    @QueryParam("mrr-comparison")
     private List<RangeType> mrrRange;
 
-    @QueryParam("nrr")
     private List<BigDecimal> nrr;
 
-    @QueryParam("nrr-comparison")
     private List<RangeType> nrrRange;
 
-    @QueryParam("lconPhone")
     private String lconPhone;
 
-    @QueryParam("speed")
     private String speed;
 
-    @QueryParam("levelOfEffort")
     private List<String> levelOfEffort;
 
-    @QueryParam("latestNote")
     private String latestNote;
 
-    @QueryParam("qaCheckOpen")
     private List<Date> qaCheckOpen;
 
-    @QueryParam("qaCheckOpen-comparison")
     private List<DateRangeType> qaCheckOpenRange;
 
-    @QueryParam("firstVendorInvoice")
     private List<Date> firstVendorInvoice;
 
-    @QueryParam("firstVendorInvoice-comparison")
     private List<DateRangeType> firstVendorInvoiceRange;
 
-    @QueryParam("returnedToOrderGroup")
     private List<Date> returnedToOrderGroup;
 
-    @QueryParam("returnedToOrderGroup-comparison")
     private List<DateRangeType> returnedToOrderGroupRange;
 
-    @QueryParam("returnedToSales")
     private List<Date> returnedToSales;
 
-    @QueryParam("returnedToSales-comparison")
     private List<DateRangeType> returnedToSalesRange;
 
-    @QueryParam("billingReviewComplete")
     private List<Date> billingReviewComplete;
 
-    @QueryParam("billingReviewComplete-comparison")
     private List<DateRangeType> billingReviewCompleteRange;
 
-    @QueryParam("qaManager")
     private List<String> qaManager;
 
-    @QueryParam("macOnly")
     private boolean macOnly;
 
-    @QueryParam("workflowView")
     private String workflowView;
 
-    @QueryParam("projectName")
     private String projectName;
 
-    @QueryParam("recordSource")
     private String recordSource;
 
-    @QueryParam("openJeopResponsibilities")
     private List<String> openJeopResponsibilities;
 
-    @QueryParam("serviceId")
     private Long serviceId;
 
-    @QueryParam("linkType")
     private String linkBundleType;
 
-    @QueryParam("from")
     private String linkBundleFrom;
 
     public String getSearch() {

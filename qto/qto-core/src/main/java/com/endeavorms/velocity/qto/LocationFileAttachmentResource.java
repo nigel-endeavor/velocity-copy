@@ -8,33 +8,30 @@ import com.endeavorms.velocity.qto.common.PaginatedResult;
 import com.endeavorms.velocity.qto.common.PreconditionsUtil;
 import com.endeavorms.velocity.qto.location.Location;
 import com.endeavorms.velocity.qto.location.LocationManager;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
-import jakarta.ws.rs.core.Context;
-import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author rcasey
  * @since 1/24/2023
  */
-@Path("/locationFileAttachments")
-@Produces("application/json")
+@RestController
+@RequestMapping("/api/locationFileAttachments")
 public class LocationFileAttachmentResource extends AbstractFileAttachmentResource<LocationFileAttachment> {
 
-    /** Business methods for LocationFileAttachment. */
-    @Inject
+    @Autowired
     private LocationFileAttachmentManager manager;
 
-    @Inject
+    @Autowired
     private LocationManager locationManager;
 
     @Override
@@ -47,21 +44,17 @@ public class LocationFileAttachmentResource extends AbstractFileAttachmentResour
         return "/locationFileAttachments";
     }
 
-    @GET
+    @GetMapping
     @PreAuthorize("hasAnyAuthority('inventory:read','order:read')")
-    public Response getAttachments(@QueryParam("locationId") final Long locationId) {
+    public ResponseEntity<?> getAttachments(@RequestParam("locationId") final Long locationId) {
         PaginatedResult<LocationFileAttachment> result = manager.findByLocationId(locationId);
-        return Response.ok(result).build();
+        return ResponseEntity.ok(result);
     }
 
-    @POST
-    @Path("/upload")
-
-    @Produces(MediaType.TEXT_HTML)
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @PostMapping("/upload")
     @PreAuthorize("hasAnyAuthority('inventory:write','order:write')")
-    public Response upload(@QueryParam("locationId") final Long locationId,
-                           @Context final HttpServletRequest servletRequest) {
+    public ResponseEntity<?> upload(@RequestParam("locationId") final Long locationId,
+                                     HttpServletRequest servletRequest) {
         PreconditionsUtil.checkArgument(locationId, "Location ID is required.");
         return upload(servletRequest, () -> {
             LocationFileAttachment attachment = new LocationFileAttachment();

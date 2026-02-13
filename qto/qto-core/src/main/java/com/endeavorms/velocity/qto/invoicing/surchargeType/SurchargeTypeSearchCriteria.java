@@ -2,7 +2,6 @@ package com.endeavorms.velocity.qto.invoicing.surchargeType;
 
 import com.endeavorms.velocity.qto.common.BaseSearchCriteria;
 
-import jakarta.ws.rs.QueryParam;
 
 /**
  * Search criteria used for filtering service surcharge types.
@@ -10,7 +9,6 @@ import jakarta.ws.rs.QueryParam;
  * @since 7/14/2023
  */
 public class SurchargeTypeSearchCriteria extends BaseSearchCriteria<SurchargeType> {
-    @QueryParam("companyId")
     private Long companyId;
     /** Not a query param, but used to communicate tenant id from manager to dao. */
     private Long tenantId;

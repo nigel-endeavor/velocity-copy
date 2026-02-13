@@ -17,9 +17,7 @@ dependencies {
     implementation("jakarta.transaction:jakarta.transaction-api:2.0.1")
     implementation("jakarta.json:jakarta.json-api:2.1.2")
     implementation("jakarta.servlet:jakarta.servlet-api:6.0.0")
-    implementation("jakarta.ws.rs:jakarta.ws.rs-api:3.1.0")
     implementation("org.apache.httpcomponents:httpclient:4.5.14")
-    implementation("org.jboss.resteasy:resteasy-core:6.2.10.Final")
 
     implementation("com.fasterxml.jackson.core:jackson-annotations:2.15.4")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.15.4")

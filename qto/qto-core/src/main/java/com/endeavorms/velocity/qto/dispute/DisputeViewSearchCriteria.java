@@ -4,7 +4,6 @@ import com.endeavorms.velocity.qto.common.BaseSearchCriteria;
 import com.endeavorms.velocity.qto.common.DateRangeType;
 import com.endeavorms.velocity.qto.common.RangeType;
 
-import jakarta.ws.rs.QueryParam;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -14,118 +13,80 @@ import java.util.List;
  * @since 9/18/2023
  */
 public class DisputeViewSearchCriteria extends BaseSearchCriteria<DisputeView> {
-    @QueryParam("search")
     private String search;
 
-    @QueryParam("locationId")
     private Long locationId;
 
-    @QueryParam("locationId-comparison")
     private List<RangeType> locationIdRange;
 
-    @QueryParam("parentCompanyName")
     private List<String> parentCompanyName;
 
-    @QueryParam("parentCompanyClientId")
     private String parentCompanyClientId;
 
-    @QueryParam("companyName")
     private List<String> companyName;
 
-    @QueryParam("endCustomerClientId")
     private String endCustomerClientId;
 
-    @QueryParam("address")
     private String address;
 
-    @QueryParam("address1")
     private String address1;
 
-    @QueryParam("address2")
     private String address2;
 
-    @QueryParam("city")
     private String city;
 
-    @QueryParam("stateProvince")
     private String stateProvince;
 
-    @QueryParam("postalCode")
     private String postalCode;
 
-    @QueryParam("serviceType")
     private List<String> serviceType;
 
-    @QueryParam("disputeType")
     private String disputeType;
 
-    @QueryParam("disputeStatus")
     private String disputeStatus;
 
-    @QueryParam("provider")
     private List<String> provider;
 
-    @QueryParam("amountDisputedMrc")
     private List<BigDecimal> amountDisputedMrc;
 
-    @QueryParam("amountDisputedMrc-comparison")
     private List<RangeType> amountDisputedMrcRange;
 
-    @QueryParam("amountDisputedNrc")
     private List<BigDecimal> amountDisputedNrc;
 
-    @QueryParam("amountDisputedNrc-comparison")
     private List<RangeType> amountDisputedNrcRange;
 
-    @QueryParam("openDate")
     private List<Date> openDate;
 
-    @QueryParam("openDate-comparison")
     private List<DateRangeType> openDateRange;
 
-    @QueryParam("billingReviewCompleteDate")
     private List<Date> billingReviewCompleteDate;
 
-    @QueryParam("billingReviewCompleteDate-comparison")
     private List<DateRangeType> billingReviewCompleteDateRange;
 
-    @QueryParam("disputeClosedDate")
     private List<Date> disputeClosedDate;
 
-    @QueryParam("disputeClosedDate-comparison")
     private List<DateRangeType> disputeClosedDateRange;
 
-    @QueryParam("hasIcb")
     private boolean hasIcb;
 
-    @QueryParam("serviceMrc")
     private List<BigDecimal> serviceMrc;
 
-    @QueryParam("serviceMrc-comparison")
     private List<RangeType> serviceMrcRange;
 
-    @QueryParam("serviceNrc")
     private List<BigDecimal> serviceNrc;
 
-    @QueryParam("serviceNrc-comparison")
     private List<RangeType> serviceNrcRange;
 
-    @QueryParam("disputeOpen")
     private boolean disputeOpen;
 
-    @QueryParam("disputeAssignment")
     private List<String> disputeAssignment;
 
-    @QueryParam("serviceBilledTo")
     private List<String> serviceBilledTo;
 
-    @QueryParam("clientServiceId")
     private List<String> clientServiceId;
 
-    @QueryParam("clientLocationId")
     private List<String> clientLocationId;
 
-    @QueryParam("speed")
     private String speed;
 
     public String getSearch() {

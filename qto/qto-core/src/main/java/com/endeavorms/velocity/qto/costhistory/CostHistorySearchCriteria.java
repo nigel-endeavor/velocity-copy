@@ -2,7 +2,6 @@ package com.endeavorms.velocity.qto.costhistory;
 
 import com.endeavorms.velocity.qto.common.BaseSearchCriteria;
 
-import jakarta.ws.rs.QueryParam;
 import java.util.List;
 
 /**
@@ -11,13 +10,10 @@ import java.util.List;
  */
 public class CostHistorySearchCriteria extends BaseSearchCriteria<CostHistory> {
 
-    @QueryParam("serviceId")
     private Long serviceId;
 
-    @QueryParam("locationId")
     private Long locationId;
 
-    @QueryParam("costType")
     private List<String> costType;
 
     private List<Long> serviceIds;

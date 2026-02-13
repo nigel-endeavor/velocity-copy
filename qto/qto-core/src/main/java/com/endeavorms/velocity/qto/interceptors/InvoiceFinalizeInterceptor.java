@@ -9,70 +9,36 @@ import com.endeavorms.velocity.qto.invoicing.invoice.InvoiceManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jakarta.inject.Inject;
-import jakarta.interceptor.AroundInvoke;
-import jakarta.interceptor.InvocationContext;
-import jakarta.ws.rs.core.Response;
+import org.springframework.stereotype.Component;
+
 import java.util.List;
 
+@Component
 public class InvoiceFinalizeInterceptor {
-    /**
-     * Logging Facade.
-     */
     private static final Logger LOGGER = LoggerFactory.getLogger(InvoiceFinalizeInterceptor.class);
 
+    private final InvoiceManager invoiceManager;
 
-    /**
-     * The manager for Invoice.
-     */
-    @Inject
-    private InvoiceManager invoiceManager;
+    public InvoiceFinalizeInterceptor(InvoiceManager invoiceManager) {
+        this.invoiceManager = invoiceManager;
+    }
 
-
-    /**
-     * the error list.
-     */
-    private List<ValidationError> errors;
-
-    /**
-     * Validates the Invoice Creation request.
-     *
-     * @param context the context of the invocation.
-     * @param <X>     the type of Service.
-     * @return the result of the invocation.
-     * @throws Exception if the invocation fails.
-     */
-    @AroundInvoke
-    public <X extends Invoice> Object validate(final InvocationContext context) throws Exception {
-        LOGGER.info("Invoice.validate() called");
-        errors = Lists.newArrayList();
-        for (Object param : context.getParameters()) {
-            if (param instanceof Long) {
-                Long entity = (Long) param;
-                Invoice invoice = invoiceManager.retrieve(entity);
-                if (!Strings.isNullOrEmpty(invoice.getInvoiceNumber())
-                        && invoice.getInvoiceNumber().equalsIgnoreCase("Legacy")) {
-                    LOGGER.debug("Trying to unfinalize the Legacy invoice.");
-                    errors.add(new ValidationError("Invoice",
-                            "This invoice cannot be reopened."));
-                } else if (invoice.getInvoiceStatus().equals("Final")) {
-                    //trying to unfinalize an invoice.  Check to see there are no later invoices.
-                    List<Invoice> existing = invoiceManager.findForUnfinalizeByTenantId(
-                            invoice.getId(), invoice.getTenantId());
-                    if (!existing.isEmpty()) {
-                        LOGGER.debug("Draft Invoice already exists for tenant {}");
-                        errors.add(new ValidationError("Invoice",
-                                "This invoice cannot be reopened."));
-                    }
-                }
+    public BadRequestError validateForFinalize(Long invoiceId) {
+        LOGGER.info("InvoiceFinalizeInterceptor.validateForFinalize() called");
+        List<ValidationError> errors = Lists.newArrayList();
+        Invoice invoice = invoiceManager.retrieve(invoiceId);
+        if (!Strings.isNullOrEmpty(invoice.getInvoiceNumber())
+                && invoice.getInvoiceNumber().equalsIgnoreCase("Legacy")) {
+            LOGGER.debug("Trying to unfinalize the Legacy invoice.");
+            errors.add(new ValidationError("Invoice", "This invoice cannot be reopened."));
+        } else if (invoice.getInvoiceStatus().equals("Final")) {
+            List<Invoice> existing = invoiceManager.findForUnfinalizeByTenantId(
+                    invoice.getId(), invoice.getTenantId());
+            if (!existing.isEmpty()) {
+                LOGGER.debug("Draft Invoice already exists for tenant");
+                errors.add(new ValidationError("Invoice", "This invoice cannot be reopened."));
             }
         }
-        if (errors.size() > 0) {
-            BadRequestError error = new BadRequestError(errors);
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity(error)
-                    .build();
-        }
-        return context.proceed();
+        return errors.isEmpty() ? null : new BadRequestError(errors);
     }
 }

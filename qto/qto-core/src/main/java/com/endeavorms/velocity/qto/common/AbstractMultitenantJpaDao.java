@@ -13,7 +13,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.Root;
-import jakarta.ws.rs.NotFoundException;
+import com.endeavorms.velocity.qto.common.NotFoundException;
 import java.io.Serializable;
 import java.util.List;
 

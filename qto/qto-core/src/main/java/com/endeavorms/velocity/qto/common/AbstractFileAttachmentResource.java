@@ -4,8 +4,6 @@ import com.google.common.base.Strings;
 import com.endeavorms.velocity.qto.attachment.FileAttachment;
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,37 +14,34 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
-import jakarta.inject.Inject;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.ws.rs.DefaultValue;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
-import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.core.StreamingOutput;
 
 import com.endeavorms.velocity.qto.config.ConfigPropertyManager;
 import com.endeavorms.velocity.qto.config.ConfigurationProperty;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 import static com.endeavorms.velocity.qto.config.ConfigKey.EXCLUDED_FILE_EXTENSIONS;
 import static com.endeavorms.velocity.qto.config.ConfigKey.MAX_FILE_UPLOAD_SIZE_BYTES;
 
-@Produces({"application/json", "application/gwt", "application/xml"})
 public abstract class AbstractFileAttachmentResource<T extends FileAttachment> extends AbstractResource<FileAttachment> {
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractFileAttachmentResource.class);
 
-    @Inject
+    @Autowired
     protected ConfigPropertyManager configPropertyManager;
 
-    //the default is 2, as a normal file attachment comes in as two "fileitems", the attachment and the description
     protected Long fileCountMax = 2L;
 
     public AbstractFileAttachmentResource() {
@@ -54,60 +49,52 @@ public abstract class AbstractFileAttachmentResource<T extends FileAttachment> e
 
     protected abstract AbstractFileAttachmentManager<T> getManager();
 
-    /** Subclasses must return their path, e.g. "/fileAttachments". */
     @Override
     protected abstract String getResourcePath();
 
-    @GET
-    @Path("/userPermissions")
-    @Produces({"application/json", "application/gwt", "application/xml"})
-    public Response userPermissions() {
+    @GetMapping("/userPermissions")
+    public ResponseEntity<?> userPermissions() {
         FileAttachmentPermissions permissions = new FileAttachmentPermissions();
         permissions.setAttach(true);
         permissions.setView(true);
         permissions.setDelete(true);
-        return NoCacheResponse.ok(permissions).build();
+        return NoCacheResponse.ok(permissions);
     }
 
-    @GET
-    @Path("/download")
-    @Produces({"application/json", "application/gwt", "application/xml"})
-    public Response download(@QueryParam("id") Long id, @QueryParam("inline") @DefaultValue("false") boolean inline) {
+    @GetMapping("/download")
+    public ResponseEntity<byte[]> download(@RequestParam("id") Long id,
+                                            @RequestParam(value = "inline", defaultValue = "false") boolean inline) {
         PreconditionsUtil.checkArgument(id, "File Attachment ID is required.");
         FileAttachment fileAttachment = (FileAttachment) this.getManager().retrieve(id);
         final byte[] data = fileAttachment.getContent().getData();
-        StreamingOutput streamingOutput = new StreamingOutput() {
-            public void write(OutputStream outputStream) throws IOException {
-                ByteArrayInputStream inputStream = new ByteArrayInputStream(data);
-                IOUtils.copy(inputStream, outputStream);
-                inputStream.close();
-            }
-        };
         String contentDisposition = inline ? "inline" : "attachment";
-        return NoCacheResponse.ok(streamingOutput).header("Content-Disposition", contentDisposition + "; filename=\"" + fileAttachment.getName() + "\"").type(fileAttachment.getMimeType()).build();
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Content-Disposition", contentDisposition + "; filename=\"" + fileAttachment.getName() + "\"");
+        headers.setContentType(MediaType.parseMediaType(fileAttachment.getMimeType()));
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(data);
     }
 
-    @GET
-    @Path("/delete")
-    public Response delete(@QueryParam("id") Long id) {
+    @GetMapping("/delete")
+    public ResponseEntity<?> delete(@RequestParam("id") Long id) {
         PreconditionsUtil.checkArgument(id, "File Attachment ID is required.");
         this.getManager().remove(id);
-        return Response.noContent().build();
+        return ResponseEntity.noContent().build();
     }
 
-    @POST
-    @Path("/updateDescription")
-    public Response updateDescription(FileAttachment fileAttachment) {
+    @PostMapping("/updateDescription")
+    public ResponseEntity<?> updateDescription(@RequestBody FileAttachment fileAttachment) {
         PreconditionsUtil.checkArgument(fileAttachment, "File Attachment is required.");
         PreconditionsUtil.checkArgument(fileAttachment.getId(), "File Attachment ID is required.");
         this.getManager().updateDescription(fileAttachment.getId(), fileAttachment.getDescription());
-        return Response.noContent().build();
+        return ResponseEntity.noContent().build();
     }
 
-    protected Response upload(HttpServletRequest servletRequest, FileAttachmentFactory<T> fileAttachmentFactory) {
+    protected ResponseEntity<?> upload(HttpServletRequest servletRequest, FileAttachmentFactory<T> fileAttachmentFactory) {
         try {
             String userName = SecurityUtils.getLoggedInUser();
-            List<FileAttachment> fileAttachments = new ArrayList();
+            List<FileAttachment> fileAttachments = new ArrayList<>();
             Long maxFileUploadSizeBytes = null;
             ConfigurationProperty maxFileUploadSizeBytesProperty = configPropertyManager.findByKey(MAX_FILE_UPLOAD_SIZE_BYTES.toString());
             if (maxFileUploadSizeBytesProperty != null) {
@@ -125,21 +112,20 @@ public abstract class AbstractFileAttachmentResource<T extends FileAttachment> e
 
             List<FileItem> fileItems = servletFileUpload.parseRequest(new JakartaServletRequestContext(servletRequest));
             SimpleDateFormat dateFormat = new SimpleDateFormat("E, d MMM yyyy k:m:s z");
-            Dictionary<Integer, String> descriptions = new Hashtable();
-            Dictionary<Integer, Date> modifiedDates = new Hashtable();
+            Dictionary<Integer, String> descriptions = new Hashtable<>();
+            Dictionary<Integer, Date> modifiedDates = new Hashtable<>();
             Integer descriptionIndex = 0;
             Integer modifiedDateIndex = 0;
-            Iterator var14 = fileItems.iterator();
+            Iterator<FileItem> var14 = fileItems.iterator();
 
-            while(var14.hasNext()) {
-                FileItem fileItem = (FileItem)var14.next();
+            while (var14.hasNext()) {
+                FileItem fileItem = var14.next();
                 if (fileItem.isFormField()) {
                     if (fileItem.getFieldName().equals("description")) {
                         String description = fileItem.getString();
                         if (description == null) {
                             description = "";
                         }
-
                         descriptions.put(descriptionIndex, description);
                         descriptionIndex = descriptionIndex + 1;
                     } else if (fileItem.getFieldName().equals("modifiedDate")) {
@@ -154,7 +140,6 @@ public abstract class AbstractFileAttachmentResource<T extends FileAttachment> e
                             modifiedDate = new Date();
                             LOGGER.error("Invalid modified date format when uploading file(s). Supplied date: " + fileItem.getString());
                         }
-
                         modifiedDates.put(modifiedDateIndex, modifiedDate);
                         modifiedDateIndex = modifiedDateIndex + 1;
                     }
@@ -162,26 +147,28 @@ public abstract class AbstractFileAttachmentResource<T extends FileAttachment> e
             }
 
             Integer i = 0;
-            Iterator var25 = fileItems.iterator();
+            Iterator<FileItem> var25 = fileItems.iterator();
 
-            while(var25.hasNext()) {
-                FileItem fileItem = (FileItem)var25.next();
+            while (var25.hasNext()) {
+                FileItem fileItem = var25.next();
                 if (!fileItem.isFormField()) {
                     String filename = (new File(fileItem.getName())).getName();
-                    String description = (String)descriptions.get(i);
-                    Date modifiedDate = (Date)modifiedDates.get(i);
+                    String description = descriptions.get(i);
+                    Date modifiedDate = modifiedDates.get(i);
                     if (Strings.isNullOrEmpty(description)) {
                         description = null;
                     }
 
                     if (maxFileUploadSizeBytes != null && fileItem.getSize() > maxFileUploadSizeBytes) {
-                        int maxFileUploadSizeMegs = (int)(maxFileUploadSizeBytes / 1000000L);
-                        return Response.serverError().entity(String.format("File '%s' is too large. Max file size is %,dMB", filename, maxFileUploadSizeMegs)).build();
+                        int maxFileUploadSizeMegs = (int) (maxFileUploadSizeBytes / 1000000L);
+                        return ResponseEntity.internalServerError()
+                                .body(String.format("File '%s' is too large. Max file size is %,dMB", filename, maxFileUploadSizeMegs));
                     }
 
                     String fileExtension = filename.substring(filename.lastIndexOf("."));
                     if (excludedFileExtensions.contains(fileExtension)) {
-                        return Response.serverError().entity(String.format("File '%s' has an invalid file extension.", filename)).build();
+                        return ResponseEntity.internalServerError()
+                                .body(String.format("File '%s' has an invalid file extension.", filename));
                     }
 
                     FileAttachment attachment = this.getManager().uploadFile(filename, fileItem.getContentType(), fileItem.getSize(), description, modifiedDate, userName, fileItem.getInputStream(), fileAttachmentFactory);
@@ -190,10 +177,10 @@ public abstract class AbstractFileAttachmentResource<T extends FileAttachment> e
                 }
             }
 
-            return Response.ok("200 OK").entity(fileAttachments.stream().map(FileAttachment::getId).collect(Collectors.toList()).toString()).build();
+            return ResponseEntity.ok(fileAttachments.stream().map(FileAttachment::getId).collect(Collectors.toList()));
         } catch (Exception var21) {
             LOGGER.error("Error uploading file(s).", var21);
-            return Response.serverError().build();
+            return ResponseEntity.internalServerError().build();
         }
     }
 

@@ -2,74 +2,57 @@ package com.endeavorms.velocity.qto.brokerage;
 
 import com.endeavorms.velocity.qto.common.AbstractResource;
 import com.endeavorms.velocity.qto.interceptors.ServiceBrokerageInterceptor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.inject.Inject;
-import jakarta.interceptor.Interceptors;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.PUT;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Response;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author fcurran
  * @since 6/19/2024
  */
-@Path("/serviceBrokerages")
-@Consumes("application/json")
-@Produces("application/json")
+@RestController
+@RequestMapping("/api/serviceBrokerages")
 public class ServiceBrokerageResource extends AbstractResource<ServiceBrokerage> {
 
     @Override
     protected String getResourcePath() {
         return "/serviceBrokerages";
     }
-    /** The manager for the concrete Resource. */
-    @Inject
+
+    @Autowired
     private ServiceBrokerageManager manager;
 
-    /**
-     * Retrieves an object of type ServiceBrokerage.
-     * @param serviceId the serviceId of the desired entity.
-     * @return the matching entity if it exists.
-     */
-    @GET
-    @Path("/{serviceId: \\d+}")
+    @Autowired
+    private ServiceBrokerageInterceptor serviceBrokerageInterceptor;
+
+    @GetMapping("/{serviceId}")
     @PreAuthorize("hasAnyAuthority('inventory:read','order:read')")
-    public Response retrieve(@PathParam("serviceId") final Long serviceId) {
+    public ResponseEntity<?> retrieve(@PathVariable("serviceId") final Long serviceId) {
         ServiceBrokerage retrieved = manager.findByServiceId(serviceId);
-        return Response.ok(retrieved).build();
+        return ResponseEntity.ok(retrieved);
     }
 
-    /**
-     * Persists the incoming entity.
-     * @param entity the entity to persist.
-     * @return the created entity, with an ID.
-     */
-    @POST
-    @Interceptors({ServiceBrokerageInterceptor.class})
+    @PostMapping
     @PreAuthorize("hasAnyAuthority('inventory:write','order:write')")
-    public Response create(final ServiceBrokerage entity) {
+    public ResponseEntity<?> create(@RequestBody final ServiceBrokerage entity) {
+        serviceBrokerageInterceptor.validateBeforeSave(entity);
         ServiceBrokerage created = manager.create(entity);
-        return Response.ok(created).build();
+        return ResponseEntity.ok(created);
     }
 
-    /**
-     * Updates the incoming entity.
-     * @param entity the entity to update.
-     * @return the updated entity.
-     */
-    @PUT
-    @Path("/{id: \\d+}")
-    @Interceptors({ServiceBrokerageInterceptor.class})
+    @PutMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('inventory:write','order:write')")
-    public Response edit(@PathParam("id") final Long id, final ServiceBrokerage entity) {
+    public ResponseEntity<?> edit(@PathVariable("id") final Long id, @RequestBody final ServiceBrokerage entity) {
+        serviceBrokerageInterceptor.validateBeforeSave(entity);
         ServiceBrokerage updated = manager.edit(entity);
-        return Response.ok(updated).build();
+        return ResponseEntity.ok(updated);
     }
-
 }

@@ -4,7 +4,6 @@ import com.endeavorms.velocity.qto.common.BaseSearchCriteria;
 import com.endeavorms.velocity.qto.common.DateRangeType;
 import com.endeavorms.velocity.qto.common.RangeType;
 
-import jakarta.ws.rs.QueryParam;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -14,136 +13,92 @@ import java.util.List;
  * @since 1.3.0
  */
 public class DisconnectViewSearchCriteria extends BaseSearchCriteria<DisconnectView> {
-    @QueryParam("search")
     private String search;
 
-    @QueryParam("locationId")
     private Long locationId;
 
-    @QueryParam("locationId-comparison")
     private List<RangeType> locationIdRange;
 
-    @QueryParam("clientLocationId")
     private String clientLocationId;
 
-    @QueryParam("companyName")
     private List<String> companyName;
 
-    @QueryParam("endCustomerClientId")
     private String endCustomerClientId;
 
-    @QueryParam("parentCompanyName")
     private List<String> parentCompanyName;
 
-    @QueryParam("parentCompanyClientId")
     private String parentCompanyClientId;
 
-    @QueryParam("serviceType")
     private List<String> serviceType;
 
-    @QueryParam("address")
     private String address;
 
-    @QueryParam("address1")
     private String address1;
 
-    @QueryParam("address2")
     private String address2;
 
-    @QueryParam("city")
     private String city;
 
-    @QueryParam("stateProvince")
     private String stateProvince;
 
-    @QueryParam("postalCode")
     private String postalCode;
 
-    @QueryParam("provisioner")
     private List<String> provisioner;
 
-    @QueryParam("disconnectReason")
     private List<String> disconnectReason;
 
-    @QueryParam("status")
     private String status;
 
-    @QueryParam("provider")
     private List<String> provider;
 
-    @QueryParam("providerOrderSubmitted")
     private List<Date> providerOrderSubmitted;
 
-    @QueryParam("providerOrderSubmitted-comparison")
     private List<DateRangeType> providerOrderSubmittedRange;
 
-    @QueryParam("providerOrderNumber")
     private String providerOrderNumber;
 
-    @QueryParam("customerRequestedDisconnect")
     private List<Date> customerRequestedDisconnect;
 
-    @QueryParam("customerRequestedDisconnect-comparison")
     private List<DateRangeType> customerRequestedDisconnectRange;
 
-    @QueryParam("networkProviderFoc")
     private List<Date> networkProviderFoc;
 
-    @QueryParam("networkProviderFoc-comparison")
     private List<DateRangeType> networkProviderFocRange;
 
-    @QueryParam("complete")
     private List<Date> complete;
 
-    @QueryParam("complete-comparison")
     private List<DateRangeType> completeRange;
 
-    @QueryParam("created")
     private List<Date> created;
 
-    @QueryParam("created-comparison")
     private List<DateRangeType> createdRange;
 
-    @QueryParam("statusAge")
     private List<Long> statusAge;
 
-    @QueryParam("statusAge-comparison")
     private List<RangeType> statusAgeRange;
 
-    @QueryParam("mrr")
     private List<BigDecimal> mrr;
 
-    @QueryParam("mrr-comparison")
     private List<RangeType> mrrRange;
 
-    @QueryParam("mrc")
     private List<BigDecimal> mrc;
 
-    @QueryParam("mrc-comparison")
     private List<RangeType> mrcRange;
 
-    @QueryParam("earlyTerminationFee")
     private List<BigDecimal> earlyTerminationFee;
 
-    @QueryParam("earlyTerminationFee-comparison")
     private List<RangeType> earlyTerminationFeeRange;
 
-    @QueryParam("latestNote")
     private String latestNote;
 
-    @QueryParam("billingReviewComplete")
     private List<Date> billingReviewComplete;
 
-    @QueryParam("billingReviewComplete-comparison")
     private List<DateRangeType> billingReviewCompleteRange;
 
-    @QueryParam("pendingDisconnect")
     private boolean pendingDisconnect;
 
-    @QueryParam("projectName")
     private String projectName;
 
-    @QueryParam("serviceBilledTo")
     private List<String> serviceBilledTo;
 
     public String getSearch() {

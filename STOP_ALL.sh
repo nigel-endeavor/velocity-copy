@@ -16,7 +16,7 @@ if [ -f "$SCRIPT_DIR/.qto-frontend.pid" ]; then
     rm "$SCRIPT_DIR/.qto-frontend.pid"
 else
     echo "⚛️  Stopping Frontend..."
-    pkill -f "vite.*qto-ui-react" 2>/dev/null && echo "   Frontend stopped ✓" || echo "   Frontend not running"
+    pkill -f "vite.*qto-ui" 2>/dev/null && echo "   Frontend stopped ✓" || echo "   Frontend not running"
 fi
 echo ""
 

@@ -4,7 +4,6 @@ import com.endeavorms.velocity.qto.common.BaseSearchCriteria;
 import com.endeavorms.velocity.qto.common.DateRangeType;
 import com.endeavorms.velocity.qto.common.RangeType;
 
-import jakarta.ws.rs.QueryParam;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -14,140 +13,95 @@ import java.util.List;
  * @since 1/9/2023
  */
 public class LocationInventoryViewSearchCriteria extends BaseSearchCriteria<LocationInventoryView> {
-    @QueryParam("search")
     private String search;
 
     /** Allows filtering by a location ID. */
-    @QueryParam("id")
     private Long id;
 
-    @QueryParam("orderId")
     private Long orderId;
 
-    @QueryParam("companyName")
     private List<String> companyName;
 
-    @QueryParam("endCustomerClientId")
     private String endCustomerClientId;
 
-    @QueryParam("address")
     private String address;
 
-    @QueryParam("address1")
     private String address1;
 
-    @QueryParam("address2")
     private String address2;
 
-    @QueryParam("city")
     private String city;
 
-    @QueryParam("stateProvince")
     private String stateProvince;
 
-    @QueryParam("postalCode")
     private String postalCode;
 
-    @QueryParam("parentCompanyName")
     private List<String> parentCompanyName;
 
-    @QueryParam("parentCompanyClientId")
     private String parentCompanyClientId;
 
-    @QueryParam("provisioner")
     private List<String> provisioner;
 
-    @QueryParam("clientOrderId")
     private String clientOrderId;
 
-    @QueryParam("clientLocationId")
     private String clientLocationId;
 
-    @QueryParam("locationName")
     private String locationName;
 
-    @QueryParam("locationStatus")
     private List<String> locationStatus;
 
-    @QueryParam("countServices")
     private List<Long> countServices;
 
-    @QueryParam("activeServiceCount")
     private List<Long> activeServiceCount;
 
-    @QueryParam("services")
     private List<String> services;
 
-    @QueryParam("inventoryAddedDate")
     private List<Date> inventoryAddedDate;
 
-    @QueryParam("inventoryAddedDate-comparison")
     private List<DateRangeType> inventoryAddedDateComparison;
 
-    @QueryParam("activeOnly")
     private boolean activeOnly;
 
-    @QueryParam("macdOpen")
     private boolean macdOpen;
 
-    @QueryParam("disputeOpen")
     private boolean disputeOpen;
 
-    @QueryParam("macdCount")
     private List<Long> macdCount;
 
-    @QueryParam("subOrderTypes")
     private String subOrderTypes;
 
-    @QueryParam("activeInactive")
     private String activeInactive;
 
-    @QueryParam("parentCompanyId")
     private List<Long> parentCompanyId;
 
-    @QueryParam("openDisputeMrc")
     private List<BigDecimal> openDisputeMrc;
 
-    @QueryParam("openDisputeMrc-comparison")
     private List<RangeType> openDisputeMrcRange;
 
-    @QueryParam("openDisputeNrc")
     private List<BigDecimal> openDisputeNrc;
 
-    @QueryParam("openDisputeNrc-comparison")
     private List<RangeType> openDisputeNrcRange;
 
-    @QueryParam("activeCompleteMrc")
     private List<BigDecimal> activeCompleteMrc;
 
-    @QueryParam("activeCompleteMrc-comparison")
     private List<RangeType> activeCompleteMrcRange;
 
-    @QueryParam("activeCompleteNrc")
     private List<BigDecimal> activeCompleteNrc;
 
-    @QueryParam("activeCompleteNrc-comparison")
     private List<RangeType> activeCompleteNrcRange;
 
-    @QueryParam("activeCompleteMrr")
     private List<BigDecimal> activeCompleteMrr;
 
-    @QueryParam("activeCompleteMrr-comparison")
     private List<RangeType> activeCompleteMrrRange;
 
-    @QueryParam("activeCompleteNrr")
     private List<BigDecimal> activeCompleteNrr;
 
-    @QueryParam("activeCompleteNrr-comparison")
     private List<RangeType> activeCompleteNrrRange;
 
-    @QueryParam("annualRecurringCost")
     private List<BigDecimal> annualRecurringCost;
 
-    @QueryParam("annualRecurringCost-comparison")
     private List<RangeType> annualRecurringCostRange;
 
-    @QueryParam("relocateLocationId")
     private Long relocateLocationId;
 
     public String getSearch() {

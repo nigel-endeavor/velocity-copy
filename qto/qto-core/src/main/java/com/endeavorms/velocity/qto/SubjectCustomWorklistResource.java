@@ -11,99 +11,91 @@ import com.endeavorms.velocity.qto.subject.SubjectCustomWorklistManager;
 import com.endeavorms.velocity.qto.subject.SubjectManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.DELETE;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.PUT;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
-import jakarta.ws.rs.core.Response;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.List;
 
-@Path("/subjectCustomWorklists")
-@Consumes("application/json")
-@Produces("application/json")
+@RestController
+@RequestMapping("/api/subjectCustomWorklists")
 public class SubjectCustomWorklistResource extends AbstractResource<SubjectCustomWorklist> {
 
     @Override
     protected String getResourcePath() {
         return "/subjectCustomWorklists";
     }
-/** Logging Facade.*/
+
     protected static final Logger LOGGER = LoggerFactory.getLogger(SubjectCustomWorklistResource.class);
 
-    @Inject
+    @Autowired
     private SubjectManager subjectManager;
-    @Inject
+
+    @Autowired
     private SubjectCustomWorklistManager manager;
 
-    @Inject
+    @Autowired
     private CustomWorklistManager customWorklistManager;
 
-    /**
-     * Retrieves all custom worklists for the logged in user.
-     *
-     * @return the tasks for the company.
-     */
-    @GET
-    public Response getCustomWorklists(@QueryParam("worklistName") final String worklistName) {
+    @GetMapping
+    public ResponseEntity<?> getCustomWorklists(@RequestParam(value = "worklistName", required = false) final String worklistName) {
         List<CustomWorklistSubjectDto> customWorklists = manager.findFullCustomWorklist(worklistName);
-        return Response.ok(customWorklists).build();
+        return ResponseEntity.ok(customWorklists);
     }
 
-    @POST
-    public Response create(final CustomWorklistSubjectDto customWorklist) {
+    @PostMapping
+    public ResponseEntity<?> create(@RequestBody final CustomWorklistSubjectDto customWorklist) {
         manager.createFromDto(customWorklist);
-        return Response.ok().build();
+        return ResponseEntity.ok().build();
     }
 
-    @PUT
-    @Path("/saveFavoriteWorklist")
-    public Response saveFavoriteWorklist(final CustomWorklistSubjectDto customWorklist) {
+    @PutMapping("/saveFavoriteWorklist")
+    public ResponseEntity<?> saveFavoriteWorklist(@RequestBody final CustomWorklistSubjectDto customWorklist) {
         manager.editFavorite(customWorklist);
-        return Response.ok().build();
-    }
-    @PUT
-    @Path("/saveLastViewedDate")
-    public Response saveLastViewedDate(final CustomWorklistSubjectDto customWorklist) {
-        manager.editLastViewedDate(customWorklist);
-        return Response.ok().build();
+        return ResponseEntity.ok().build();
     }
 
-    @PUT
-    @Path("/{id}")
-    public Response update(@PathParam("id") final Long id, final CustomWorklistSubjectDto customWorklist) {
+    @PutMapping("/saveLastViewedDate")
+    public ResponseEntity<?> saveLastViewedDate(@RequestBody final CustomWorklistSubjectDto customWorklist) {
+        manager.editLastViewedDate(customWorklist);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@PathVariable("id") final Long id, @RequestBody final CustomWorklistSubjectDto customWorklist) {
         String username = SecurityUtils.getLoggedInUser();
         Subject subject = subjectManager.findByUsername(username);
         if (!subject.getId().equals(customWorklist.getAuthorId())) {
-           LOGGER.info("Only the Author can edit a Custom Worklist");
-            return Response.serverError().entity("Only the Author can edit a shared Custom Worklist.").build();
+            LOGGER.info("Only the Author can edit a Custom Worklist");
+            return ResponseEntity.internalServerError().body("Only the Author can edit a shared Custom Worklist.");
         }
         manager.editFromDto(customWorklist);
-        return Response.ok().build();
+        return ResponseEntity.ok().build();
     }
 
-    @DELETE
-    @Path("/{id}")
-    public Response delete(@PathParam("id") final Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") final Long id) {
         CustomWorklist customWorklist = customWorklistManager.retrieve(id);
         String username = SecurityUtils.getLoggedInUser();
         Subject subject = subjectManager.findByUsername(username);
         if (!subject.getId().equals(customWorklist.getAuthorId())) {
-           LOGGER.info("Only the Author can delete a Custom Worklist");
-            return Response.serverError().entity("Only the Author can delete a Custom Worklist.").build();
+            LOGGER.info("Only the Author can delete a Custom Worklist");
+            return ResponseEntity.internalServerError().body("Only the Author can delete a Custom Worklist.");
         }
         List<SubjectCustomWorklist> subjectCustomWorklists = manager.findByCustomWorklistId(customWorklist.getId());
         for (SubjectCustomWorklist subjectCustomWorklist : subjectCustomWorklists) {
             manager.remove(subjectCustomWorklist.getId());
         }
         customWorklistManager.remove(id);
-        return Response.ok().build();
+        return ResponseEntity.ok().build();
     }
-
 }

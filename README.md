@@ -22,9 +22,9 @@ Quantum Task Orchestrator - React Frontend
 ## 📚 Documentation
 
 - **`RUN_INSTRUCTIONS.md`** - Detailed run instructions (start/stop/troubleshoot)
-- **`qto-ui-react/QUICK_START.md`** - Frontend quick start guide
-- **`qto-ui-react/MIGRATION_COMPLETE.md`** - Migration summary and features
-- **`qto-ui-react/COMPONENT_LIBRARY.md`** - Component usage guide
+- **`qto-ui/QUICK_START.md`** - Frontend quick start guide
+- **`qto-ui/MIGRATION_COMPLETE.md`** - Migration summary and features
+- **`qto-ui/COMPONENT_LIBRARY.md`** - Component usage guide
 
 ---
 
@@ -58,7 +58,7 @@ velocity/
 ├── RUN_INSTRUCTIONS.md       # ← Detailed instructions
 │
 ├── qto/                      # Backend libraries (qto-core, qto-rest-api)
-└── qto-ui-react/             # Frontend (React)
+└── qto-ui/             # Frontend (React)
     ├── QUICK_START.md
     ├── MIGRATION_COMPLETE.md
     └── COMPONENT_LIBRARY.md
@@ -87,14 +87,14 @@ velocity/
 ## 🎓 Learn More
 
 ### Frontend Development
-See **`qto-ui-react/QUICK_START.md`** for:
+See **`qto-ui/QUICK_START.md`** for:
 - Component usage examples
 - Redux patterns
 - Styling conventions
 - Feature migration guide
 
 ### Component Library
-See **`qto-ui-react/COMPONENT_LIBRARY.md`** for:
+See **`qto-ui/COMPONENT_LIBRARY.md`** for:
 - Table component (sorting, pagination, selection)
 - Form components (Input, Select, Checkbox, Textarea)
 - Modal component (dialog system)

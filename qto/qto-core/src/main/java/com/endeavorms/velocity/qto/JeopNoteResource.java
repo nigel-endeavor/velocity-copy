@@ -5,24 +5,23 @@ import com.endeavorms.velocity.qto.common.PaginatedResult;
 import com.endeavorms.velocity.qto.note.JeopNote;
 import com.endeavorms.velocity.qto.note.JeopNoteManager;
 import com.endeavorms.velocity.qto.note.JeopNoteSearchCriteria;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.jboss.resteasy.annotations.Form;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Response;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author llevit
  * @since 1/16/2023
  */
-@Path("/jeopNotes")
-@Consumes("application/json")
-@Produces("application/json")
+@RestController
+@RequestMapping("/api/jeopNotes")
 public class JeopNoteResource extends AbstractResource<JeopNote> {
 
     @Override
@@ -30,35 +29,27 @@ public class JeopNoteResource extends AbstractResource<JeopNote> {
         return "/jeopNotes";
     }
 
-    /** Business methods for Jeops. */
-    @Inject
+    @Autowired
     private JeopNoteManager manager;
 
-    /**
-     * Retrieves all JeopNotes matching the given criteria.
-     * @param criteria the criteria to filter by.
-     * @return matching jeopNotes.
-     */
-    @GET
+    @GetMapping
     @PreAuthorize("hasAnyAuthority('inventory:read','order:read')")
-    public Response getJeopNotes(@Form final JeopNoteSearchCriteria criteria) {
+    public ResponseEntity<?> getJeopNotes(@ModelAttribute final JeopNoteSearchCriteria criteria) {
         PaginatedResult<JeopNote> result = manager.findBySearchCriteria(criteria);
-        return toResponse(getCollectionResource(result, criteria, getLocation(JeopNoteResource.class)));
+        return getCollectionResource(result, criteria, getLocation(JeopNoteResource.class));
     }
 
-    @POST
+    @PostMapping
     @PreAuthorize("hasAnyAuthority('inventory:write','order:write')")
-    public Response create(final JeopNote note) {
+    public ResponseEntity<?> create(@RequestBody final JeopNote note) {
         try {
-            JeopNote returnedNote;
             if (note.getJeopInstanceId() == null) {
                 throw new IllegalArgumentException("Missing jeopId.");
-            } else {
-                returnedNote = manager.create(note);
             }
-            return Response.ok(returnedNote).build();
+            JeopNote returnedNote = manager.create(note);
+            return ResponseEntity.ok(returnedNote);
         } catch (Exception e) {
-            return Response.serverError().entity(e.getMessage()).build();
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 }

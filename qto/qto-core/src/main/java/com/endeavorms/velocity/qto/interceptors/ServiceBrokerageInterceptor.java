@@ -19,9 +19,7 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jakarta.inject.Inject;
-import jakarta.interceptor.AroundInvoke;
-import jakarta.interceptor.InvocationContext;
+import org.springframework.stereotype.Component;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
@@ -35,54 +33,41 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Component
 public class ServiceBrokerageInterceptor {
-    /** Logging Facade. */
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBrokerageInterceptor.class);
 
-    @Inject
-    private ServiceBrokerageManager manager;
+    private final ServiceBrokerageManager manager;
+    private final ServiceManager serviceManager;
+    private final ServiceNoteManager serviceNoteManager;
 
-    @Inject
-    private ServiceManager serviceManager;
+    public ServiceBrokerageInterceptor(ServiceBrokerageManager manager,
+                                        ServiceManager serviceManager,
+                                        ServiceNoteManager serviceNoteManager) {
+        this.manager = manager;
+        this.serviceManager = serviceManager;
+        this.serviceNoteManager = serviceNoteManager;
+    }
 
-    /** The manager for ServiceNotes. */
-    @Inject
-    private ServiceNoteManager serviceNoteManager;
-
-    /**
-     * Validates the incoming ServiceBrokerage.
-     *
-     * @param context the context of the invocation.
-     * @return the result of the invocation.
-     * @throws Exception if the invocation fails.
-     */
-    @AroundInvoke
-    public Object validate(final InvocationContext context) throws Exception {
-        LOGGER.info("ServiceInterceptor.validate() called");
-        for (Object param : context.getParameters()) {
-            if (param instanceof ServiceBrokerage) {
-                ServiceBrokerage entity = (ServiceBrokerage) param;
-                // if there is no existing entity, create it for audit
-                ServiceBrokerage existing = entity.getId() != null
-                        ? manager.retrieve(entity.getId()) : new ServiceBrokerage();
-                Service service = serviceManager.retrieve(entity.getServiceId());
-                if (TerminalServiceStatuses.getStatuses().contains(service.getStatus())) {
-                    if (SecurityUtils.hasAuthority(Permissions.ADMIN)
-                            || SecurityUtils.hasAuthority(Permissions.ORDER_WRITE_TERMINAL)
-                            || SecurityUtils.hasAuthority(Permissions.INVENTORY_WRITE)) {
-                        LOGGER.debug(
-                                "service {} is in terminal status or is inventory: {}, " +
-                                "service brokerage is being updated by user {}",
-                                entity.getId(), service.getStatus(), SecurityUtils.getLoggedInUser());
-                        String auditString = getAuditString(entity, existing, "Service", "/fieldmapping/service-brokerage-field-mapping.json", null);
-                        if (auditString.length() > 0) {
-                            serviceNoteManager.create(entity.getServiceId(), auditString, "Audit");
-                        }
-                    }
+    public void validateBeforeSave(ServiceBrokerage entity) {
+        LOGGER.info("ServiceBrokerageInterceptor.validateBeforeSave() called");
+        ServiceBrokerage existing = entity.getId() != null
+                ? manager.retrieve(entity.getId()) : new ServiceBrokerage();
+        Service service = serviceManager.retrieve(entity.getServiceId());
+        if (TerminalServiceStatuses.getStatuses().contains(service.getStatus())) {
+            if (SecurityUtils.hasAuthority(Permissions.ADMIN)
+                    || SecurityUtils.hasAuthority(Permissions.ORDER_WRITE_TERMINAL)
+                    || SecurityUtils.hasAuthority(Permissions.INVENTORY_WRITE)) {
+                LOGGER.debug(
+                        "service {} is in terminal status or is inventory: {}, " +
+                        "service brokerage is being updated by user {}",
+                        entity.getId(), service.getStatus(), SecurityUtils.getLoggedInUser());
+                String auditString = getAuditString(entity, existing, "Service", "/fieldmapping/service-brokerage-field-mapping.json", null);
+                if (auditString.length() > 0) {
+                    serviceNoteManager.create(entity.getServiceId(), auditString, "Audit");
                 }
             }
         }
-        return context.proceed();
     }
 
     private String getAuditString(final AbstractBaseEntity entity,

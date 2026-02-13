@@ -22,7 +22,7 @@ cd /path/to/velocity
 
 **Start Frontend:**
 ```bash
-cd qto-ui-react
+cd qto-ui
 bun install  # First time only
 bun --bun dev
 ```
@@ -52,7 +52,7 @@ lsof -ti:7887 | xargs kill -9
 
 ### Frontend Won't Start
 ```bash
-cd qto-ui-react
+cd qto-ui
 
 # Reinstall dependencies
 rm -rf node_modules
@@ -85,7 +85,7 @@ velocity/
 ├── START_ALL.sh           # ← Start frontend
 ├── STOP_ALL.sh            # ← Stop frontend
 ├── qto/                   # Backend libraries (qto-core, qto-rest-api)
-└── qto-ui-react/
+└── qto-ui/
     ├── package.json
     └── vite.config.ts
 ```
@@ -100,7 +100,7 @@ velocity/
 cd /path/to/velocity
 
 # 2. Install frontend dependencies
-cd qto-ui-react
+cd qto-ui
 bun install
 
 # 3. Go back to velocity directory
@@ -139,9 +139,9 @@ cd ..
 
 ## 📚 More Information
 
-- **Frontend Docs**: `qto-ui-react/QUICK_START.md`
-- **Component Library**: `qto-ui-react/COMPONENT_LIBRARY.md`
-- **Migration Guide**: `qto-ui-react/MIGRATION_COMPLETE.md`
+- **Frontend Docs**: `qto-ui/QUICK_START.md`
+- **Component Library**: `qto-ui/COMPONENT_LIBRARY.md`
+- **Migration Guide**: `qto-ui/MIGRATION_COMPLETE.md`
 
 ---
 
@@ -161,9 +161,9 @@ The `START_ALL.sh` script runs the frontend in the background, so you can close 
 |------|---------|
 | **Start** | `./START_ALL.sh` |
 | **Stop** | `./STOP_ALL.sh` |
-| **Frontend** | `cd qto-ui-react && bun --bun dev` |
+| **Frontend** | `cd qto-ui && bun --bun dev` |
 | **Open** | http://localhost:7887/qto-ops/ |
 
 ---
 
-**Questions?** See `qto-ui-react/QUICK_START.md` for detailed frontend guide.
+**Questions?** See `qto-ui/QUICK_START.md` for detailed frontend guide.

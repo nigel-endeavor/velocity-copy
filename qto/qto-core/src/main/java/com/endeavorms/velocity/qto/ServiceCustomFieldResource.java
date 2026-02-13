@@ -4,45 +4,45 @@ import com.endeavorms.velocity.qto.customfield.value.ServiceCustomFieldValue;
 import com.endeavorms.velocity.qto.customfield.value.ServiceCustomFieldValueListDto;
 import com.endeavorms.velocity.qto.customfield.value.ServiceCustomFieldValueManager;
 import com.endeavorms.velocity.qto.interceptors.ServiceCustomFieldValueInterceptor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.inject.Inject;
-import jakarta.interceptor.Interceptors;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
-import jakarta.ws.rs.core.Response;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.List;
 
-@Path("/serviceCustomfieldValues")
-@Consumes("application/json")
-@Produces("application/json")
+@RestController
+@RequestMapping("/api/serviceCustomfieldValues")
 @PreAuthorize("hasAnyAuthority('inventory:read','order:read')")
 public class ServiceCustomFieldResource {
 
-    @Inject
+    @Autowired
     private ServiceCustomFieldValueManager serviceCustomFieldValueManager;
 
-    @GET
-    public Response findByServiceId(@QueryParam("serviceId") final Long serviceId) {
+    @Autowired
+    private ServiceCustomFieldValueInterceptor serviceCustomFieldValueInterceptor;
+
+    @GetMapping
+    public ResponseEntity<?> findByServiceId(@RequestParam("serviceId") final Long serviceId) {
         List<ServiceCustomFieldValue> serviceCustomFieldValues = serviceCustomFieldValueManager.findByRecordId(serviceId);
-        return Response.ok(serviceCustomFieldValues).build();
+        return ResponseEntity.ok(serviceCustomFieldValues);
     }
 
-    @POST
-    @Path("/saveValues")
-    @Interceptors({ServiceCustomFieldValueInterceptor.class})
+    @PostMapping("/saveValues")
     @PreAuthorize("hasAnyAuthority('inventory:read','order:read')")
-    public Response saveValues(final ServiceCustomFieldValueListDto serviceCustomFieldValues) {
+    public ResponseEntity<?> saveValues(@RequestBody final ServiceCustomFieldValueListDto serviceCustomFieldValues) {
         try {
+            serviceCustomFieldValueInterceptor.validateBeforeSave(serviceCustomFieldValues);
             List<ServiceCustomFieldValue> created = serviceCustomFieldValueManager.saveValues(serviceCustomFieldValues.getValues());
-            return Response.ok(created).build();
+            return ResponseEntity.ok(created);
         } catch (Exception e) {
-            return Response.serverError().entity(e.getMessage()).build();
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
-
 }

@@ -2,11 +2,9 @@ package com.endeavorms.velocity.qto.note;
 
 import com.endeavorms.velocity.qto.common.BaseSearchCriteria;
 
-import jakarta.ws.rs.QueryParam;
 
 public class JeopNoteSearchCriteria extends BaseSearchCriteria<JeopNote> {
 
-    @QueryParam("jeopInstanceId")
     private Long jeopInstanceId;
 
     public Long getJeopInstanceId() {

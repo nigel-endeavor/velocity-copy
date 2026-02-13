@@ -3,27 +3,27 @@ package com.endeavorms.velocity.qto;
 import com.endeavorms.velocity.qto.activation.requirement.RequirementTemplate;
 import com.endeavorms.velocity.qto.activation.requirement.RequirementTemplateManager;
 import com.endeavorms.velocity.qto.common.AbstractResource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.PUT;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
-import jakarta.ws.rs.core.Response;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.List;
 
 /**
  * @author rcasey
  * @since 3/3/2023
  */
-@Path("/requirementTemplates")
-@Consumes("application/json")
-@Produces("application/json")
+@RestController
+@RequestMapping("/api/requirementTemplates")
 public class RequirementTemplateResource extends AbstractResource {
 
     @Override
@@ -31,48 +31,46 @@ public class RequirementTemplateResource extends AbstractResource {
         return "/requirementTemplates";
     }
 
-    /** Business methods for RequirementTemplates. */
-    @Inject
+    @Autowired
     private RequirementTemplateManager manager;
 
-    @GET
+    @GetMapping
     @PreAuthorize("hasAnyAuthority('inventory:read','order:read')")
-    public Response getTemplates(@QueryParam("companyId") final Long companyId, @QueryParam("showInactive") final boolean showInactive) {
+    public ResponseEntity<?> getTemplates(@RequestParam("companyId") final Long companyId,
+                                          @RequestParam(value = "showInactive", defaultValue = "false") final boolean showInactive) {
         List<RequirementTemplate> templates = manager.findByCompanyId(companyId, showInactive);
-        return Response.ok(templates).build();
+        return ResponseEntity.ok(templates);
     }
 
-    @GET
-    @Path("/{id: \\d+}")
+    @GetMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('inventory:read','order:read')")
-    public Response retrieve(@PathParam("id") final Long id) {
+    public ResponseEntity<?> retrieve(@PathVariable("id") final Long id) {
         RequirementTemplate retrieved = manager.retrieve(id);
-        return Response.ok(retrieved).build();
+        return ResponseEntity.ok(retrieved);
     }
 
-    @POST
+    @PostMapping
     @PreAuthorize("hasAnyAuthority('inventory:write','order:write')")
-    public Response create(final RequirementTemplate template) {
+    public ResponseEntity<?> create(@RequestBody final RequirementTemplate template) {
         try {
             RequirementTemplate created = manager.create(template);
-            return Response.ok(created).build();
+            return ResponseEntity.ok(created);
         } catch (Exception e) {
-            return Response.serverError().entity(e.getMessage()).build();
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 
-    @PUT
-    @Path("/{id: \\d+}")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('inventory:write','order:write')")
-    public Response edit(@PathParam("id") final Long id, final RequirementTemplate template) {
+    public ResponseEntity<?> edit(@PathVariable("id") final Long id, @RequestBody final RequirementTemplate template) {
         try {
             if (!id.equals(template.getId())) {
                 throw new IllegalArgumentException("identifier in path does not match that of passed entity");
             }
             RequirementTemplate updated = manager.edit(template);
-            return Response.ok(updated).build();
+            return ResponseEntity.ok(updated);
         } catch (Exception e) {
-            return Response.serverError().entity(e.getMessage()).build();
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 }

@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.google.common.collect.Maps;
 
-import jakarta.ws.rs.HttpMethod;
 import java.util.Map;
 
 /**
@@ -116,7 +115,7 @@ public class ResourceWrapper {
      * @param href the URI.
      */
     public void addLink(final String rel, final String href) {
-        linkRels.put(rel, new LinkRel(HttpMethod.GET, href));
+        linkRels.put(rel, new LinkRel("GET", href));
     }
 
 

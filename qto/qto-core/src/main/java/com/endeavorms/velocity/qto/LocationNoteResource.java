@@ -10,27 +10,27 @@ import com.endeavorms.velocity.qto.note.NoteUnionView;
 import com.endeavorms.velocity.qto.note.NoteUnionViewSearchCriteria;
 import com.endeavorms.velocity.qto.subject.Subject;
 import com.endeavorms.velocity.qto.subject.SubjectManager;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.jboss.resteasy.annotations.Form;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.PUT;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Response;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.Date;
 
 /**
  * @author llevit
  * @since 1/16/2023
  */
-@Path("/locationNotes")
-@Consumes("application/json")
-@Produces("application/json")
+@RestController
+@RequestMapping("/api/locationNotes")
 public class LocationNoteResource extends AbstractResource<NoteUnionView> {
 
     @Override
@@ -38,37 +38,29 @@ public class LocationNoteResource extends AbstractResource<NoteUnionView> {
         return "/locationNotes";
     }
 
-    /** Business methods for Locations. */
-    @Inject
+    @Autowired
     private LocationNoteManager manager;
 
-    /** Business methods for subjects. */
-    @Inject
+    @Autowired
     private SubjectManager subjectManager;
 
-    /**
-     * Retrieves all LocationNotes matching the given criteria.
-     * @param criteria the criteria to filter by.
-     * @return matching locationNotes.
-     */
-    @GET
+    @GetMapping
     @PreAuthorize("hasAnyAuthority('inventory:read','order:read')")
-    public Response getLocationNotes(@Form final NoteUnionViewSearchCriteria criteria) {
+    public ResponseEntity<?> getLocationNotes(@ModelAttribute final NoteUnionViewSearchCriteria criteria) {
         PaginatedResult<NoteUnionView> result = manager.findBySearchCriteria(criteria, false);
-        return toResponse(getCollectionResource(result, criteria, getLocation(LocationNoteResource.class)));
+        return getCollectionResource(result, criteria, getLocation(LocationNoteResource.class));
     }
 
-    @GET
-    @Path("/audit")
+    @GetMapping("/audit")
     @PreAuthorize("hasAnyAuthority('inventory:read','order:read')")
-    public Response getLocationAuditNotes(@Form final NoteUnionViewSearchCriteria criteria) {
+    public ResponseEntity<?> getLocationAuditNotes(@ModelAttribute final NoteUnionViewSearchCriteria criteria) {
         PaginatedResult<NoteUnionView> result = manager.findBySearchCriteria(criteria, true);
-        return toResponse(getCollectionResource(result, criteria, getLocation(LocationNoteResource.class)));
+        return getCollectionResource(result, criteria, getLocation(LocationNoteResource.class));
     }
 
-    @POST
+    @PostMapping
     @PreAuthorize("hasAnyAuthority('inventory:write','order:write')")
-    public Response create(final LocationNote note) {
+    public ResponseEntity<?> create(@RequestBody final LocationNote note) {
         try {
             PreconditionsUtil.checkArgument(note.getLocationId(), "A locationId is required");
             String loggedInUser = SecurityUtils.getLoggedInUser();
@@ -77,35 +69,28 @@ public class LocationNoteResource extends AbstractResource<NoteUnionView> {
             note.setCreatedById(subject.getId());
             note.setCreatedBy(loggedInUser);
             note.setCreatedDate(new Date());
-            return Response.ok(manager.create(note)).build();
+            return ResponseEntity.ok(manager.create(note));
         } catch (Exception e) {
-            return Response.serverError().entity(e.getMessage()).build();
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 
-    /**
-     * Edit a location note.
-     * @param id the note id.
-     * @param note the note to edit.
-     * @return the edited note.
-     */
-    @PUT
-    @Path("/{id: \\d+}")
-    public Response edit(@PathParam("id") final Long id, final LocationNote note) {
+    @PutMapping("/{id}")
+    public ResponseEntity<?> edit(@PathVariable("id") final Long id, @RequestBody final LocationNote note) {
         try {
             PreconditionsUtil.checkArgument(note.getId(), "A note ID is required");
             LocationNote existing = manager.retrieve(note.getId());
             if (!manager.determineEditability(existing)) {
-                return Response.serverError().entity("You do not have permission to edit this note.").build();
+                return ResponseEntity.internalServerError().body("You do not have permission to edit this note.");
             }
             String loggedInUser = SecurityUtils.getLoggedInUser();
             Subject subject = subjectManager.findByUsername(loggedInUser);
             loggedInUser = subject.getDisplayName();
             note.setEditedBy(loggedInUser);
             note.setEditedDate(new Date());
-            return Response.ok(manager.edit(note)).build();
+            return ResponseEntity.ok(manager.edit(note));
         } catch (IllegalArgumentException e) {
-            return Response.serverError().entity(e.getMessage()).build();
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 }

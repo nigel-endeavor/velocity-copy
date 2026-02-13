@@ -6,18 +6,21 @@ import com.endeavorms.velocity.qto.activation.attempt.ActivationAttemptPushValid
 import com.endeavorms.velocity.qto.activation.attempt.IssActivationAttemptEventHandler;
 import com.endeavorms.velocity.qto.common.AbstractResource;
 import com.endeavorms.velocity.qto.common.PreconditionsUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.PUT;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
-import jakarta.ws.rs.core.Response;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.List;
 import java.util.Map;
 
@@ -25,9 +28,8 @@ import java.util.Map;
  * @author rcasey
  * @since 3/23/2023
  */
-@Path("/activationAttempts")
-@Consumes("application/json")
-@Produces("application/json")
+@RestController
+@RequestMapping("/api/activationAttempts")
 public class ActivationAttemptResource extends AbstractResource {
 
     @Override
@@ -35,41 +37,40 @@ public class ActivationAttemptResource extends AbstractResource {
         return "/activationAttempts";
     }
 
-    /** Business methods for ActivationAttempts. */
-    @Inject
+    private static final Logger LOGGER = LoggerFactory.getLogger(ActivationAttemptResource.class);
+
+    @Autowired
     private ActivationAttemptManager manager;
 
-    @Inject
+    @Autowired
     private IssActivationAttemptEventHandler issEventHandler;
 
-    @GET
+    @GetMapping
     @PreAuthorize("hasAnyAuthority('inventory:read','order:read')")
-    public Response getAttempts(@QueryParam("serviceId") final Long serviceId) {
+    public ResponseEntity<?> getAttempts(@RequestParam("serviceId") final Long serviceId) {
         List<ActivationAttempt> attempts = manager.findByServiceId(serviceId);
-        return Response.ok(attempts).build();
+        return ResponseEntity.ok(attempts);
     }
 
-    @POST
+    @PostMapping
     @PreAuthorize("hasAnyAuthority('order:write','inventory:write')")
-    public Response create(final ActivationAttempt attempt) {
+    public ResponseEntity<?> create(@RequestBody final ActivationAttempt attempt) {
         try {
             ActivationAttempt created = manager.create(attempt);
-            return Response.ok(created).build();
+            return ResponseEntity.ok(created);
         } catch (Exception e) {
-            return Response.serverError().entity(e.getMessage()).build();
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 
-    @PUT
-    @Path("/{id: \\d+}")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('order:write','inventory:write')")
-    public Response edit(@PathParam("id") final Long id, final ActivationAttempt attempt) {
+    public ResponseEntity<?> edit(@PathVariable("id") final Long id, @RequestBody final ActivationAttempt attempt) {
         try {
             if (!id.equals(attempt.getId())) {
                 throw new IllegalArgumentException("identifier in path does not match that of passed entity");
             }
-            ActivationAttempt updated = null;
-
+            ActivationAttempt updated;
             if ("Complete".equals(attempt.getScheduledAttemptStatus())) {
                 updated = issEventHandler.handlePushComplete(attempt);
             } else if ("Partial Complete - Pending Re-Schedule".equals(attempt.getScheduledAttemptStatus())) {
@@ -85,58 +86,44 @@ public class ActivationAttemptResource extends AbstractResource {
                 manager.checkDuplicateToRelated(updated);
             }
 
-            return Response.ok(updated).build();
+            return ResponseEntity.ok(updated);
         } catch (ActivationAttemptPushValidationException e) {
-            return Response.serverError().entity(e.getErrors()).build();
+            return ResponseEntity.internalServerError().body(e.getErrors());
         } catch (Exception e) {
-            return Response.serverError().entity(e.getMessage()).build();
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 
-    @POST
-    @Path("/{id: \\d+}/cancel")
+    @PostMapping("/{id}/cancel")
     @PreAuthorize("hasAnyAuthority('order:write','inventory:write')")
-    public Response cancel(@PathParam("id") final Long id, final Map<String, Boolean> requestBody) {
+    public ResponseEntity<?> cancel(@PathVariable("id") final Long id, @RequestBody final Map<String, Boolean> requestBody) {
         try {
             boolean applySameDayCancelSurcharge = requestBody.get("applySameDayCancelSurcharge");
             ActivationAttempt cancelled = manager.cancel(id, applySameDayCancelSurcharge);
-            return Response.ok(cancelled).build();
+            return ResponseEntity.ok(cancelled);
         } catch (Exception e) {
-            return Response.serverError().entity(e.getMessage()).build();
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 
-    @POST
-    @Path("/{id: \\d+}/rollback")
+    @PostMapping("/{id}/rollback")
     @PreAuthorize("hasAuthority('order:write-terminal')")
-    public Response rollBack(@PathParam("id") final Long id) {
+    public ResponseEntity<?> rollBack(@PathVariable("id") final Long id) {
         try {
             ActivationAttempt activationAttempt = issEventHandler.rollback(id);
-            return Response.ok(activationAttempt).build();
+            return ResponseEntity.ok(activationAttempt);
         } catch (Exception e) {
-            return Response.serverError().entity(e.getMessage()).build();
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 
-         /**
-     * Adds a note to the dispatch and sends it to Endeavor. The note and appointment information associated with the
-     * note is updated.
-     * This is for testing the functionality through the ftdi code without pushing an Activation Attempt.
-     * @param dispatchId the ID of the dispatch to add the note to.
-     * @param note the edited Dispatch to add to the dispatch.
-     * @return a response potentially including the created entity.
-     */
-    @POST
-    @Path("/notes")
+    @PostMapping("/notes")
     @PreAuthorize("hasAnyAuthority('order:write','inventory:write')")
-    public Response addNote(@QueryParam("dispatchId") final Long dispatchId,
-                               @QueryParam("tenantId") final Long tenantId, final String note) {
+    public ResponseEntity<?> addNote(@RequestParam("dispatchId") final Long dispatchId,
+                                     @RequestParam("tenantId") final Long tenantId,
+                                     @RequestBody final String note) {
         PreconditionsUtil.checkArgument(dispatchId, "Dispatch ID is required to add note.");
-
-
         LOGGER.debug("Received Note: " + note);
-//        issEventHandler.sendNoteToFtdi(note, dispatchId, tenantId);
-
-        return Response.ok().build();
+        return ResponseEntity.ok().build();
     }
 }

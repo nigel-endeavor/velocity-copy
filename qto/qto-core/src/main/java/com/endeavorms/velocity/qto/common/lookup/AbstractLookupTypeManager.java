@@ -4,7 +4,7 @@ import com.endeavorms.velocity.qto.common.PaginatedResult;
 import com.endeavorms.velocity.qto.common.PreconditionsUtil;
 import com.endeavorms.velocity.qto.common.StandardManager;
 
-import jakarta.ws.rs.NotFoundException;
+import com.endeavorms.velocity.qto.common.NotFoundException;
 
 /**
  * Base class for LookupType related business logic.

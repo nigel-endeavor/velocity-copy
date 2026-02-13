@@ -1,42 +1,29 @@
 package com.endeavorms.velocity.qto.activation.attempt.emailView;
 
 import com.endeavorms.velocity.qto.common.AbstractResource;
-import com.endeavorms.velocity.qto.common.PaginatedResult;
-import com.endeavorms.velocity.qto.template.email.EmailTemplate;
-import com.endeavorms.velocity.qto.template.email.EmailTemplateManager;
-import com.endeavorms.velocity.qto.template.email.EmailTemplateSearchCriteria;
-import org.jboss.resteasy.annotations.Form;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Response;
+import org.springframework.beans.factory.annotation.Autowired;
 
-@Path("/activationAttemptEmailViews")
-@Consumes("application/json")
-@Produces("application/json")
+@RestController
+@RequestMapping("/api/activationAttemptEmailViews")
 public class ActivationAttemptEmailViewResource extends AbstractResource<ActivationAttemptEmailView> {
 
     @Override
     protected String getResourcePath() {
         return "/activationAttemptEmailViews";
     }
-    /** Business logic layer for Email Templates. */
-    @Inject
+
+    @Autowired
     private ActivationAttemptEmailViewManager manager;
 
-    /**
-     * API endpoint that returns an activation attempt email view by id.
-     * @param id the id of the activation attempt email view to return.
-     * @return a response containing the matching activation attempt email view.
-     */
-    @GET
-    @Path("/{id}")
-    public Response getActivationAttemptEmailView(@PathParam("id") final Long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getActivationAttemptEmailView(@PathVariable("id") final Long id) {
         ActivationAttemptEmailView retrieved = manager.retrieve(id);
-        return Response.ok(retrieved).build();
+        return ResponseEntity.ok(retrieved);
     }
 }

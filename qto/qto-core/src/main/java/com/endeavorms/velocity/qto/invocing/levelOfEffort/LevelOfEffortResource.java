@@ -3,22 +3,20 @@ package com.endeavorms.velocity.qto.invocing.levelOfEffort;
 import com.endeavorms.velocity.qto.common.AbstractResource;
 import com.endeavorms.velocity.qto.invoicing.levelOfEffort.LevelOfEffort;
 import com.endeavorms.velocity.qto.invoicing.levelOfEffort.LevelOfEffortManager;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
-import jakarta.ws.rs.core.Response;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author rcasey
  * @since 7/12/2023
  */
-@Path("/levelOfEffort")
-@Consumes("application/json")
-@Produces("application/json")
+@RestController
+@RequestMapping("/api/levelOfEffort")
 public class LevelOfEffortResource extends AbstractResource<LevelOfEffort> {
 
     @Override
@@ -26,12 +24,11 @@ public class LevelOfEffortResource extends AbstractResource<LevelOfEffort> {
         return "/levelOfEffort";
     }
 
-    /** Business methods for LevelOfEffort. */
-    @Inject
+    @Autowired
     private LevelOfEffortManager manager;
 
-    @GET
-    public Response getLevelOfEffort(@QueryParam("companyId") final Long companyId) {
-        return Response.ok(manager.findByCompanyId(companyId)).build();
+    @GetMapping
+    public ResponseEntity<?> getLevelOfEffort(@RequestParam("companyId") final Long companyId) {
+        return ResponseEntity.ok(manager.findByCompanyId(companyId));
     }
 }

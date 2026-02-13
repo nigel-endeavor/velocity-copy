@@ -1,8 +1,0 @@
-<div class="content">
-  <button class="saveButton" [title]="cloneAndCancelTitleText" [disabled]="isServiceTerminal() || disabled || this.service.bundled" (click)="openCloneAndCancelDialog()" class="tooltip">
-    <span class="tooltiptext">{{tooltip}}</span>
-    Clone & Cancel
-  </button>
-</div>
-<app-cancel-clone-dialog *ngIf="showCloneAndCancelDialog" [service]="service"
-    (done)="onDone()"></app-cancel-clone-dialog>

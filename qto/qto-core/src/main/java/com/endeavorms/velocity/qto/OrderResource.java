@@ -4,7 +4,7 @@ import com.endeavorms.velocity.qto.common.AbstractResource;
 import com.endeavorms.velocity.qto.order.Order;
 import com.endeavorms.velocity.qto.order.OrderManager;
 import com.endeavorms.velocity.qto.order.dto.OrderCreateDtoWrapper;
-import jakarta.ws.rs.BadRequestException;
+import com.endeavorms.velocity.qto.common.BadRequestException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -3,7 +3,6 @@ package com.endeavorms.velocity.qto.common;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import jakarta.ws.rs.HttpMethod;
 
 /**
  * @author <a href="mailto:rconnolly@vertek.com">rconnolly</a>

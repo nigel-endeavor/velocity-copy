@@ -2,7 +2,6 @@ package com.endeavorms.velocity.qto.company;
 
 import com.endeavorms.velocity.qto.common.BaseSearchCriteria;
 
-import jakarta.ws.rs.QueryParam;
 import java.util.List;
 
 /**
@@ -11,29 +10,21 @@ import java.util.List;
  */
 public class CompanyViewSearchCriteria extends BaseSearchCriteria<CompanyView> {
 
-    @QueryParam("search")
     private String search;
 
-    @QueryParam("type")
     private String type;
 
-    @QueryParam("tenantName")
     private String tenantName;
 
-    @QueryParam("masterCustomerId")
     private Long masterCustomerId;
 
     /** Active flag.*/
-    @QueryParam("active")
     private Boolean active;
 
-    @QueryParam("onboarding")
     private Boolean onboarding;
 
-    @QueryParam("assignedTo")
     private List<String> assignedTo;
 
-    @QueryParam("clientId")
     private String clientId;
 
     public String getSearch() {

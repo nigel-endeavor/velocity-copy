@@ -8,33 +8,30 @@ import com.endeavorms.velocity.qto.common.PaginatedResult;
 import com.endeavorms.velocity.qto.common.PreconditionsUtil;
 import com.endeavorms.velocity.qto.service.Service;
 import com.endeavorms.velocity.qto.service.ServiceManager;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
-import jakarta.ws.rs.core.Context;
-import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author rcasey
  * @since 1/24/2023
  */
-@Path("/serviceFileAttachments")
-@Produces("application/json")
+@RestController
+@RequestMapping("/api/serviceFileAttachments")
 public class ServiceFileAttachmentResource extends AbstractFileAttachmentResource<ServiceFileAttachment> {
 
-    /** Business methods for ServiceFileAttachment. */
-    @Inject
+    @Autowired
     private ServiceFileAttachmentManager manager;
 
-    @Inject
+    @Autowired
     private ServiceManager serviceManager;
 
     @Override
@@ -47,25 +44,23 @@ public class ServiceFileAttachmentResource extends AbstractFileAttachmentResourc
         return "/serviceFileAttachments";
     }
 
-    @GET
+    @GetMapping
     @PreAuthorize("hasAnyAuthority('inventory:read','order:read')")
-    public Response getAttachments(@QueryParam("serviceId") final Long serviceId, @QueryParam("locationId") final Long locationId) {
+    public ResponseEntity<?> getAttachments(@RequestParam(value = "serviceId", required = false) final Long serviceId,
+                                             @RequestParam(value = "locationId", required = false) final Long locationId) {
         PaginatedResult<ServiceFileAttachment> result;
         if (locationId != null) {
             result = manager.findByLocationId(locationId);
         } else {
             result = manager.findByServiceIdPaginated(serviceId);
         }
-        return Response.ok(result).build();
+        return ResponseEntity.ok(result);
     }
 
-    @POST
-    @Path("/upload")
-    @Produces(MediaType.TEXT_HTML)
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @PostMapping("/upload")
     @PreAuthorize("hasAnyAuthority('inventory:write','order:write')")
-    public Response upload(@QueryParam("serviceId") final Long serviceId,
-                           @Context final HttpServletRequest servletRequest) {
+    public ResponseEntity<?> upload(@RequestParam("serviceId") final Long serviceId,
+                                    HttpServletRequest servletRequest) {
         PreconditionsUtil.checkArgument(serviceId, "Service ID is required.");
         return upload(servletRequest, () -> {
             ServiceFileAttachment attachment = new ServiceFileAttachment();

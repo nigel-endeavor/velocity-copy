@@ -3,27 +3,26 @@ package com.endeavorms.velocity.qto.contact.location;
 import com.endeavorms.velocity.qto.common.AbstractResource;
 import com.endeavorms.velocity.qto.common.PaginatedResult;
 import com.endeavorms.velocity.qto.common.PreconditionsUtil;
-import org.jboss.resteasy.annotations.Form;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.DELETE;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.PUT;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Response;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Endpoints related to location contacts.
  * @author fcurran
  * @since 3/31/2023
  */
-@Path("/locationContacts")
-@Consumes("application/json")
-@Produces("application/json")
+@RestController
+@RequestMapping("/api/locationContacts")
 public class LocationContactResource extends AbstractResource<LocationContact> {
 
     @Override
@@ -31,68 +30,44 @@ public class LocationContactResource extends AbstractResource<LocationContact> {
         return "/locationContacts";
     }
 
-    /** Business methods for location related contacts. */
-    @Inject
+    @Autowired
     private LocationContactManager manager;
 
-    /**
-     * Returns location contacts that match the provided search criteria. A location ID is required.
-     * @param criteria what to match location contacts on.
-     * @return the matching location contacts, if any.
-     */
-    @GET
-    public Response getLocationContacts(@Form final LocationContactSearchCriteria criteria) {
+    @GetMapping
+    public ResponseEntity<?> getLocationContacts(@ModelAttribute final LocationContactSearchCriteria criteria) {
         PreconditionsUtil.checkArgument(criteria.getLocationId(), "A locationId is required");
         PaginatedResult<LocationContact> result = manager.findBySearchCriteria(criteria);
-        return toResponse(getCollectionResource(result, criteria, getLocation(LocationContactResource.class)));
+        return getCollectionResource(result, criteria, getLocation(LocationContactResource.class));
     }
 
-    /**
-     * Attempts to persist the provided location contact.
-     * @param locationContact the contact to persist.
-     * @return the persisted contact.
-     */
-    @POST
-    public Response create(final LocationContact locationContact) {
+    @PostMapping
+    public ResponseEntity<?> create(@RequestBody final LocationContact locationContact) {
         try {
             PreconditionsUtil.checkArgument(locationContact.getLocationId(), "A locationId is required");
             LocationContact createLocationContact = manager.create(locationContact);
-            return Response.ok(createLocationContact).build();
+            return ResponseEntity.ok(createLocationContact);
         } catch (Exception e) {
-            return Response.serverError().entity(e.getMessage()).build();
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 
-    /**
-     * Attempts to update an existing location contact.
-     * @param id the ID of the contact to update.
-     * @param locationContact the contact with its updates.
-     * @return the updated contact.
-     */
-    @PUT
-    @Path("/{id: \\d+}")
-    public Response edit(@PathParam("id") final Long id, final LocationContact locationContact) {
+    @PutMapping("/{id}")
+    public ResponseEntity<?> edit(@PathVariable("id") final Long id, @RequestBody final LocationContact locationContact) {
         try {
             if (!id.equals(locationContact.getId())) {
                 throw new IllegalArgumentException("identifier in path does not match that of passed entity");
             }
             PreconditionsUtil.checkArgument(locationContact.getLocationId(), "A locationId is required");
             LocationContact updatedLocationContact = manager.edit(locationContact);
-            return Response.ok(updatedLocationContact).build();
+            return ResponseEntity.ok(updatedLocationContact);
         } catch (Exception e) {
-            return Response.serverError().entity(e.getMessage()).build();
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 
-    /**
-     * Deletes a resource.
-     * @param id resource identifier.
-     * @return a Response.
-     */
-    @DELETE
-    @Path("/{id : \\d+}")
-    public Response remove(@PathParam("id") final Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> remove(@PathVariable("id") final Long id) {
         manager.remove(id);
-        return Response.noContent().build();
+        return ResponseEntity.noContent().build();
     }
 }

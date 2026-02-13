@@ -4,16 +4,15 @@ import com.endeavorms.velocity.qto.common.AbstractResource;
 import com.endeavorms.velocity.qto.common.DashboardDataset;
 import com.endeavorms.velocity.qto.report.DashboardSearchCriteria;
 import com.endeavorms.velocity.qto.service.snapshot.ServiceSnapshotManager;
-import org.jboss.resteasy.annotations.Form;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.DefaultValue;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
-import jakarta.ws.rs.core.Response;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
@@ -22,9 +21,8 @@ import java.util.List;
  * @author rcasey
  * @since 3/25/2024
  */
-@Path("/serviceSnapshots")
-@Consumes("application/json")
-@Produces({"application/json", "application/vnd.ms-excel"})
+@RestController
+@RequestMapping("/api/serviceSnapshots")
 public class ServiceSnapshotResource extends AbstractResource {
 
     @Override
@@ -32,37 +30,33 @@ public class ServiceSnapshotResource extends AbstractResource {
         return "/serviceSnapshots";
     }
 
-    @Inject
+    @Autowired
     private ServiceSnapshotManager manager;
 
-    @GET
-    @Path("/inventoryValuation")
-    public Response getInventoryValuation(@Form final DashboardSearchCriteria criteria,
-                                          @DefaultValue("6") @QueryParam("numOfMonths") final int numOfMonths) {
+    @GetMapping("/inventoryValuation")
+    public ResponseEntity<?> getInventoryValuation(@ModelAttribute final DashboardSearchCriteria criteria,
+                                                    @RequestParam(value = "numOfMonths", defaultValue = "6") final int numOfMonths) {
         DashboardDataset<BigDecimal> dataset = manager.getInventoryValuation(criteria, numOfMonths);
-        return Response.ok().entity(dataset).build();
+        return ResponseEntity.ok(dataset);
     }
 
-    @GET
-    @Path("/inventoryCounts")
-    public Response getInventoryCounts(@Form final DashboardSearchCriteria criteria,
-                                       @DefaultValue("6") @QueryParam("numOfMonths") final int numOfMonths) {
+    @GetMapping("/inventoryCounts")
+    public ResponseEntity<?> getInventoryCounts(@ModelAttribute final DashboardSearchCriteria criteria,
+                                                 @RequestParam(value = "numOfMonths", defaultValue = "6") final int numOfMonths) {
         DashboardDataset<BigInteger> dataset = manager.getInventoryCounts(criteria, numOfMonths);
-        return Response.ok().entity(dataset).build();
+        return ResponseEntity.ok(dataset);
     }
 
-    @GET
-    @Path("/newInventory")
-    public Response getNewInventory(@Form final DashboardSearchCriteria criteria,
-                                    @DefaultValue("6") @QueryParam("numOfMonths") final int numOfMonths) {
+    @GetMapping("/newInventory")
+    public ResponseEntity<?> getNewInventory(@ModelAttribute final DashboardSearchCriteria criteria,
+                                             @RequestParam(value = "numOfMonths", defaultValue = "6") final int numOfMonths) {
         DashboardDataset<BigInteger> dataset = manager.getNewInventory(criteria, numOfMonths);
-        return Response.ok().entity(dataset).build();
+        return ResponseEntity.ok(dataset);
     }
 
-    @GET
-    @Path("/serviceTypes")
-    public Response getServiceTypes() {
-       List<String> serviceType = manager.findServiceTypes();
-        return Response.ok(serviceType).build();
+    @GetMapping("/serviceTypes")
+    public ResponseEntity<?> getServiceTypes() {
+        List<String> serviceType = manager.findServiceTypes();
+        return ResponseEntity.ok(serviceType);
     }
 }

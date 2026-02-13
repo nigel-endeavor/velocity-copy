@@ -3,47 +3,34 @@ package com.endeavorms.velocity.qto.invoicing.invoice;
 import com.endeavorms.velocity.qto.common.BaseSearchCriteria;
 import com.endeavorms.velocity.qto.common.DateRangeType;
 
-import jakarta.ws.rs.QueryParam;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class InvoiceSearchCriteria extends BaseSearchCriteria<Invoice> {
 
-    @QueryParam("search")
     private String search;
 
-    @QueryParam("tenantName")
     private List<String> tenantNames = new ArrayList<>();
 
-    @QueryParam("invoiceId")
     private Long invoiceId;
 
-    @QueryParam("invoiceNumber")
     private String invoiceNumber;
 
-    @QueryParam("invoiceStatus")
     private String invoiceStatus;
 
-    @QueryParam("invoiceStartDate")
     private List<Date> invoiceStartDate;
 
-    @QueryParam("invoiceStartDate-comparison")
     private List<DateRangeType> invoiceStartDateTimeRange;
 
-    @QueryParam("invoiceEndDate")
     private List<Date> invoiceEndDate;
 
-    @QueryParam("invoiceEndDate-comparison")
     private List<DateRangeType> invoiceEndDateTimeRange;
 
-    @QueryParam("generatedBy")
     private String generatedBy;
 
-    @QueryParam("generatedDate")
     private List<Date> generatedDate;
 
-    @QueryParam("generatedDate-comparison")
     private List<DateRangeType> generatedDateTimeRange;
 
     public String getSearch() {

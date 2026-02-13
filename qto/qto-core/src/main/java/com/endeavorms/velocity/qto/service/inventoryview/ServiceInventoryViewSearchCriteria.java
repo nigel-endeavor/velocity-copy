@@ -4,7 +4,6 @@ import com.endeavorms.velocity.qto.common.BaseSearchCriteria;
 import com.endeavorms.velocity.qto.common.DateRangeType;
 import com.endeavorms.velocity.qto.common.RangeType;
 
-import jakarta.ws.rs.QueryParam;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -14,163 +13,110 @@ import java.util.List;
  * @since 2/23/2023
  */
 public class ServiceInventoryViewSearchCriteria extends BaseSearchCriteria<ServiceInventoryView> {
-    @QueryParam("search")
     private String search;
 
-    @QueryParam("locationId")
     private Long locationId;
 
-    @QueryParam("locationId-comparison")
     private List<RangeType> locationIdRange;
 
-    @QueryParam("address")
     private String address;
 
-    @QueryParam("address1")
     private String address1;
 
-    @QueryParam("address2")
     private String address2;
 
-    @QueryParam("city")
     private String city;
 
-    @QueryParam("stateProvince")
     private String stateProvince;
 
-    @QueryParam("postalCode")
     private String postalCode;
 
-    @QueryParam("status")
     private String status;
 
-    @QueryParam("provisioner")
     private List<String> provisioner;
 
-    @QueryParam("projectManager")
     private List<String> projectManager;
 
-    @QueryParam("provider")
     private List<String> provider;
 
-    @QueryParam("activeOnly")
     private boolean activeOnly;
 
-    @QueryParam("created")
     private List<Date> created;
 
-    @QueryParam("created-comparison")
     private List<DateRangeType> createdRange;
 
-    @QueryParam("clientServiceId")
     private String clientServiceId;
 
-    @QueryParam("clientLocationId")
     private String clientLocationId;
 
-    @QueryParam("clientLocationInfo")
     private String clientLocationInfo;
 
-    @QueryParam("companyName")
     private List<String> companyName;
 
-    @QueryParam("endCustomerClientId")
     private String endCustomerClientId;
 
-    @QueryParam("parentCompanyName")
     private List<String> parentCompanyName;
 
-    @QueryParam("parentCompanyClientId")
     private String parentCompanyClientId;
 
-    @QueryParam("providerCircuitId")
     private String providerCircuitId;
 
-    @QueryParam("serviceType")
     private List<String> serviceType;
 
-    @QueryParam("mrc")
     private List<BigDecimal> mrc;
 
-    @QueryParam("mrc-comparison")
     private List<RangeType> mrcRange;
 
-    @QueryParam("nrc")
     private List<BigDecimal> nrc;
 
-    @QueryParam("nrc-comparison")
     private List<RangeType> nrcRange;
 
-    @QueryParam("mrr")
     private List<BigDecimal> mrr;
 
-    @QueryParam("mrr-comparison")
     private List<RangeType> mrrRange;
 
-    @QueryParam("nrr")
     private List<BigDecimal> nrr;
 
-    @QueryParam("nrr-comparison")
     private List<RangeType> nrrRange;
 
-    @QueryParam("annualRecurringCost")
     private List<BigDecimal> annualRecurringCost;
 
-    @QueryParam("annualRecurringCost-comparison")
     private List<RangeType> annualRecurringCostRange;
 
-    @QueryParam("speed")
     private String speed;
 
-    @QueryParam("disputeOpen")
     private boolean disputeOpen;
 
-    @QueryParam("orderType")
     private List<String> orderType;
 
-    @QueryParam("subOrderType")
     private List<String> subOrderType;
 
-    @QueryParam("companyId")
     private Long companyId;
 
-    @QueryParam("macdOpen")
     private boolean macdOpen;
 
-    @QueryParam("activeInactive")
     private String activeInactive;
 
-    @QueryParam("contractTerm")
     private String contractTerm;
 
-    @QueryParam("accountNumber")
     private String accountNumber;
 
-    @QueryParam("summaryBill")
     private String summaryBill;
 
-    @QueryParam("disputeTypes")
     private String disputeTypes;
 
-    @QueryParam("clientLocationType")
     private String clientLocationType;
 
-    @QueryParam("openDisputeMrc")
     private BigDecimal openDisputeMrc;
 
-    @QueryParam("openDisputeNrc")
     private BigDecimal openDisputeNrc;
 
-    @QueryParam("serviceId")
     private Long serviceId;
 
-    @QueryParam("linkBundleType")
     private String linkBundleType;
 
-    @QueryParam("linkBundleFrom")
     private String linkBundleFrom;
 
-    @QueryParam("serviceBilledTo")
     private List<String> serviceBilledTo;
 
     public String getSearch() {

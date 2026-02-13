@@ -3,79 +3,58 @@ package com.endeavorms.velocity.qto.template.email;
 import com.endeavorms.velocity.qto.common.AbstractResource;
 import com.endeavorms.velocity.qto.common.PaginatedResult;
 import com.endeavorms.velocity.qto.common.PreconditionsUtil;
-import com.endeavorms.velocity.qto.contact.location.LocationContact;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.jboss.resteasy.annotations.Form;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.DELETE;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.PUT;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Response;
+import org.springframework.beans.factory.annotation.Autowired;
 
-@Path("/emailTemplates")
-@Consumes("application/json")
-@Produces("application/json")
+@RestController
+@RequestMapping("/api/emailTemplates")
 public class EmailTemplateResource extends AbstractResource<EmailTemplate> {
 
     @Override
     protected String getResourcePath() {
         return "/emailTemplates";
     }
-    /** Business logic layer for Email Templates. */
-    @Inject
+
+    @Autowired
     private EmailTemplateManager manager;
 
-    /**
-     * API endpoint that returns all email templates for a given template type and either entity ID or company ID.
-     * @param templateType the type of email templates to return.
-     * @param criteria the search criteria to use.
-     * @return a response containing the matching email templates.
-     */
-    @GET
-    @Path("/{templateType}")
-    public Response getEmailTemplates(@PathParam("templateType") final String templateType,
-                                      @Form final EmailTemplateSearchCriteria criteria) {
+    @GetMapping("/{templateType}")
+    public ResponseEntity<?> getEmailTemplates(@PathVariable("templateType") final String templateType,
+                                                @ModelAttribute final EmailTemplateSearchCriteria criteria) {
         if (criteria.getEntityId() == null && criteria.getCompanyId() == null) {
             throw new IllegalArgumentException("Either a company ID or an entity ID is required");
         }
         PaginatedResult<EmailTemplate> result = manager.getEmailTemplatesByType(templateType, criteria);
-        return toResponse(getCollectionResource(result, criteria, getLocation(EmailTemplateResource.class)));
+        return getCollectionResource(result, criteria, getLocation(EmailTemplateResource.class));
     }
 
-    /**
-     * Attempts to persist the provided email template.
-     * @param emailTemplate the email template to persist.
-     * @return the persisted contact.
-     */
-    @POST
+    @PostMapping
     @PreAuthorize("hasAuthority('order:write-terminal')")
-    public Response create(final EmailTemplate emailTemplate) {
+    public ResponseEntity<?> create(@RequestBody final EmailTemplate emailTemplate) {
         try {
             PreconditionsUtil.checkArgument(emailTemplate.getTemplateType(), "An email template type is required");
             PreconditionsUtil.checkArgument(emailTemplate.getCompanyId(), "A related company ID is required");
             EmailTemplate createdEmailTemplate = manager.create(emailTemplate);
-            return Response.ok(createdEmailTemplate).build();
+            return ResponseEntity.ok(createdEmailTemplate);
         } catch (Exception e) {
-            return Response.serverError().entity(e.getMessage()).build();
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 
-    /**
-     * Attempts to update an existing email template.
-     * @param id the ID of the email template to update.
-     * @param emailTemplate the email template with its updates.
-     * @return the updated email template.
-     */
-    @PUT
-    @Path("/{id: \\d+}")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('order:write-terminal')")
-    public Response edit(@PathParam("id") final Long id, final EmailTemplate emailTemplate) {
+    public ResponseEntity<?> edit(@PathVariable("id") final Long id, @RequestBody final EmailTemplate emailTemplate) {
         try {
             if (!id.equals(emailTemplate.getId())) {
                 throw new IllegalArgumentException("identifier in path does not match that of passed entity");
@@ -83,22 +62,16 @@ public class EmailTemplateResource extends AbstractResource<EmailTemplate> {
             PreconditionsUtil.checkArgument(emailTemplate.getTemplateType(), "An email template type is required");
             PreconditionsUtil.checkArgument(emailTemplate.getCompanyId(), "A related company ID is required");
             EmailTemplate updatedEmailTemplate = manager.edit(emailTemplate);
-            return Response.ok(updatedEmailTemplate).build();
+            return ResponseEntity.ok(updatedEmailTemplate);
         } catch (Exception e) {
-            return Response.serverError().entity(e.getMessage()).build();
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 
-    /**
-     * Deletes a resource.
-     * @param id resource identifier.
-     * @return a Response.
-     */
-    @DELETE
-    @Path("/{id : \\d+}")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('order:write-terminal')")
-    public Response remove(@PathParam("id") final Long id) {
+    public ResponseEntity<?> remove(@PathVariable("id") final Long id) {
         manager.remove(id);
-        return Response.noContent().build();
+        return ResponseEntity.noContent().build();
     }
 }

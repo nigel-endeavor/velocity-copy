@@ -11,93 +11,61 @@ import com.endeavorms.velocity.qto.service.Service;
 import com.endeavorms.velocity.qto.service.ServiceManager;
 import org.slf4j.LoggerFactory;
 
-import jakarta.inject.Inject;
-import jakarta.interceptor.AroundInvoke;
-import jakarta.interceptor.InvocationContext;
-import jakarta.ws.rs.core.Response;
+import org.springframework.stereotype.Component;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.List;
 
 /**
  * Interceptor for validating Service Milestones.
- *
- * @author mwelicka
- * @since 3/10/2023
  */
+@Component
 public class ServiceMilestoneInterceptor {
 
     static {
         LoggerFactory.getLogger(ServiceMilestoneInterceptor.class);
     }
 
-    /**
-     * the error list.
-     */
-    private List<ValidationError> errors;
-
-    /**
-     * Service Manager.
-     */
-    @Inject
+    @Autowired
     private ServiceManager serviceManager;
 
-    @Inject
+    @Autowired
     private MilestoneDisplaySetManager milestoneDisplaySetManager;
 
-    /**
-     * Validates milestones that may be edited.
-     *
-     * @param context the intercepted InvocationContext.
-     * @return an Object.
-     * @throws Exception should invocation fail for any reason.
-     */
-    @AroundInvoke
-    public Object validate(final InvocationContext context) throws Exception {
-       errors = Lists.newArrayList();
+    public BadRequestError validate(ServiceMilestoneInstance mi) {
+        List<ValidationError> errors = Lists.newArrayList();
+        Service service = serviceManager.retrieve(mi.getServiceId());
 
-        for (Object param : context.getParameters()) {
-            if (param instanceof ServiceMilestoneInstance) {
-                ServiceMilestoneInstance mi = (ServiceMilestoneInstance) param;
-                Service service = serviceManager.retrieve(mi.getServiceId());
-
-                if ("CANCELLED".equals(mi.getMilestone().getCode())
-                        || "CHANGE_IN_ASSIGNMENT".equals(mi.getMilestone().getCode())) {
-                    if (mi.getMilestoneDate() != null){
-                        if (service.isCurrentInventory()) {
-                            errors.add(new ValidationError("Service Milestone",
-                                    "Inventory Services cannot be Cancelled or have a Change in Assignment."));
-                        }
-                        if (service.getInventoryServiceId() != null && service.isEligibleForInventory()) {
-                            errors.add(new ValidationError("Service Milestone",
-                                    "This Service is already in Inventory and cannot be Cancelled or have a Change in Assignment."));
-                        }
-                    } else {
-                        if (service.getOrderType() != null && !"New".equals(service.getOrderType())) {
-                            errors.add(new ValidationError("Service Milestone",
-                                    "Cancelled or Change in Assignment Milestone dates cannot be removed from a MACD Services."));
-                        }
-                    }
+        if ("CANCELLED".equals(mi.getMilestone().getCode())
+                || "CHANGE_IN_ASSIGNMENT".equals(mi.getMilestone().getCode())) {
+            if (mi.getMilestoneDate() != null) {
+                if (service.isCurrentInventory()) {
+                    errors.add(new ValidationError("Service Milestone",
+                            "Inventory Services cannot be Cancelled or have a Change in Assignment."));
                 }
-
-                if (mi.getMilestoneDate() == null) {
-                     // get the inventory flag from the Milestone Display Set Include table
-                    MilestoneDisplaySet mds = milestoneDisplaySetManager.getByDisplayType(service.getType());
-                    for (MilestoneDisplaySetInclude mdsi : mds.getDisplaySetIncludes()) {
-                        if (mdsi.getMilestone().getCode().equals(mi.getMilestone().getCode()) && mdsi.isInventoryFlag()) {
-                           errors.add(new ValidationError("Service Milestone",
-                                   "Milestone " + mi.getMilestone().getName() + " is an Inventory Milestone and can only be adjusted, not removed."));
-                        }
-                    }
+                if (service.getInventoryServiceId() != null && service.isEligibleForInventory()) {
+                    errors.add(new ValidationError("Service Milestone",
+                            "This Service is already in Inventory and cannot be Cancelled or have a Change in Assignment."));
+                }
+            } else {
+                if (service.getOrderType() != null && !"New".equals(service.getOrderType())) {
+                    errors.add(new ValidationError("Service Milestone",
+                            "Cancelled or Change in Assignment Milestone dates cannot be removed from a MACD Services."));
                 }
             }
         }
 
-        if (errors.size() > 0) {
-            BadRequestError error = new BadRequestError(errors);
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity(error)
-                    .build();
+        if (mi.getMilestoneDate() == null) {
+            MilestoneDisplaySet mds = milestoneDisplaySetManager.getByDisplayType(service.getType());
+            for (MilestoneDisplaySetInclude mdsi : mds.getDisplaySetIncludes()) {
+                if (mdsi.getMilestone().getCode().equals(mi.getMilestone().getCode()) && mdsi.isInventoryFlag()) {
+                    errors.add(new ValidationError("Service Milestone",
+                            "Milestone " + mi.getMilestone().getName() + " is an Inventory Milestone and can only be adjusted, not removed."));
+                }
+            }
         }
 
-        return context.proceed();
+        return errors.isEmpty() ? null : new BadRequestError(errors);
     }
 }

@@ -4,379 +4,255 @@ import com.endeavorms.velocity.qto.common.BaseSearchCriteria;
 import com.endeavorms.velocity.qto.common.DateRangeType;
 import com.endeavorms.velocity.qto.common.RangeType;
 
-import jakarta.ws.rs.QueryParam;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
 public class ServiceCyberViewSearchCriteria extends BaseSearchCriteria<ServiceCyberView> {
-    @QueryParam("search")
     private String search;
 
-    @QueryParam("hideTerminalStatuses")
     private boolean hideTerminalStatuses;
 
-    @QueryParam("macOnly")
     private boolean macOnly;
 
-    @QueryParam("serviceId")
     private Long serviceId;
 
-    @QueryParam("locationId")
     private Long locationId;
 
-    @QueryParam("locationId-comparison")
     private List<RangeType> locationIdRange;
 
-    @QueryParam("clientLocationId")
     private String clientLocationId;
 
-    @QueryParam("clientLocationInfo")
     private String clientLocationInfo;
 
-    @QueryParam("parentCompanyName")
     private List<String> parentCompanyName;
 
-    @QueryParam("parentCompanyClientId")
     private String parentCompanyClientId;
 
-    @QueryParam("companyId")
     private Long companyId;
 
-    @QueryParam("companyName")
     private List<String> companyName;
 
-    @QueryParam("endCustomerClientId")
     private String endCustomerClientId;
 
-    @QueryParam("serviceType")
     private List<String> type;
 
-    @QueryParam("address")
     private String address;
 
-    @QueryParam("address1")
     private String address1;
 
-    @QueryParam("address2")
     private String address2;
 
-    @QueryParam("city")
     private String city;
 
-    @QueryParam("stateProvince")
     private String stateProvince;
 
-    @QueryParam("postalCode")
     private String postalCode;
 
-    @QueryParam("status")
     private String status;
 
-    @QueryParam("followUpDate")
     private List<Date> followUpDate;
 
-    @QueryParam("followUpDate-comparison")
     private List<DateRangeType> followUpDateRange;
 
-    @QueryParam("provisioner")
     private List<String> provisioner;
 
-    @QueryParam("i90ProjectManager")
     private String i90ProjectManager;
 
-    @QueryParam("provider")
     private List<String> provider;
 
-    @QueryParam("statusAge")
     private Long statusAge;
 
-    @QueryParam("statusAge-comparison")
     private List<RangeType> statusAgeRange;
 
-    @QueryParam("mrc")
     private List<BigDecimal> mrc;
 
-    @QueryParam("mrc-comparison")
     private List<RangeType> mrcRange;
 
-    @QueryParam("nrc")
     private List<BigDecimal> nrc;
 
-    @QueryParam("nrc-comparison")
     private List<RangeType> nrcRange;
 
-    @QueryParam("mrr")
     private List<BigDecimal> mrr;
 
-    @QueryParam("mrr-comparison")
     private List<RangeType> mrrRange;
 
-    @QueryParam("nrr")
     private List<BigDecimal> nrr;
 
-    @QueryParam("nrr-comparison")
     private List<RangeType> nrrRange;
 
-    @QueryParam("activeOnly")
     private boolean activeOnly;
 
-    @QueryParam("activeInactive")
     private String activeInactive;
 
-    @QueryParam("linkBundleType")
     private String linkBundleType;
 
-    @QueryParam("linkBundleFrom")
     private String linkBundleFrom;
 
-    @QueryParam("equipmentTypes")
     private List<String> equipmentTypes;
 
-    @QueryParam("equipmentCount")
     private List<Long> equipmentCount;
 
-    @QueryParam("equipmentCount-comparison")
     private List<RangeType> equipmentCountRange;
 
-    @QueryParam("customerRequestedInstall")
     private List<Date> customerRequestedInstall;
 
-    @QueryParam("customerRequestedInstall-comparison")
     private List<DateRangeType> customerRequestedInstallRange;
 
-    @QueryParam("created")
     private List<Date> created;
 
-    @QueryParam("created-comparison")
     private List<DateRangeType> createdRange;
 
-    @QueryParam("techDataGatheringFormSent")
     private List<Date> techDataGatheringFormSent;
 
-    @QueryParam("techDataGatheringFormSent-comparison")
     private List<DateRangeType> techDataGatheringFormSentRange;
 
-    @QueryParam("techDataGatheringMeetingScheduled")
     private List<Date> techDataGatheringMeetingScheduled;
 
-    @QueryParam("techDataGatheringMeetingScheduled-comparison")
     private List<DateRangeType> techDataGatheringMeetingScheduledRange;
 
-    @QueryParam("techDataGatheringMeetingCompleted")
     private List<Date> techDataGatheringMeetingCompleted;
 
-    @QueryParam("techDataGatheringMeetingCompleted-comparison")
     private List<DateRangeType> techDataGatheringMeetingCompletedRange;
 
-    @QueryParam("emailUsmAnywhereTemplateRequirements")
     private List<Date> emailUsmAnywhereTemplateRequirements;
 
-    @QueryParam("emailUsmAnywhereTemplateRequirements-comparison")
     private List<DateRangeType> emailUsmAnywhereTemplateRequirementsRange;
 
-    @QueryParam("inventoryAssignmentVerified")
     private List<Date> inventoryAssignmentVerified;
 
-    @QueryParam("inventoryAssignmentVerified-comparison")
     private List<DateRangeType> inventoryAssignmentVerifiedRange;
 
-    @QueryParam("newUsmAnywhereServerBuild")
     private List<Date> newUsmAnywhereServerBuild;
 
-    @QueryParam("newUsmAnywhereServerBuild-comparison")
     private List<DateRangeType> newUsmAnywhereServerBuildRange;
 
-    @QueryParam("implementationQa")
     private List<Date> implementationQa;
 
-    @QueryParam("implementationQa-comparison")
     private List<DateRangeType> implementationQaRange;
 
-    @QueryParam("verifyAssetsInSiemDb")
     private List<Date> verifyAssetsInSiemDb;
 
-    @QueryParam("verifyAssetsInSiemDb-comparison")
     private List<DateRangeType> verifyAssetsInSiemDbRange;
 
-    @QueryParam("verifyLoggingDataSource")
     private List<Date> verifyLoggingDataSource;
 
-    @QueryParam("verifyLoggingDataSource-comparison")
     private List<DateRangeType> verifyLoggingDataSourceRange;
 
-    @QueryParam("scheduleVulnerabilityScans")
     private List<Date> scheduleVulnerabilityScans;
 
-    @QueryParam("scheduleVulnerabilityScans-comparison")
     private List<DateRangeType> scheduleVulnerabilityScansRange;
 
-    @QueryParam("bulkAlarmTuningPhase")
     private List<Date> bulkAlarmTuningPhase;
 
-    @QueryParam("bulkAlarmTuningPhase-comparison")
     private List<DateRangeType> bulkAlarmTuningPhaseRange;
 
-    @QueryParam("siemEventFiltering")
     private List<Date> siemEventFiltering;
 
-    @QueryParam("siemEventFiltering-comparison")
     private List<DateRangeType> siemEventFilteringRange;
 
-    @QueryParam("filtersBuiltForReports")
     private List<Date> filtersBuiltForReports;
 
-    @QueryParam("filtersBuiltForReports-comparison")
     private List<DateRangeType> filtersBuiltForReportsRange;
 
-    @QueryParam("defaultAlarmRuleAdditions")
     private List<Date> defaultAlarmRuleAdditions;
 
-    @QueryParam("defaultAlarmRuleAdditions-comparison")
     private List<DateRangeType> defaultAlarmRuleAdditionsRange;
 
-    @QueryParam("customAlarmRuleAdditions")
     private List<Date> customAlarmRuleAdditions;
 
-    @QueryParam("customAlarmRuleAdditions-comparison")
     private List<DateRangeType> customAlarmRuleAdditionsRange;
 
-    @QueryParam("forwardAlarmsToUsmCentral")
     private List<Date> forwardAlarmsToUsmCentral;
 
-    @QueryParam("forwardAlarmsToUsmCentral-comparison")
     private List<DateRangeType> forwardAlarmsToUsmCentralRange;
 
-    @QueryParam("forwardAlarmsToD3SocLive")
     private List<Date> forwardAlarmsToD3SocLive;
 
-    @QueryParam("forwardAlarmsToD3SocLive-comparison")
     private List<DateRangeType> forwardAlarmsToD3SocLiveRange;
 
-    @QueryParam("hostListProvidedByClient")
     private List<Date> hostListProvidedByClient;
 
-    @QueryParam("hostListProvidedByClient-comparison")
     private List<DateRangeType> hostListProvidedByClientRange;
 
-    @QueryParam("halcyonPackageGivenToClient")
     private List<Date> halcyonPackageGivenToClient;
 
-    @QueryParam("halcyonPackageGivenToClient-comparison")
     private List<DateRangeType> halcyonPackageGivenToClientRange;
 
-    @QueryParam("halcyonDeployedToHosts")
     private List<Date> halcyonDeployedToHosts;
 
-    @QueryParam("halcyonDeployedToHosts-comparison")
     private List<DateRangeType> halcyonDeployedToHostsRange;
 
-    @QueryParam("devopsNotifiedOfHalcyonAddition")
     private List<Date> devopsNotifiedOfHalcyonAddition;
 
-    @QueryParam("devopsNotifiedOfHalcyonAddition-comparison")
     private List<DateRangeType> devopsNotifiedOfHalcyonAdditionRange;
 
-    @QueryParam("halcyonApiTokenAddedToD3")
     private List<Date> halcyonApiTokenAddedToD3;
 
-    @QueryParam("halcyonApiTokenAddedToD3-comparison")
     private List<DateRangeType> halcyonApiTokenAddedToD3Range;
 
-    @QueryParam("d3ConnectionVerified")
     private List<Date> d3ConnectionVerified;
 
-    @QueryParam("d3ConnectionVerified-comparison")
     private List<DateRangeType> d3ConnectionVerifiedRange;
 
-    @QueryParam("endLearningMode")
     private List<Date> endLearningMode;
 
-    @QueryParam("endLearningMode-comparison")
     private List<DateRangeType> endLearningModeRange;
 
-    @QueryParam("testEmailSentToClient")
     private List<Date> testEmailSentToClient;
 
-    @QueryParam("testEmailSentToClient-comparison")
     private List<DateRangeType> testEmailSentToClientRange;
 
-    @QueryParam("deployConsultingTenant")
     private List<Date> deployConsultingTenant;
 
-    @QueryParam("deployConsultingTenant-comparison")
     private List<DateRangeType> deployConsultingTenantRange;
 
-    @QueryParam("deployVulnerabilityScans")
     private List<Date> deployVulnerabilityScans;
 
-    @QueryParam("deployVulnerabilityScans-comparison")
     private List<DateRangeType> deployVulnerabilityScansRange;
 
-    @QueryParam("providedCustomerWithReport")
     private List<Date> providedCustomerWithReport;
 
-    @QueryParam("providedCustomerWithReport-comparison")
     private List<DateRangeType> providedCustomerWithReportRange;
 
-    @QueryParam("discussFutureCyrismaManagement")
     private List<Date> discussFutureCyrismaManagement;
 
-    @QueryParam("discussFutureCyrismaManagement-comparison")
     private List<DateRangeType> discussFutureCyrismaManagementRange;
 
-    @QueryParam("reviewExistingCaAndMfaPolicies")
     private List<Date> reviewExistingCaAndMfaPolicies;
 
-    @QueryParam("reviewExistingCaAndMfaPolicies-comparison")
     private List<DateRangeType> reviewExistingCaAndMfaPoliciesRange;
 
-    @QueryParam("signInPoliciesEnabled")
     private List<Date> signInPoliciesEnabled;
 
-    @QueryParam("signInPoliciesEnabled-comparison")
     private List<DateRangeType> signInPoliciesEnabledRange;
 
-    @QueryParam("conditionalAccessPolicyVerification")
     private List<Date> conditionalAccessPolicyVerification;
 
-    @QueryParam("conditionalAccessPolicyVerification-comparison")
     private List<DateRangeType> conditionalAccessPolicyVerificationRange;
 
-    @QueryParam("geographicRestrictionsEnabled")
     private List<Date> geographicRestrictionsEnabled;
 
-    @QueryParam("geographicRestrictionsEnabled-comparison")
     private List<DateRangeType> geographicRestrictionsEnabledRange;
 
-    @QueryParam("deviceComplianceEnabled")
     private List<Date> deviceComplianceEnabled;
 
-    @QueryParam("deviceComplianceEnabled-comparison")
     private List<DateRangeType> deviceComplianceEnabledRange;
 
-    @QueryParam("passwordResetEnabledForSelfService")
     private List<Date> passwordResetEnabledForSelfService;
 
-    @QueryParam("passwordResetEnabledForSelfService-comparison")
     private List<DateRangeType> passwordResetEnabledForSelfServiceRange;
 
-    @QueryParam("breakGlassAccountConfigured")
     private List<Date> breakGlassAccountConfigured;
 
-    @QueryParam("breakGlassAccountConfigured-comparison")
     private List<DateRangeType> breakGlassAccountConfiguredRange;
 
-    @QueryParam("pimEnablement")
     private List<Date> pimEnablement;
 
-    @QueryParam("pimEnablement-comparison")
     private List<DateRangeType> pimEnablementRange;
 
-    @QueryParam("implementationVerified")
     private List<Date> implementationVerified;
 
-    @QueryParam("implementationVerified-comparison")
     private List<DateRangeType> implementationVerifiedRange;
 
     public String getSearch() {

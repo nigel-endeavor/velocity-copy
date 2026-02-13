@@ -1,26 +1,19 @@
 package com.endeavorms.velocity.qto.report;
 
-import jakarta.ws.rs.QueryParam;
 import java.util.List;
 
 public class DashboardSearchCriteria {
 
-    @QueryParam("tenantNames")
     private List<String> tenantNames;
 
-    @QueryParam("masterCompanyNames")
     private List<String> masterCompanyNames;
 
-    @QueryParam("companyNames")
     private List<String> companyNames;
 
-    @QueryParam("serviceTypes")
     private List<String> serviceTypes;
 
-    @QueryParam("providers")
     private List<String> providers;
 
-    @QueryParam("serviceBilledTos")
     private List<String> serviceBilledTos;
 
     public List<String> getTenantNames() {

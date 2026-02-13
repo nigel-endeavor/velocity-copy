@@ -8,8 +8,6 @@ import com.google.common.collect.Lists;
 import com.querydsl.core.QueryResults;
 
 import java.util.List;
-import jakarta.ws.rs.DefaultValue;
-import jakarta.ws.rs.QueryParam;
 
 @JacksonXmlRootElement
 public class PaginatedResult<T extends BaseEntity> {
@@ -17,11 +15,7 @@ public class PaginatedResult<T extends BaseEntity> {
     /** @deprecated */
     @Deprecated
     private int page = 0;
-    @QueryParam("offset")
-    @DefaultValue("0")
     private int offset = 0;
-    @QueryParam("limit")
-    @DefaultValue("25")
     private int limit = 25;
     private int total = 0;
     @JacksonXmlElementWrapper(

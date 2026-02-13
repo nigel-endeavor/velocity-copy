@@ -7,23 +7,22 @@ import com.endeavorms.velocity.qto.report.ProviderIntervalsView;
 import com.endeavorms.velocity.qto.report.ProviderViewManager;
 import com.endeavorms.velocity.qto.report.WipServiceView;
 import com.endeavorms.velocity.qto.report.WipViewManager;
-import org.jboss.resteasy.annotations.Form;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
-import jakarta.ws.rs.core.Response;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.List;
 
 /**
  * @author llevit
  */
-@Path("/providerViews")
-@Consumes("application/json")
-@Produces({"application/json", "application/vnd.ms-excel"})
+@RestController
+@RequestMapping("/api/providerViews")
 public class ProviderViewResource extends AbstractResource<ProviderIntervalsView> {
 
     @Override
@@ -31,26 +30,24 @@ public class ProviderViewResource extends AbstractResource<ProviderIntervalsView
         return "/providerViews";
     }
 
-    @Inject
+    @Autowired
     private ProviderViewManager providerManager;
 
-    @Inject
+    @Autowired
     private WipViewManager wipManager;
 
-    @GET
-    @Path("/providerIntervals")
-    public Response getProviderIntervals(@Form final DashboardSearchCriteria criteria,
-                                        @QueryParam("intervalTypeCode") final String intervalTypeCode,
-                                        @QueryParam("numOfMonths") final int numOfMonths) {
+    @GetMapping("/providerIntervals")
+    public ResponseEntity<?> getProviderIntervals(@ModelAttribute final DashboardSearchCriteria criteria,
+                                                 @RequestParam("intervalTypeCode") final String intervalTypeCode,
+                                                 @RequestParam("numOfMonths") final int numOfMonths) {
         PreconditionsUtil.checkArgument(intervalTypeCode, "Interval Type Code is required.");
         List<ProviderIntervalsView> providerIntervals = providerManager.getProviderIntervals(criteria, intervalTypeCode, numOfMonths);
-        return Response.ok(providerIntervals).build();
+        return ResponseEntity.ok(providerIntervals);
     }
 
-    @GET
-    @Path("/providerReliance")
-    public Response getProviderReliance(@Form final DashboardSearchCriteria criteria) {
+    @GetMapping("/providerReliance")
+    public ResponseEntity<?> getProviderReliance(@ModelAttribute final DashboardSearchCriteria criteria) {
         List<WipServiceView> services = wipManager.getProviderReliance(criteria);
-        return Response.ok(services).build();
+        return ResponseEntity.ok(services);
     }
 }

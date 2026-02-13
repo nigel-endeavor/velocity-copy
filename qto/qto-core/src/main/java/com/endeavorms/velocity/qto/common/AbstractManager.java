@@ -6,7 +6,7 @@ import com.endeavorms.velocity.qto.service.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jakarta.ws.rs.NotFoundException;
+import com.endeavorms.velocity.qto.common.NotFoundException;
 
 /**
  * From commons.

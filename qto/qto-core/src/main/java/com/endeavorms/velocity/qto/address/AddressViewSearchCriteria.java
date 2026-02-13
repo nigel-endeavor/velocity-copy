@@ -2,7 +2,6 @@ package com.endeavorms.velocity.qto.address;
 
 import com.endeavorms.velocity.qto.common.BaseSearchCriteria;
 
-import jakarta.ws.rs.QueryParam;
 
 /**
  * @author rcasey
@@ -10,13 +9,10 @@ import jakarta.ws.rs.QueryParam;
  */
 public class AddressViewSearchCriteria extends BaseSearchCriteria<AddressView> {
 
-    @QueryParam("search")
     private String search;
 
-    @QueryParam("companyId")
     private Long companyId;
 
-    @QueryParam("isLocation")
     private boolean type;
 
     public String getSearch() {

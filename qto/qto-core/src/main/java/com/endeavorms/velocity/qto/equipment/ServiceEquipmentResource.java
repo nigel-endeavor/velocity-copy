@@ -3,23 +3,22 @@ package com.endeavorms.velocity.qto.equipment;
 import com.endeavorms.velocity.qto.common.AbstractResource;
 import com.endeavorms.velocity.qto.common.PaginatedResult;
 import com.endeavorms.velocity.qto.common.PreconditionsUtil;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.jboss.resteasy.annotations.Form;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.DELETE;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.PUT;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Response;
+import org.springframework.beans.factory.annotation.Autowired;
 
-@Path("/serviceEquipment")
-@Consumes("application/json")
-@Produces("application/json")
+@RestController
+@RequestMapping("/api/serviceEquipment")
 public class ServiceEquipmentResource extends AbstractResource<ServiceEquipment> {
 
     @Override
@@ -27,51 +26,42 @@ public class ServiceEquipmentResource extends AbstractResource<ServiceEquipment>
         return "/serviceEquipment";
     }
 
-    /** Business methods for services. */
-    @Inject
+    @Autowired
     private ServiceEquipmentManager manager;
 
-    /**
-     * Retrieves all ServiceEquipment matching the given criteria.
-     * @param criteria the criteria to filter by.
-     * @return matching serviceEquipment.
-     */
-    @GET
+    @GetMapping
     @PreAuthorize("hasAnyAuthority('inventory:read','order:read')")
-    public Response getServiceEquipment(@Form final ServiceEquipmentSearchCriteria criteria) {
+    public ResponseEntity<?> getServiceEquipment(@ModelAttribute final ServiceEquipmentSearchCriteria criteria) {
         PaginatedResult<ServiceEquipment> result = manager.findBySearchCriteria(criteria);
-        return toResponse(getCollectionResource(result, criteria, getLocation(ServiceEquipmentResource.class)));
+        return getCollectionResource(result, criteria, getLocation(ServiceEquipmentResource.class));
     }
 
-    @POST
+    @PostMapping
     @PreAuthorize("hasAnyAuthority('inventory:write','order:write')")
-    public Response create(final ServiceEquipment equipment) {
+    public ResponseEntity<?> create(@RequestBody final ServiceEquipment equipment) {
         manager.create(equipment);
-        return Response.ok().build();
+        return ResponseEntity.ok().build();
     }
 
-    @GET
-    @Path("/{id}")
+    @GetMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('inventory:read','order:read')")
-    public Response getServiceEquipment(@PathParam("id") final Long id) {
-        return Response.ok(manager.retrieve(id)).build();
+    public ResponseEntity<?> getServiceEquipment(@PathVariable("id") final Long id) {
+        return ResponseEntity.ok(manager.retrieve(id));
     }
 
-    @PUT
-    @Path("/{id}")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('inventory:write','order:write')")
-    public Response update(@PathParam("id") final Long id, final ServiceEquipment equipment) {
+    public ResponseEntity<?> update(@PathVariable("id") final Long id, @RequestBody final ServiceEquipment equipment) {
         PreconditionsUtil.checkArgument(id, "Customer Task ID is required");
         manager.edit(equipment);
-        return Response.ok().build();
+        return ResponseEntity.ok().build();
     }
 
-    @DELETE
-    @Path("/{id}")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('inventory:write','order:write')")
-    public Response delete(@PathParam("id") final Long id) {
+    public ResponseEntity<?> delete(@PathVariable("id") final Long id) {
         PreconditionsUtil.checkArgument(id, "Customer Task ID is required");
         manager.remove(id);
-        return Response.ok().build();
+        return ResponseEntity.ok().build();
     }
 }

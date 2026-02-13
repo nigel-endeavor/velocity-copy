@@ -1,20 +1,15 @@
 package com.endeavorms.velocity.qto.dispute;
 
 import com.endeavorms.velocity.qto.common.BaseSearchCriteria;
-import jakarta.ws.rs.QueryParam;
 
 public class DisputeSearchCriteria extends BaseSearchCriteria<Dispute> {
 
-    @QueryParam("search")
     private String search;
 
-    @QueryParam("serviceId")
     private Long serviceId;
 
-    @QueryParam("locationId")
     private Long locationId;
 
-    @QueryParam("disputeOpen")
     private boolean disputeOpen;
 
     public String getSearch() {

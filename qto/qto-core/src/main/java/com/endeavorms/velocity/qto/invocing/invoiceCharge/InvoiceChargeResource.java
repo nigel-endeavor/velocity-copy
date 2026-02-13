@@ -6,23 +6,21 @@ import com.endeavorms.velocity.qto.common.PreconditionsUtil;
 import com.endeavorms.velocity.qto.invoicing.invoiceCharge.InvoiceCharge;
 import com.endeavorms.velocity.qto.invoicing.invoiceCharge.InvoiceChargeManager;
 import com.endeavorms.velocity.qto.invoicing.invoiceCharge.InvoiceChargeSearchCriteria;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.jboss.resteasy.annotations.Form;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Response;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author mwelicka
  * @since 8/09/2023
  */
-@Path("/invoiceCharges")
-@Consumes("application/json")
-@Produces({"application/json", "application/vnd.ms-excel"})
+@RestController
+@RequestMapping("/api/invoiceCharges")
 public class InvoiceChargeResource extends AbstractResource<InvoiceCharge> {
 
     @Override
@@ -30,21 +28,15 @@ public class InvoiceChargeResource extends AbstractResource<InvoiceCharge> {
         return "/invoiceCharges";
     }
 
-    @Inject
+    @Autowired
     private InvoiceChargeManager manager;
-    /**
-     * Returns invoiceCharges that match the provided search criteria.
-     *
-     * @param criteria what to match invoices on.
-     * @return the matching invoices, if any.
-     */
-    @GET
+
+    @GetMapping
     @PreAuthorize("hasAuthority('invoice:read')")
-    public Response getInvoiceCharges(@Form final InvoiceChargeSearchCriteria criteria) {
+    public ResponseEntity<?> getInvoiceCharges(@ModelAttribute final InvoiceChargeSearchCriteria criteria) {
         PreconditionsUtil.checkArgument(criteria.getInvoiceId(), "An Invoice ID is required");
         InvoiceChargeSearchCriteria crit = getExportCriteria(criteria);
         PaginatedResult<InvoiceCharge> result = manager.findBySearchCriteria(crit);
-        return toResponse(getCollectionResource(result, criteria, getLocation(InvoiceChargeResource.class)));
+        return getCollectionResource(result, criteria, getLocation(InvoiceChargeResource.class));
     }
-
 }

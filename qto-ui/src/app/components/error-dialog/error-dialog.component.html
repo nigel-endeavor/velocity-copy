@@ -1,8 +1,0 @@
-<dialog #dialog>
-  <div class="header">
-    <p>{{timestamp}}</p>
-    <p *ngIf="status">{{status}}</p>
-  </div>
-  <p class="message" *ngIf="message">{{message}}</p>
-  <button (click)="close()">Close</button>
-</dialog>

@@ -10,32 +10,29 @@ import com.endeavorms.velocity.qto.company.Company;
 import com.endeavorms.velocity.qto.company.CompanyManager;
 import com.endeavorms.velocity.qto.location.Location;
 import com.endeavorms.velocity.qto.location.LocationManager;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
-import jakarta.ws.rs.core.Context;
-import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
 
-@Path("/companyFileAttachments")
-@Produces("application/json")
+import org.springframework.beans.factory.annotation.Autowired;
+
+@RestController
+@RequestMapping("/api/companyFileAttachments")
 public class CompanyFileAttachmentResource extends AbstractFileAttachmentResource<CompanyFileAttachment> {
-    @Inject
+    @Autowired
     private CompanyFileAttachmentManager manager;
 
-    @Inject
+    @Autowired
     private CompanyManager companyManager;
 
-    @Inject
+    @Autowired
     private LocationManager locationManager;
-
 
     @Override
     protected AbstractFileAttachmentManager<CompanyFileAttachment> getManager() {
@@ -47,9 +44,10 @@ public class CompanyFileAttachmentResource extends AbstractFileAttachmentResourc
         return "/companyFileAttachments";
     }
 
-    @GET
+    @GetMapping
     @PreAuthorize("hasAnyAuthority('inventory:read','order:read')")
-    public Response getAttachments(@QueryParam("companyId") final Long companyId, @QueryParam("locationId") final Long locationId) {
+    public ResponseEntity<?> getAttachments(@RequestParam(value = "companyId", required = false) final Long companyId,
+                                            @RequestParam(value = "locationId", required = false) final Long locationId) {
         PaginatedResult<CompanyFileAttachment> result;
         Long id;
         if (locationId != null && companyId == null) {
@@ -59,18 +57,13 @@ public class CompanyFileAttachmentResource extends AbstractFileAttachmentResourc
             id = companyId;
         }
         result = manager.findByCompanyId(id);
-
-        return Response.ok(result).build();
+        return ResponseEntity.ok(result);
     }
 
-    @POST
-    @Path("/upload")
-
-    @Produces(MediaType.TEXT_HTML)
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @PostMapping("/upload")
     @PreAuthorize("hasAnyAuthority('inventory:write','order:write')")
-    public Response upload(@QueryParam("companyId") final Long companyId,
-                           @Context final HttpServletRequest servletRequest) {
+    public ResponseEntity<?> upload(@RequestParam("companyId") final Long companyId,
+                                     HttpServletRequest servletRequest) {
         PreconditionsUtil.checkArgument(companyId, "Company ID is required.");
         return upload(servletRequest, () -> {
             CompanyFileAttachment attachment = new CompanyFileAttachment();
@@ -86,4 +79,3 @@ public class CompanyFileAttachmentResource extends AbstractFileAttachmentResourc
         });
     }
 }
-

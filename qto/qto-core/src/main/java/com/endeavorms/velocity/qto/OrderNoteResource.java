@@ -5,24 +5,23 @@ import com.endeavorms.velocity.qto.common.PaginatedResult;
 import com.endeavorms.velocity.qto.note.OrderNote;
 import com.endeavorms.velocity.qto.note.OrderNoteManager;
 import com.endeavorms.velocity.qto.note.OrderNoteSearchCriteria;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.jboss.resteasy.annotations.Form;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Response;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author llevit
  * @since 1/16/2023
  */
-@Path("/orderNotes")
-@Consumes("application/json")
-@Produces("application/json")
+@RestController
+@RequestMapping("/api/orderNotes")
 public class OrderNoteResource extends AbstractResource<OrderNote> {
 
     @Override
@@ -30,35 +29,27 @@ public class OrderNoteResource extends AbstractResource<OrderNote> {
         return "/orderNotes";
     }
 
-    /** Business methods for Orders. */
-    @Inject
+    @Autowired
     private OrderNoteManager manager;
 
-    /**
-     * Retrieves all OrderNotes matching the given criteria.
-     * @param criteria the criteria to filter by.
-     * @return matching orderNotes.
-     */
-    @GET
+    @GetMapping
     @PreAuthorize("hasAnyAuthority('inventory:read','order:read')")
-    public Response getOrderNotes(@Form final OrderNoteSearchCriteria criteria) {
+    public ResponseEntity<?> getOrderNotes(@ModelAttribute final OrderNoteSearchCriteria criteria) {
         PaginatedResult<OrderNote> result = manager.findBySearchCriteria(criteria);
-        return toResponse(getCollectionResource(result, criteria, getLocation(OrderNoteResource.class)));
+        return getCollectionResource(result, criteria, getLocation(OrderNoteResource.class));
     }
 
-    @POST
+    @PostMapping
     @PreAuthorize("hasAnyAuthority('inventory:write','order:write')")
-    public Response create(final OrderNote note) {
+    public ResponseEntity<?> create(@RequestBody final OrderNote note) {
         try {
-            OrderNote returnedNote;
             if (note.getOrderId() == null) {
                 throw new IllegalArgumentException("Missing orderId.");
-            } else {
-                returnedNote = manager.create(note);
             }
-            return Response.ok(returnedNote).build();
+            OrderNote returnedNote = manager.create(note);
+            return ResponseEntity.ok(returnedNote);
         } catch (Exception e) {
-            return Response.serverError().entity(e.getMessage()).build();
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 }

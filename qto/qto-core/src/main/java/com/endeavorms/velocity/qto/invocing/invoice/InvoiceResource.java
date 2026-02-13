@@ -1,34 +1,32 @@
 package com.endeavorms.velocity.qto.invocing.invoice;
 
 import com.endeavorms.velocity.qto.common.AbstractResource;
+import com.endeavorms.velocity.qto.common.BadRequestError;
 import com.endeavorms.velocity.qto.common.PaginatedResult;
 import com.endeavorms.velocity.qto.interceptors.InvoiceFinalizeInterceptor;
 import com.endeavorms.velocity.qto.interceptors.InvoiceInterceptor;
-import com.endeavorms.velocity.qto.invocing.jms.InvoiceChargeQueueHandler;
 import com.endeavorms.velocity.qto.invoicing.invoice.Invoice;
 import com.endeavorms.velocity.qto.invoicing.invoice.InvoiceManager;
 import com.endeavorms.velocity.qto.invoicing.invoice.InvoiceSearchCriteria;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.jboss.resteasy.annotations.Form;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.inject.Inject;
-import jakarta.interceptor.Interceptors;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.PUT;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Response;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author mwelicka
  * @since 8/09/2023
  */
-@Path("/invoices")
-@Consumes("application/json")
-@Produces({"application/json", "application/vnd.ms-excel"})
+@RestController
+@RequestMapping("/api/invoices")
 public class InvoiceResource extends AbstractResource<Invoice> {
 
     @Override
@@ -36,76 +34,69 @@ public class InvoiceResource extends AbstractResource<Invoice> {
         return "/invoices";
     }
 
-    @Inject
+    @Autowired
     private InvoiceManager manager;
 
-    @Inject
-    protected InvoiceChargeQueueHandler invoiceChargeQueueHandler;
+    @Autowired
+    private InvoiceInterceptor invoiceInterceptor;
 
-    /**
-     * Returns invoices that match the provided search criteria.
-     *
-     * @param criteria what to match invoices on.
-     * @return the matching invoices, if any.
-     */
-    @GET
+    @Autowired
+    private InvoiceFinalizeInterceptor invoiceFinalizeInterceptor;
+
+    @GetMapping
     @PreAuthorize("hasAuthority('invoice:read')")
-    public Response getInvoices(@Form final InvoiceSearchCriteria criteria) {
+    public ResponseEntity<?> getInvoices(@ModelAttribute final InvoiceSearchCriteria criteria) {
         InvoiceSearchCriteria crit = getExportCriteria(criteria);
         PaginatedResult<Invoice> result = manager.findBySearchCriteria(crit);
-        return toResponse(getCollectionResource(result, criteria, getLocation(InvoiceResource.class)));
+        return getCollectionResource(result, criteria, getLocation(InvoiceResource.class));
     }
 
-    @GET
+    @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('invoice:read')")
-    @Path("/{id: \\d+}")
-    public Response getInvoice(@PathParam("id") final Long id) {
+    public ResponseEntity<?> getInvoice(@PathVariable("id") final Long id) {
         Invoice invoice = manager.retrieve(id);
-        return Response.ok(invoice).build();
+        return ResponseEntity.ok(invoice);
     }
 
-    /**
-     * Attempts to persist the provided invoice.
-     *
-     * @param tenantName the tenant to persist the invoice for.
-     * @param invoice    the invoice to persist.
-     * @return the persisted invoice.
-     */
-    @POST
+    @PostMapping("/{client}")
     @PreAuthorize("hasAuthority('invoice:write')")
-    @Path("/{client: \\w+}")
-    @Interceptors({InvoiceInterceptor.class})
-    public Response create(@PathParam("client") final String tenantName, final Invoice invoice) {
+    public ResponseEntity<?> create(@PathVariable("client") final String tenantName, @RequestBody final Invoice invoice) {
         try {
+            invoice.setClientName(tenantName);
+            BadRequestError validationError = invoiceInterceptor.validateForCreate(invoice);
+            if (validationError != null) {
+                return ResponseEntity.badRequest().body(validationError);
+            }
             Invoice createdInvoice = manager.createInvoice(invoice, tenantName);
-            return Response.ok(createdInvoice).build();
+            return ResponseEntity.ok(createdInvoice);
         } catch (Exception e) {
-            return Response.serverError().entity(e.getMessage()).build();
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 
-    @PUT
+    @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('invoice:write')")
-    @Path("/{id: \\d+}")
-    public Response edit(@PathParam("id") final Long id) {
+    public ResponseEntity<?> edit(@PathVariable("id") final Long id) {
         try {
             manager.sendMessageToChargeQueue(id, null);
-            return Response.accepted().build();
+            return ResponseEntity.accepted().build();
         } catch (Exception e) {
-            return Response.serverError().build();
+            return ResponseEntity.internalServerError().build();
         }
     }
 
-    @PUT
+    @PutMapping("/{id}/finalize")
     @PreAuthorize("hasAuthority('invoice:write')")
-    @Path("/{id: \\d+}/finalize")
-    @Interceptors({InvoiceFinalizeInterceptor.class})
-    public Response finalize(@PathParam("id") final Long id) {
+    public ResponseEntity<?> finalize(@PathVariable("id") final Long id) {
         try {
+            BadRequestError validationError = invoiceFinalizeInterceptor.validateForFinalize(id);
+            if (validationError != null) {
+                return ResponseEntity.badRequest().body(validationError);
+            }
             manager.sendMessageToChargeQueue(id, "finalize");
-            return Response.accepted().build();
+            return ResponseEntity.accepted().build();
         } catch (Exception e) {
-            return Response.serverError().build();
+            return ResponseEntity.internalServerError().build();
         }
     }
 }

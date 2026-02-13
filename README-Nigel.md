@@ -8,7 +8,7 @@ Quick reference guide for building and running the QTO application.
 
 ### Required Software
 - **Java 21+** - for Spring Boot backend
-- **Bun 1.3+** - for frontend development (qto-ui-react)
+- **Bun 1.3+** - for frontend development (qto-ui)
 - **Git** - for version control
 
 ### Verify Installation
@@ -95,11 +95,11 @@ cd qto/qto-spring-boot-app
 
 ### Frontend (React + Vite)
 
-**Location**: `qto-ui-react/`
+**Location**: `qto-ui/`
 
 #### Install Dependencies
 ```bash
-cd qto-ui-react
+cd qto-ui
 bun install
 ```
 
@@ -145,14 +145,11 @@ velocity/
 │       ├── start.sh
 │       └── stop.sh
 │
-├── qto-ui-react/                  # React frontend (primary UI)
+├── qto-ui/                        # React frontend (primary UI)
 │   ├── src/
 │   ├── package.json
 │   ├── vite.config.ts
 │   └── QUICK_START.md
-│
-├── qto-ui/                        # Angular frontend (legacy)
-│   └── build.gradle
 │
 ├── help-desk-ui/                  # Angular help desk UI
 │   └── build.gradle
@@ -169,11 +166,10 @@ velocity/
 
 | UI | Tech | URL | Purpose |
 |----|------|-----|---------|
-| **qto-ui-react** | React 19 | http://localhost:7887/qto-ops/ | Primary UI – Service Worklist, etc. |
-| **qto-ui** | Angular 16 | (build & serve separately) | Legacy Angular UI |
+| **qto-ui** | React 19 | http://localhost:7887/qto-ops/ | Primary UI – Service Worklist, etc. |
 | **help-desk-ui** | Angular 16 | (build & serve separately) | Help desk interface |
 
-**Recommended**: Use **qto-ui-react** for testing the backend.
+**Recommended**: Use **qto-ui** for testing the backend.
 
 ---
 
@@ -211,7 +207,7 @@ cd qto/qto-spring-boot-app
 
 ### Frontend Code Quality
 ```bash
-cd qto-ui-react
+cd qto-ui
 bun run lint
 
 # Expected: ESLint passing with 0 errors, 0 warnings
@@ -229,7 +225,7 @@ bun run lint
 - **Package**: `com.endeavorms.velocity.qto`
 - **Port**: 8080
 
-### Frontend (qto-ui-react)
+### Frontend (qto-ui)
 - **React 19.2** with TypeScript
 - **Vite 7.3** (build tool)
 - **Bun 1.3** (package manager & runtime)
@@ -328,7 +324,7 @@ Error: Vite requires Node.js version 20.19+
    ./gradlew test
 
    # Frontend lint
-   cd qto-ui-react
+   cd qto-ui
    bun run lint
    ```
 
@@ -346,7 +342,7 @@ The application uses **Azure MSAL** for authentication:
 - Login redirects to Azure AD
 - Tokens are stored in localStorage
 - API requests automatically include Bearer token
-- Configuration in `qto-ui-react/src/config/authConfig.ts`
+- Configuration in `qto-ui/src/config/authConfig.ts`
 
 ---
 
@@ -389,7 +385,7 @@ cd qto
 ./gradlew clean build -x test
 
 # Frontend only
-cd qto-ui-react
+cd qto-ui
 bun --bun dev                 # Start
 bun run lint                  # Lint
 bun run build                 # Build for production
@@ -401,8 +397,8 @@ lsof -ti:7887                 # Frontend port
 
 ### Documentation
 - **RUN_INSTRUCTIONS.md** – detailed run instructions
-- **qto-ui-react/QUICK_START.md** – frontend quick start
-- **qto-ui-react/COMPONENT_LIBRARY.md** – component usage
+- **qto-ui/QUICK_START.md** – frontend quick start
+- **qto-ui/COMPONENT_LIBRARY.md** – component usage
 - **qto/qto-spring-boot-app/README.md** – backend details
 
 ### Logs
@@ -415,7 +411,7 @@ lsof -ti:7887                 # Frontend port
 
 1. **Always use `bun --bun dev`** (not just `bun dev`) to use Bun's runtime instead of Node.js
 2. **Backend changes** require restart, **frontend changes** auto-reload
-3. **Mock data** is used when backend API fails (see `qto-ui-react/src/features/service-worklist/mockData.ts`)
+3. **Mock data** is used when backend API fails (see `qto-ui/src/features/service-worklist/mockData.ts`)
 4. **Type imports** must use `import type { ... }` syntax for Vite compatibility
 5. **Clear Vite cache** if you see weird module errors: `rm -rf node_modules/.vite`
 6. **Gradle only** – no Maven; all `pom.xml` files have been removed

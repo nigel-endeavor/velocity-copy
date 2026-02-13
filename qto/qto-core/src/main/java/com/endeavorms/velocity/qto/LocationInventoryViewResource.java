@@ -6,23 +6,28 @@ import com.endeavorms.velocity.qto.location.inventoryview.InventoryWorklistMeta;
 import com.endeavorms.velocity.qto.location.inventoryview.LocationInventoryView;
 import com.endeavorms.velocity.qto.location.inventoryview.LocationInventoryViewManager;
 import com.endeavorms.velocity.qto.location.inventoryview.LocationInventoryViewSearchCriteria;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.jboss.resteasy.annotations.Form;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.inject.Inject;
-import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.Response;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.List;
 
 /**
  * @author rcasey
  * @since 1/9/2023
  */
-@Path("/locationInventoryViews")
-@Consumes("application/json")
-@Produces({"application/json", "application/vnd.ms-excel"})
+@RestController
+@RequestMapping("/api/locationInventoryViews")
 public class LocationInventoryViewResource extends AbstractResource<LocationInventoryView> {
 
     @Override
@@ -30,28 +35,21 @@ public class LocationInventoryViewResource extends AbstractResource<LocationInve
         return "/locationInventoryViews";
     }
 
-    /** Private logger for this class. */
     private static final Logger LOGGER = LoggerFactory.getLogger(LocationInventoryViewResource.class);
 
-    /** Business methods associated with LocationInventoryViews. */
-    @Inject
+    @Autowired
     private LocationInventoryViewManager manager;
 
-    /**
-     * Gets the service types for the worklist based on active services.
-     * @return The service types for the worklist.
-     */
-    @GET
+    @GetMapping("/serviceTypes")
     @PreAuthorize("hasAuthority('inventory:read')")
-    @Path("/serviceTypes")
-    public Response getServiceTypes() {
+    public ResponseEntity<?> getServiceTypes() {
         List<String> serviceType = manager.findServiceTypes();
-        return Response.ok(serviceType).build();
+        return ResponseEntity.ok(serviceType);
     }
 
-    @GET
+    @GetMapping
     @PreAuthorize("hasAuthority('inventory:read')")
-    public Response getInventoryLocationViews(@Form final LocationInventoryViewSearchCriteria criteria) {
+    public ResponseEntity<?> getInventoryLocationViews(@ModelAttribute final LocationInventoryViewSearchCriteria criteria) {
         Long start = System.currentTimeMillis();
         LOGGER.debug("getInventoryLocationViews called");
         LocationInventoryViewSearchCriteria crit = getExportCriteria(criteria);
@@ -61,50 +59,41 @@ public class LocationInventoryViewResource extends AbstractResource<LocationInve
         }
         PaginatedResult<LocationInventoryView> result = manager.findInventoryBySearchCriteria(crit);
         LOGGER.debug("getInventoryLocationViews took " + (System.currentTimeMillis() - start) + "ms");
-        return toResponse(getCollectionResource(result, crit, getLocation(LocationInventoryViewResource.class)));
+        return getCollectionResource(result, crit, getLocation(LocationInventoryViewResource.class));
     }
 
-    @GET
+    @GetMapping("/link")
     @PreAuthorize("hasAuthority('inventory:read')")
-    @Path("/link")
-    public Response getInventoryLocationViewsForLink(@Form final LocationInventoryViewSearchCriteria criteria) {
+    public ResponseEntity<?> getInventoryLocationViewsForLink(@ModelAttribute final LocationInventoryViewSearchCriteria criteria) {
         PaginatedResult<LocationInventoryView> result = manager.findBySearchCriteriaForLink(criteria);
-        return toResponse(getCollectionResource(result, criteria, getLocation(LocationInventoryViewResource.class)));
+        return getCollectionResource(result, criteria, getLocation(LocationInventoryViewResource.class));
     }
 
-    @GET
+    @GetMapping("/meta")
     @PreAuthorize("hasAuthority('inventory:read')")
-    @Path("/meta")
-    public Response getInventoryLocationWorklistMeta(@Form final LocationInventoryViewSearchCriteria criteria) {
+    public ResponseEntity<?> getInventoryLocationWorklistMeta(@ModelAttribute final LocationInventoryViewSearchCriteria criteria) {
         InventoryWorklistMeta meta = manager.getInventoryWorklistMeta(criteria);
-        return Response.ok(meta).build();
+        return ResponseEntity.ok(meta);
     }
 
-    @PUT
-    @Path("/{id: \\d+}")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('inventory:write')")
-    public Response edit(@PathParam("id") final Long id, final LocationInventoryView locationView) {
+    public ResponseEntity<?> edit(@PathVariable("id") final Long id, @RequestBody final LocationInventoryView locationView) {
         try {
             if (!id.equals(locationView.getId())) {
                 throw new IllegalArgumentException("identifier in path does not match that of passed entity");
             }
             LocationInventoryView updated = manager.edit(locationView);
-            return Response.ok(updated).build();
+            return ResponseEntity.ok(updated);
         } catch (Exception e) {
-            return Response.serverError().entity(e.getMessage()).build();
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 
-    /**
-     * Retrieves location views for the inventory service relocation.
-     * @param criteria the criteria to filter by.
-     * @return matching location views.
-     */
-    @GET
+    @GetMapping("/relocate")
     @PreAuthorize("hasAuthority('inventory:write')")
-    @Path("/relocate")
-    public Response getLocationViewsForRelocate(@Form LocationInventoryViewSearchCriteria criteria) {
+    public ResponseEntity<?> getLocationViewsForRelocate(@ModelAttribute final LocationInventoryViewSearchCriteria criteria) {
         PaginatedResult<LocationInventoryView> result = manager.findBySearchCriteriaForServiceRelocate(criteria);
-        return toResponse(getCollectionResource(result, criteria, getLocation(LocationInventoryViewResource.class)));
+        return getCollectionResource(result, criteria, getLocation(LocationInventoryViewResource.class));
     }
 }

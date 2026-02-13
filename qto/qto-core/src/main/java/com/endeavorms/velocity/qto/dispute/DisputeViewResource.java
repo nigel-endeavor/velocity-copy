@@ -2,71 +2,54 @@ package com.endeavorms.velocity.qto.dispute;
 
 import com.endeavorms.velocity.qto.common.AbstractResource;
 import com.endeavorms.velocity.qto.common.PaginatedResult;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.jboss.resteasy.annotations.Form;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Response;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.List;
 
 /**
  * @author fcurran
  * @since 9/18/2023
  */
-@Path("/disputeViews")
-@Consumes("application/json")
-@Produces({"application/json", "application/vnd.ms-excel"})
+@RestController
+@RequestMapping("/api/disputeViews")
 public class DisputeViewResource extends AbstractResource<DisputeView> {
 
     @Override
     protected String getResourcePath() {
         return "/disputeViews";
     }
-    /** Business methods associated with DisputeViews. */
-    @Inject
+
+    @Autowired
     private DisputeViewManager manager;
 
-    /**
-     * Get a list of DisputeViews.
-     * @param criteria The search criteria.
-     * @return A list of DisputeViews.
-     */
-    @GET
-    public Response getDisputeViews(@Form final DisputeViewSearchCriteria criteria) {
+    @GetMapping
+    public ResponseEntity<?> getDisputeViews(@ModelAttribute final DisputeViewSearchCriteria criteria) {
         DisputeViewSearchCriteria crit = getExportCriteria(criteria);
         if (crit.getFields() != null && crit.getFields().contains("address")) {
             crit.setFields(crit.getFields().replace("address", "address1,address2,city,stateProvince,postalCode"));
             crit.setHeaders(crit.getHeaders().replace("Address", "Address 1,Address 2,City,State/Province,Postal Code"));
         }
         PaginatedResult<DisputeView> result = manager.findBySearchCriteria(crit);
-        return toResponse(getCollectionResource(result, crit, getLocation(DisputeViewResource.class)));
+        return getCollectionResource(result, crit, getLocation(DisputeViewResource.class));
     }
 
-    /**
-     * Gets the meta data for the worklist built from the provided search criteria.
-     * @param criteria The search criteria.
-     * @return The meta data for the worklist.
-     */
-    @GET
-    @Path("/meta")
-    public Response getDisputeWorklistMeta(@Form final DisputeViewSearchCriteria criteria) {
+    @GetMapping("/meta")
+    public ResponseEntity<?> getDisputeWorklistMeta(@ModelAttribute final DisputeViewSearchCriteria criteria) {
         DisputeWorklistMeta meta = manager.getDisputeWorklistMeta(criteria);
-        return Response.ok(meta).build();
+        return ResponseEntity.ok(meta);
     }
 
-    /**
-     * Gets the service types for the worklist based on active services.
-     * @return The service types for the worklist.
-     */
-    @GET
+    @GetMapping("/serviceTypes")
     @PreAuthorize("hasAuthority('inventory:read')")
-    @Path("/serviceTypes")
-    public Response getServiceTypes() {
+    public ResponseEntity<?> getServiceTypes() {
         List<String> serviceType = manager.findServiceTypes();
-        return Response.ok(serviceType).build();
+        return ResponseEntity.ok(serviceType);
     }
 }

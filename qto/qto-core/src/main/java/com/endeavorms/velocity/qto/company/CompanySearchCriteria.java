@@ -2,7 +2,6 @@ package com.endeavorms.velocity.qto.company;
 
 import com.endeavorms.velocity.qto.common.BaseSearchCriteria;
 
-import jakarta.ws.rs.QueryParam;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,26 +10,19 @@ import java.util.List;
  * @since 1/19/2023
  */
 public class CompanySearchCriteria extends BaseSearchCriteria<Company> {
-    @QueryParam("type")
     private String type;
 
-    @QueryParam("search")
     private String search;
 
-    @QueryParam("name")
     private String name;
 
-    @QueryParam("tenants")
     private List<String> tenants = new ArrayList<>();
 
-    @QueryParam("masterCustomers")
     private List<String> masterCustomers = new ArrayList<>();
 
     /** Active flag.*/
-    @QueryParam("active")
     private Boolean active;
 
-    @QueryParam("clientId")
     private String clientId;
 
     public String getType() {

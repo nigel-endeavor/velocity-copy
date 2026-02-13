@@ -350,20 +350,4 @@ public abstract class AbstractResource<T extends BaseEntity<? extends Serializab
         return relMap;
     }
 
-    /**
-     * Converts ResponseEntity to JAX-RS Response for backward compatibility during migration.
-     * @param entity the Spring ResponseEntity.
-     * @return equivalent JAX-RS Response.
-     */
-    protected jakarta.ws.rs.core.Response toResponse(final ResponseEntity<?> entity) {
-        jakarta.ws.rs.core.Response.ResponseBuilder builder =
-                jakarta.ws.rs.core.Response.status(entity.getStatusCode().value());
-        entity.getHeaders().forEach((name, values) -> {
-            for (String v : values) {
-                builder.header(name, v);
-            }
-        });
-        return builder.entity(entity.getBody()).build();
-    }
-
 }

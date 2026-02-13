@@ -3,23 +3,21 @@ package com.endeavorms.velocity.qto;
 import com.endeavorms.velocity.qto.common.AbstractResource;
 import com.endeavorms.velocity.qto.service.historyview.ServiceHistoryView;
 import com.endeavorms.velocity.qto.service.historyview.ServiceHistoryViewManager;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
-import jakarta.ws.rs.core.Response;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author rcasey
  * @since 10/27/2023
  */
-@Path("/serviceHistory")
-@Consumes("application/json")
-@Produces("application/json")
+@RestController
+@RequestMapping("/api/serviceHistory")
 @PreAuthorize("hasAnyAuthority('inventory:write','order:write')")
 public class ServiceHistoryViewResource extends AbstractResource<ServiceHistoryView> {
 
@@ -28,17 +26,17 @@ public class ServiceHistoryViewResource extends AbstractResource<ServiceHistoryV
         return "/serviceHistory";
     }
 
-    @Inject
+    @Autowired
     private ServiceHistoryViewManager manager;
 
-    @GET
-    public Response getServiceHistory(@QueryParam("serviceId") final Long serviceId,
-                                      @QueryParam("sortDir") final String sortDir,
-                                      @QueryParam("sortField") final String sortField) {
+    @GetMapping
+    public ResponseEntity<?> getServiceHistory(@RequestParam("serviceId") final Long serviceId,
+                                               @RequestParam(value = "sortDir", required = false) final String sortDir,
+                                               @RequestParam(value = "sortField", required = false) final String sortField) {
         try {
-            return Response.ok(manager.getServiceTreePaginatedResult(serviceId, sortDir, sortField)).build();
+            return ResponseEntity.ok(manager.getServiceTreePaginatedResult(serviceId, sortDir, sortField));
         } catch (Exception e) {
-            return Response.serverError().build();
+            return ResponseEntity.internalServerError().build();
         }
     }
 }
