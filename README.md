@@ -1,22 +1,21 @@
 # QTO Application
 
-Quantum Task Orchestrator - React Frontend + Spring Boot Backend
+Quantum Task Orchestrator - React Frontend
 
 ## 🚀 Quick Start
 
-### Start Everything (Easiest)
+### Start Frontend
 ```bash
 ./START_ALL.sh
 ```
 
-### Stop Everything
+### Stop
 ```bash
 ./STOP_ALL.sh
 ```
 
 ### Access Application
 - **Frontend**: http://localhost:7887/qto-ops/
-- **Backend**: http://localhost:8080/qto
 
 ---
 
@@ -58,11 +57,7 @@ velocity/
 ├── STOP_ALL.sh               # ← Stop both services
 ├── RUN_INSTRUCTIONS.md       # ← Detailed instructions
 │
-├── qto/                      # Backend (Spring Boot)
-│   └── qto-spring-boot-app/
-│       ├── start.sh
-│       └── stop.sh
-│
+├── qto/                      # Backend libraries (qto-core, qto-rest-api)
 └── qto-ui-react/             # Frontend (React)
     ├── QUICK_START.md
     ├── MIGRATION_COMPLETE.md

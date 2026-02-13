@@ -2,53 +2,23 @@
 
 ## 🚀 Easiest Way (Recommended)
 
-### Start Everything
+### Start Frontend
 ```bash
 cd /path/to/velocity
 ./START_ALL.sh
 ```
 
-This starts both backend and frontend in the background.
-
-### Stop Everything
+### Stop
 ```bash
 ./STOP_ALL.sh
 ```
 
 ### Access the Application
 - **Frontend**: http://localhost:7887/qto-ops/
-- **Backend**: http://localhost:8080/qto
-- **Health Check**: http://localhost:8080/qto/actuator/health
 
 ---
 
-## 🛠️ Alternative Methods
-
-### Method 1: Separate Terminals (More Control)
-
-**Terminal 1 - Backend:**
-```bash
-cd qto/qto-spring-boot-app
-./start.sh
-```
-
-**Terminal 2 - Frontend:**
-```bash
-cd qto-ui-react
-bun --bun dev
-```
-
-**To Stop:**
-- Press `Ctrl+C` in each terminal
-- Or run `./stop.sh` in backend directory
-
-### Method 2: Manual Commands
-
-**Start Backend:**
-```bash
-cd qto/qto-spring-boot-app
-./gradlew bootRun --args='--spring.profiles.active=dev'
-```
+## 🛠️ Alternative: Manual Start
 
 **Start Frontend:**
 ```bash
@@ -63,8 +33,6 @@ bun --bun dev
 
 ### Required
 - **Bun**: 1.3+ ([Install](https://bun.sh))
-- **Java**: 17+ (for backend)
-- **Gradle**: 8.5+ (included via gradlew)
 
 ### Optional
 - **Node.js**: Not required if using Bun runtime
@@ -76,25 +44,10 @@ bun --bun dev
 
 ### Port Already in Use
 
-**Backend (Port 8080):**
-```bash
-# Find process using port 8080
-lsof -ti:8080 | xargs kill -9
-```
-
 **Frontend (Port 7887):**
 ```bash
 # Find process using port 7887
 lsof -ti:7887 | xargs kill -9
-```
-
-### Backend Won't Start
-```bash
-# Clean and rebuild
-cd qto/qto-spring-boot-app
-./gradlew clean
-./gradlew build
-./gradlew bootRun --args='--spring.profiles.active=dev'
 ```
 
 ### Frontend Won't Start
@@ -120,19 +73,8 @@ Error: Vite requires Node.js version 20.19+
 
 ## 📊 Check Status
 
-### Backend Status
-```bash
-# Health check
-curl http://localhost:8080/qto/actuator/health
-
-# Application status
-curl http://localhost:8080/qto/api/status
-```
-
 ### Frontend Status
 Visit: http://localhost:7887/qto-ops/
-
-Should show landing page with backend status.
 
 ---
 
@@ -140,12 +82,9 @@ Should show landing page with backend status.
 
 ```
 velocity/
-├── START_ALL.sh           # ← Start backend + frontend
-├── STOP_ALL.sh            # ← Stop both services
-├── qto/
-│   └── qto-spring-boot-app/
-│       ├── start.sh       # Start backend only
-│       └── stop.sh        # Stop backend only
+├── START_ALL.sh           # ← Start frontend
+├── STOP_ALL.sh            # ← Stop frontend
+├── qto/                   # Backend libraries (qto-core, qto-rest-api)
 └── qto-ui-react/
     ├── package.json
     └── vite.config.ts
@@ -209,22 +148,10 @@ cd ..
 ## 💡 Pro Tips
 
 ### Run in Background
-The `START_ALL.sh` script runs both services in the background, so you can close the terminal.
+The `START_ALL.sh` script runs the frontend in the background, so you can close the terminal.
 
 ### View Logs
-```bash
-# Backend logs (if configured)
-tail -f qto/qto-spring-boot-app/logs/application.log
-
-# Frontend logs (console output)
-# Check browser console (F12)
-```
-
-### IDE Integration
-- **IntelliJ IDEA**: Open `qto/qto-spring-boot-app`, run `QtoApplication.main()`
-- **VS Code**:
-  - Backend: Run from terminal
-  - Frontend: Use built-in terminal with `bun --bun dev`
+- Frontend: Check browser console (F12)
 
 ---
 
@@ -232,12 +159,10 @@ tail -f qto/qto-spring-boot-app/logs/application.log
 
 | Task | Command |
 |------|---------|
-| **Start Both** | `./START_ALL.sh` |
-| **Stop Both** | `./STOP_ALL.sh` |
-| **Frontend Only** | `cd qto-ui-react && bun --bun dev` |
-| **Backend Only** | `cd qto/qto-spring-boot-app && ./start.sh` |
-| **Check Backend** | `curl http://localhost:8080/qto/actuator/health` |
-| **Open Frontend** | http://localhost:7887/qto-ops/ |
+| **Start** | `./START_ALL.sh` |
+| **Stop** | `./STOP_ALL.sh` |
+| **Frontend** | `cd qto-ui-react && bun --bun dev` |
+| **Open** | http://localhost:7887/qto-ops/ |
 
 ---
 

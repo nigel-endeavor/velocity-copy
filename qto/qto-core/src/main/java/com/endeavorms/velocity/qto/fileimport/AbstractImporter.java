@@ -21,10 +21,8 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jakarta.annotation.Resource;
-import jakarta.ejb.EJBContext;
+import org.springframework.transaction.support.TransactionTemplate;
 import jakarta.inject.Inject;
-import jakarta.transaction.UserTransaction;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -50,9 +48,8 @@ public abstract class AbstractImporter {
     /** Logger. */
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractImporter.class);
 
-    /** Context from which we can get a transaction. */
-    @Resource
-    protected EJBContext ctx;
+    @Inject
+    protected TransactionTemplate transactionTemplate;
 
     @Inject
     protected ImportActivityManager importActivityManager;
@@ -171,28 +168,31 @@ public abstract class AbstractImporter {
      * @return ImportActivity
      */
     public ImportActivity importFile(final Long id) {
-        int numAdded;
-        UserTransaction dbTrans = ctx.getUserTransaction();
-        ImportActivity updatedImportActivity = null;
-        ImportActivity importActivity = null;
+        int[] numAdded = {0};
+        ImportActivity[] updatedImportActivity = {null};
+        ImportActivity[] importActivityHolder = {null};
         errorWorkbook = null;
         lookupValueMap = new HashMap<>();
 
         try {
-            dbTrans.begin();
-
-            importActivity = importActivityManager.retrieve(id);
-
+            updatedImportActivity[0] = transactionTemplate.execute(status -> {
+                try {
+                    ImportActivity ia = importActivityManager.retrieve(id);
+                    FileAttachment fileAttachment = ia.getFileAttachment();
+                    ExcelAdapter adapter = createExcelAdapter(fileAttachment);
+                    Map<String, ValidatingSourceMapper> sourceMappers = buildSourceMappers(adapter);
+                    ia.setStatus(ImportActivityStatus.PROCESSING);
+                    ia.setImportStartDate(new Date());
+                    return importActivityManager.edit(ia);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            ImportActivity importActivity = importActivityManager.retrieve(id);
+            importActivityHolder[0] = importActivity;
             FileAttachment fileAttachment = importActivity.getFileAttachment();
             ExcelAdapter adapter = createExcelAdapter(fileAttachment);
             Map<String, ValidatingSourceMapper> sourceMappers = buildSourceMappers(adapter);
-
-            importActivity.setStatus(ImportActivityStatus.PROCESSING);
-            importActivity.setImportStartDate(new Date());
-            updatedImportActivity = importActivityManager.edit(importActivity);
-            dbTrans.commit();
-
-            numAdded = 0;
 
             if (hasExpectedColumns(adapter)) {
                 LOGGER.debug("Processing import spreadsheet: {}", fileAttachment.getName());
@@ -200,109 +200,107 @@ public abstract class AbstractImporter {
 
                 while (adapter.hasNext()) {
                     adapter.next(true);
-                    dbTrans.begin();
                     try {
-                        long startTime = 0;
-                        if (LOGGER.isDebugEnabled()) {
-                            startTime = System.currentTimeMillis();
-                        }
-                        List<String> errors = checkRequired(sourceMappers);
-                        List<String> validationErrors = validateRow(sourceMappers, importActivity.getTenantId());
-                        errors.addAll(validationErrors);
-                        if (!errors.isEmpty()) {
-                            writeRowToErrorWorkbook(errors, sourceMappers, fileAttachment.getTenantId());
-                            updatedImportActivity.setNumFailed(updatedImportActivity.getNumFailed() + 1);
-                        } else {
-                            writeRowToErrorWorkbook(null, sourceMappers, fileAttachment.getTenantId());
-                            importRow(sourceMappers, importActivity);
-                            numAdded++;
-                            updatedImportActivity.setNumSuccessful(updatedImportActivity.getNumSuccessful() + 1);
-                        }
-                        importActivity.setNumProcessed(importActivity.getNumProcessed() + 1);
-                        if (LOGGER.isDebugEnabled()) {
-                            LOGGER.debug("Row {} processed in {} ms", importActivity.getNumProcessed(), System.currentTimeMillis() - startTime);
-                        }
+                        transactionTemplate.executeWithoutResult(status -> {
+                            try {
+                                long startTime = LOGGER.isDebugEnabled() ? System.currentTimeMillis() : 0;
+                                List<String> errors = checkRequired(sourceMappers);
+                                List<String> validationErrors = validateRow(sourceMappers, importActivity.getTenantId());
+                                errors.addAll(validationErrors);
+                                if (!errors.isEmpty()) {
+                                    writeRowToErrorWorkbook(errors, sourceMappers, fileAttachment.getTenantId());
+                                    updatedImportActivity[0].setNumFailed(updatedImportActivity[0].getNumFailed() + 1);
+                                } else {
+                                    writeRowToErrorWorkbook(null, sourceMappers, fileAttachment.getTenantId());
+                                    importRow(sourceMappers, importActivity);
+                                    numAdded[0]++;
+                                    updatedImportActivity[0].setNumSuccessful(updatedImportActivity[0].getNumSuccessful() + 1);
+                                }
+                                importActivity.setNumProcessed(importActivity.getNumProcessed() + 1);
+                                if (LOGGER.isDebugEnabled()) {
+                                    LOGGER.debug("Row {} processed in {} ms", importActivity.getNumProcessed(), System.currentTimeMillis() - startTime);
+                                }
+                            } catch (Exception ex) {
+                                throw new RuntimeException(ex);
+                            }
+                        });
                     } catch (Exception e) {
                         LOGGER.error("Unexpected error during import", e);
-                        dbTrans.rollback();
-                        dbTrans.begin();
-                        writeRowToErrorWorkbook(Arrays.asList(getExceptionCauseMessage(e)), sourceMappers, fileAttachment.getTenantId());
-                        updatedImportActivity.setNumFailed(updatedImportActivity.getNumFailed() + 1);
+                        transactionTemplate.executeWithoutResult(status -> {
+                            try {
+                                writeRowToErrorWorkbook(Arrays.asList(getExceptionCauseMessage(e)), sourceMappers, fileAttachment.getTenantId());
+                                updatedImportActivity[0].setNumFailed(updatedImportActivity[0].getNumFailed() + 1);
+                            } catch (Exception ex) {
+                                throw new RuntimeException(ex);
+                            }
+                        });
                     }
-                    dbTrans.commit();
                 }
 
                 LOGGER.debug("Finished processing import spreadsheet: {}", fileAttachment.getName());
 
-                dbTrans.begin();
-                updatedImportActivity.setImportEndDate(new Date());
-                String statusDetails = "Rows successfully processed: " + importActivity.getNumSuccessful()
-                        + "\nRows with errors: " + importActivity.getNumFailed()
-                        + "\n" + getImportTypeName() + " Added: " + numAdded;
-                updatedImportActivity.setStatusDetails(statusDetails);
-                if (importActivity.getNumFailed() > 0) {
-                    updatedImportActivity.setStatus(ImportActivityStatus.PROCESSED_WITH_ERRORS);
-                } else {
-                    updatedImportActivity.setStatus(ImportActivityStatus.PROCESSED_SUCCESSFULLY);
+                ImportActivity finalActivity = updatedImportActivity[0];
+                finalActivity.setImportEndDate(new Date());
+                finalActivity.setStatusDetails("Rows successfully processed: " + finalActivity.getNumSuccessful()
+                        + "\nRows with errors: " + finalActivity.getNumFailed()
+                        + "\n" + getImportTypeName() + " Added: " + numAdded[0]);
+                finalActivity.setStatus(finalActivity.getNumFailed() > 0 ? ImportActivityStatus.PROCESSED_WITH_ERRORS : ImportActivityStatus.PROCESSED_SUCCESSFULLY);
+                if (finalActivity.getNumFailed() > 0 && errorWorkbook != null) {
+                    try {
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        errorWorkbook.write(baos);
+                        byte[] data = baos.toByteArray();
+                        FileAttachment errorFileAttachment = new FileAttachment();
+                        errorFileAttachment.setName("i90-" + importActivity.getImportType().toLowerCase() + "-import-errors.xlsx");
+                        errorFileAttachment.setDescription("Master Customer Import Errors");
+                        errorFileAttachment.setMimeType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+                        errorFileAttachment.setSize((long) data.length);
+                        errorFileAttachment.setTenantId(importActivity.getTenantId());
+                        errorFileAttachment.setContent(new FileAttachmentContent(data));
+                        errorFileAttachment.setUploadedByUserName(importActivity.getFileAttachment().getUploadedByUserName());
+                        errorFileAttachment.setUploadDate(new Date());
+                        FileAttachment createdErrorFileAttachment = fileAttachmentManager.create(errorFileAttachment);
+                        finalActivity.setErrorFileAttachment(createdErrorFileAttachment);
+                    } catch (Exception ex) {
+                        throw new RuntimeException(ex);
+                    }
                 }
-
-                if (updatedImportActivity.getNumFailed() > 0) {
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    errorWorkbook.write(baos);
-                    byte[] data = baos.toByteArray();
-                    FileAttachment errorFileAttachment = new FileAttachment();
-                    errorFileAttachment.setName("i90-" + importActivity.getImportType().toLowerCase() + "-import-errors.xlsx");
-                    errorFileAttachment.setDescription("Master Customer Import Errors");
-                    errorFileAttachment.setMimeType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-                    errorFileAttachment.setSize((long) data.length);
-                    errorFileAttachment.setTenantId(importActivity.getTenantId());
-                    errorFileAttachment.setContent(new FileAttachmentContent(data));
-                    errorFileAttachment.setUploadedByUserName(importActivity.getFileAttachment().getUploadedByUserName());
-                    errorFileAttachment.setUploadDate(new Date());
-                    FileAttachment createdErrorFileAttachment = fileAttachmentManager.create(errorFileAttachment);
-                    updatedImportActivity.setErrorFileAttachment(createdErrorFileAttachment);
-                }
-
-                updatedImportActivity = importActivityManager.edit(updatedImportActivity);
-                dbTrans.commit();
+                updatedImportActivity[0] = transactionTemplate.execute(status -> importActivityManager.edit(finalActivity));
 
             } else {
                 LOGGER.error("File does not have expected columns");
-                dbTrans.begin();
-                importActivity.setImportEndDate(new Date());
-                importActivity.setStatus(ImportActivityStatus.UPLOAD_ERROR);
-                importActivity.setStatusDetails("File does not have expected columns");
-                updatedImportActivity = importActivityManager.edit(importActivity);
-                dbTrans.commit();
+                updatedImportActivity[0] = transactionTemplate.execute(status -> {
+                    ImportActivity ia = importActivityManager.retrieve(id);
+                    ia.setImportEndDate(new Date());
+                    ia.setStatus(ImportActivityStatus.UPLOAD_ERROR);
+                    ia.setStatusDetails("File does not have expected columns");
+                    return importActivityManager.edit(ia);
+                });
             }
 
         } catch (Exception e) {
             LOGGER.error("Error importing file: ", e);
-            try {
-                dbTrans.rollback();
-                if (importActivity != null) {
-                    dbTrans.begin();
-                    importActivity.setStatus(ImportActivityStatus.SYSTEM_ERROR);
-                    importActivity.setStatusDetails(e.getMessage());
-                    importActivityManager.edit(importActivity);
-                    dbTrans.commit();
-                }
-            } catch (Exception e1) {
-                LOGGER.error("Error rolling back transaction {}", e.getMessage());
+            if (importActivityHolder[0] != null) {
+                transactionTemplate.executeWithoutResult(status -> {
+                    ImportActivity ia = importActivityManager.retrieve(id);
+                    ia.setStatus(ImportActivityStatus.SYSTEM_ERROR);
+                    ia.setStatusDetails(e.getMessage());
+                    importActivityManager.edit(ia);
+                });
             }
         }
 
-        if (updatedImportActivity != null && !updatedImportActivity.getImportType().equals("Order")) {
+        if (updatedImportActivity[0] != null && !updatedImportActivity[0].getImportType().equals("Order")) {
             importActivityWebsocket.sendRefreshMessage();
             notificationManager.create(
-                    updatedImportActivity.getSubjectId(),
-                    updatedImportActivity.getImportType() + " Import " + updatedImportActivity.getStatus(),
-                    updatedImportActivity.getStatusDetails(),
+                    updatedImportActivity[0].getSubjectId(),
+                    updatedImportActivity[0].getImportType() + " Import " + updatedImportActivity[0].getStatus(),
+                    updatedImportActivity[0].getStatusDetails(),
                     "upload_file",
                     "import");
         }
 
-        return updatedImportActivity;
+        return updatedImportActivity[0];
     }
 
     /**

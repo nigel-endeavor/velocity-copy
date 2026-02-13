@@ -5,8 +5,6 @@ import com.endeavorms.velocity.qto.company.Company;
 import com.endeavorms.velocity.qto.fileimport.importactivity.ImportActivity;
 
 import org.springframework.stereotype.Component;
-import jakarta.ejb.TransactionManagement;
-import jakarta.ejb.TransactionManagementType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +14,6 @@ import java.util.Map;
  * @since 9/1/2023
  */
 @Component
-@TransactionManagement(TransactionManagementType.BEAN)
 public class CustomerImporter extends AbstractCompanyImporter {
 
     @Override

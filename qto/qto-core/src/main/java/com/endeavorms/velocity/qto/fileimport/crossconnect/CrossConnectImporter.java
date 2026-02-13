@@ -17,8 +17,6 @@ import com.endeavorms.velocity.qto.service.crossconnect.CrossConnectService;
 import com.endeavorms.velocity.qto.service.crossconnect.CrossConnectServiceManager;
 
 import org.springframework.stereotype.Component;
-import jakarta.ejb.TransactionManagement;
-import jakarta.ejb.TransactionManagementType;
 import jakarta.inject.Inject;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -31,7 +29,6 @@ import java.util.Map;
  * @since 1/16/2024
  */
 @Component
-@TransactionManagement(TransactionManagementType.BEAN)
 public class CrossConnectImporter extends AbstractInventoryServiceImporter {
     @Inject
     private ServiceManager serviceManager;

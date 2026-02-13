@@ -6,8 +6,8 @@ import com.endeavorms.velocity.qto.subject.Subject;
 import com.endeavorms.velocity.qto.subject.SubjectManager;
 
 import org.springframework.stereotype.Component;
-import jakarta.ejb.TransactionAttribute;
-import jakarta.ejb.TransactionAttributeType;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.annotation.Propagation;
 import jakarta.inject.Inject;
 import java.util.Date;
 import java.util.List;
@@ -44,7 +44,7 @@ public class NotificationManager extends StandardManager<Notification> {
         return created;
     }
 
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Notification create(final Long subjectId, final String header, final String body,
                                final String icon, final String link) {
         Notification notification = new Notification();

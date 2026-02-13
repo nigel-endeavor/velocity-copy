@@ -1,6 +1,6 @@
 package com.endeavorms.velocity.qto.fileimport.importactivity;
 
-import jakarta.ejb.Singleton;
+import org.springframework.stereotype.Component;
 import jakarta.websocket.OnClose;
 import jakarta.websocket.OnMessage;
 import jakarta.websocket.OnOpen;
@@ -14,7 +14,7 @@ import java.util.List;
  * @since 9/8/2023
  */
 @ServerEndpoint("/importActivities")
-@Singleton
+@Component
 public class ImportActivityWebsocket {
 
     List<Session> sessionList = new ArrayList<>();

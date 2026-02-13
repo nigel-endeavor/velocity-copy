@@ -33,6 +33,9 @@ public class OrderMilestoneInstanceManager extends AbstractMilestoneInstanceMana
     @Inject
     private OrderManager orderManager;
 
+    @Inject
+    private BaseEventHandler baseEventHandler;
+
     @Override
     public OrderMilestoneInstanceJpaDao getDao() {
         return dao;
@@ -63,9 +66,7 @@ public class OrderMilestoneInstanceManager extends AbstractMilestoneInstanceMana
     protected void handleMilestoneEvent(final OrderMilestoneInstance milestoneInstance) {
         Order order = orderManager.retrieve(milestoneInstance.getOrderId());
 
-        BaseEventHandler handler = BaseEventHandler
-                .omsEventHandlerFactory("com.endeavorms.velocity.qto.events.handlers.BaseEventHandler");
-        handler.handleMilestoneEvent(milestoneInstance, order);
+        baseEventHandler.handleMilestoneEvent(milestoneInstance, order);
     }
 
     @Override

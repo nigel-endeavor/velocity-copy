@@ -1,259 +1,66 @@
-# QTO (Quantum Task Orchestrator) - Spring Boot Application
+# QTO (Quantum Task Orchestrator)
 
-**Modern Spring Boot microservice** for telecommunications and cybersecurity service orchestration and order management.
-
-## Quick Start
-
-```bash
-# Clone the repository
-cd qto-spring-boot-app
-
-# Run without database (development mode)
-./gradlew bootRun --args='--spring.profiles.active=dev'
-
-# Run with PostgreSQL
-export DB_PASSWORD=your_password
-./gradlew bootRun
-
-# Run tests (no database required)
-./gradlew test
-```
-
-## Technology Stack
-
-- **Java**: 21
-- **Spring Boot**: 3.2.2
-- **Build**: Gradle 8.5 (Kotlin DSL)
-- **Database**: PostgreSQL 12+
-- **ORM**: Spring Data JPA / Hibernate
-- **Testing**: JUnit 5, MockMvc, TestRestTemplate
-- **Monitoring**: Spring Actuator
+**Enterprise service orchestration and order management** for telecommunications and cybersecurity services lifecycle management.
 
 ## Project Structure
 
 ```
 qto/
-├── README.md                           # This file
-├── AI-README.md                        # AI development guide (legacy reference)
-├── .github/                            # GitHub workflows
-└── qto-spring-boot-app/                # Main Spring Boot application
-    ├── build.gradle.kts                # Gradle build configuration
-    ├── settings.gradle.kts             # Gradle settings
-    ├── README.md                       # Application-specific documentation
-    ├── DATABASE-CONFIG.md              # Database setup guide
-    ├── TEST-SUMMARY.md                 # Test suite documentation
-    ├── MIGRATION.md                    # Migration strategy documentation
-    ├── src/
-    │   ├── main/
-    │   │   ├── java/com/endeavorms/qto/
-    │   │   │   ├── QtoApplication.java         # Main application class
-    │   │   │   └── controller/
-    │   │   │       └── StatusController.java   # REST endpoints
-    │   │   └── resources/
-    │   │       ├── application.yml             # Base configuration
-    │   │       ├── application-dev.yml         # Dev profile (no DB)
-    │   │       ├── application.yml             # PostgreSQL configuration
-    │   │       └── application-test.yml        # Test profile
-    │   └── test/
-    │       └── java/com/endeavorms/qto/        # Comprehensive test suite
-    └── gradle/                          # Gradle wrapper
+├── qto-core/          # Domain entities, managers, DAOs, REST controllers (140+ entities)
+├── qto-database/      # Liquibase migrations
+├── qto-app/           # Spring Boot runnable application
+└── build.gradle.kts
 ```
 
-## Available Endpoints
+## Technology Stack
 
-### Application Endpoints
-- `GET /qto/api/status` - Application status and health
-- `GET /qto/api/status/ping` - Connectivity check
+- **Java**: 21
+- **Build**: Gradle (Kotlin DSL)
+- **ORM**: Spring Data JPA / Hibernate
+- **REST**: Spring MVC
+- **Database**: PostgreSQL 12+
 
-### Actuator Endpoints
-- `GET /qto/actuator/health` - Health check
-- `GET /qto/actuator/info` - Application info
-- `GET /qto/actuator/metrics` - Performance metrics
-
-## Database Configuration
-
-The application uses **PostgreSQL** (migrated from MySQL).
-
-### Development (No Database)
-```bash
-./gradlew bootRun --args='--spring.profiles.active=dev'
-```
-
-### PostgreSQL
-```bash
-export DB_HOST=localhost
-export DB_PORT=5432
-export DB_NAME=qto
-export DB_USER=qto_user
-export DB_PASSWORD=your_password
-./gradlew bootRun
-```
-
-See [DATABASE-CONFIG.md](qto-spring-boot-app/DATABASE-CONFIG.md) for complete setup instructions including Docker Compose examples.
-
-## Testing
-
-Comprehensive test suite with **40 tests** covering:
-- Unit tests (MockMvc)
-- Integration tests (full application context)
-- Actuator endpoint tests
-- Configuration validation tests
+## Build
 
 ```bash
-# Run all tests
+# From qto/ directory
+./gradlew build
+
+# Run tests
 ./gradlew test
-
-# Run specific test class
-./gradlew test --tests StatusControllerTest
-
-# Run with coverage
-./gradlew test jacocoTestReport
 ```
 
-**All tests pass without a database connection!**
-
-See [TEST-SUMMARY.md](qto-spring-boot-app/TEST-SUMMARY.md) for detailed test documentation.
-
-## Development
-
-### Prerequisites
-- **Java**: JDK 21 or higher
-- **Gradle**: 8.5+ (wrapper included)
-- **Database**: PostgreSQL 12+ (optional for dev)
-
-### Build Commands
-```bash
-# Compile
-./gradlew compileJava
-
-# Build JAR
-./gradlew bootJar
-
-# Clean build
-./gradlew clean build
-
-# Run application
-./gradlew bootRun
-```
-
-### IDE Setup
-
-**IntelliJ IDEA**:
-1. Open project root directory
-2. Gradle will auto-import
-3. Set Project SDK to Java 17
-4. Add environment variable: `SPRING_PROFILES_ACTIVE=dev`
-
-**VS Code**:
-1. Install "Extension Pack for Java"
-2. Open project root
-3. Configure launch.json with environment variables
-
-## Docker
-
-Full stack (QTO app + PostgreSQL) via Docker Compose:
+## Docker (PostgreSQL only)
 
 ```bash
-# From qto/ directory - build and run
+# From qto/ directory - start PostgreSQL
 docker compose up -d
-
-# App: http://localhost:8080/qto
-# API status: http://localhost:8080/qto/api/status
-# Health: http://localhost:8080/qto/actuator/health
-```
-
-```bash
-# Build only (no run)
-docker compose build
 
 # Stop
 docker compose down
-
-# View logs
-docker compose logs -f qto-app
 ```
 
-The `Dockerfile` uses a multi-stage build (Java 21) and runs the app as a non-root user. PostgreSQL 16 is used with a health check so the app waits for the database before starting.
+PostgreSQL is available at `localhost:5432` (user: qto_user, db: qto).
 
-## Migration Status
+## Modules
 
-✅ **Phase 1 Complete**: Spring Boot Foundation
-- Migrated from Maven to Gradle
-- Migrated from Java EE/WildFly to Spring Boot
-- Refactored packages from `com.vertek.corporate.qto` to `com.endeavorms.velocity.qto`
-- Created comprehensive test suite (40 tests)
-- Migrated to PostgreSQL (from MySQL)
-- Removed all legacy JBoss/Maven dependencies
+- **qto-core**: Business logic, entities, managers, REST controllers (Spring Data JPA, Spring MVC)
+- **qto-database**: Liquibase changelogs by version
+- **qto-app**: Spring Boot application (runnable JAR)
 
-See [MIGRATION.md](qto-spring-boot-app/MIGRATION.md) for migration strategy.
+## Run
 
-## API Documentation
-
-Current Phase 1 endpoints:
-
-**Status API**:
 ```bash
-# Get application status
-curl http://localhost:8080/qto/api/status
+# Start PostgreSQL
+docker compose up -d
 
-# Response
-{
-  "application": "qto-application-dev",
-  "version": "1.18.1-SNAPSHOT",
-  "status": "OPERATIONAL",
-  "phase": "1-foundation",
-  "message": "QTO Spring Boot application is running",
-  "timestamp": "2026-01-27T..."
-}
-
-# Ping endpoint
-curl http://localhost:8080/qto/api/status/ping
-
-# Response
-{
-  "message": "pong",
-  "timestamp": "2026-01-27T..."
-}
+# Run the application
+./gradlew :qto-app:bootRun
 ```
 
-**Health Check**:
-```bash
-curl http://localhost:8080/qto/actuator/health
-
-# Response
-{
-  "status": "UP"
-}
-```
-
-## Contributing
-
-### Code Style
-- Java 17 features encouraged
-- Follow Spring Boot best practices
-- Maintain test coverage >80%
-- Use Lombok for boilerplate reduction
-
-### Testing Requirements
-- All new features must have unit tests
-- Integration tests for REST endpoints
-- No tests should require external database
-
-### Git Workflow
-- Branch: `feature/spring` (current)
-- Main branch: `main`
-- Commit with descriptive messages
-
-## License
-
-Enterprise software - All rights reserved
-
-## Support
-
-For issues and questions, see project documentation in `qto-spring-boot-app/README.md`
+API available at `http://localhost:8080/api`
 
 ---
 
 **Version**: 1.18.1-SNAPSHOT
-**Last Updated**: January 27, 2026
-**Status**: Phase 1 Complete ✅
+**Group**: com.endeavorms.velocity

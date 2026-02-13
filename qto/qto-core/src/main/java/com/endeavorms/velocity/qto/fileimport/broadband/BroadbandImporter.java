@@ -16,8 +16,6 @@ import com.endeavorms.velocity.qto.service.broadband.BroadbandService;
 import com.endeavorms.velocity.qto.service.broadband.BroadbandServiceManager;
 
 import org.springframework.stereotype.Component;
-import jakarta.ejb.TransactionManagement;
-import jakarta.ejb.TransactionManagementType;
 import jakarta.inject.Inject;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -30,7 +28,6 @@ import java.util.Map;
  * @since 9/13/2023
  */
 @Component
-@TransactionManagement(TransactionManagementType.BEAN)
 public class BroadbandImporter extends AbstractInventoryServiceImporter {
 
     @Inject

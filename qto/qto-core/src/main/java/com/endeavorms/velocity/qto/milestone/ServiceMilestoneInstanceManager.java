@@ -39,6 +39,9 @@ public class ServiceMilestoneInstanceManager extends AbstractMilestoneInstanceMa
     @Inject
     private LocationManager locationManager;
 
+    @Inject
+    private BaseEventHandler baseEventHandler;
+
     @Override
     public ServiceMilestoneInstanceJpaDao getDao() {
         return dao;
@@ -103,9 +106,7 @@ public class ServiceMilestoneInstanceManager extends AbstractMilestoneInstanceMa
     protected void handleMilestoneEvent(final ServiceMilestoneInstance milestoneInstance) {
         Service service = serviceManager.retrieve(milestoneInstance.getServiceId());
 
-        BaseEventHandler handler = BaseEventHandler
-                .omsEventHandlerFactory("com.endeavorms.velocity.qto.events.handlers.BaseEventHandler");
-        handler.handleMilestoneEvent(milestoneInstance, service);
+        baseEventHandler.handleMilestoneEvent(milestoneInstance, service);
     }
 
     @Override

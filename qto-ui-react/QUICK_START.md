@@ -2,31 +2,23 @@
 
 ## 🚀 Start Development
 
-### 1. Start Backend (Terminal 1)
-```bash
-cd ../qto/qto-spring-boot-app
-./start.sh
-# Backend will run on http://localhost:8080
-```
-
-### 2. Start Frontend (Terminal 2)
+### 1. Start Frontend
 ```bash
 cd qto-ui-react
 bun --bun dev
-# Frontend will run on http://localhost:4200/qto-ops/
+# Frontend will run on http://localhost:7887/qto-ops/
 ```
 
-### 3. Open Browser
-Navigate to: **http://localhost:4200/qto-ops/**
+### 2. Open Browser
+Navigate to: **http://localhost:7887/qto-ops/**
 
 ## 📱 Navigate the App
 
 ### Landing Page
-- **URL**: http://localhost:4200/qto-ops/
-- Shows backend status and tech stack info
+- **URL**: http://localhost:7887/qto-ops/
 
 ### Service Worklist (Complete Feature)
-- **URL**: http://localhost:4200/qto-ops/#/services
+- **URL**: http://localhost:7887/qto-ops/#/services
 - **OR**: Click "Services" in the navigation menu
 
 **Features to Try:**
@@ -120,20 +112,8 @@ lsof -ti:4200 | xargs kill -9
 # Or use a different port in vite.config.ts
 ```
 
-### Problem: Backend API not responding
-```bash
-# Check backend is running
-curl http://localhost:8080/qto/actuator/health
-
-# Restart backend if needed
-cd ../qto/qto-spring-boot-app
-./stop.sh
-./start.sh
-```
-
 ### Problem: CORS errors
 - Vite proxy is configured in `vite.config.ts`
-- Backend should allow requests from localhost:4200
 - Check console for specific error messages
 
 ## 🔐 Authentication
@@ -144,7 +124,7 @@ The app uses **Azure MSAL** for authentication:
 ```env
 VITE_AZURE_CLIENT_ID=your-client-id
 VITE_AZURE_AUTHORITY=https://login.microsoftonline.com/your-tenant
-VITE_AZURE_REDIRECT_URI=http://localhost:4200/qto-ops/
+VITE_AZURE_REDIRECT_URI=http://localhost:7887/qto-ops/
 ```
 
 2. On first visit, you'll be redirected to Azure login

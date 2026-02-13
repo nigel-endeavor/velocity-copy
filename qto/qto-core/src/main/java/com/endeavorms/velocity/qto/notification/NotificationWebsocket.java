@@ -10,7 +10,7 @@ import com.endeavorms.velocity.qto.authentication.JwtAuthenticationHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jakarta.ejb.Singleton;
+import org.springframework.stereotype.Component;
 import jakarta.inject.Inject;
 import jakarta.websocket.OnClose;
 import jakarta.websocket.OnError;
@@ -26,7 +26,7 @@ import java.util.Map;
  * @since 6/15/2023
  */
 @ServerEndpoint("/notifications")
-@Singleton
+@Component
 public class NotificationWebsocket {
 
     /** Private logger for this class. */

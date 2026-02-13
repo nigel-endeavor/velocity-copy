@@ -16,29 +16,8 @@ services:
       timeout: 5s
       retries: 5
 
-  qto-app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: qto-app
-    environment:
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_NAME: qto
-      DB_USER: qto_user
-      DB_PASSWORD: changeme
-    ports:
-      - "8080:8080"
-    depends_on:
-      postgres:
-        condition: service_healthy
-    volumes:
-      - qto-files:/var/qto/files  # Persistent file storage
-
 # Named volumes persist data across container restarts and removals.
 # Data survives `docker compose down` (use `docker compose down -v` to remove).
 volumes:
   postgres-data:
-    driver: local
-  qto-files:
     driver: local

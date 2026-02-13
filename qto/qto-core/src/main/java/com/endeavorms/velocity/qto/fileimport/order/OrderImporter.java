@@ -31,8 +31,6 @@ import com.endeavorms.velocity.qto.service.ServiceManager;
 import com.endeavorms.velocity.qto.service.ServiceType;
 
 import org.springframework.stereotype.Component;
-import jakarta.ejb.TransactionManagement;
-import jakarta.ejb.TransactionManagementType;
 import jakarta.inject.Inject;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -47,7 +45,6 @@ import java.util.stream.Collectors;
  * @since 2/19/2024
  */
 @Component
-@TransactionManagement(TransactionManagementType.BEAN)
 public class OrderImporter extends AbstractImporter {
 
     @Inject

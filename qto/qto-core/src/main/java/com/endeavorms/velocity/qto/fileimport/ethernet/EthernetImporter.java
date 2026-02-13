@@ -20,8 +20,6 @@ import com.endeavorms.velocity.qto.service.ethernet.EthernetService;
 import com.endeavorms.velocity.qto.service.ethernet.EthernetServiceManager;
 
 import org.springframework.stereotype.Component;
-import jakarta.ejb.TransactionManagement;
-import jakarta.ejb.TransactionManagementType;
 import jakarta.inject.Inject;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -34,7 +32,6 @@ import java.util.Map;
  * @since 1/18/2024
  */
 @Component
-@TransactionManagement(TransactionManagementType.BEAN)
 public class EthernetImporter extends AbstractInventoryServiceImporter {
 
     @Inject

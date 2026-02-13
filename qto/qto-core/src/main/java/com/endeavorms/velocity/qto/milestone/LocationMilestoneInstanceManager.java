@@ -33,6 +33,9 @@ public class LocationMilestoneInstanceManager extends AbstractMilestoneInstanceM
     @Inject
     private LocationManager locationManager;
 
+    @Inject
+    private BaseEventHandler baseEventHandler;
+
     @Override
     public LocationMilestoneInstanceJpaDao getDao() {
         return dao;
@@ -63,9 +66,7 @@ public class LocationMilestoneInstanceManager extends AbstractMilestoneInstanceM
     protected void handleMilestoneEvent(final LocationMilestoneInstance milestoneInstance) {
         Location location = locationManager.retrieve(milestoneInstance.getLocationId());
 
-        BaseEventHandler handler = BaseEventHandler
-                .omsEventHandlerFactory("com.endeavorms.velocity.qto.events.handlers.BaseEventHandler");
-        handler.handleMilestoneEvent(milestoneInstance, location);
+        baseEventHandler.handleMilestoneEvent(milestoneInstance, location);
     }
 
     @Override

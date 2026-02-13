@@ -17,8 +17,6 @@ import com.endeavorms.velocity.qto.service.mpls.MplsService;
 import com.endeavorms.velocity.qto.service.mpls.MplsServiceManager;
 
 import org.springframework.stereotype.Component;
-import jakarta.ejb.TransactionManagement;
-import jakarta.ejb.TransactionManagementType;
 import jakarta.inject.Inject;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -31,7 +29,6 @@ import java.util.Map;
  * @since 5/17/2024
  */
 @Component
-@TransactionManagement(TransactionManagementType.BEAN)
 public class MplsImporter extends AbstractInventoryServiceImporter {
 
     @Inject

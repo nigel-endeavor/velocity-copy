@@ -2,12 +2,12 @@ package com.endeavorms.velocity.qto.cdi;
 
 import com.endeavorms.velocity.qto.common.PlatformDatabase;
 
-import jakarta.ejb.DependsOn;
-import jakarta.ejb.Startup;
-import jakarta.enterprise.inject.Produces;
-import jakarta.inject.Singleton;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.context.annotation.Bean;
 
 
 /**
@@ -15,8 +15,7 @@ import jakarta.persistence.PersistenceContext;
  * @author fcurran
  * @since 1.0.0
  */
-@Singleton
-@Startup
+@Configuration
 @DependsOn("LiquibaseStartupBean")
 public class ApplicationResources {
 
@@ -27,13 +26,13 @@ public class ApplicationResources {
     @PersistenceContext(unitName = "platform")
     private EntityManager platformEntityManager;
 
-    @Produces
+    @Bean
     @QtoDatabase
     public EntityManager getQtoEntityManager() {
         return qtoEntityManager;
     }
 
-    @Produces
+    @Bean
     @PlatformDatabase
     public EntityManager getPlatformEntityManager() {
         return platformEntityManager;

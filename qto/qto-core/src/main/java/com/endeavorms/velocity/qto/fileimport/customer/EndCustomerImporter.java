@@ -7,14 +7,11 @@ import com.endeavorms.velocity.qto.company.Company;
 import com.endeavorms.velocity.qto.fileimport.importactivity.ImportActivity;
 
 import org.springframework.stereotype.Component;
-import jakarta.ejb.TransactionManagement;
-import jakarta.ejb.TransactionManagementType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 @Component
-@TransactionManagement(TransactionManagementType.BEAN)
 public class EndCustomerImporter extends AbstractCompanyImporter {
     @Override
     protected void importRow(final Map<String, ValidatingSourceMapper> sourceMappers, final ImportActivity importActivity) throws Exception {

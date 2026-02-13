@@ -1,6 +1,6 @@
 # JMS Migration - Remaining Listeners
 
-Migrate these @MessageDriven listeners to @JmsListener:
+All listeners use @JmsListener (Spring). Remaining queue handlers to migrate to JmsTemplate:
 - [x] ServiceMultiEditListener
 - [x] MultiMacdListener (in progress)
 - [ ] QuoteProcessingListener

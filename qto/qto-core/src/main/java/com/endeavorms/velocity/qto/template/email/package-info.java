@@ -1,5 +1,5 @@
 /**
- * Provides classes related to the 'email_template' entity.
+ * Provides API classes related to email templates.
  * @author fcurran
  */
 package com.endeavorms.velocity.qto.template.email;

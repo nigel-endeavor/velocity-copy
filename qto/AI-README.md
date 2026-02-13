@@ -1,6 +1,6 @@
 # QTO (Quantum Task Orchestrator) - AI Development Guide
 
-> **Migration Notice (2026)**: The project has migrated to **Spring Boot**, **Gradle**, and **PostgreSQL**. The qto-spring-boot-app is the main deployment. Legacy Java EE/WildFly/MySQL sections below are for reference only.
+> **Migration Notice (2026)**: The project uses **Gradle** and **PostgreSQL**. Core modules: qto-core, qto-rest-api, qto-database. Legacy Java EE/WildFly/MySQL sections below are for reference only.
 
 ## Project Overview
 

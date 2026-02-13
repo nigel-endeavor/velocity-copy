@@ -29,18 +29,9 @@ import com.endeavorms.velocity.qto.subject.SubjectManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jakarta.annotation.Resource;
-import jakarta.ejb.EJBContext;
 import org.springframework.stereotype.Component;
-import jakarta.ejb.TransactionManagement;
-import jakarta.ejb.TransactionManagementType;
+import org.springframework.transaction.support.TransactionTemplate;
 import jakarta.inject.Inject;
-import jakarta.transaction.HeuristicMixedException;
-import jakarta.transaction.HeuristicRollbackException;
-import jakarta.transaction.NotSupportedException;
-import jakarta.transaction.RollbackException;
-import jakarta.transaction.SystemException;
-import jakarta.transaction.UserTransaction;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
@@ -52,17 +43,11 @@ import java.util.List;
  */
 
 @Component
-@TransactionManagement(TransactionManagementType.BEAN)
 public class InvoiceChargeManager extends StandardManager<InvoiceCharge> {
-    /**
-     * Private logger for this class.
-     */
     private static final Logger LOGGER = LoggerFactory.getLogger(InvoiceChargeManager.class);
-    /**
-     * Context from which we can get a transaction.
-     */
-    @Resource
-    protected EJBContext ctx;
+
+    @Inject
+    private TransactionTemplate transactionTemplate;
 
     @Inject
     private InvoiceChargeJpaDao dao;
@@ -126,61 +111,50 @@ public class InvoiceChargeManager extends StandardManager<InvoiceCharge> {
      * @param messageType
      */
     public void generateInvoiceCharges(final Long invoiceId, final Long subjectId, final String messageType) {
-        UserTransaction dbTrans = ctx.getUserTransaction();
-        try {
-            // retrieve the current invoice
-            Invoice invoice = invoiceManager.retrieve(invoiceId);
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(invoice.getInvoiceEnd());
-            cal.add(Calendar.DATE, 1);
-            cal.set(Calendar.HOUR_OF_DAY, 0);
-            cal.set(Calendar.MINUTE, 0);
-            cal.set(Calendar.SECOND, 0);
-            cal.set(Calendar.MILLISECOND, 0);
-            Date enddate = cal.getTime();
-            // remove any existing charges
-            LOGGER.debug("Removing existing charges for invoice {}", invoiceId);
-            dbTrans.begin();
-            dao.removeExistingCharges(invoiceId);
-            dbTrans.commit();
-            dbTrans.begin();
+        Invoice invoice = invoiceManager.retrieve(invoiceId);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(invoice.getInvoiceEnd());
+        cal.add(Calendar.DATE, 1);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        Date enddate = cal.getTime();
+
+        LOGGER.debug("Removing existing charges for invoice {}", invoiceId);
+        transactionTemplate.executeWithoutResult(s -> dao.removeExistingCharges(invoiceId));
+
+        transactionTemplate.executeWithoutResult(s -> {
             StringBuilder errMsg = new StringBuilder();
-            // get the billable milestones for the tenant
             List<BillableMilestone> billableMilestones = billableMilestoneManager.findByTenantId(invoice.getTenantId());
-            //for each billable milestone get the milestone instances and generate the charges
             for (BillableMilestone bm : billableMilestones) {
                 String code = bm.getMilestone().getCode();
                 String level = bm.getLevel();
                 BigDecimal percentage = BigDecimal.valueOf(bm.getPercentage());
-                LOGGER.debug("Generating charges for milestone {} at level {} with percentage {}",
-                        code, level, percentage);
+                LOGGER.debug("Generating charges for milestone {} at level {} with percentage {}", code, level, percentage);
                 if ("Service".equalsIgnoreCase(level)) {
                     List<ServiceMilestoneInstance> milestones = serviceMilestoneManager.retrieveBillableMilestones(
                             invoice.getTenantId(), code, enddate);
-                    LOGGER.debug("Found {} milestones for Code {}", milestones.size(), code);
                     for (ServiceMilestoneInstance milestone : milestones) {
                         errMsg.append(calculateServiceCharges(milestone, percentage, invoice, enddate));
                     }
                 } else if ("Location".equalsIgnoreCase(level)) {
                     List<LocationMilestoneInstance> milestones = locationMilestoneManager.retrieveBillableMilestones(
                             invoice.getTenantId(), code, enddate);
-                    LOGGER.debug("Found {} milestones for Code {}", milestones.size(), code);
                     for (LocationMilestoneInstance milestone : milestones) {
                         errMsg.append(calculateLocationCharges(milestone, percentage, invoice, enddate));
                     }
                 }
             }
-            //calculate surcharges
             calculateSurcharges(invoice, enddate);
             Subject subject = subjectManager.retrieve(subjectId);
             invoice.setGeneratedDate(new Date());
             invoice.setGeneratedBy(subject.getDisplayName());
-            String statusMsg = "";
+            String statusMsg;
             if (Strings.isNullOrEmpty(messageType)) {
                 invoice.setInvoiceStatus("Draft");
                 statusMsg = "Generate Charges";
             } else {
-                //toggles the status of the invoice
                 if (invoice.getInvoiceStatus().equalsIgnoreCase("Draft")) {
                     invoice.setInvoiceStatus("Final");
                     statusMsg = "Finalize and Generate Charges";
@@ -188,46 +162,12 @@ public class InvoiceChargeManager extends StandardManager<InvoiceCharge> {
                     invoice.setInvoiceStatus("Draft");
                     statusMsg = "Unfinalize and Generate Charges";
                 }
-
             }
-            //calculate the total charges for the invoice
             invoice.setTotalCharges(dao.getTotalCharges(invoiceId));
             invoiceManager.edit(invoice);
-            dbTrans.commit();
-            String header = header = "Invoice " + statusMsg + " Complete";
-            String body = "Invoice is available for download.";
-            notificationManager.create(subjectId, header, body.toString(), "done", null);
-        } catch (NotSupportedException e) {
-            handleException(dbTrans, e);
-            throw new RuntimeException(e);
-        } catch (SystemException e) {
-            handleException(dbTrans, e);
-            throw new RuntimeException(e);
-        } catch (HeuristicRollbackException e) {
-            handleException(dbTrans, e);
-            throw new RuntimeException(e);
-        } catch (HeuristicMixedException e) {
-            handleException(dbTrans, e);
-            throw new RuntimeException(e);
-        } catch (RollbackException e) {
-            handleException(dbTrans, e);
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * Handle an exception by logging a message and rolling back the transaction.
-     *
-     * @param dbTrans the db transaction.
-     * @param e       the exception that was caught.
-     */
-    private void handleException(final UserTransaction dbTrans, final Exception e) {
-        LOGGER.error("Failed generating charges");
-        try {
-            dbTrans.rollback();
-        } catch (SystemException e1) {
-            LOGGER.error("Error rolling back transaction for invoice charge generation", e1);
-        }
+            String header = "Invoice " + statusMsg + " Complete";
+            notificationManager.create(subjectId, header, "Invoice is available for download.", "done", null);
+        });
     }
 
     private void calculateSurcharges(Invoice invoice, Date enddate) {

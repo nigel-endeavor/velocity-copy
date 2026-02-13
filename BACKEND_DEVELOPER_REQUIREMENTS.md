@@ -71,11 +71,9 @@ We're seeking an experienced **Backend Developer** to build, test, and deploy th
 ### 3. Deployment & Operations
 
 **Application Deployment**:
-- Deploy and configure WildFly/JBoss application server for local and production environments
-- Package and deploy WAR artifacts using Maven WildFly plugin
-- Configure data sources, security realms, and container resources
-- Manage deployment descriptors (`jboss-deployment-structure.xml`, `jboss-web.xml`, `web.xml`)
-- Coordinate releases with Angular frontend deployments
+- Deploy backend services (Gradle build, Spring Boot or similar container)
+- Configure data sources and application resources
+- Coordinate releases with frontend deployments
 
 **Database Operations**:
 - Execute Liquibase migrations for schema updates across environments
@@ -89,7 +87,7 @@ We're seeking an experienced **Backend Developer** to build, test, and deploy th
 - Coordinate with frontend team on API contract changes
 
 **CI/CD Pipeline Development** (Opportunity Area):
-- Implement automated build pipelines (Maven + npm builds)
+- Implement automated build pipelines (Gradle + Bun/npm builds)
 - Configure automated testing in CI environment
 - Set up code quality analysis (SonarQube)
 - Implement security vulnerability scanning for dependencies
@@ -107,13 +105,13 @@ We're seeking an experienced **Backend Developer** to build, test, and deploy th
   - JPA 2.2 / Hibernate ORM (complex entity relationships, inheritance strategies)
   - CDI 2.0 (Dependency injection and lifecycle management)
   - JTA (Distributed transactions)
-- **Maven 3.x** multi-module project management
+- **Gradle** multi-module project management
 - **SQL proficiency** with PostgreSQL or similar relational databases
 
-### Application Server
-- **WildFly, JBoss EAP, or similar Java EE containers**
-- Experience configuring data sources, security realms, and deployments
-- Understanding of container-managed resources and JNDI
+### Build & Runtime
+- **Gradle** for build and dependency management
+- Experience with Spring Boot or similar embedded server
+- Understanding of datasource configuration and JPA
 
 ### Essential Frameworks & Libraries
 - **QueryDSL 5.x** for type-safe database queries

@@ -1,5 +1,5 @@
 /**
- * qto-core root package.
+ * qto-rest-api root package.
  * @author rcasey
  * @since 1.0.0
  */

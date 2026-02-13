@@ -7,17 +7,19 @@ sourceSets["main"].java.srcDir("${layout.buildDirectory.get()}/generated/sources
 dependencies {
     implementation(platform("org.springframework.boot:spring-boot-dependencies:3.2.2"))
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework:spring-jms")
     implementation("org.springframework:spring-web")
 
     // Jakarta (replaces javax)
     implementation("jakarta.persistence:jakarta.persistence-api")
     implementation("jakarta.inject:jakarta.inject-api:2.0.1")
-    implementation("jakarta.ejb:jakarta.ejb-api:4.0.1")
     implementation("jakarta.transaction:jakarta.transaction-api:2.0.1")
-    implementation("jakarta.ws.rs:jakarta.ws.rs-api:3.1.0")
     implementation("jakarta.json:jakarta.json-api:2.1.2")
     implementation("jakarta.servlet:jakarta.servlet-api:6.0.0")
+    implementation("jakarta.ws.rs:jakarta.ws.rs-api:3.1.0")
+    implementation("org.apache.httpcomponents:httpclient:4.5.14")
+    implementation("org.jboss.resteasy:resteasy-core:6.2.10.Final")
 
     implementation("com.fasterxml.jackson.core:jackson-annotations:2.15.4")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.15.4")
@@ -43,6 +45,7 @@ dependencies {
     implementation("jakarta.xml.bind:jakarta.xml.bind-api:4.0.1")
     implementation("joda-time:joda-time:2.12.5")
     implementation("org.apache.commons:commons-lang3:3.14.0")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-guava")
     implementation("org.apache.tika:tika-core:2.9.1")
     implementation("commons-io:commons-io:2.15.1")
     implementation("org.apache.httpcomponents.client5:httpclient5:5.2.1")
@@ -58,7 +61,6 @@ dependencies {
     implementation("jakarta.websocket:jakarta.websocket-api:2.1.1")
     implementation("org.apache.tomcat.embed:tomcat-embed-websocket")
     implementation("org.apache.commons:commons-vfs2:2.9.0")
-    implementation("org.quartz-scheduler:quartz:2.3.2")
     implementation("jakarta.jms:jakarta.jms-api:3.0.0")
 
     compileOnly("org.projectlombok:lombok:1.18.30")

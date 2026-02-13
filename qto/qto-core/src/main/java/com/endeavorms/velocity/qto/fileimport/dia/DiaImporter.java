@@ -17,8 +17,6 @@ import com.endeavorms.velocity.qto.service.dia.DiaService;
 import com.endeavorms.velocity.qto.service.dia.DiaServiceManager;
 
 import org.springframework.stereotype.Component;
-import jakarta.ejb.TransactionManagement;
-import jakarta.ejb.TransactionManagementType;
 import jakarta.inject.Inject;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -31,7 +29,6 @@ import java.util.Map;
  * @since 9/18/2023
  */
 @Component
-@TransactionManagement(TransactionManagementType.BEAN)
 public class DiaImporter extends AbstractInventoryServiceImporter {
     @Inject
     private ServiceManager serviceManager;

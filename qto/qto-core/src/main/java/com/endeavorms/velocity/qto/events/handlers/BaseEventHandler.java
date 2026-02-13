@@ -2,7 +2,6 @@ package com.endeavorms.velocity.qto.events.handlers;
 
 import com.google.common.base.Strings;
 import com.endeavorms.velocity.qto.common.SecurityUtils;
-import com.endeavorms.velocity.qto.common.quartz.ScheduledJobUtil;
 import com.endeavorms.velocity.qto.company.CompanyManager;
 import com.endeavorms.velocity.qto.config.CompanyConfigKey;
 import com.endeavorms.velocity.qto.config.CompanyConfigPropertiesDto;
@@ -53,7 +52,6 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.stereotype.Component;
 import jakarta.inject.Inject;
-import javax.naming.NamingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -907,26 +905,6 @@ public class BaseEventHandler {
 
     }
 
-
-    /**
-     * Returns the appropriate event handler by its class name.
-     *
-     * @param className the name of said class.
-     * @return the oms event handler
-     */
-    public static BaseEventHandler omsEventHandlerFactory(final String className) {
-
-        try {
-            Class eventHandlerClass = Class.forName(className);
-            return (BaseEventHandler) ScheduledJobUtil.findEjb(eventHandlerClass);
-        } catch (ClassNotFoundException cnfe) {
-            LOGGER.error("Class {} not found.", className);
-            throw new RuntimeException(cnfe);
-        } catch (NamingException ne) {
-            LOGGER.error(ne.getMessage());
-            throw new RuntimeException(ne);
-        }
-    }
 
     /**
      * Creates an IntervalMessage and sends it to the interval queue.
