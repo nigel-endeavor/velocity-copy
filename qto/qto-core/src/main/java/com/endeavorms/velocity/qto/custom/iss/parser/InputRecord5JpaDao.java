@@ -10,6 +10,9 @@ import jakarta.persistence.EntityManager;
 import static com.endeavorms.velocity.qto.custom.iss.parser.QInputRecord2.inputRecord2;
 import static com.endeavorms.velocity.qto.custom.iss.parser.QInputRecord5.inputRecord5;
 
+import org.springframework.stereotype.Repository;
+
+@Repository
 public class InputRecord5JpaDao extends AbstractJpaDao<InputRecord5, Long> {
        @Override
     @Inject

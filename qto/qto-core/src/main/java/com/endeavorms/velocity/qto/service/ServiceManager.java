@@ -66,7 +66,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.stereotype.Component;
-import jakarta.inject.Inject;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -93,100 +94,100 @@ public class ServiceManager extends StandardManager<Service> {
     /**
      * Persistence tier for services.
      */
-    @Inject
+    @Autowired
     private ServiceJpaDao dao;
     /**
      * Manager for getting the properly injected manager for a given service type.
      */
-    @Inject
+    @Autowired
     private ServiceManagerFactory serviceManagerFactory;
     /**
      * Business logic tier for orders.
      */
-    @Inject
+    @Autowired
     private OrderManager orderManager;
     /**
      * Business logic tier for locations.
      */
-    @Inject
+    @Autowired
     private LocationManager locationManager;
     /**
      * Business logic tier for service notes.
      */
-    @Inject
+    @Autowired
     private ServiceNoteManager serviceNoteManager;
     /**
      * Business logic tier for service jeops.
      */
-    @Inject
+    @Autowired
     private ServiceJeopManager serviceJeopManager;
     /**
      * Business logic tier for milestone.
      */
-    @Inject
+    @Autowired
     private MilestoneManager milestoneManager;
     /**
      * Business logic tier for milestone display sets.
      */
-    @Inject
+    @Autowired
     private MilestoneDisplaySetManager mdsManager;
     /**
      * Business logic tier for service milestone instances.
      */
-    @Inject
+    @Autowired
     private ServiceMilestoneInstanceManager serviceMilestoneInstanceManager;
     /**
      * Business logic tier for companies.
      */
-    @Inject
+    @Autowired
     private CompanyManager companyManager;
     /**
      * Notification manager.
      */
-    @Inject
+    @Autowired
     private NotificationManager notificationManager;
 
     /**
      * Business logic tier for pending disconnects.
      */
-    @Inject
+    @Autowired
     private PendingDisconnectManager pendingDisconnectManager;
 
-    @Inject
+    @Autowired
     private SubjectManager subjectManager;
 
-    @Inject
+    @Autowired
     private ServiceFileAttachmentManager serviceFileAttachmentManager;
 
-    @Inject
+    @Autowired
     private ActivationAttemptManager attemptManager;
 
-    @Inject
+    @Autowired
     private ActivationIssueManager attemptIssueManager;
 
-    @Inject
+    @Autowired
     private ActivationScheduleManager scheduleManager;
 
-    @Inject
+    @Autowired
     private CostHistoryManager costHistoryManager;
 
-    @Inject
+    @Autowired
     private DisputeManager disputeManager;
 
-    @Inject
+    @Autowired
     private ServiceBrokerageManager brokerageManager;
 
-    @Inject
+    @Autowired
     private ServiceSnapshotManager snapshotManager;
 
-    @Inject
+    @Autowired
     private ServiceSurchargeManager surchargeManager;
 
 
-    @Inject
+    @Autowired
     private FileAttachmentManager fileAttachmentManager;
 
-    @Inject
+    @Autowired
     private ServiceEquipmentManager serviceEquipmentManager;
 
 

@@ -14,6 +14,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import static com.endeavorms.velocity.qto.milestone.QServiceMilestoneInstance.serviceMilestoneInstance;
 
 /**
@@ -21,6 +23,8 @@ import static com.endeavorms.velocity.qto.milestone.QServiceMilestoneInstance.se
  *
  * @author fcurran
  */
+
+@Repository
 public class ServiceMilestoneInstanceJpaDao extends AbstractMilestoneInstanceJpaDao<ServiceMilestoneInstance> {
     @Override
     public List<ServiceMilestoneInstance> listByRecord(final Long serviceId) {

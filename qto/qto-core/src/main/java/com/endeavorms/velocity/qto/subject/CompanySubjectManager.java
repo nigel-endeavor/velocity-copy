@@ -7,19 +7,21 @@ import com.endeavorms.velocity.qto.company.CompanyManager;
 
 import jakarta.inject.Inject;
 import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+
 
 import java.util.List;
 
 @Component
 public class CompanySubjectManager extends StandardManager<CompanySubject> {
 
-    @Inject
+    @Autowired
     private CompanySubjectJpaDao dao;
 
-    @Inject
+    @Autowired
     private CompanyManager companyManager;
 
-    @Inject
+    @Autowired
     private TenantSubjectManager tenantSubjectManager;
 
     @Override

@@ -6,6 +6,8 @@ import com.endeavorms.velocity.qto.common.StandardManager;
 import org.springframework.stereotype.Component;
 import jakarta.inject.Inject;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 /**
  * @author rcasey
  * @since 3/1/2023
@@ -16,7 +18,7 @@ public class ActivationViewManager extends StandardManager<ActivationView> {
     /**
      * Persistence tier for ActivationView.
      */
-    @Inject
+    @Autowired
     private ActivationViewJpaDao dao;
 
     @Override

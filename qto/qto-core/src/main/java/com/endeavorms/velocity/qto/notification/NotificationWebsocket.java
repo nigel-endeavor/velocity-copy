@@ -1,14 +1,20 @@
 package com.endeavorms.velocity.qto.notification;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
+import com.endeavorms.velocity.qto.authentication.JwtAuthenticationHelper;
 import com.endeavorms.velocity.qto.common.SecurityUtils;
 import com.endeavorms.velocity.qto.subject.Subject;
 import com.endeavorms.velocity.qto.subject.SubjectManager;
-import com.endeavorms.velocity.qto.authentication.JwtAuthenticationHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 
 import jakarta.ejb.Singleton;
 import jakarta.inject.Inject;
@@ -17,14 +23,13 @@ import jakarta.websocket.OnError;
 import jakarta.websocket.OnMessage;
 import jakarta.websocket.Session;
 import jakarta.websocket.server.ServerEndpoint;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author rcasey
  * @since 6/15/2023
  */
+
+@Component
 @ServerEndpoint("/notifications")
 @Singleton
 public class NotificationWebsocket {

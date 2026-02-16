@@ -3,7 +3,8 @@ package com.endeavorms.velocity.qto;
 import com.endeavorms.velocity.qto.config.ConfigPropertyManager;
 
 import org.springframework.stereotype.Component;
-import jakarta.inject.Inject;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import jakarta.mail.Authenticator;
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
@@ -18,7 +19,7 @@ import java.util.Properties;
 @Component
 public class EmailUtility {
 
-    @Inject
+    @Autowired
     private ConfigPropertyManager configPropertyManager;
 
     public void sendEmail(String subject, String msg, List<String> recipients) {

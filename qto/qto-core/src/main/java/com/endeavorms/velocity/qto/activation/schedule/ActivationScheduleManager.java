@@ -1,6 +1,15 @@
 package com.endeavorms.velocity.qto.activation.schedule;
 
-import com.google.common.base.Strings;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.stereotype.Component;
+
 import com.endeavorms.velocity.qto.activation.attempt.ActivationAttempt;
 import com.endeavorms.velocity.qto.activation.attempt.ActivationAttemptManager;
 import com.endeavorms.velocity.qto.common.StandardManager;
@@ -10,21 +19,9 @@ import com.endeavorms.velocity.qto.milestone.ServiceMilestoneInstance;
 import com.endeavorms.velocity.qto.milestone.ServiceMilestoneInstanceManager;
 import com.endeavorms.velocity.qto.service.Service;
 import com.endeavorms.velocity.qto.service.ServiceManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.google.common.base.Strings;
 
-import jakarta.annotation.Resource;
-import org.springframework.stereotype.Component;
-import jakarta.inject.Inject;
 import jakarta.jms.ObjectMessage;
-import jakarta.jms.Queue;
-import jakarta.jms.QueueConnection;
-import jakarta.jms.QueueConnectionFactory;
-import jakarta.jms.QueueSender;
-import jakarta.jms.QueueSession;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 /**
  * @author rcasey
@@ -37,44 +34,49 @@ public class ActivationScheduleManager extends StandardManager<ActivationSchedul
      * Logging Facade.
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(ActivationScheduleManager.class);
+    private static final String FTDI_PROCESSING_QUEUE = "qto.FtdiProcessingQueue";
 
     /**
      * Persistence tier for ActivationSchedules.
      */
-    @Inject
+    @Autowired
     private ActivationScheduleJpaDao dao;
 
-    @Inject
+    @Autowired
     private ServiceMilestoneInstanceManager serviceMilestoneInstanceManager;
 
-    @Inject
+    @Autowired
     private ActivationAttemptManager activationAttemptManager;
 
-    @Inject
+    @Autowired
     private ServiceManager serviceManager;
 
     /**
      * Manager for FTDI Dispatches.
      */
-    @Inject
+    @Autowired
     private FtdiDispatchManager ftdiDispatchManager;
 
     /**
      * JMS Queue.
+     * Resource(mappedName = "java:/queue/qto.FtdiProcessingQueue")
+     * private Queue queue;
      */
-    @Resource(mappedName = "java:/queue/qto.FtdiProcessingQueue")
-    private Queue queue;
 
     /**
      * Connection factory name.
+     * private static final String JMS_CONNECTION_FACTORY_NAME = "java:/JmsXA";
      */
-    private static final String JMS_CONNECTION_FACTORY_NAME = "java:/JmsXA";
-
+    
     /**
      * JMS connection factory.
+     * @Resource(mappedName = JMS_CONNECTION_FACTORY_NAME)
+     * private QueueConnectionFactory connectionFactory;
      */
-    @Resource(mappedName = JMS_CONNECTION_FACTORY_NAME)
-    private QueueConnectionFactory connectionFactory;
+
+        
+    @Autowired
+    private JmsTemplate jmsTemplate;
 
     @Override
     protected ActivationScheduleJpaDao getDao() {
@@ -191,34 +193,14 @@ public class ActivationScheduleManager extends StandardManager<ActivationSchedul
     }
 
     public void sendDispatchToQueue(final ActivationSchedule schedule, final FtdiDispatch ftdiDispatch) {
-
-        String jmsQueueName = null;
-
-        try (QueueConnection connection = connectionFactory.createQueueConnection();
-             QueueSession session = connection.createQueueSession(false, QueueSession.AUTO_ACKNOWLEDGE)) {
-
-            jmsQueueName = queue.getQueueName();
+        jmsTemplate.send(FTDI_PROCESSING_QUEUE, session -> {
             ObjectMessage message = session.createObjectMessage();
             message.setLongProperty("dispatchId", ftdiDispatch.getId());
             message.setLongProperty("tenantId", schedule.getTenantId());
             message.setStringProperty("action", "CREATE");
             message.setStringProperty("vendor", "ENDEAVOR");
-
-            LOGGER.debug("About to send: {}, scheduleId = {}",
-                    jmsQueueName, schedule.getId());
-
-            try (QueueSender sender = session.createSender(queue)) {
-                sender.send(message);
-
-                LOGGER.debug("Sent: {}, scheduleId = {}",
-                        jmsQueueName, schedule.getId());
-            }
-
-        } catch (Exception e) {
-            LOGGER.error("Error closing connection: {}, scheduleId = {}",
-                    jmsQueueName, schedule.getId());
-        }
-
+            return message;
+        });
     }
 
     public void setActivationMilestones(final ActivationSchedule schedule, final Boolean both) {

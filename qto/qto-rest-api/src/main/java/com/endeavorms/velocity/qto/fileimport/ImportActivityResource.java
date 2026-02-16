@@ -6,6 +6,7 @@ import com.endeavorms.velocity.qto.fileimport.importactivity.ImportActivity;
 import com.endeavorms.velocity.qto.fileimport.importactivity.ImportActivityManager;
 import com.endeavorms.velocity.qto.fileimport.importactivity.ImportActivitySearchCriteria;
 import org.jboss.resteasy.annotations.Form;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Component;
 import jakarta.inject.Inject;
@@ -31,7 +32,7 @@ public class ImportActivityResource extends AbstractResource<ImportActivity> {
         return "/importActivities";
     }
 
-    @Inject
+    @Autowired
     private ImportActivityManager importActivityManager;
 
     @GET

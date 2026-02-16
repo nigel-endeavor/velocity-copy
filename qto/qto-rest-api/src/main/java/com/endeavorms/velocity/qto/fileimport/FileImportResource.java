@@ -9,6 +9,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import jakarta.annotation.Resource;
 import jakarta.ejb.EJBContext;
@@ -45,19 +46,19 @@ public class FileImportResource {
     @Resource
     protected EJBContext ctx;
 
-    @Inject
+    @Autowired
     private ImportActivityManager manager;
 
-    @Inject
+    @Autowired
     private FileImportQueueHandler fileImportQueueHandler;
 
-    @Inject
+    @Autowired
     private OrderImporter orderImporter;
 
-    @Inject
+    @Autowired
     private ImportTemplateBuilder importTemplateBuilder;
 
-    @Inject
+    @Autowired
     private TenantSubjectManager tenantSubjectManager;
 
     /** Accepted MIME types. */

@@ -1,17 +1,19 @@
 package com.endeavorms.velocity.qto.notification;
 
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.lang.Nullable;
+
 import com.endeavorms.velocity.qto.common.SecurityUtils;
 import com.endeavorms.velocity.qto.common.StandardManager;
 import com.endeavorms.velocity.qto.subject.Subject;
 import com.endeavorms.velocity.qto.subject.SubjectManager;
 
-import org.springframework.stereotype.Component;
 import jakarta.ejb.TransactionAttribute;
 import jakarta.ejb.TransactionAttributeType;
-import jakarta.inject.Inject;
-import java.util.Date;
-import java.util.List;
-
 /**
  * @author rcasey
  * @since 6/15/2023
@@ -22,13 +24,15 @@ public class NotificationManager extends StandardManager<Notification> {
     /**
      * Persistence tier for Notification.
      */
-    @Inject
+    @Autowired
     private NotificationJpaDao dao;
 
-    @Inject
+    
+    @Autowired(required = false)
+    @Nullable
     private NotificationWebsocket websocket;
 
-    @Inject
+    @Autowired
     private SubjectManager subjectManager;
 
     @Override
@@ -40,7 +44,10 @@ public class NotificationManager extends StandardManager<Notification> {
     public Notification create(final Notification notification) {
         notification.setCreatedDate(new Date());
         Notification created = super.create(notification);
-        websocket.pushNotification(created);
+
+        if (websocket != null) {
+            websocket.pushNotification(created);
+        }
         return created;
     }
 

@@ -1,0 +1,10 @@
+services:
+  artemis:
+    image: apache/activemq-artemis:2.32.0-alpine
+    container_name: qto-artemis
+    environment:
+      ARTEMIS_USER: qto
+      ARTEMIS_PASSWORD: changeme
+    ports:
+      - "61616:61616"   # JMS
+      - "8161:8161"     # Web console (optional)

@@ -5,6 +5,14 @@ spring:
   application:
     name: qto-application
 
+  main:
+    allow-circular-references: true
+
+  # autoconfigure:
+    # exclude:
+      # - org.springframework.boot.autoconfigure.jms.JmsAutoConfiguration
+      # - org.springframework.boot.autoconfigure.jms.artemis.ArtemisAutoConfiguration
+
   # Java 21 Virtual Threads (Project Loom)
   # Enables lightweight threads for Tomcat request handling - improves scalability
   threads:

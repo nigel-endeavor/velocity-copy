@@ -8,6 +8,8 @@ import com.endeavorms.velocity.qto.common.SecurityUtils;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+
 
 import org.springframework.stereotype.Component;
 
@@ -17,7 +19,7 @@ import static com.endeavorms.velocity.qto.subject.QCompanySubject.companySubject
 public class CompanySubjectJpaDao extends AbstractJpaDao<CompanySubject, Long> {
 
     @Override
-    @Inject
+    @Autowired
     protected void setEntityManager(@QtoDatabase final EntityManager entityManager) {
         this.entityManager = entityManager;
     }

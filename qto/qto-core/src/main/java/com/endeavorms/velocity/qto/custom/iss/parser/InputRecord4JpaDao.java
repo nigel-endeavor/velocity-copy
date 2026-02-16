@@ -9,8 +9,11 @@ import jakarta.persistence.EntityManager;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import static com.endeavorms.velocity.qto.custom.iss.parser.QInputRecord4.inputRecord4;
 
+@Repository
 public class InputRecord4JpaDao extends AbstractJpaDao<InputRecord4, Long> {
        @Override
     @Inject

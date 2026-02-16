@@ -7,8 +7,11 @@ import com.endeavorms.velocity.qto.common.AbstractJpaDao;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 
+import org.springframework.stereotype.Repository;
+
 import static com.endeavorms.velocity.qto.custom.iss.parser.QInputRecord2.inputRecord2;
 
+@Repository
 public class InputRecord2JpaDao extends AbstractJpaDao<InputRecord2, Long> {
        @Override
     @Inject

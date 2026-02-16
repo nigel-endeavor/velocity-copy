@@ -8,8 +8,11 @@ import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import static com.endeavorms.velocity.qto.custom.iss.parser.QOutputNotes.outputNotes;
 
+@Repository
 public class OutPutNotesJpaDao extends AbstractJpaDao<OutputNotes, Long> {
     @Override
     @Inject

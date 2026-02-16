@@ -13,6 +13,8 @@ import com.endeavorms.velocity.qto.common.AbstractMasterCustomerJpaDao;
 import com.endeavorms.velocity.qto.common.PaginatedResult;
 import com.endeavorms.velocity.qto.common.PlatformDatabase;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Component;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -30,13 +32,13 @@ import static com.endeavorms.velocity.qto.activation.QActivationView.activationV
 public class ActivationViewJpaDao extends AbstractMasterCustomerJpaDao<ActivationView> {
 
     @Override
-    @Inject
+    @Autowired
     protected void setEntityManager(@QtoDatabase final EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
     @Override
-    @Inject
+    @Autowired
     protected void setPlatformEntityManager(@PlatformDatabase final EntityManager platformEntityManager) {
         this.platformEntityManager = platformEntityManager;
     }

@@ -11,6 +11,8 @@ import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import static com.endeavorms.velocity.qto.milestone.QOrderMilestoneInstance.orderMilestoneInstance;
 
 /**
@@ -18,6 +20,8 @@ import static com.endeavorms.velocity.qto.milestone.QOrderMilestoneInstance.orde
  *
  * @author fcurran
  */
+
+@Repository
 public class OrderMilestoneInstanceJpaDao extends AbstractMilestoneInstanceJpaDao<OrderMilestoneInstance> {
     @Override
     public List<OrderMilestoneInstance> listByRecord(final Long orderId) {

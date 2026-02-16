@@ -3,6 +3,7 @@ package com.endeavorms.velocity.qto.solution;
 import com.endeavorms.velocity.qto.common.StandardManager;
 
 import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
 import jakarta.inject.Inject;
 
 /**
@@ -15,7 +16,7 @@ public class SolutionManager extends StandardManager<Solution> {
     /**
      * Persistence tier for Solutions.
      */
-    @Inject
+    @Autowired
     private SolutionJpaDao dao;
 
     @Override

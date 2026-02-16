@@ -20,29 +20,28 @@ import com.endeavorms.velocity.qto.service.threatMDR.ThreatMDRServiceManager;
 import com.endeavorms.velocity.qto.service.ucaas.UcaasServiceManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Component;
 
-import jakarta.enterprise.inject.Any;
-import jakarta.enterprise.inject.Instance;
-import jakarta.inject.Inject;
 import java.util.EnumMap;
 
 /**
- * Simple factory for getting the correctly injected manager for a given service type.
+ * Spring Boot factory for getting the correctly injected manager for a given service type.
  */
+@Component
 public class ServiceManagerFactory {
-    /** Logger. */
+
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceManagerFactory.class);
 
-    /** Factory instance. */
-    @Inject
-    @Any
-    private Instance<AbstractServiceManager<? extends Service>> factoryInstance;
+    private final ApplicationContext applicationContext;
 
-    /** Known managers. */
     private static final EnumMap<ServiceType, Class<? extends AbstractServiceManager<? extends Service>>> managers
             = new EnumMap<>(ServiceType.class);
 
-    /* Initialize the known managers. */
+    public ServiceManagerFactory(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+    }
+
     static {
         managers.put(ServiceType.DIA, DiaServiceManager.class);
         managers.put(ServiceType.BROADBAND, BroadbandServiceManager.class);
@@ -59,7 +58,7 @@ public class ServiceManagerFactory {
         managers.put(ServiceType.ENGINEERING_MDM, EngineeringMDMManager.class);
         managers.put(ServiceType.ENGINEERING_ENDPOINT, EngineeringEndpointManager.class);
         managers.put(ServiceType.ENGINEERING_INFO_PROTECTION, EngineeringInfoProtectionManager.class);
-        managers.put(ServiceType.ENGINEERING_EMAIL_MESSAGING, EngineeringEmailMessagingManager.class );
+        managers.put(ServiceType.ENGINEERING_EMAIL_MESSAGING, EngineeringEmailMessagingManager.class);
         managers.put(ServiceType.CYBER360MXDR, Cyber360MXDRManager.class);
         managers.put(ServiceType.MICROSOFTLICENSES, MicrosoftLicensesManager.class);
     }
@@ -70,21 +69,17 @@ public class ServiceManagerFactory {
      * @return the proper injected manager.
      */
     public AbstractServiceManager<? extends Service> getManager(final ServiceType serviceType) {
-        if (factoryInstance.isUnsatisfied()) {
-            LOGGER.debug("issue with managers injected into factory:  unsatisfied = {}",
-                    factoryInstance.isUnsatisfied());
-        }
-
         Class<? extends AbstractServiceManager<? extends Service>> managerClass = managers.get(serviceType);
 
-        for (AbstractServiceManager<? extends Service> manager : factoryInstance) {
-            if (managerClass.isAssignableFrom(manager.getClass())) {
-                return manager;
-            } else {
-                LOGGER.debug("manager {} not found", manager.getClass().getName());
-            }
+        if (managerClass == null) {
+            throw new IllegalArgumentException("No manager registered for service type: " + serviceType);
         }
 
-        throw new RuntimeException("Cannot create manager of type " + managerClass.getName());
+        try {
+            return applicationContext.getBean(managerClass);
+        } catch (Exception e) {
+            LOGGER.error("Cannot create manager of type {}", managerClass.getName(), e);
+            throw new RuntimeException("Cannot create manager of type " + managerClass.getName(), e);
+        }
     }
 }

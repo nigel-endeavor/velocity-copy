@@ -13,6 +13,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import static com.endeavorms.velocity.qto.milestone.QLocationMilestoneInstance.locationMilestoneInstance;
 
 /**
@@ -20,6 +22,8 @@ import static com.endeavorms.velocity.qto.milestone.QLocationMilestoneInstance.l
  *
  * @author fcurran
  */
+
+@Repository
 public class LocationMilestoneInstanceJpaDao extends AbstractMilestoneInstanceJpaDao<LocationMilestoneInstance> {
     @Override
     public List<LocationMilestoneInstance> listByRecord(final Long locationId) {
