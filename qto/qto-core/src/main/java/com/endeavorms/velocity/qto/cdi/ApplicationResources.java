@@ -28,13 +28,13 @@ public class ApplicationResources {
 
     @Bean(name = "qto")
     @QtoDatabase
-    public EntityManager qtoEntityManager() {
+    public EntityManager qto() {
         return qtoEntityManager;
     }
 
     @Bean(name = "platform")
     @PlatformDatabase
-    public EntityManager platformEntityManager() {
+    public EntityManager platform() {
         return platformEntityManager;
     }
 
