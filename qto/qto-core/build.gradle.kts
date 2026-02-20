@@ -61,8 +61,8 @@ dependencies {
     implementation("org.apache.commons:commons-vfs2:2.9.0")
     implementation("jakarta.jms:jakarta.jms-api:3.0.0")
 
-    compileOnly("org.projectlombok:lombok:1.18.30")
-    annotationProcessor("org.projectlombok:lombok:1.18.30")
+    compileOnly("org.projectlombok:lombok:1.18.42")
+    annotationProcessor("org.projectlombok:lombok:1.18.42")
 
     testImplementation("org.junit.jupiter:junit-jupiter")
 }

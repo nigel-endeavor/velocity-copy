@@ -26,15 +26,15 @@ public class ApplicationResources {
     @PersistenceContext(unitName = "platform")
     private EntityManager platformEntityManager;
 
-    @Bean
+    @Bean(name = "qto")
     @QtoDatabase
-    public EntityManager getQtoEntityManager() {
+    public EntityManager qtoEntityManager() {
         return qtoEntityManager;
     }
 
-    @Bean
+    @Bean(name = "platform")
     @PlatformDatabase
-    public EntityManager getPlatformEntityManager() {
+    public EntityManager platformEntityManager() {
         return platformEntityManager;
     }
 

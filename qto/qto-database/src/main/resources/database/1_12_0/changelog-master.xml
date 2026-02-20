@@ -58,7 +58,7 @@
         </sql>
     </changeSet>
 
-    <changeSet id="1_12_0-007" author="rcasey" context="dev">
+    <changeSet id="1_12_0-007-dev" author="rcasey" context="dev">
         <sql>
             INSERT INTO config_property (config_property_key, config_property_value)
             VALUES ('ORDER_RECEIPT_VIEW_LINK', 'https://i90.dev.vertek.com/qto-ops/#/services?workflowView=Order%20Receipt');

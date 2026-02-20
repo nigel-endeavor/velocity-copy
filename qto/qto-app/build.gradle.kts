@@ -3,9 +3,18 @@ plugins {
     id("org.springframework.boot") version "3.2.2"
 }
 
+
+repositories {
+    mavenCentral()
+}
+
+
 dependencies {
     implementation(project(":qto-core"))
     implementation(project(":qto-database"))
+
+    // Source: https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
+    implementation("com.mysql:mysql-connector-j:9.4.0")
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
