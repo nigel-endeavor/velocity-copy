@@ -4,15 +4,25 @@ plugins {
 
 sourceSets["main"].java.srcDir("${layout.buildDirectory.get()}/generated/sources/annotationProcessor/java/main")
 
+dependencyManagement {
+    imports {
+        mavenBom("org.springframework.boot:spring-boot-dependencies:3.2.2")
+    }
+}
+
 dependencies {
-    implementation(platform("org.springframework.boot:spring-boot-dependencies:3.2.2"))
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-artemis")
+    implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework:spring-jms")
-    implementation("org.springframework:spring-web")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-security")
+
+    implementation("org.slf4j:slf4j-api")
 
     // Jakarta (replaces javax)
     implementation("jakarta.persistence:jakarta.persistence-api")
+    annotationProcessor("jakarta.persistence:jakarta.persistence-api")
+
     implementation("jakarta.inject:jakarta.inject-api:2.0.1")
     implementation("jakarta.transaction:jakarta.transaction-api:2.0.1")
     implementation("jakarta.json:jakarta.json-api:2.1.2")
@@ -25,10 +35,8 @@ dependencies {
 
     implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
     implementation("com.querydsl:querydsl-core:5.0.0")
-    annotationProcessor("com.querydsl:querydsl-apt:5.0.0:jakarta")
-    annotationProcessor("jakarta.persistence:jakarta.persistence-api:3.1.0")
 
-    implementation("org.springframework.boot:spring-boot-starter-security")
+    annotationProcessor("com.querydsl:querydsl-apt:5.0.0:jakarta")
     implementation("commons-beanutils:commons-beanutils:1.9.4")
     compileOnly("javax.servlet:javax.servlet-api:4.0.1")
 
@@ -59,7 +67,12 @@ dependencies {
     implementation("jakarta.websocket:jakarta.websocket-api:2.1.1")
     implementation("org.apache.tomcat.embed:tomcat-embed-websocket")
     implementation("org.apache.commons:commons-vfs2:2.9.0")
-    implementation("jakarta.jms:jakarta.jms-api:3.0.0")
+    // implementation("jakarta.jms:jakarta.jms-api:3.0.0")
+
+    implementation("org.springframework:spring-jms")
+    compileOnly("jakarta.jms:jakarta.jms-api")
+
+    implementation("org.liquibase:liquibase-core:4.29.2")
 
     compileOnly("org.projectlombok:lombok:1.18.42")
     annotationProcessor("org.projectlombok:lombok:1.18.42")
@@ -70,4 +83,11 @@ dependencies {
 tasks.withType<JavaCompile> {
     options.compilerArgs.add("-parameters")
     options.annotationProcessorGeneratedSourcesDirectory = file("${layout.buildDirectory.get()}/generated/sources/annotationProcessor/java/main")
+}
+
+tasks.matching { it.name == "bootJar" }.configureEach {
+    enabled = false
+}
+tasks.matching { it.name == "jar" }.configureEach {
+    enabled = true
 }
