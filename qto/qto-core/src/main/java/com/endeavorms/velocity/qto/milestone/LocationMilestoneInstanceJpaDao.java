@@ -1,25 +1,29 @@
 package com.endeavorms.velocity.qto.milestone;
 
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.JPQLQuery;
-import com.querydsl.jpa.impl.JPAQuery;
-import com.endeavorms.velocity.qto.cdi.QtoDatabase;
-import com.endeavorms.velocity.qto.common.PlatformDatabase;
-import com.endeavorms.velocity.qto.common.PreconditionsUtil;
+import static com.endeavorms.velocity.qto.milestone.QLocationMilestoneInstance.locationMilestoneInstance;
 
-import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import static com.endeavorms.velocity.qto.milestone.QLocationMilestoneInstance.locationMilestoneInstance;
+import org.springframework.stereotype.Repository;
+
+import com.endeavorms.velocity.qto.cdi.QtoDatabase;
+import com.endeavorms.velocity.qto.common.PlatformDatabase;
+import com.endeavorms.velocity.qto.common.PreconditionsUtil;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPQLQuery;
+import com.querydsl.jpa.impl.JPAQuery;
+
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
 
 /**
  * Persistence tier for LocationMilestoneInstances.
  *
  * @author fcurran
  */
+@Repository
 public class LocationMilestoneInstanceJpaDao extends AbstractMilestoneInstanceJpaDao<LocationMilestoneInstance> {
     @Override
     public List<LocationMilestoneInstance> listByRecord(final Long locationId) {

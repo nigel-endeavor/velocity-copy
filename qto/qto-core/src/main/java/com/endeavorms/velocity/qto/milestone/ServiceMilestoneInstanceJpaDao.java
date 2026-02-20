@@ -1,26 +1,30 @@
 package com.endeavorms.velocity.qto.milestone;
 
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.JPQLQuery;
-import com.querydsl.jpa.impl.JPAQuery;
-import com.endeavorms.velocity.qto.cdi.QtoDatabase;
-import com.endeavorms.velocity.qto.common.PlatformDatabase;
-import com.endeavorms.velocity.qto.common.PreconditionsUtil;
+import static com.endeavorms.velocity.qto.milestone.QServiceMilestoneInstance.serviceMilestoneInstance;
 
-import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import static com.endeavorms.velocity.qto.milestone.QServiceMilestoneInstance.serviceMilestoneInstance;
+import org.springframework.stereotype.Repository;
+
+import com.endeavorms.velocity.qto.cdi.QtoDatabase;
+import com.endeavorms.velocity.qto.common.PlatformDatabase;
+import com.endeavorms.velocity.qto.common.PreconditionsUtil;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPQLQuery;
+import com.querydsl.jpa.impl.JPAQuery;
+
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
 
 /**
  * Persistence tier for ServiceMilestoneInstances.
  *
  * @author fcurran
  */
+@Repository
 public class ServiceMilestoneInstanceJpaDao extends AbstractMilestoneInstanceJpaDao<ServiceMilestoneInstance> {
     @Override
     public List<ServiceMilestoneInstance> listByRecord(final Long serviceId) {

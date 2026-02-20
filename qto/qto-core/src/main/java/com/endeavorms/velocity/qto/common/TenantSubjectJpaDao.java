@@ -4,6 +4,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.endeavorms.velocity.qto.subject.TenantSubject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -16,6 +17,7 @@ import static com.endeavorms.velocity.qto.subject.QTenantSubject.tenantSubject;
  * @author mmeehan
  * @since 1.4 - 12/7/12 11:49 AM
  */
+@Repository
 public class TenantSubjectJpaDao extends AbstractJpaDao<TenantSubject, Long> {
 
     /** Logging Facade. */
