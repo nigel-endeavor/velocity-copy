@@ -1,5 +1,18 @@
 package com.endeavorms.velocity.qto.activation;
 
+import static com.endeavorms.velocity.qto.activation.QActivationView.activationView;
+
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
+
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+
+import com.endeavorms.velocity.qto.cdi.QtoDatabase;
+import com.endeavorms.velocity.qto.common.AbstractMasterCustomerJpaDao;
+import com.endeavorms.velocity.qto.common.PaginatedResult;
+import com.endeavorms.velocity.qto.common.PlatformDatabase;
 import com.google.common.base.Strings;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Order;
@@ -8,25 +21,15 @@ import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
-import com.endeavorms.velocity.qto.cdi.QtoDatabase;
-import com.endeavorms.velocity.qto.common.AbstractMasterCustomerJpaDao;
-import com.endeavorms.velocity.qto.common.PaginatedResult;
-import com.endeavorms.velocity.qto.common.PlatformDatabase;
 
-import org.springframework.stereotype.Component;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.List;
-
-import static com.endeavorms.velocity.qto.activation.QActivationView.activationView;
 
 /**
  * @author rcasey
  * @since 3/1/2023
  */
-@Component
+@Repository
 public class ActivationViewJpaDao extends AbstractMasterCustomerJpaDao<ActivationView> {
 
     @Override

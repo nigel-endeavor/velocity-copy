@@ -5,6 +5,7 @@ import com.endeavorms.velocity.qto.subject.SubjectManager;
 import com.endeavorms.velocity.qto.subject.TenantSubject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Component;
 import jakarta.inject.Inject;
@@ -17,13 +18,13 @@ public class TenantSubjectManager extends StandardManager<TenantSubject> {
     private static final Logger LOGGER = LoggerFactory.getLogger(TenantSubjectManager.class);
 
     /** Data access for TenantSubject entities.*/
-    @Inject
+    @Autowired
     private TenantSubjectJpaDao dao;
 
-    @Inject
+    @Autowired
     private SubjectManager subjectManager;
 
-    @Inject
+    @Autowired
     private TenantViewManager tenantViewManager;
 
 
