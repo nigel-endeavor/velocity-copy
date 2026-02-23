@@ -1,6 +1,6 @@
 CREATE TABLE dispute
 (
-    dispute_id   int AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    dispute_id   SERIAL PRIMARY KEY NOT NULL,
     open_date         date  NOT NULL,
     dispute_status    varchar(100)  NOT NULL,
     dispute_type      varchar(100)  NOT NULL,
@@ -9,9 +9,9 @@ CREATE TABLE dispute
     amount_disputed_mrc       decimal(19, 2)    DEFAULT 0,
     amount_disputed_nrc       decimal(19, 2)    DEFAULT 0,
     vendor_tracking_num      varchar(500)   NULL,
-    dispute_note    longtext    NULL,
+    dispute_note    text    NULL,
     dispute_follow_up_date      date    NULL,
-    credit_recognized bit NULL,
+    credit_recognized boolean NULL,
     billing_review_complete_date date NULL,
     dispute_closed_date  date NULL,
     version int DEFAULT 1 NOT NULL,

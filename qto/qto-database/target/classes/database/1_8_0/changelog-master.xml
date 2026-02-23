@@ -117,7 +117,7 @@
 
     <changeSet id="1_8_0-010" author="rcasey">
         <addColumn tableName="service">
-            <column name="ignore_for_renewals" type="bit" defaultValueBoolean="false"/>
+            <column name="ignore_for_renewals" type="boolean" defaultValueBoolean="false"/>
         </addColumn>
     </changeSet>
 
@@ -166,8 +166,8 @@
             <column name="provider" type="varchar(50)"/>
             <column name="sub_product_type" type="varchar(50)"/>
             <column name="status" type="varchar(50)"/>
-            <column name="active" type="bit"/>
-            <column name="current_inventory" type="bit"/>
+            <column name="active" type="boolean"/>
+            <column name="current_inventory" type="boolean"/>
             <column name="data_provisioning_complete_date" type="datetime"/>
             <column name="complete_date" type="datetime"/>
             <column name="mrc" type="decimal(10,2)"/>
@@ -249,9 +249,9 @@
 
     <changeSet id="1_8_0-017" author="mwelicka">
         <addColumn tableName="service">
-            <column defaultValueBoolean="false" name="linked" type="BIT"/>
-            <column defaultValueBoolean="false" name="bundled" type="BIT"/>
-            <column defaultValueBoolean="false" name="linked_bundled_parent" type="BIT"/>
+            <column defaultValueBoolean="false" name="linked" type="boolean"/>
+            <column defaultValueBoolean="false" name="bundled" type="boolean"/>
+            <column defaultValueBoolean="false" name="linked_bundled_parent" type="boolean"/>
             <column name="linked_bundled_parent_id" type="int"/>
         </addColumn>
     </changeSet>

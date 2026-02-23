@@ -1,6 +1,6 @@
 CREATE TABLE service_ransommdr
 (
-    ransommdr_service_id    int AUTO_INCREMENT
+    ransommdr_service_id    SERIAL
         PRIMARY KEY,
     service_id              int NOT NULL,
     number_of_endpoints     int NULL,

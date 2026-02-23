@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS v_manage_location_inventory CASCADE;
 CREATE OR REPLACE VIEW v_manage_location_inventory AS
 SELECT
     o.order_id,
@@ -21,7 +22,7 @@ SELECT
     sv.services,
     l.progress_percentage,
     CONCAT(a.address_1,
-           IF(LENGTH(a.address_2), CONCAT('\n', a.address_2), ''),
+           CASE WHEN a.address_2 IS NOT NULL AND TRIM(COALESCE(a.address_2,'')) <> '' THEN CONCAT(E'\n', a.address_2) ELSE '' END,
            '\n', a.city, ', ', a.state_province, ' ', a.postal_code) AS address,
     a.address_1,
     a.address_2,
@@ -62,9 +63,9 @@ FROM company c
         SUM(s.active = true) AS count_active_services,
         SUM(s.active = false) AS count_inactive_services,
         SUM((CHAR_LENGTH(child_services.child_ids) - CHAR_LENGTH(REPLACE(child_services.child_ids, ',', '')) + 1)) as macd_count,
-        GROUP_CONCAT(child_services.child_order_types) as child_order_types,
-        GROUP_CONCAT(DISTINCT s.service_type) as services,
-        GROUP_CONCAT(DISTINCT s.sub_order_type) AS sub_order_types,
+        string_agg(child_services.child_order_types, ',') as child_order_types,
+        string_agg(DISTINCT s.service_type, ',') as services,
+        string_agg(DISTINCT s.sub_order_type, ',') AS sub_order_types,
         MIN(vsmi.milestone_date) as inventory_added_date,
         SUM(case when (vsmi.milestone_date is not null) then service_mrc else 0 end) as active_complete_mrc,
         SUM(case when (vsmi.milestone_date is not null) then service_nrc else 0 end) as active_complete_nrc,
@@ -80,8 +81,8 @@ FROM company c
              LEFT JOIN (
         SELECT
             parent_service_id,
-            GROUP_CONCAT(service_id) as child_ids,
-            GROUP_CONCAT(order_type) as child_order_types
+            string_agg(service_id, ',') as child_ids,
+            string_agg(order_type, ',') as child_order_types
         FROM service
         WHERE parent_service_id IS NOT NULL and service_status not in ('Service Complete', 'Disconnect Complete', 'Service Cancelled', 'Change in Assignment')
         GROUP BY parent_service_id

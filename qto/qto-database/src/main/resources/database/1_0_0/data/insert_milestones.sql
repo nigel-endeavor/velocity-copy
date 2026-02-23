@@ -36,219 +36,214 @@ INSERT INTO milestone (milestone_name, milestone_code) VALUES ('Access Circuit F
 INSERT INTO milestone (milestone_name, milestone_code) VALUES ('Equipment Ordered', 'EQUIPMENT_ORDERED');
 INSERT INTO milestone (milestone_name, milestone_code) VALUES ('Equipment Received', 'EQUIPMENT_RECEIVED');
 INSERT INTO milestone (milestone_name, milestone_code) VALUES ('Equipment Configured', 'EQUIPMENT_CONFIGURED');
+INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
+                                           milestone_required, adjustable, workflow_driven, has_time, disallow_future)
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'CREATED'), true, 10, true, false, true, false, false);
+INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
+                                           milestone_required, adjustable, workflow_driven, has_time, disallow_future)
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'RECEIVED'), true, 20, true, false, false, false, false);
+INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
+                                           milestone_required, adjustable, workflow_driven, has_time, disallow_future)
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'ON_HOLD'), true, 30, true, false, false, false, false);
+INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
+                                           milestone_required, adjustable, workflow_driven, has_time, disallow_future)
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'CHANGE_IN_ASSIGNMENT'), true, 40, true, false, false, false, false);
+INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
+                                           milestone_required, adjustable, workflow_driven, has_time, disallow_future)
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'ENGINEER_ASSIGNED'), true, 50, true, false, false, false, false);
+INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
+                                           milestone_required, adjustable, workflow_driven, has_time, disallow_future)
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'IN_PROGRESS'), true, 60, true, false, false, false, false);
+INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
+                                           milestone_required, adjustable, workflow_driven, has_time, disallow_future)
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'COMPLETE'), true, 70, true, false, false, false, false);
+INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
+                                           milestone_required, adjustable, workflow_driven, has_time, disallow_future)
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'CANCELLED'), true, 80, true, false, false, false, false);
 
 
 
-
-SET @displaySetId = (SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE');
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'CREATED'), 1, 10, 1, 0, 1, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'CREATED'), true, 10, true, false, true, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'RECEIVED'), 1, 20, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'RECEIVED'), true, 20, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'ON_HOLD'), 1, 30, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'ON_HOLD'), true, 30, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'CHANGE_IN_ASSIGNMENT'), 1, 40, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'CHANGE_IN_ASSIGNMENT'), true, 40, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'ENGINEER_ASSIGNED'), 1, 50, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'ENGINEER_ASSIGNED'), true, 50, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'IN_PROGRESS'), 1, 60, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'INITIAL_CONTACT_WITH_CUSTOMER'), true, 60, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'COMPLETE'), 1, 70, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'TDG_INTERVIEW_SCHEDULED'), true, 70, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'CANCELLED'), 1, 80, 1, 0, 0, 0, 0);
-
-
-SET @displaySetId = (SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'LOCATION_MILESTONE');
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'CUSTOMER_CONTACT_COMPLETE'), true, 80, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'CREATED'), 1, 10, 1, 0, 1, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'TDG_IN_PROGRESS'), true, 90, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'RECEIVED'), 1, 20, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'DESIGN_SENT_TO_CUSTOMER'), true, 100, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'ON_HOLD'), 1, 30, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'DESIGN_APPROVED_BY_CUSTOMER'), true, 110, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'CHANGE_IN_ASSIGNMENT'), 1, 40, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'TDG_COMPLETE'), true, 120, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'ENGINEER_ASSIGNED'), 1, 50, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'PROVISIONING_START'), true, 130, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'INITIAL_CONTACT_WITH_CUSTOMER'), 1, 60, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'COMPLETE'), true, 140, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'TDG_INTERVIEW_SCHEDULED'), 1, 70, 1, 0, 0, 0, 0);
-INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
-                                           milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'CUSTOMER_CONTACT_COMPLETE'), 1, 80, 1, 0, 0, 0, 0);
-INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
-                                           milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'TDG_IN_PROGRESS'), 1, 90, 1, 0, 0, 0, 0);
-INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
-                                           milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'DESIGN_SENT_TO_CUSTOMER'), 1, 100, 1, 0, 0, 0, 0);
-INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
-                                           milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'DESIGN_APPROVED_BY_CUSTOMER'), 1, 110, 1, 0, 0, 0, 0);
-INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
-                                           milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'TDG_COMPLETE'), 1, 120, 1, 0, 0, 0, 0);
-INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
-                                           milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'PROVISIONING_START'), 1, 130, 1, 0, 0, 0, 0);
-INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
-                                           milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'COMPLETE'), 1, 140, 1, 0, 0, 0, 0);
-INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
-                                           milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'CANCELLED'), 1, 150, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'CANCELLED'), true, 150, true, false, false, false, false);
 
 
 
 
 
 
-SET @displaySetId = (SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'BROADBAND_SERVICE_MILESTONE');
+
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'CREATED'), 1, 10, 1, 0, 1, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'CREATED'), true, 10, true, false, true, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'RECEIVED'), 1, 20, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'RECEIVED'), true, 20, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'ON_HOLD'), 1, 30, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'ON_HOLD'), true, 30, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'CHANGE_IN_ASSIGNMENT'), 1, 40, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'CHANGE_IN_ASSIGNMENT'), true, 40, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'SITE_SURVEY_DUE'), 1, 50, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'SITE_SURVEY_DUE'), true, 50, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'CUSTOMER_DESIRED_DUE'), 1, 60, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'CUSTOMER_DESIRED_DUE'), true, 60, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'CARRIER_ORDER_SUBMITTED'), 1,780, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'CARRIER_ORDER_SUBMITTED'), true,780, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'NETWORK_PROVIDER_CONSTRUCTION_START'), 1, 80, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'NETWORK_PROVIDER_CONSTRUCTION_START'), true, 80, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'NETWORK_PROVIDER_CONSTRUCTION_COMPLETE'), 1, 90, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'NETWORK_PROVIDER_CONSTRUCTION_COMPLETE'), true, 90, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'NETWORK_PROVIDER_FOC'), 1, 100, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'NETWORK_PROVIDER_FOC'), true, 100, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'DATA_PROVISIONING_COMPLETE'), 1, 110, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'DATA_PROVISIONING_COMPLETE'), true, 110, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'ACTIVATION_REQUESTED'), 1, 120, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'ACTIVATION_REQUESTED'), true, 120, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'ACTIVATION_SCHEDULED'), 1, 130, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'ACTIVATION_SCHEDULED'), true, 130, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'ACTIVATION_COMPLETE'), 1, 140, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'ACTIVATION_COMPLETE'), true, 140, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'CUSTOMER_COMPLETION_NOTIFICATION_SENT'), 1, 150, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'CUSTOMER_COMPLETION_NOTIFICATION_SENT'), true, 150, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'CUSTOMER_BILL_STOP'), 1, 160, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'CUSTOMER_BILL_STOP'), true, 160, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'BILLING_REVIEW_COMPLETE'), 1, 170, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'BILLING_REVIEW_COMPLETE'), true, 170, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'COMPLETE'), 1, 180, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'COMPLETE'), true, 180, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'CANCELLED'), 1, 190, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'CANCELLED'), true, 190, true, false, false, false, false);
 
 
 
 
 
-SET @displaySetId = (SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'DIA_SERVICE_MILESTONE');
+
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'CREATED'), 1, 10, 1, 0, 1, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'CREATED'), true, 10, true, false, true, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'RECEIVED'), 1, 20, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'RECEIVED'), true, 20, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'ON_HOLD'), 1, 30, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'ON_HOLD'), true, 30, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'CHANGE_IN_ASSIGNMENT'), 1, 40, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'CHANGE_IN_ASSIGNMENT'), true, 40, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'SITE_SURVEY_DUE'), 1, 50, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'SITE_SURVEY_DUE'), true, 50, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'CUSTOMER_DESIRED_DUE'), 1, 60, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'CUSTOMER_DESIRED_DUE'), true, 60, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'CARRIER_ORDER_SUBMITTED'), 1, 70, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'CARRIER_ORDER_SUBMITTED'), true, 70, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'NETWORK_PROVIDER_CONSTRUCTION_START'), 1, 80, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'NETWORK_PROVIDER_CONSTRUCTION_START'), true, 80, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'NETWORK_PROVIDER_CONSTRUCTION_COMPLETE'), 1, 90, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'NETWORK_PROVIDER_CONSTRUCTION_COMPLETE'), true, 90, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'NETWORK_PROVIDER_FOC'), 1, 100, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'NETWORK_PROVIDER_FOC'), true, 100, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'ACCESS_CIRCUIT_FOC'), 1, 120, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'ACCESS_CIRCUIT_FOC'), true, 120, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'EQUIPMENT_ORDERED'), 1, 130, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'EQUIPMENT_ORDERED'), true, 130, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'EQUIPMENT_RECEIVED'), 1, 140, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'EQUIPMENT_RECEIVED'), true, 140, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'EQUIPMENT_CONFIGURED'), 1, 150, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'EQUIPMENT_CONFIGURED'), true, 150, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'DATA_PROVISIONING_COMPLETE'), 1, 160, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'DATA_PROVISIONING_COMPLETE'), true, 160, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'ACTIVATION_REQUESTED'), 1, 170, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'ACTIVATION_REQUESTED'), true, 170, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'ACTIVATION_SCHEDULED'), 1, 180, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'ACTIVATION_SCHEDULED'), true, 180, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'ACTIVATION_COMPLETE'), 1, 190, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'ACTIVATION_COMPLETE'), true, 190, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'CUSTOMER_COMPLETION_NOTIFICATION_SENT'), 1, 200, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'CUSTOMER_COMPLETION_NOTIFICATION_SENT'), true, 200, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'CUSTOMER_BILL_STOP'), 1, 210, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'CUSTOMER_BILL_STOP'), true, 210, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'BILLING_REVIEW_COMPLETE'), 1, 220, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'BILLING_REVIEW_COMPLETE'), true, 220, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'COMPLETE'), 1, 230, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'COMPLETE'), true, 230, true, false, false, false, false);
 INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                            milestone_required, adjustable, workflow_driven, has_time, disallow_future)
-VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'CANCELLED'), 1, 240, 1, 0, 0, 0, 0);
+VALUES ((SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'ORDER_MILESTONE'), (SELECT milestone_id FROM milestone WHERE milestone_code = 'CANCELLED'), true, 240, true, false, false, false, false);

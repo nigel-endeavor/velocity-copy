@@ -51,11 +51,11 @@ public class LookupType extends StandardVersionedBaseEntity {
     private String typeCode;
 
     /** Flag indicating whether this is active or not.*/
-    @Column(name = "lookup_type_active", columnDefinition = "bit default 1")
+    @Column(name = "lookup_type_active", columnDefinition = "boolean DEFAULT true")
     private boolean active;
 
     /** Flag indicating whether this can be modified or not.*/
-    @Column(name = "modifiable", columnDefinition = "bit default 0")
+    @Column(name = "modifiable", columnDefinition = "boolean DEFAULT false")
     private boolean modifiable;
 
     /**

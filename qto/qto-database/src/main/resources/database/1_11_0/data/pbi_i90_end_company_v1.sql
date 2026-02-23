@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS pbi_i90_end_company CASCADE;
 CREATE OR REPLACE VIEW pbi_i90_end_company AS
 SELECT company_id AS end_company_id,
        master_customer_id AS master_customer_id,

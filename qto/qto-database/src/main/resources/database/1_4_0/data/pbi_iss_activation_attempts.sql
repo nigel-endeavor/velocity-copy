@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS pbi_iss_activation_attempts CASCADE;
 CREATE OR REPLACE VIEW pbi_iss_activation_attempts AS
 SELECT s.service_id AS 'Service ID',
        aa.activation_attempt_id AS 'Activation Attempt ID',

@@ -1,10 +1,11 @@
+DROP VIEW IF EXISTS v_manage_services CASCADE;
 CREATE OR REPLACE VIEW v_manage_services AS
 SELECT s.service_id,
        s.location_id,
        s.order_type,
        l.client_location_id,
        CONCAT(a.address_1,
-              IF(LENGTH(a.address_2), CONCAT('\n', a.address_2), ''),
+              CASE WHEN a.address_2 IS NOT NULL AND TRIM(COALESCE(a.address_2,'')) <> '' THEN CONCAT(E'\n', a.address_2) ELSE '' END,
               '\n', a.city, ', ', a.state_province, ' ', a.postal_code
            ) AS address,
        s.order_id,
@@ -49,7 +50,7 @@ SELECT s.service_id,
        l.client_location_type,
        l.client_location_info,
        (SELECT display_name
-        FROM platform.subject
+        from platform.subject
         WHERE subject_id = vertek_project_manager)
            AS vertek_project_manager,
        c.company_name,
@@ -62,9 +63,8 @@ SELECT s.service_id,
              AND vju2.end_date IS NULL), 1, 0) AS show_jeop_icon,
        IF(s.service_status NOT IN ('Service Complete', 'Service Cancelled', 'On Hold', 'Change in Assignment') AND
 #           # calculates datediff excluding weekends
-          (5 * (DATEDIFF(NOW(), (SELECT created_date from note where note_id = latest_note.note_id)) DIV 7) + MID('0123444401233334012222340111123400012345001234550',
-                                                                                                                  7 * WEEKDAY((SELECT created_date from note where note_id = latest_note.note_id)) + WEEKDAY(NOW()) + 1,
-                                                                                                                  1)) > 5, 1, 0) AS show_note_icon,
+          (5 * (DATEDIFF(NOW(), (SELECT created_date from note where note_id = latest_note.note_id)) DIV 7) + CAST(SUBSTRING(
+                                                                                                                  7 * WEEKDAY((SELECT created_date from note where note_id = latest_note.note_id)) + WEEKDAY(NOW()) + 1 FROM 0123444401233334012222340111123400012345001234550 FOR 1) AS integer)) > 5, 1, 0) AS show_note_icon,
        s.version,
        s.tenant_id,
        s.active,

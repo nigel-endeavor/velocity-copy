@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS v_activation_attempts CASCADE;
 create or replace view v_activation_attempts as
 SELECT company_name,
        o.tenant_id,
@@ -46,7 +47,7 @@ FROM activation_attempt aa
     YEAR(aa.field_tech_check_out) AS aa_year,
     SUM(TIMESTAMPDIFF(MINUTE, aa.field_tech_check_in,
     aa.field_tech_check_out)) AS location_activation_interval
-    FROM qto.activation_attempt aa
+    FROM activation_attempt aa
     JOIN service s ON aa.service_id = s.service_id
     GROUP BY location_id, aa_month, aa_year) laa_view
     ON l.location_id = laa_view.location_id AND

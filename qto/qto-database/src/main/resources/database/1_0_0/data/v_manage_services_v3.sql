@@ -1,10 +1,11 @@
+DROP VIEW IF EXISTS v_manage_services CASCADE;
 create or replace view v_manage_services as
 select
     s.service_id,
     s.location_id,
     l.client_location_id,
     CONCAT(a.address_1,
-           IF(LENGTH(a.address_2), CONCAT('\n', a.address_2), ''),
+           CASE WHEN a.address_2 IS NOT NULL AND TRIM(COALESCE(a.address_2,'')) <> '' THEN CONCAT(E'\n', a.address_2) ELSE '' END,
            '\n', a.city, ', ', a.state_province
         ) as address,
     s.order_id,
@@ -31,7 +32,7 @@ select
     IF(s.service_status not in ('Complete', 'Cancelled', 'On Hold', 'Change in Assignment') and
        (select count(*) from v_note_union vnu where vnu.service_id = s.service_id and
 #           # calculates datediff excluding weekends
-               (5 * (DATEDIFF(NOW(), vnu.created_date) DIV 7) + MID('0123444401233334012222340111123400012345001234550', 7 * WEEKDAY(vnu.created_date) + WEEKDAY(NOW()) + 1, 1)) > 5), 1, 0) as show_note_icon,
+               (5 * (DATEDIFF(NOW(), vnu.created_date) DIV 7) + CAST(SUBSTRING( 7 * WEEKDAY(vnu.created_date) + WEEKDAY(NOW()) + 1 FROM 0123444401233334012222340111123400012345001234550 FOR 1) AS integer)) > 5), 1, 0) as show_note_icon,
     s.version,
     s.tenant_id,
     (select vju.jeop_description from v_jeops_union vju where vju.end_date is null and vju.service_id = s.service_id order by vju.jeop_instance_id desc limit 1) as open_jeop,

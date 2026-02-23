@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS pbi_iss_service_milestone CASCADE;
 CREATE OR REPLACE VIEW pbi_iss_service_milestone AS
 SELECT smi.service_id,
 

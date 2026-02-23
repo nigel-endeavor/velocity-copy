@@ -1,14 +1,14 @@
 CREATE TABLE shipment_tracking
 (
-	shipment_tracking_id       int AUTO_INCREMENT
+	shipment_tracking_id       SERIAL
 		PRIMARY KEY,
 	tracking_number            varchar(100)  NULL,
 	courier                    varchar(100)  NULL,
 	delivery_status            varchar(100)  NULL,
-	delivery_status_datetime   datetime      NULL,
+	delivery_status_timestamp   timestamp      NULL,
 	courier_delivery_status    varchar(100)  NULL,
-	scheduled_delivery_date    datetime      NULL,
-	actual_delivery_date       datetime      NULL,
+	scheduled_delivery_date    timestamp      NULL,
+	actual_delivery_date       timestamp      NULL,
 	delivery_location          varchar(100)  NULL,
 	destination_full_address   varchar(100)  NULL,
 	destination_street_address varchar(100)  NULL,

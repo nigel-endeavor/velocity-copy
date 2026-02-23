@@ -10,8 +10,8 @@
                 <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="template_name" type="varchar(100)"/>
-            <column name="is_default" type="bit" defaultValueBoolean="false"/>
-            <column name="active" type="bit" defaultValueBoolean="true"/>
+            <column name="is_default" type="boolean" defaultValueBoolean="false"/>
+            <column name="active" type="boolean" defaultValueBoolean="true"/>
             <column name="version" type="int" defaultValueNumeric="1">
                 <constraints nullable="false"/>
             </column>
@@ -39,7 +39,7 @@
             </column>
             <column name="value" type="varchar(100)"/>
             <column name="sort_order" type="int"/>
-            <column name="required" type="bit" defaultValueBoolean="true"/>
+            <column name="required" type="boolean" defaultValueBoolean="true"/>
             <column name="version" type="int" defaultValueNumeric="1">
                 <constraints nullable="false"/>
             </column>
@@ -390,7 +390,7 @@
             </column>
             <column name="author_id" type="long"/>
             <column name="content" type="longtext"/>
-            <column name="shared" type="bit" defaultValueBoolean="false"/>
+            <column name="shared" type="boolean" defaultValueBoolean="false"/>
             <column name="worklist_name" type="varchar(100)"/>
             <column name="name" type="varchar(100)"/>
             <column name="version" type="int" defaultValueNumeric="1">

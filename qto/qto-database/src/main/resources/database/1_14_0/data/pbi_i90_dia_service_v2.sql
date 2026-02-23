@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS pbi_i90_dia_service CASCADE;
 CREATE OR REPLACE VIEW pbi_i90_dia_service AS
 SELECT ds.service_id AS 'Service ID',
        s.tenant_id AS 'Tenant ID',

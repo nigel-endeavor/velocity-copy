@@ -314,7 +314,7 @@
 
     <changeSet author="mwelicka" id="1_0_0-030" context="common">
         <addColumn tableName="note">
-            <column defaultValueBoolean="false" name="internal_only" type="BIT"/>
+            <column defaultValueBoolean="false" name="internal_only" type="boolean"/>
         </addColumn>
     </changeSet>
 
@@ -382,7 +382,7 @@
     <changeSet id="1_0_0-038" author="fcurran">
         <comment>Add validated flag to address.</comment>
         <addColumn tableName="address">
-            <column name="validated" type="bit"/>
+            <column name="validated" type="boolean"/>
         </addColumn>
     </changeSet>
 
@@ -484,7 +484,7 @@
 
     <changeSet author="mwelicka" id="1_0_0-052" context="common">
         <addColumn tableName="service">
-            <column defaultValueBoolean="false" name="expedite_order" type="BIT"/>
+            <column defaultValueBoolean="false" name="expedite_order" type="boolean"/>
         </addColumn>
     </changeSet>
 
@@ -674,10 +674,10 @@
                              references="company(company_id)"/>
             </column>
             <column name="template_name" type="varchar(100)"/>
-            <column name="global" type="bit" defaultValueBoolean="false"/>
-            <column name="is_default" type="bit" defaultValueBoolean="false"/>
+            <column name="global" type="boolean" defaultValueBoolean="false"/>
+            <column name="is_default" type="boolean" defaultValueBoolean="false"/>
             <column name="ttu_equivalent" type="decimal(19, 2)"/>
-            <column name="active" type="bit" defaultValueBoolean="true"/>
+            <column name="active" type="boolean" defaultValueBoolean="true"/>
             <column name="version" type="int" defaultValueNumeric="1">
                 <constraints nullable="false"/>
             </column>
@@ -699,7 +699,7 @@
                              references="lookup_value(lookup_value_id)"/>
             </column>
             <column name="sort_order" type="int"/>
-            <column name="required" type="bit" defaultValueBoolean="true"/>
+            <column name="required" type="boolean" defaultValueBoolean="true"/>
             <column name="version" type="int" defaultValueNumeric="1">
                 <constraints nullable="false"/>
             </column>
@@ -719,7 +719,7 @@
                 <constraints nullable="false" foreignKeyName="FK_activation_attempt_requirement_requirement"
                              references="requirement(requirement_id)"/>
             </column>
-            <column name="complete" type="bit" defaultValueBoolean="false"/>
+            <column name="complete" type="boolean" defaultValueBoolean="false"/>
             <column name="comment" type="varchar(500)"/>
             <column name="version" type="int" defaultValueNumeric="1">
                 <constraints nullable="false"/>
@@ -1018,10 +1018,10 @@
 
     <changeSet id="1_0_0-079" author="llevit">
         <addColumn tableName="location">
-            <column name="active" type="bit" defaultValueBoolean="true"/>
+            <column name="active" type="boolean" defaultValueBoolean="true"/>
         </addColumn>
         <addColumn tableName="service">
-            <column name="active" type="bit" defaultValueBoolean="true"/>
+            <column name="active" type="boolean" defaultValueBoolean="true"/>
         </addColumn>
     </changeSet>
 
@@ -1302,7 +1302,7 @@
             <column name="sort2"  type="varchar(100)"/>
             <column name="order_type"  type="varchar(100)"/>
             <column name="last_update" type="date"/>
-            <column name="active" type="bit" defaultValueBoolean="true"/>
+            <column name="active" type="boolean" defaultValueBoolean="true"/>
             <column name="version" type="int" defaultValueNumeric="1">
                 <constraints nullable="false"/>
             </column>
@@ -1317,7 +1317,7 @@
             </column>
             <column name="field_name"  type="varchar(100)"/>
             <column name="data_type"  type="varchar(100)"/>
-            <column name="active" type="bit" defaultValueBoolean="true"/>
+            <column name="active" type="boolean" defaultValueBoolean="true"/>
             <column name="version" type="int" defaultValueNumeric="1">
                 <constraints nullable="false"/>
             </column>
@@ -1348,7 +1348,7 @@
             <column name="part_number"  type="varchar(100)"/>
             <column name="client_part_number"  type="varchar(100)"/>
             <column name="item_number"  type="varchar(100)"/>
-            <column name="active" type="bit" defaultValueBoolean="true"/>
+            <column name="active" type="boolean" defaultValueBoolean="true"/>
             <column name="version" type="int" defaultValueNumeric="1">
                 <constraints nullable="false"/>
             </column>
@@ -1491,7 +1491,7 @@
             <column name="technical_note" type="varchar(500)"/>
             <column name="description" type="varchar(500)"/>
             <column name="ctn_id" type="Int"/>
-            <column name="on_hold" type="bit"/>
+            <column name="on_hold" type="boolean"/>
         </addColumn>
     </changeSet>
 
@@ -1884,10 +1884,10 @@
             <column name="tracking_number" type="varchar(50)"/>
             <column name="shipment_status" type="varchar(50)"/>
             <column name="shipment_date" type="date"/>
-            <column name="delivered" type="bit"/>
+            <column name="delivered" type="boolean"/>
             <column name="delivery_date" type="date"/>
             <column name="signed_by" type="varchar(100)"/>
-            <column name="return_shipment" type="bit"/>
+            <column name="return_shipment" type="boolean"/>
             <column name="version" type="int" defaultValueNumeric="1">
                 <constraints nullable="false"/>
             </column>
@@ -1914,7 +1914,7 @@
             <column name="sr" type="varchar(50)"/>
             <column name="po" type="varchar(50)"/>
             <column name="subject" type="varchar(50)"/>
-            <column name="on_hold" type="bit"/>
+            <column name="on_hold" type="boolean"/>
             <column name="error_string" type="text"/>
             <column name="result_id" type="int"/>
             <column name="order_create_date" type="date"/>
@@ -2348,14 +2348,14 @@
 
     <changeSet id="1_0_0-156" author="mwelicka">
         <addColumn tableName="service">
-            <column defaultValueBoolean="false" name="update_client" type="BIT"/>
+            <column defaultValueBoolean="false" name="update_client" type="boolean"/>
         </addColumn>
     </changeSet>
 
 
     <changeSet id="1_0_0-157" author="mwelicka">
         <addColumn tableName="note">
-            <column defaultValueBoolean="false" name="update_client" type="BIT"/>
+            <column defaultValueBoolean="false" name="update_client" type="boolean"/>
         </addColumn>
     </changeSet>
 
@@ -2576,7 +2576,7 @@
 
         <changeSet author="mwelicka" id="1_0_0-178" context="common">
         <addColumn tableName="service">
-            <column defaultValueBoolean="false" name="eligible_for_update" type="BIT"/>
+            <column defaultValueBoolean="false" name="eligible_for_update" type="boolean"/>
         </addColumn>
     </changeSet>
 

@@ -4,7 +4,7 @@ SELECT s.service_id,
        s.order_type,
        l.client_location_id,
        CONCAT(a.address_1,
-              IF(LENGTH(a.address_2), CONCAT('\n', a.address_2), ''),
+              CASE WHEN a.address_2 IS NOT NULL AND TRIM(COALESCE(a.address_2,'')) <> '' THEN CONCAT(E'\n', a.address_2) ELSE '' END,
               '\n', a.city, ', ', a.state_province, ' ', a.postal_code
            ) AS address,
        a.address_1, a.address_2, a.city, a.state_province, a.postal_code,
@@ -120,7 +120,7 @@ FROM service s
         COUNT(*) AS count_open_disputes,
         SUM(amount_disputed_mrc) AS open_dispute_mrc,
         SUM(amount_disputed_nrc) AS open_dispute_nrc,
-        GROUP_CONCAT(dispute_type) as dispute_types
+        string_agg(dispute_type, ',') as dispute_types
     FROM dispute
              JOIN service s ON dispute.service_id = s.service_id
     WHERE dispute_status != 'Dispute Closed'

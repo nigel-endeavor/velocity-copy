@@ -1,6 +1,6 @@
 CREATE TABLE service_cyber360_ems
 (
-    cyber360_ems_service_id    int AUTO_INCREMENT
+    cyber360_ems_service_id    SERIAL
         PRIMARY KEY,
     service_id              int NOT NULL,
 

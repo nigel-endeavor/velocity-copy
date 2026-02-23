@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS pbi_i90_equipment CASCADE;
 CREATE OR REPLACE VIEW pbi_i90_equipment AS
 SELECT se.service_id AS "Service ID",
        e.tenant_id AS "Tenant ID",

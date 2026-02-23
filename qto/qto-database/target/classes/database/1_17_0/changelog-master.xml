@@ -12,7 +12,7 @@
             </column>
             <column name="author_id" type="long"/>
             <column name="content" type="longtext"/>
-            <column name="shared" type="bit" defaultValueBoolean="false"/>
+            <column name="shared" type="boolean" defaultValueBoolean="false"/>
             <column name="worklist_name" type="varchar(100)"/>
             <column name="name" type="varchar(100)"/>
             <column name="last_modified_date" type="datetime"/>
@@ -32,7 +32,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="subject_id" type="int"/>
-            <column name="favorite" type="bit" defaultValueBoolean="false"/>
+            <column name="favorite" type="boolean" defaultValueBoolean="false"/>
             <column name="last_viewed_date" type="datetime"/>
         </addColumn>
     </changeSet>

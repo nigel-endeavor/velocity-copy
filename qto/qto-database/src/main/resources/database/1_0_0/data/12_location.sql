@@ -1,6 +1,6 @@
 CREATE TABLE location
 (
-	location_id        int AUTO_INCREMENT
+	location_id        SERIAL
 		PRIMARY KEY,
 	order_id           int                      NOT NULL,
 	address_id         int,

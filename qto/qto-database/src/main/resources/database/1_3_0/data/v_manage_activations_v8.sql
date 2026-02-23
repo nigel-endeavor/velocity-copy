@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS v_manage_activations CASCADE;
 create or replace view v_manage_activations as
 select
     aa.activation_attempt_id,

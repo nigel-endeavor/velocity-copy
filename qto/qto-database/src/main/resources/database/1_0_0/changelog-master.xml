@@ -3,6 +3,22 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
+    <changeSet id="0_0_0-platform-schema" author="bootstrap">
+        <sql>
+            CREATE SCHEMA IF NOT EXISTS platform;
+            CREATE TABLE IF NOT EXISTS platform.tenant (
+                tenant_id SERIAL PRIMARY KEY,
+                name VARCHAR(255) NOT NULL,
+                active BOOLEAN DEFAULT true NOT NULL,
+                version INT DEFAULT 1 NOT NULL
+            );
+            CREATE TABLE IF NOT EXISTS platform.subject (
+                subject_id SERIAL PRIMARY KEY,
+                display_name VARCHAR(255) NOT NULL
+            );
+        </sql>
+    </changeSet>
+
     <changeSet author="mwelicka" id="1_0_0-001" context="common">
         <preConditions onFail="CONTINUE">
             <dbms type="postgresql"/>
@@ -25,30 +41,23 @@
 
     <changeSet author="mwelicka" id="1_0_0-002-2" context="common">
         <sql>
-
-            SET
-            @tenantName = 'QTO First Tenant';
             INSERT INTO platform.tenant (name)
-            VALUES (@tenantName);
-            INSERT INTO qto.company (company_name, company_type, company_uuid, tenant_id)
-            VALUES (@tenantName, 'Vertek Client', @tenantName,
-                    (SELECT tenant.tenant_id FROM platform.tenant WHERE name = @tenantName));
+            VALUES ('QTO First Tenant');
+            INSERT INTO company (company_name, company_type, company_uuid, tenant_id)
+            VALUES ('QTO First Tenant', 'Vertek Client', 'QTO First Tenant',
+                    (SELECT tenant.tenant_id FROM platform.tenant WHERE name = 'QTO First Tenant'));
 
-            SET
-            @tenantName = 'Endeavor';
             INSERT INTO platform.tenant (name)
-            VALUES (@tenantName);
-            INSERT INTO qto.company (company_name, company_type, company_uuid, tenant_id)
-            VALUES (@tenantName, 'Vertek Client', @tenantName,
-                    (SELECT tenant.tenant_id FROM platform.tenant WHERE name = @tenantName));
+            VALUES ('Endeavor');
+            INSERT INTO company (company_name, company_type, company_uuid, tenant_id)
+            VALUES ('Endeavor', 'Vertek Client', 'Endeavor',
+                    (SELECT tenant.tenant_id FROM platform.tenant WHERE name = 'Endeavor'));
 
-            SET
-            @tenantName = 'Demo Tenant';
             INSERT INTO platform.tenant (name)
-            VALUES (@tenantName);
-            INSERT INTO qto.company (company_name, company_type, company_uuid, tenant_id)
-            VALUES (@tenantName, 'Vertek Client', @tenantName,
-                    (SELECT tenant.tenant_id FROM platform.tenant WHERE name = @tenantName));
+            VALUES ('Demo Tenant');
+            INSERT INTO company (company_name, company_type, company_uuid, tenant_id)
+            VALUES ('Demo Tenant', 'Vertek Client', 'Demo Tenant',
+                    (SELECT tenant.tenant_id FROM platform.tenant WHERE name = 'Demo Tenant'));
         </sql>
     </changeSet>
 
@@ -246,13 +255,13 @@
 
     <changeSet author="mwelicka" id="1_0_0-024" context="common">
         <comment>Drop cols from jeop Instance.</comment>
-        <dropColumn tableName="lookup_type" columnName="sortStrategy"/>
+        <dropColumn tableName="lookup_type" columnName="sortstrategy"/>
     </changeSet>
 
     <changeSet author="mwelicka" id="1_0_0-025" context="common">
         <comment>add col to jeop Instance.</comment>
         <addColumn tableName="lookup_type">
-            <column name="sort_strategy" type="tinyInt"/>
+            <column name="sort_strategy" type="boolean"/>
         </addColumn>
     </changeSet>
 
@@ -278,7 +287,7 @@
 
     <changeSet author="mwelicka" id="1_0_0-028" context="common">
         <update tableName="lookup_type">
-            <column name="sort_strategy" valueNumeric='0'/>
+            <column name="sort_strategy" valueBoolean="false"/>
             <where>lookup_type_code = 'ORDER_JEOPARDY'</where>
         </update>
     </changeSet>
@@ -314,7 +323,7 @@
 
     <changeSet author="mwelicka" id="1_0_0-030" context="common">
         <addColumn tableName="note">
-            <column defaultValueBoolean="false" name="internal_only" type="BIT"/>
+            <column defaultValueBoolean="false" name="internal_only" type="boolean"/>
         </addColumn>
     </changeSet>
 
@@ -382,7 +391,7 @@
     <changeSet id="1_0_0-038" author="fcurran">
         <comment>Add validated flag to address.</comment>
         <addColumn tableName="address">
-            <column name="validated" type="bit"/>
+            <column name="validated" type="boolean"/>
         </addColumn>
     </changeSet>
 
@@ -484,7 +493,7 @@
 
     <changeSet author="mwelicka" id="1_0_0-052" context="common">
         <addColumn tableName="service">
-            <column defaultValueBoolean="false" name="expedite_order" type="BIT"/>
+            <column defaultValueBoolean="false" name="expedite_order" type="boolean"/>
         </addColumn>
     </changeSet>
 
@@ -525,15 +534,15 @@
     <changeSet id="1_0_0-56" author="rcasey">
         <addColumn tableName="orders">
             <column name="last_update_by" type="varchar(100)"/>
-            <column name="last_update_date" type="datetime"/>
+            <column name="last_update_date" type="timestamp"/>
         </addColumn>
         <addColumn tableName="location">
             <column name="last_update_by" type="varchar(100)"/>
-            <column name="last_update_date" type="datetime"/>
+            <column name="last_update_date" type="timestamp"/>
         </addColumn>
         <addColumn tableName="service">
             <column name="last_update_by" type="varchar(100)"/>
-            <column name="last_update_date" type="datetime"/>
+            <column name="last_update_date" type="timestamp"/>
         </addColumn>
     </changeSet>
 
@@ -553,8 +562,8 @@
                              foreignKeyName="FK_milestone_instance"
                              references="milestone_instance(milestone_instance_id)"/>
             </column>
-            <column name="old_date" type="datetime"/>
-            <column name="new_date" type="datetime"/>
+            <column name="old_date" type="timestamp"/>
+            <column name="new_date" type="timestamp"/>
             <column name="note" type="varchar(250)"/>
             <column name="update_by" type="varchar(100)"/>
             <column name="version" type="int" defaultValueNumeric="1">
@@ -628,9 +637,11 @@
     </changeSet>
 
     <changeSet id="1_0_0-59" author="bmccormick">
-        <sql>update orders SET provisioner = null </sql>
+        <!-- Drop view so PostgreSQL can alter column type (view depends on orders.provisioner) -->
+        <sql>DROP VIEW IF EXISTS v_manage_services CASCADE;</sql>
+        <sql>update orders SET provisioner = null</sql>
         <modifyDataType tableName="orders" columnName="provisioner" newDataType="int"/>
-        <sql>update orders SET project_manager = null </sql>
+        <sql>update orders SET project_manager = null</sql>
         <modifyDataType tableName="orders" columnName="project_manager" newDataType="int"/>
     </changeSet>
 
@@ -640,7 +651,7 @@
                 <constraints nullable="false" foreignKeyName="FK_activation_attempt_service"
                              references="service(service_id)"/>
             </column>
-            <column name="scheduled_check_in_time" type="datetime"/>
+            <column name="scheduled_check_in_time" type="timestamp"/>
         </addColumn>
     </changeSet>
 
@@ -674,10 +685,10 @@
                              references="company(company_id)"/>
             </column>
             <column name="template_name" type="varchar(100)"/>
-            <column name="global" type="bit" defaultValueBoolean="false"/>
-            <column name="is_default" type="bit" defaultValueBoolean="false"/>
+            <column name="global" type="boolean" defaultValueBoolean="false"/>
+            <column name="is_default" type="boolean" defaultValueBoolean="false"/>
             <column name="ttu_equivalent" type="decimal(19, 2)"/>
-            <column name="active" type="bit" defaultValueBoolean="true"/>
+            <column name="active" type="boolean" defaultValueBoolean="true"/>
             <column name="version" type="int" defaultValueNumeric="1">
                 <constraints nullable="false"/>
             </column>
@@ -699,7 +710,7 @@
                              references="lookup_value(lookup_value_id)"/>
             </column>
             <column name="sort_order" type="int"/>
-            <column name="required" type="bit" defaultValueBoolean="true"/>
+            <column name="required" type="boolean" defaultValueBoolean="true"/>
             <column name="version" type="int" defaultValueNumeric="1">
                 <constraints nullable="false"/>
             </column>
@@ -719,7 +730,7 @@
                 <constraints nullable="false" foreignKeyName="FK_activation_attempt_requirement_requirement"
                              references="requirement(requirement_id)"/>
             </column>
-            <column name="complete" type="bit" defaultValueBoolean="false"/>
+            <column name="complete" type="boolean" defaultValueBoolean="false"/>
             <column name="comment" type="varchar(500)"/>
             <column name="version" type="int" defaultValueNumeric="1">
                 <constraints nullable="false"/>
@@ -1018,10 +1029,10 @@
 
     <changeSet id="1_0_0-079" author="llevit">
         <addColumn tableName="location">
-            <column name="active" type="bit" defaultValueBoolean="true"/>
+            <column name="active" type="boolean" defaultValueBoolean="true"/>
         </addColumn>
         <addColumn tableName="service">
-            <column name="active" type="bit" defaultValueBoolean="true"/>
+            <column name="active" type="boolean" defaultValueBoolean="true"/>
         </addColumn>
     </changeSet>
 
@@ -1045,7 +1056,7 @@
                              references="service(service_id)"/>
             </column>
             <column name="vendor" type="varchar(100)"/>
-            <column name="requested_date" type="datetime"/>
+            <column name="requested_date" type="timestamp"/>
             <column name="version" type="int" defaultValueNumeric="1">
                 <constraints nullable="false"/>
             </column>
@@ -1075,7 +1086,7 @@
             <column name="quote_number" type="VARCHAR(100)"/>
             <column name="additional_properties" type="text"/>
             <column name="quote_string" type="text"/>
-            <column name="quote_handled_time" type="datetime"/>
+            <column name="quote_handled_time" type="timestamp"/>
             <column name="tenant_id" type="INT"/>
             <column name="quote_provider" type="VARCHAR(100)"/>
         </createTable>
@@ -1135,7 +1146,7 @@
             <column name="install_interval" type="INT"/>
             <column name="building_competitive_rating" type="VARCHAR(100)"/>
             <column name="pricing_type" type="VARCHAR(100)"/>
-            <column name="created_date" type="DATETIME"/>
+            <column name="created_date" type="timestamp"/>
             <column name="created_by" type="VARCHAR(100)"/>
             <column name="address_status_id" type="INT"/>
             <column name="lastmile_supplier" type="VARCHAR(100)"/>
@@ -1152,7 +1163,7 @@
                              foreignKeyName="FK_solution_vendor_quote_id"
                              references="quote(vendor_quote_id)"/>
             </column>
-            <column name="solution_handled_time" type="datetime"/>
+            <column name="solution_handled_time" type="timestamp"/>
             <column name="tenant_id" type="INT"/>
         </createTable>
     </changeSet>
@@ -1302,7 +1313,7 @@
             <column name="sort2"  type="varchar(100)"/>
             <column name="order_type"  type="varchar(100)"/>
             <column name="last_update" type="date"/>
-            <column name="active" type="bit" defaultValueBoolean="true"/>
+            <column name="active" type="boolean" defaultValueBoolean="true"/>
             <column name="version" type="int" defaultValueNumeric="1">
                 <constraints nullable="false"/>
             </column>
@@ -1317,7 +1328,7 @@
             </column>
             <column name="field_name"  type="varchar(100)"/>
             <column name="data_type"  type="varchar(100)"/>
-            <column name="active" type="bit" defaultValueBoolean="true"/>
+            <column name="active" type="boolean" defaultValueBoolean="true"/>
             <column name="version" type="int" defaultValueNumeric="1">
                 <constraints nullable="false"/>
             </column>
@@ -1348,7 +1359,7 @@
             <column name="part_number"  type="varchar(100)"/>
             <column name="client_part_number"  type="varchar(100)"/>
             <column name="item_number"  type="varchar(100)"/>
-            <column name="active" type="bit" defaultValueBoolean="true"/>
+            <column name="active" type="boolean" defaultValueBoolean="true"/>
             <column name="version" type="int" defaultValueNumeric="1">
                 <constraints nullable="false"/>
             </column>
@@ -1426,7 +1437,7 @@
     <changeSet id="1_0_0-097" author="fcurran" context="common">
         <addColumn tableName="contact">
             <column name="last_update_by" type="varchar(100)"/>
-            <column name="last_update_date" type="datetime"/>
+            <column name="last_update_date" type="timestamp"/>
         </addColumn>
     </changeSet>
 
@@ -1478,7 +1489,7 @@
     <changeSet author="bmccormick" id="1_0_0-114" context="common">
         <comment>add col to activation attempt.</comment>
         <addColumn tableName="activation_attempt">
-            <column name="replace_cradlepoint" type="datetime"/>
+            <column name="replace_cradlepoint" type="timestamp"/>
         </addColumn>
     </changeSet>
 
@@ -1486,12 +1497,12 @@
         <comment>add cols to activation schedule table.</comment>
         <addColumn tableName="activation_schedule">
             <column name="ftdi_order_type_id" type="Int"/>
-            <column name="latest_requested_date" type="datetime"/>
+            <column name="latest_requested_date" type="timestamp"/>
             <column name="requested_days" type="varchar(100)"/>
             <column name="technical_note" type="varchar(500)"/>
             <column name="description" type="varchar(500)"/>
             <column name="ctn_id" type="Int"/>
-            <column name="on_hold" type="bit"/>
+            <column name="on_hold" type="boolean"/>
         </addColumn>
     </changeSet>
 
@@ -1681,7 +1692,7 @@
                              references="location(location_id)"/>
             </column>
             <column name="created_by" type="int"/>
-            <column name="created_date" type="datetime"/>
+            <column name="created_date" type="timestamp"/>
             <column name="title" type="varchar(250)"/>
             <column name="version" type="int" defaultValueNumeric="1">
                 <constraints nullable="false"/>
@@ -1703,7 +1714,7 @@
                              references="message_thread(message_thread_id)"/>
             </column>
             <column name="created_by" type="int"/>
-            <column name="created_date" type="datetime"/>
+            <column name="created_date" type="timestamp"/>
             <column name="body" type="longtext"/>
             <column name="version" type="int" defaultValueNumeric="1">
                 <constraints nullable="false"/>
@@ -1832,13 +1843,13 @@
             <column name="schedule_id" type="int"/>
             <column name="sr" type="int"/>
             <column name="status" type="varchar(100)"/>
-            <column name="appointment_date" type="datetime"/>
-            <column name="time_on_site" type="datetime"/>
-            <column name="time_off_site" type="datetime"/>
-            <column name="eta" type="datetime"/>
-            <column name="window_start" type="datetime"/>
-            <column name="window_end" type="datetime"/>
-            <column name="mod_time_off_site" type="datetime"/>
+            <column name="appointment_date" type="timestamp"/>
+            <column name="time_on_site" type="timestamp"/>
+            <column name="time_off_site" type="timestamp"/>
+            <column name="eta" type="timestamp"/>
+            <column name="window_start" type="timestamp"/>
+            <column name="window_end" type="timestamp"/>
+            <column name="mod_time_off_site" type="timestamp"/>
             <column name="tech_name" type="varchar(100)"/>
             <column name="tech_cell" type="varchar(100)"/>
             <column name="version" type="int" defaultValueNumeric="1">
@@ -1884,10 +1895,10 @@
             <column name="tracking_number" type="varchar(50)"/>
             <column name="shipment_status" type="varchar(50)"/>
             <column name="shipment_date" type="date"/>
-            <column name="delivered" type="bit"/>
+            <column name="delivered" type="boolean"/>
             <column name="delivery_date" type="date"/>
             <column name="signed_by" type="varchar(100)"/>
-            <column name="return_shipment" type="bit"/>
+            <column name="return_shipment" type="boolean"/>
             <column name="version" type="int" defaultValueNumeric="1">
                 <constraints nullable="false"/>
             </column>
@@ -1914,7 +1925,7 @@
             <column name="sr" type="varchar(50)"/>
             <column name="po" type="varchar(50)"/>
             <column name="subject" type="varchar(50)"/>
-            <column name="on_hold" type="bit"/>
+            <column name="on_hold" type="boolean"/>
             <column name="error_string" type="text"/>
             <column name="result_id" type="int"/>
             <column name="order_create_date" type="date"/>
@@ -1949,7 +1960,7 @@
 
 
     <changeSet author="mwelicka" id="1_0_0-132" context="common">
-        <sql>ALTER TABLE ftdi_dispatch AUTO_INCREMENT = 600100;</sql>
+        <sql>ALTER TABLE ftdi_dispatch ;</sql>
     </changeSet>
 
     <changeSet author="mwelicka" id="1_0_0-140" context="common">
@@ -2213,7 +2224,7 @@
             <column name="subject" type="text"/>
             <column name="body" type="text"/>
             <column name="last_update_by" type="varchar(100)"/>
-            <column name="last_update_date" type="datetime"/>
+            <column name="last_update_date" type="timestamp"/>
             <column name="template_type" type="varchar(100)"/>
             <column name="tenant_id" type="INT">
                 <constraints nullable="false"/>
@@ -2332,7 +2343,7 @@
             <column name="icon" type="varchar(100)"/>
             <column name="dismissed" type="boolean" defaultValueBoolean="false"/>
             <column name="link_to" type="varchar(500)"/>
-            <column name="created_date" type="datetime"/>
+            <column name="created_date" type="timestamp"/>
             <column name="version" type="int" defaultValueNumeric="1">
                 <constraints nullable="false"/>
             </column>
@@ -2348,14 +2359,14 @@
 
     <changeSet id="1_0_0-156" author="mwelicka">
         <addColumn tableName="service">
-            <column defaultValueBoolean="false" name="update_client" type="BIT"/>
+            <column defaultValueBoolean="false" name="update_client" type="boolean"/>
         </addColumn>
     </changeSet>
 
 
     <changeSet id="1_0_0-157" author="mwelicka">
         <addColumn tableName="note">
-            <column defaultValueBoolean="false" name="update_client" type="BIT"/>
+            <column defaultValueBoolean="false" name="update_client" type="boolean"/>
         </addColumn>
     </changeSet>
 
@@ -2479,7 +2490,7 @@
 
     <changeSet id="1_0_0-166" author="rcasey">
         <addColumn tableName="activation_schedule">
-            <column name="cancelled_date" type="datetime"/>
+            <column name="cancelled_date" type="timestamp"/>
         </addColumn>
     </changeSet>
 
@@ -2576,7 +2587,7 @@
 
         <changeSet author="mwelicka" id="1_0_0-178" context="common">
         <addColumn tableName="service">
-            <column defaultValueBoolean="false" name="eligible_for_update" type="BIT"/>
+            <column defaultValueBoolean="false" name="eligible_for_update" type="boolean"/>
         </addColumn>
     </changeSet>
 
@@ -2594,10 +2605,10 @@
             <column name="invoice_number" type="varchar(50)"/>
             <column name="invoice_status" type="varchar(50)"/>
             <column name="total_charges" type="decimal(19,4)"/>
-            <column name="invoice_start" type="datetime"/>
-            <column name="invoice_end" type="datetime"/>
+            <column name="invoice_start" type="timestamp"/>
+            <column name="invoice_end" type="timestamp"/>
             <column name="generated_by" type="varchar(100)"/>
-            <column name="generated_date" type="datetime"/>
+            <column name="generated_date" type="timestamp"/>
             <column name="version" type="int" defaultValueNumeric="1">
                 <constraints nullable="false"/>
             </column>
@@ -2631,7 +2642,7 @@
             <column name="master_customer_name" type="varchar(100)"/>
             <column name="end_customer_name" type="varchar(100)"/>
             <column name="billable_event_milestone_description" type="varchar(100)"/>
-            <column name="billable_event_date" type="datetime"/>
+            <column name="billable_event_date" type="timestamp"/>
             <column name="version" type="int" defaultValueNumeric="1">
                 <constraints nullable="false"/>
             </column>
@@ -2649,8 +2660,8 @@
             <column name="surcharge_type" type="varchar(250)"/>
             <column name="surcharge_level" type="varchar(50)"/>
             <column name="surcharge_amount" type="decimal(19,4)"/>
-            <column name="start_date" type="datetime"/>
-            <column name="end_date" type="datetime"/>
+            <column name="start_date" type="timestamp"/>
+            <column name="end_date" type="timestamp"/>
             <column name="version" type="int" defaultValueNumeric="1">
                 <constraints nullable="false"/>
             </column>
@@ -2707,7 +2718,7 @@
                 <constraints nullable="false" foreignKeyName="FK_surcharge_surcharge_type"
                              references="surcharge_type(surcharge_type_id)"/>
             </column>
-            <column name="surcharge_date" type="datetime"/>
+            <column name="surcharge_date" type="timestamp"/>
             <column name="added_by" type="varchar(100)"/>
             <column name="invoice_charge_id" type="int">
                 <constraints nullable="true" foreignKeyName="FK_surcharge_invoice_charge"
@@ -2729,8 +2740,8 @@
             </column>
             <column name="level_of_effort" type="varchar(50)"/>
             <column name="amount" type="decimal(19,4)"/>
-            <column name="start_date" type="datetime"/>
-            <column name="end_date" type="datetime"/>
+            <column name="start_date" type="timestamp"/>
+            <column name="end_date" type="timestamp"/>
             <column name="version" type="int" defaultValueNumeric="1">
                 <constraints nullable="false"/>
             </column>
@@ -2788,7 +2799,7 @@
     <changeSet id="1_0_0-184" author="fcurran">
         <!-- Add a new column to hold the converted values -->
         <addColumn tableName="service">
-            <column name="has_osp_new" type="tinyint" defaultValueNumeric="0"/>
+            <column name="has_osp_new" type="boolean" defaultValueNumeric="0"/>
         </addColumn>
 
         <!-- Update the new column with converted values -->
@@ -2805,13 +2816,13 @@
 
         <!-- Rename the new column to the original column name -->
         <renameColumn tableName="service" oldColumnName="has_osp_new" newColumnName="has_osp"
-                      columnDataType="tinyint"/>
+                      columnDataType="boolean"/>
     </changeSet>
 
     <changeSet id="1_0_0-185" author="fcurran">
         <!-- Add a new column to hold the converted values -->
         <addColumn tableName="service">
-            <column name="has_icb_new" type="tinyint" defaultValueNumeric="0"/>
+            <column name="has_icb_new" type="boolean" defaultValueNumeric="0"/>
         </addColumn>
 
         <!-- Update the new column with converted values -->
@@ -2828,7 +2839,7 @@
 
         <!-- Rename the new column to the original column name -->
         <renameColumn tableName="service" oldColumnName="has_icb_new" newColumnName="has_icb"
-                      columnDataType="tinyint"/>
+                      columnDataType="boolean"/>
     </changeSet>
 
     <changeSet author="rcasey" id="1_0_0-186" context="common">
@@ -2905,11 +2916,11 @@
     <changeSet id="rcasey" author="1_0_0-192">
         <sql>
             INSERT INTO milestone (milestone_name, milestone_code) VALUES ('Site Access Confirmed', 'SITE_ACCESS_CONFIRMED');
-            SET @displaySetId = (SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'BROADBAND_SERVICE_MILESTONE');
+            
             INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                                        milestone_required, adjustable, workflow_driven, has_time, disallow_future)
             VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'SITE_ACCESS_CONFIRMED'), 1, 1065, 1, 1, 0, 0, 0);
-            SET @displaySetId = (SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'DIA_SERVICE_MILESTONE');
+            
             INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                                        milestone_required, adjustable, workflow_driven, has_time, disallow_future)
             VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'SITE_ACCESS_CONFIRMED'), 1, 1065, 1, 1, 0, 0, 0);
@@ -2996,21 +3007,21 @@
     <changeSet id="1_0_0-198" author="rcasey">
         <sql>
             INSERT INTO lookup_type (lookup_type_descr, lookup_type_code, lookup_type_active, modifiable, sort_strategy)
-            VALUES ('Service Owner', 'SERVICE_OWNER', 1, 1, 1);
-            SET @lookupTypeId = (SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'SERVICE_OWNER');
+            VALUES ('Service Owner', 'SERVICE_OWNER', true, true, true);
+            
             INSERT INTO lookup_value (lookup_type_id, lookup_display, lookup_value, sort_seq, lookup_value_active)
-            VALUES (@lookupTypeId, 'Endeavor', 'Endeavor', 10, 1),
-                   (@lookupTypeId, 'Customer', 'Customer', 20, 1);
-            set @tenantId = (select tenant_id from v_tenant where name = 'QTO First Tenant');
+            VALUES ((SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'SERVICE_OWNER'), 'Endeavor', 'Endeavor', 10, true),
+                   ((SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'SERVICE_OWNER'), 'Customer', 'Customer', 20, true);
+            
             INSERT INTO tenant_lookup_value (lookup_value_id, tenant_id)
-            SELECT lookup_value_id, @tenantId
+            SELECT lookup_value_id, (select tenant_id from v_tenant where name = 'QTO First Tenant')
             FROM lookup_value
-            WHERE lookup_type_id = @lookupTypeId;
-            set @tenantId = (select tenant_id from v_tenant where name = 'Endeavor');
+            WHERE lookup_type_id = (SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'SERVICE_OWNER');
+            
             INSERT INTO tenant_lookup_value (lookup_value_id, tenant_id)
-            SELECT lookup_value_id, @tenantId
+            SELECT lookup_value_id, (select tenant_id from v_tenant where name = 'Demo Tenant')
             FROM lookup_value
-            WHERE lookup_type_id = @lookupTypeId;
+            WHERE lookup_type_id = (SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'SERVICE_OWNER');
         </sql>
     </changeSet>
 
@@ -3430,21 +3441,21 @@
     <changeSet id="1_0_0-200" author="rcasey">
         <sql>
             INSERT INTO lookup_type (lookup_type_descr, lookup_type_code, lookup_type_active, modifiable, sort_strategy)
-            VALUES ('Circuit Priority', 'CIRCUIT_PRIORITY', 1, 1, 1);
-            SET @lookupTypeId = (SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'CIRCUIT_PRIORITY');
+            VALUES ('Circuit Priority', 'CIRCUIT_PRIORITY', true, true, true);
+            
             INSERT INTO lookup_value (lookup_type_id, lookup_display, lookup_value, sort_seq, lookup_value_active)
-            VALUES (@lookupTypeId, 'Primary', 'Primary', 10, 1),
-                   (@lookupTypeId, 'Failover', 'Failover', 20, 1);
-            set @tenantId = (select tenant_id from v_tenant where name = 'QTO First Tenant');
+            VALUES ((SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'CIRCUIT_PRIORITY'), 'Primary', 'Primary', 10, true),
+                   ((SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'CIRCUIT_PRIORITY'), 'Failover', 'Failover', 20, true);
+            
             INSERT INTO tenant_lookup_value (lookup_value_id, tenant_id)
-            SELECT lookup_value_id, @tenantId
+            SELECT lookup_value_id, (select tenant_id from v_tenant where name = 'QTO First Tenant')
             FROM lookup_value
-            WHERE lookup_type_id = @lookupTypeId;
-            set @tenantId = (select tenant_id from v_tenant where name = 'Endeavor');
+            WHERE lookup_type_id = (SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'CIRCUIT_PRIORITY');
+            
             INSERT INTO tenant_lookup_value (lookup_value_id, tenant_id)
-            SELECT lookup_value_id, @tenantId
+            SELECT lookup_value_id, (select tenant_id from v_tenant where name = 'Demo Tenant')
             FROM lookup_value
-            WHERE lookup_type_id = @lookupTypeId;
+            WHERE lookup_type_id = (SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'CIRCUIT_PRIORITY');
         </sql>
     </changeSet>
 

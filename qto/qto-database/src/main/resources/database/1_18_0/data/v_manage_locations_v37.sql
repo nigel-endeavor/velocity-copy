@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS v_manage_locations CASCADE;
 CREATE OR REPLACE VIEW v_manage_locations AS
 SELECT o.order_id,
        l.location_id,
@@ -19,7 +20,7 @@ SELECT o.order_id,
        sv.services,
        l.progress_percentage,
        CONCAT(IFNULL(l.address_1, ''),
-              IF(LENGTH(l.address_2), CONCAT(' ', l.address_2), ''),
+              CASE WHEN l.address_2 IS NOT NULL AND TRIM(COALESCE(l.address_2,'')) <> '' THEN CONCAT(' ', l.address_2) ELSE '' END,
               '\n',
               IFNULL(l.city, ''), ', ',
               IFNULL(l.state_province, ''), ' ',
@@ -44,7 +45,7 @@ SELECT o.order_id,
        l.client_location_info,
        l.client_location_type,
        IFNULL(vju.open_jeops, '') AS open_jeops,
-       (SELECT GROUP_CONCAT(DISTINCT ji.responsibility SEPARATOR ', ')
+       (SELECT string_agg(DISTINCT ji.responsibility, ', ')
         FROM location_jeop_instance lji
              INNER JOIN jeop_instance ji ON lji.jeop_instance_id = ji.jeop_instance_id
         WHERE lji.location_id = l.location_id
@@ -91,7 +92,7 @@ FROM company C
                        SUM(s.service_mrr) AS mrr,
                        SUM(s.service_nrr) AS nrr,
                        SUM(s.annual_recurring_cost) AS annual_recurring_cost,
-                       GROUP_CONCAT(DISTINCT s.service_type) AS services,
+                       string_agg(DISTINCT s.service_type, ',') AS services,
                        COUNT(CASE WHEN s.order_type IN ('Move', 'Add', 'Change') THEN 1 END) AS mac_count,
                        SUM(CASE WHEN (s.linked) THEN 1 ELSE 0 END) AS count_linked_services,
                        SUM(CASE WHEN (s.bundled) THEN 1 ELSE 0 END) AS count_bundled_services,
@@ -101,7 +102,7 @@ FROM company C
 		              AND s.record_source != 'Inventory Import'
                 GROUP BY s.location_id) sv ON l.location_id = sv.location_id
      LEFT JOIN (SELECT location_id,
-                       GROUP_CONCAT(DISTINCT level_jeop) AS open_jeops,
+                       string_agg(DISTINCT level_jeop, ',') AS open_jeops,
                        COUNT(*) AS show_jeop_icon
                 FROM v_jeops_union
                 WHERE jeop_level IN ('Order', 'Location')

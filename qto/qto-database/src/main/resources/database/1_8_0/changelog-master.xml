@@ -62,7 +62,7 @@
 
     <changeSet id="1_8_0-005" author="mwelicka">
         <addColumn tableName="activation_attempt">
-            <column name="created_date" type="datetime"/>
+            <column name="created_date" type="timestamp"/>
         </addColumn>
     </changeSet>
 
@@ -117,7 +117,7 @@
 
     <changeSet id="1_8_0-010" author="rcasey">
         <addColumn tableName="service">
-            <column name="ignore_for_renewals" type="bit" defaultValueBoolean="false"/>
+            <column name="ignore_for_renewals" type="boolean" defaultValueBoolean="false"/>
         </addColumn>
     </changeSet>
 
@@ -152,7 +152,7 @@
             <column name="service_snapshot_id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="snapshot_date" type="datetime"/>
+            <column name="snapshot_date" type="timestamp"/>
             <column name="service_id" type="int"/>
             <column name="location_id" type="int"/>
             <column name="order_id" type="int"/>
@@ -166,10 +166,10 @@
             <column name="provider" type="varchar(50)"/>
             <column name="sub_product_type" type="varchar(50)"/>
             <column name="status" type="varchar(50)"/>
-            <column name="active" type="bit"/>
-            <column name="current_inventory" type="bit"/>
-            <column name="data_provisioning_complete_date" type="datetime"/>
-            <column name="complete_date" type="datetime"/>
+            <column name="active" type="boolean"/>
+            <column name="current_inventory" type="boolean"/>
+            <column name="data_provisioning_complete_date" type="timestamp"/>
+            <column name="complete_date" type="timestamp"/>
             <column name="mrc" type="decimal(10,2)"/>
             <column name="nrc" type="decimal(10,2)"/>
             <column name="annual_recurring_cost" type="decimal(10,2)"/>
@@ -249,9 +249,9 @@
 
     <changeSet id="1_8_0-017" author="mwelicka">
         <addColumn tableName="service">
-            <column defaultValueBoolean="false" name="linked" type="BIT"/>
-            <column defaultValueBoolean="false" name="bundled" type="BIT"/>
-            <column defaultValueBoolean="false" name="linked_bundled_parent" type="BIT"/>
+            <column defaultValueBoolean="false" name="linked" type="boolean"/>
+            <column defaultValueBoolean="false" name="bundled" type="boolean"/>
+            <column defaultValueBoolean="false" name="linked_bundled_parent" type="boolean"/>
             <column name="linked_bundled_parent_id" type="int"/>
         </addColumn>
     </changeSet>

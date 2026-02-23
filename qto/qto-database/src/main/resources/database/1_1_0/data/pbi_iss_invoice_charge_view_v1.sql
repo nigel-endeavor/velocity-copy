@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS pbi_iss_invoice_charge CASCADE;
 create or replace view pbi_iss_invoice_charge as
 SELECT invoice_charge_id as 'Invoice Charge ID',
        invoice_id as 'Invoice ID',

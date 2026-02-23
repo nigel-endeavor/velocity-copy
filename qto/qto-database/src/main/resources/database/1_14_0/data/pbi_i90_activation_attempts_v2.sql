@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS pbi_i90_activation_attempts CASCADE;
 CREATE OR REPLACE VIEW pbi_i90_activation_attempts AS
 SELECT s.service_id AS 'Service ID',
        s.tenant_id AS 'Tenant ID',
@@ -39,9 +40,8 @@ SELECT s.service_id AS 'Service ID',
           DATEDIFF(scheduled_check_in_time, cancelled_date) >= 0 AND
 #           # calculates datediff excluding weekends
           (5 * (DATEDIFF(scheduled_check_in_time, cancelled_date) DIV 7) +
-           MID('0123444401233334012222340111123400012345001234550',
-               7 * WEEKDAY(cancelled_date) + WEEKDAY(scheduled_check_in_time) + 1,
-               1)) < 3, 1, 0) AS 'Second Day Cancel',
+           CAST(SUBSTRING(
+               7 * WEEKDAY(cancelled_date) + WEEKDAY(scheduled_check_in_time) + 1 FROM 0123444401233334012222340111123400012345001234550 FOR 1) AS integer)) < 3, 1, 0) AS 'Second Day Cancel',
        same_day_schedule AS 'Same Day Schedule',
        ftdi_vendor_status AS 'Vendor Status'
 

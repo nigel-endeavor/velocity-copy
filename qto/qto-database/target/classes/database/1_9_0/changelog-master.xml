@@ -116,7 +116,7 @@
 
     <changeSet id="1_9_0-011" author="fcurran">
         <addColumn tableName="company">
-            <column name="duplicated_master_customer_details" type="bit" defaultValueBoolean="false"/>
+            <column name="duplicated_master_customer_details" type="boolean" defaultValueBoolean="false"/>
         </addColumn>
     </changeSet>
 

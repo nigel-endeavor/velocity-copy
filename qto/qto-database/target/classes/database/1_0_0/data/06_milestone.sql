@@ -28,13 +28,13 @@ CREATE TABLE milestone_display_set_include
 		PRIMARY KEY,
 	milestone_display_set_id         int           NOT NULL,
 	milestone_id                     int           NOT NULL,
-	milestone_active                 bit DEFAULT 1 NOT NULL,
+	milestone_active                 boolean DEFAULT true NOT NULL,
 	milestone_sequence               int DEFAULT 0 NOT NULL,
-	milestone_required               bit DEFAULT 0 NOT NULL,
-	adjustable                       bit DEFAULT 0 NOT NULL,
-	workflow_driven                  bit DEFAULT 0 NOT NULL,
-	has_time                         bit DEFAULT 0 NOT NULL,
-	disallow_future                  bit DEFAULT 0 NOT NULL,
+	milestone_required               boolean DEFAULT false NOT NULL,
+	adjustable                       boolean DEFAULT false NOT NULL,
+	workflow_driven                  boolean DEFAULT false NOT NULL,
+	has_time                         boolean DEFAULT false NOT NULL,
+	disallow_future                  boolean DEFAULT false NOT NULL,
 	version                          int DEFAULT 1 NOT NULL,
 	CONSTRAINT FK_milestone_display_set_include_milestone
 		FOREIGN KEY (milestone_id) REFERENCES milestone (milestone_id),
@@ -50,7 +50,7 @@ CREATE TABLE milestone_instance
 	milestone_date           datetime      NOT NULL,
 	milestone_instance_count int DEFAULT 1 NOT NULL,
 	milestone_param          varchar(100) NULL,
-	historic                 bit DEFAULT 0 NOT NULL,
+	historic                 boolean DEFAULT false NOT NULL,
 	version                  int DEFAULT 1 NOT NULL,
 	CONSTRAINT FK_milestone_instance_milestone
 		FOREIGN KEY (milestone_id) REFERENCES milestone (milestone_id)

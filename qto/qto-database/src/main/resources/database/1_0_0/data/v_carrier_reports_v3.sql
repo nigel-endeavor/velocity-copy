@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS v_carrier_intervals CASCADE;
 create or replace view v_carrier_intervals as
 select ii.interval_instance_id, company_name, (select company_name from company where company_id = c.parent_company_id) as master_company_name,
        o.order_id, o.client_order_id, l.location_id, l.location_name,

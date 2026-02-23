@@ -1,11 +1,11 @@
 CREATE TABLE company_config_property
 (
-	company_config_property_id int(10) AUTO_INCREMENT
+	company_config_property_id SERIAL
 		PRIMARY KEY,
-	company_id                 int(10)           NOT NULL,
+	company_id                 int           NOT NULL,
 	config_property_key        varchar(200)      NOT NULL,
 	config_property_value      varchar(5000)     NULL,
-	version                    int(10) DEFAULT 1 NULL,
+	version                    int DEFAULT 1 NULL,
 	tenant_id                  int               NOT NULL
 );
 
@@ -15,9 +15,9 @@ CREATE INDEX fk_company_config_property_tenant
 
 CREATE TABLE config_property
 (
-	config_property_id    int(10) AUTO_INCREMENT
+	config_property_id    SERIAL
 		PRIMARY KEY,
 	config_property_key   varchar(200)      NOT NULL,
 	config_property_value varchar(1000)     NULL,
-	version               int(10) DEFAULT 1 NULL
+	version               int DEFAULT 1 NULL
 );

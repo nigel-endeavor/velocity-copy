@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS pbi_i90_service_cyber CASCADE;
 CREATE OR REPLACE VIEW pbi_i90_service_cyber AS
 SELECT s.service_id AS 'Service ID',
        location_id AS 'Location ID',

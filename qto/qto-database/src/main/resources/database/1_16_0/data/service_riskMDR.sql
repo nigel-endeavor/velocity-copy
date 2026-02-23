@@ -1,6 +1,6 @@
 CREATE TABLE service_riskmdr
 (
-    riskmdr_service_id    int AUTO_INCREMENT
+    riskmdr_service_id    SERIAL
         PRIMARY KEY,
     service_id              int NOT NULL,
     number_of_assets  varchar(100) NULL,

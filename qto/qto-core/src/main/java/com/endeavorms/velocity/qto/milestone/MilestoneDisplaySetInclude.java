@@ -44,7 +44,7 @@ public class MilestoneDisplaySetInclude extends StandardVersionedBaseEntity {
     private Milestone milestone;
 
     /** Flag indicating active status. */
-    @Column(name = "milestone_active", columnDefinition = "bit default 1")
+    @Column(name = "milestone_active", columnDefinition = "boolean DEFAULT true")
     private boolean active;
 
     /** Sequence used for ordering. */

@@ -355,27 +355,27 @@
             <column name="secondary_agency_rep" type="varchar(100)"/>
             <column name="tertiary_agency" type="varchar(100)"/>
             <column name="tertiary_agency_rep" type="varchar(100)"/>
-            <column name="referral" type="bit" defaultValueBoolean="false"/>
+            <column name="referral" type="boolean" defaultValueBoolean="false"/>
             <column name="referral_name" type="varchar(100)"/>
             <column name="company_referral_percent" type="decimal(5,2)"/>
             <!-- order details -->
             <column name="spiff_amount" type="decimal(19,2)" defaultValueNumeric="0"/>
             <column name="customer_order_alias" type="varchar(100)"/>
-            <column name="engineer_resource" type="bit" defaultValueBoolean="false"/>
+            <column name="engineer_resource" type="boolean" defaultValueBoolean="false"/>
             <column name="engineer_resource_allocation" type="decimal(5,2)"/>
             <!-- commissions -->
             <column name="commission_payment_type" type="varchar(100)"/>
             <column name="expected_commission" type="decimal(19,2)" defaultValueNumeric="0"/>
             <column name="commission_reduction_percent" type="decimal(5,2)"/>
-            <column name="commission_icb" type="bit" defaultValueBoolean="false"/>
+            <column name="commission_icb" type="boolean" defaultValueBoolean="false"/>
             <column name="internal_commissions_comments" type="varchar(500)"/>
             <!-- profit monitoring -->
             <column name="gross_profit_mrc_multiplier" type="decimal(5,2)"/>
             <column name="percent_resides_from_carrier" type="varchar(100)"/>
             <column name="gross_profit_mrc" type="decimal(19,2)" defaultValueNumeric="0"/>
             <column name="gross_profit" type="decimal(19,2)" defaultValueNumeric="0"/>
-            <column name="gross_profit_mrc_needs_to_be_edited" type="bit" defaultValueBoolean="false"/>
-            <column name="gross_profit_needs_to_be_edited" type="bit" defaultValueBoolean="false"/>
+            <column name="gross_profit_mrc_needs_to_be_edited" type="boolean" defaultValueBoolean="false"/>
+            <column name="gross_profit_needs_to_be_edited" type="boolean" defaultValueBoolean="false"/>
             <column name="gross_profit_mrc_override" type="decimal(19,2)" defaultValueNumeric="0"/>
             <column name="gross_profit_override" type="decimal(19,2)" defaultValueNumeric="0"/>
             <column name="rep_gross_profit_production" type="decimal(19,2)" defaultValueNumeric="0"/>
@@ -428,7 +428,7 @@
 
     <changeSet id="1_11_0-015" author="fcurran">
         <addColumn tableName="service_brokerage">
-            <column name="rep_gross_profit_needs_to_be_edited" type="bit" defaultValueBoolean="false"/>
+            <column name="rep_gross_profit_needs_to_be_edited" type="boolean" defaultValueBoolean="false"/>
         </addColumn>
     </changeSet>
 

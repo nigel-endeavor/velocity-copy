@@ -1,6 +1,6 @@
 CREATE TABLE service_cloudservicesiam
 (
-    cloudservicesiam_service_id    int AUTO_INCREMENT
+    cloudservicesiam_service_id    SERIAL
         PRIMARY KEY,
     service_id              int NOT NULL,
     microsoft_licensing  varchar(100) NULL,

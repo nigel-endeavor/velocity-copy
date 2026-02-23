@@ -1,7 +1,7 @@
-set @tenantId = (select tenant_id from v_tenant where name = 'QTO First Tenant');
+
 
 INSERT INTO tenant_lookup_value
-SELECT lookup_value_id, @tenantId
+SELECT lookup_value_id, (select tenant_id from v_tenant where name = 'QTO First Tenant')
 FROM lookup_value
 WHERE lookup_type_id in (
     SELECT lookup_type_id
@@ -21,10 +21,10 @@ WHERE lookup_type_id in (
 );
 
 
-set @tenantId = (select tenant_id from v_tenant where name = 'Endeavor');
+
 
 INSERT INTO tenant_lookup_value
-SELECT lookup_value_id, @tenantId
+SELECT lookup_value_id, (select tenant_id from v_tenant where name = 'QTO First Tenant')
 FROM lookup_value
 WHERE lookup_type_id in (
     SELECT lookup_type_id

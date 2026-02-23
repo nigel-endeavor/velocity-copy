@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS v_service_history CASCADE;
 CREATE OR REPLACE VIEW v_service_history AS
 SELECT
     s.service_id,

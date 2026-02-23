@@ -1,5 +1,5 @@
 CREATE TABLE custom_field (
-    custom_field_id INT AUTO_INCREMENT PRIMARY KEY,
+    custom_field_id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     label VARCHAR(100) NOT NULL,
     type VARCHAR(50) NOT NULL,
@@ -10,7 +10,7 @@ CREATE TABLE custom_field (
 );
 
 CREATE TABLE custom_field_value (
-    custom_field_value_id INT AUTO_INCREMENT PRIMARY KEY,
+    custom_field_value_id SERIAL PRIMARY KEY,
     custom_field_id INT NOT NULL,
     value VARCHAR(200) NOT NULL,
     version INT NOT NULL DEFAULT 0,
@@ -19,7 +19,7 @@ CREATE TABLE custom_field_value (
 );
 
 CREATE TABLE custom_field_tab (
-    custom_field_tab_id INT AUTO_INCREMENT PRIMARY KEY,
+    custom_field_tab_id SERIAL PRIMARY KEY,
     custom_field_id INT NOT NULL,
     tab VARCHAR(50) NOT NULL,
     CONSTRAINT fk_custom_field_tab_custom_field FOREIGN KEY (custom_field_id) REFERENCES custom_field(custom_field_id)

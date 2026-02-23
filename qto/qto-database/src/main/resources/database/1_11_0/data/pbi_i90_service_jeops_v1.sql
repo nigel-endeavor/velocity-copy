@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS pbi_i90_service_jeops CASCADE;
 CREATE OR REPLACE VIEW pbi_i90_service_jeops AS
 SELECT sji.service_id AS 'Service ID',
        s.tenant_id AS 'Tenant ID',

@@ -106,7 +106,7 @@
 
     <changeSet id="1_4_0-010" author="rcasey">
         <addColumn tableName="activation_attempt">
-            <column name="same_day_schedule" type="bit" defaultValueBoolean="false"/>
+            <column name="same_day_schedule" type="boolean" defaultValueBoolean="false"/>
         </addColumn>
     </changeSet>
 
@@ -189,12 +189,12 @@
                         LIMIT 1
                    )
                    );
-            set @tenantId = (select tenant_id from v_tenant where name = 'QTO First Tenant');
+            
             INSERT INTO tenant_lookup_value (lookup_value_id, tenant_id)
             SELECT lookup_value_id, @tenantId
             FROM lookup_value
             WHERE lookup_value = 'Replace Service - Same Carrier/Vendor';
-            set @tenantId = (select tenant_id from v_tenant where name = 'Endeavor');
+            
             INSERT INTO tenant_lookup_value (lookup_value_id, tenant_id)
             SELECT lookup_value_id, @tenantId
             FROM lookup_value
@@ -207,7 +207,7 @@
             <column name="inventory_history_id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="snapshot_date" type="datetime">
+            <column name="snapshot_date" type="timestamp">
                 <constraints nullable="false"/>
             </column>
             <column name="location_count" type="int"/>

@@ -8,18 +8,18 @@
         <addColumn tableName="service">
             <column name="inventory_service_id" type="int"/>
             <column name="provisioning_service_id" type="int"/>
-            <column name="final_update" type="bit" defaultValueBoolean="false"/>
+            <column name="final_update" type="boolean" defaultValueBoolean="false"/>
         </addColumn>
         <addColumn tableName="location">
             <column name="inventory_location_id" type="int"/>
             <column name="provisioning_location_id" type="int"/>
-            <column name="current_inventory" type="bit" defaultValueBoolean="false"/>
-            <column name="final_update" type="bit" defaultValueBoolean="false"/>
+            <column name="current_inventory" type="boolean" defaultValueBoolean="false"/>
+            <column name="final_update" type="boolean" defaultValueBoolean="false"/>
         </addColumn>
         <addColumn tableName="orders">
             <column name="inventory_order_id" type="int"/>
             <column name="provisioning_order_id" type="int"/>
-            <column name="current_inventory" type="bit" defaultValueBoolean="false"/>
+            <column name="current_inventory" type="boolean" defaultValueBoolean="false"/>
         </addColumn>
         <addColumn tableName="note">
             <column name="parent_note_id" type="int"/>
@@ -83,19 +83,19 @@
 
     <changeSet id="1_10_0-008" author="mwelicka">
         <addColumn tableName="orders">
-            <column name="final_update" type="bit" defaultValueBoolean="false"/>
+            <column name="final_update" type="boolean" defaultValueBoolean="false"/>
         </addColumn>
     </changeSet>
 
     <changeSet id="1_10_0-009" author="mwelicka">
         <addColumn tableName="service">
-            <column name="eligible_for_inventory" type="bit" defaultValueBoolean="false"/>
+            <column name="eligible_for_inventory" type="boolean" defaultValueBoolean="false"/>
         </addColumn>
         <addColumn tableName="location">
-            <column name="eligible_for_inventory" type="bit" defaultValueBoolean="false"/>
+            <column name="eligible_for_inventory" type="boolean" defaultValueBoolean="false"/>
         </addColumn>
         <addColumn tableName="orders">
-            <column name="eligible_for_inventory" type="bit" defaultValueBoolean="false"/>
+            <column name="eligible_for_inventory" type="boolean" defaultValueBoolean="false"/>
         </addColumn>
     </changeSet>
 

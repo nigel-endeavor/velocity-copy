@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS v_company CASCADE;
 CREATE OR REPLACE VIEW v_company AS
 SELECT lct.complete_date,
        c.*,

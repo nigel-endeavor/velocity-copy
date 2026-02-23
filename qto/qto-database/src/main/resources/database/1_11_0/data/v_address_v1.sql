@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS v_address CASCADE;
 CREATE OR REPLACE VIEW v_address AS
 SELECT
     client_location_id,

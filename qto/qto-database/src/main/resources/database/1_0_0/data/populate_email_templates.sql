@@ -1,4 +1,4 @@
-INSERT INTO qto.email_template (name, subject, body, template_type, tenant_id) select 'Site Completion Notice', '$clientLocationId is Complete', 'Good Day,
+INSERT INTO email_template (name, subject, body, template_type, tenant_id) select 'Site Completion Notice', '$clientLocationId is Complete', 'Good Day,
 $clientLocationId has been successfully completed as a $clientLocationInfo on the $carrier circuit.
 
 $locationName
@@ -25,7 +25,7 @@ Location Downtime for Cutover: $locationDowntimeForCutover
 Replace Cradlepoint with Broadband/DIA: $replaceCradlepointWithBroadbandDia
 
 Total Appointment Time: $totalAppointmentTime', 'ACTIVATION', tenant_id from v_tenant;
-INSERT INTO qto.email_template (name, subject, body, template_type, tenant_id) select 'Site Aborted Notice', '$clientLocationId has been aborted', 'Good Day,
+INSERT INTO email_template (name, subject, body, template_type, tenant_id) select 'Site Aborted Notice', '$clientLocationId has been aborted', 'Good Day,
 
 $clientLocationId was aborted today.
 
@@ -51,7 +51,7 @@ Location Downtime for Cutover: $locationDowntimeForCutover
 Replace Cradlepoint with Broadband/DIA: $replaceCradlepointWithBroadbandDia
 
 Total Appointment Time: $totalAppointmentTime', 'ACTIVATION', tenant_id from v_tenant;
-INSERT INTO qto.email_template (name, subject, body, template_type, tenant_id) select 'Site Completion Notice - Followup Required', '$clientLocationId is Complete - Follow-up Required', 'Good Day,
+INSERT INTO email_template (name, subject, body, template_type, tenant_id) select 'Site Completion Notice - Followup Required', '$clientLocationId is Complete - Follow-up Required', 'Good Day,
 $clientLocationId has been successfully completed as a $clientLocationInfo however follow-up is required. Please see the comments for customer below for further detail.
 
 $locationName
@@ -78,7 +78,7 @@ Location Downtime for Cutover: $locationDowntimeForCutover
 Replace Cradlepoint with Broadband/DIA: $replaceCradlepointWithBroadbandDia
 
 Total Appointment Time: $totalAppointmentTime', 'ACTIVATION', tenant_id from v_tenant;
-INSERT INTO qto.email_template (name, subject, body, template_type, tenant_id) select 'Site Partial Completion Notice', '$clientLocationId has been partially completed', 'Good Day,
+INSERT INTO email_template (name, subject, body, template_type, tenant_id) select 'Site Partial Completion Notice', '$clientLocationId has been partially completed', 'Good Day,
 
 $clientLocationId was partially completed today.
 

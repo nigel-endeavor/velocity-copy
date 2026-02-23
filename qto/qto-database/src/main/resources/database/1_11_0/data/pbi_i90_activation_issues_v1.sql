@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS pbi_i90_activation_issues CASCADE;
 CREATE OR REPLACE VIEW pbi_i90_activation_issues AS
 SELECT s.service_id,
        s.tenant_id AS 'Tenant ID',

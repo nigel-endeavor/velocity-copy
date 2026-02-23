@@ -1,6 +1,6 @@
 CREATE TABLE service_threatmdr
 (
-    threatmdr_service_id    int AUTO_INCREMENT
+    threatmdr_service_id    SERIAL
         PRIMARY KEY,
     service_id              int NOT NULL,
     sensors                 int NULL,

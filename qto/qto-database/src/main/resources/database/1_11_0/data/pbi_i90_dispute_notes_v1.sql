@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS pbi_i90_dispute_notes CASCADE;
 CREATE OR REPLACE VIEW pbi_i90_dispute_notes AS
 SELECT d.dispute_id,
        s.tenant_id AS 'Tenant ID',

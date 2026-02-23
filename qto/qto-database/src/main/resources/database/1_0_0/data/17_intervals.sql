@@ -1,6 +1,6 @@
 CREATE TABLE interval_type
 (
-	interval_type_id       int AUTO_INCREMENT
+	interval_type_id       SERIAL
 		PRIMARY KEY,
 	interval_type_descr    varchar(100)  NOT NULL,
 	interval_type_code     varchar(100)  NOT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE interval_type
 
 CREATE TABLE interval_type_close
 (
-	interval_type_close_id  int AUTO_INCREMENT
+	interval_type_close_id  SERIAL
 		PRIMARY KEY,
 	interval_type_id        int           NOT NULL,
 	close_milestone_id      int           NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE interval_type_close
 
 CREATE TABLE interval_instance
 (
-	interval_instance_id        int AUTO_INCREMENT
+	interval_instance_id        SERIAL
 		PRIMARY KEY,
 	interval_type_id            int            NOT NULL,
 	open_milestone_instance_id  int            NOT NULL,

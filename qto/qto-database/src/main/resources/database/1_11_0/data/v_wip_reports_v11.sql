@@ -1,4 +1,5 @@
 # ----------------------------------------------------------------------------------------------------
+DROP VIEW IF EXISTS v_wip_service CASCADE;
 create or replace view v_wip_service as
 select company_name, (select company_name from company where company_id = c.master_customer_id) as master_company_name, o.order_id, o.provisioner, o.vertek_project_manager, o.client_project_manager, client_order_id,
        l.location_id, l.client_location_id, l.location_name, l.address_1, l.address_2, l.city, l.state_province,
@@ -21,6 +22,7 @@ from company c
          join location l on o.order_id = l.order_id
          join service s ON l.location_id = s.location_id;
 # -------------------------------------------------------------------------------------------------------------------
+DROP VIEW IF EXISTS v_wip_service_jeop CASCADE;
 create or replace view v_wip_service_jeop as
 select company_name, (select company_name from company where company_id = c.master_customer_id) as master_company_name, o.order_id, o.provisioner, o.vertek_project_manager, o.client_project_manager, client_order_id,
        l.location_id, l.client_location_id, l.location_name, l.address_1, l.address_2, l.city, l.state_province,
@@ -33,6 +35,7 @@ from company c
          join service_jeop_instance sji on s.service_id = sji.service_id
          join jeop_instance ji on sji.jeop_instance_id = ji.jeop_instance_id;
 # -------------------------------------------------------------------------------------------------------------------
+DROP VIEW IF EXISTS v_wip_location_jeop CASCADE;
 create or replace view v_wip_location_jeop as
 select c.company_name, (select company_name from company where company_id = c.master_customer_id) as master_company_name,
        o.order_id, o.provisioner, o.vertek_project_manager, o.client_project_manager, client_order_id,

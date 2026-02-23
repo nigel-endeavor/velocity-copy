@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS v_manage_location_inventory CASCADE;
 CREATE OR REPLACE VIEW v_manage_location_inventory AS
 SELECT
     o.order_id,
@@ -21,7 +22,7 @@ SELECT
     sv.services,
     l.progress_percentage,
        CONCAT(IFNULL(l.address_1, ''),
-              IF(LENGTH(l.address_2), CONCAT(' ', l.address_2), ''),
+              CASE WHEN l.address_2 IS NOT NULL AND TRIM(COALESCE(l.address_2,'')) <> '' THEN CONCAT(' ', l.address_2) ELSE '' END,
               '\n',
               IFNULL(l.city, ''), ', ',
               IFNULL(l.state_province, ''), ' ',
@@ -77,9 +78,9 @@ FROM
             SUM(
                     (CHAR_LENGTH(child_services.child_ids) - CHAR_LENGTH(REPLACE(child_services.child_ids, ',', '')) + 1)
             ) AS macd_count,
-            GROUP_CONCAT(child_services.child_order_types) AS child_order_types,
-            GROUP_CONCAT(DISTINCT s.service_type) AS services,
-            GROUP_CONCAT(DISTINCT s.sub_order_type) AS sub_order_types,
+            string_agg(child_services.child_order_types, ',') AS child_order_types,
+            string_agg(DISTINCT s.service_type, ',') AS services,
+            string_agg(DISTINCT s.sub_order_type, ',') AS sub_order_types,
             SUM(
                     CASE WHEN (vsmi.milestone_date IS NOT NULL) THEN service_mrc ELSE 0 END
             ) AS active_complete_mrc,
@@ -110,8 +111,8 @@ FROM
                 LEFT JOIN (
                 SELECT
                     parent_service_id,
-                    GROUP_CONCAT(service_id) AS child_ids,
-                    GROUP_CONCAT(order_type) AS child_order_types
+                    string_agg(service_id, ',') AS child_ids,
+                    string_agg(order_type, ',') AS child_order_types
                 FROM service
                 WHERE parent_service_id IS NOT NULL
                   AND service_status NOT IN ('Service Complete', 'Disconnect Complete', 'Service Cancelled', 'Change in Assignment')

@@ -1,10 +1,10 @@
 CREATE TABLE television_service
 (
-    television_service_id    int AUTO_INCREMENT
+    television_service_id    SERIAL
 		PRIMARY KEY,
 	service_id              int NOT NULL,
 	plan                    varchar(100) NULL,
-    dvr_included            bit default b'0' null,
+    dvr_included            boolean DEFAULT false null,
     receiver                varchar(100) NULL,
     receiver_mac            varchar(100) NULL,
     dvr                     varchar(100) NULL,

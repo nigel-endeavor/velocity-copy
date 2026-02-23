@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS pbi_i90_service_brokerage CASCADE;
 CREATE OR REPLACE VIEW pbi_i90_service_brokerage AS
 SELECT s.service_id AS 'Service ID',
        s.tenant_id AS 'Tenant ID',

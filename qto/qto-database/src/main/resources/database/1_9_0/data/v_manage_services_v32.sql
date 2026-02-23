@@ -1,10 +1,11 @@
+DROP VIEW IF EXISTS v_manage_services CASCADE;
 CREATE OR REPLACE VIEW v_manage_services AS
 SELECT s.service_id,
        s.location_id,
        s.order_type,
        l.client_location_id,
        CONCAT(a.address_1,
-              IF(LENGTH(a.address_2), CONCAT(' ', a.address_2), ''),
+              CASE WHEN a.address_2 IS NOT NULL AND TRIM(COALESCE(a.address_2,'')) <> '' THEN CONCAT(' ', a.address_2) ELSE '' END,
               '\n', a.city, ', ', a.state_province, ' ', a.postal_code
 	       ) AS address,
        a.address_1,
@@ -75,9 +76,8 @@ SELECT s.service_id,
        IF(s.service_status NOT IN ('Service Complete', 'Service Cancelled', 'On Hold', 'Change in Assignment') AND
 #           # calculates datediff excluding weekends
           (5 * (DATEDIFF(NOW(), (SELECT created_date FROM note WHERE note_id = latest_note.note_id)) DIV 7) +
-           MID('0123444401233334012222340111123400012345001234550',
-               7 * WEEKDAY((SELECT created_date FROM note WHERE note_id = latest_note.note_id)) + WEEKDAY(NOW()) + 1,
-               1)) > 5, 1, 0) AS show_note_icon,
+           CAST(SUBSTRING(
+               7 * WEEKDAY((SELECT created_date FROM note WHERE note_id = latest_note.note_id)) + WEEKDAY(NOW()) + 1 FROM 0123444401233334012222340111123400012345001234550 FOR 1) AS integer)) > 5, 1, 0) AS show_note_icon,
        COALESCE(DATEDIFF(NOW(), last_status_change), 0) AS status_age,
        s.version,
        s.tenant_id,
@@ -88,7 +88,7 @@ SELECT s.service_id,
 		      AND vju.service_id = s.service_id
         ORDER BY vju.jeop_instance_id DESC
         LIMIT 1) AS open_jeop,
-       (SELECT GROUP_CONCAT(distinct ji.responsibility SEPARATOR ', ')
+       (SELECT string_agg(distinct ji.responsibility, ', ')
         FROM service_jeop_instance sji
         inner join jeop_instance ji on sji.jeop_instance_id = ji.jeop_instance_id
         WHERE sji.service_id = s.service_id and ji.end_date is null) AS open_jeop_responsibilites,

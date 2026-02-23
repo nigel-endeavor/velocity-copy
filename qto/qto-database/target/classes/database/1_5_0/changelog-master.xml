@@ -201,7 +201,7 @@
 
     <changeSet id="1_5_0-008" author="mwelicka">
             <addColumn tableName="milestone_display_set_include">
-            <column name="inventory_flag" type="bit" defaultValueBoolean="false"/>
+            <column name="inventory_flag" type="boolean" defaultValueBoolean="false"/>
             <column name="progress_percentage" type="int"/>
         </addColumn>
     </changeSet>

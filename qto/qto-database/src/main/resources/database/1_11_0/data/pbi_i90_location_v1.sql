@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS pbi_i90_location CASCADE;
 CREATE OR REPLACE VIEW pbi_i90_location AS
 SELECT l.location_id AS 'Location ID',
        o.company_id AS 'Company ID',

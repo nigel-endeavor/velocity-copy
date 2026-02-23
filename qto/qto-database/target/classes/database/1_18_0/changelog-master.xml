@@ -282,14 +282,14 @@
 
     <changeSet id="1-18-003" author="mwelicka">
         <addColumn tableName="service">
-            <column name="marked_for_deletion" type="bit" defaultValueBoolean="false"/>
+            <column name="marked_for_deletion" type="boolean" defaultValueBoolean="false"/>
             <column name="deletion_date" type="datetime"/>
         </addColumn>
     </changeSet>
 
     <changeSet id="1-18-004" author="mwelicka">
         <addColumn tableName="location">
-            <column name="marked_for_deletion" type="bit" defaultValueBoolean="false"/>
+            <column name="marked_for_deletion" type="boolean" defaultValueBoolean="false"/>
             <column name="deletion_date" type="datetime"/>
         </addColumn>
     </changeSet>

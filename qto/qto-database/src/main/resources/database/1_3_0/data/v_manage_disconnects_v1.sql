@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS v_manage_disconnects CASCADE;
 CREATE OR REPLACE VIEW v_manage_disconnects AS
 SELECT s.service_id,
        s.location_id,
@@ -9,7 +10,7 @@ SELECT s.service_id,
        pc.company_id                                                                               as master_customer_id,
        s.service_type,
        CONCAT(a.address_1,
-              IF(LENGTH(a.address_2), CONCAT('\n', a.address_2), ''),
+              CASE WHEN a.address_2 IS NOT NULL AND TRIM(COALESCE(a.address_2,'')) <> '' THEN CONCAT(E'\n', a.address_2) ELSE '' END,
               '\n', a.city, ', ', a.state_province, ' ', a.postal_code
            )                                                                                       AS address,
        a.address_1,

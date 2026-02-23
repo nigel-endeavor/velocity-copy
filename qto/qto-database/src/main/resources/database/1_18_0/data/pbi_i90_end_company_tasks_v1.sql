@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS pbi_i90_end_company_tasks CASCADE;
 create or replace view pbi_i90_end_company_tasks as
        select c.company_id AS end_company_id,
        c.tenant_id AS "Tenant ID",

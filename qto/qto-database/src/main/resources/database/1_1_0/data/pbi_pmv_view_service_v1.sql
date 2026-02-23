@@ -1,4 +1,5 @@
-# CREATE OR REPLACE VIEW pbi_iss_pvm_service_report AS
+# DROP VIEW IF EXISTS pbi_iss_pvm_service_report CASCADE;
+CREATE OR REPLACE VIEW pbi_iss_pvm_service_report AS
 SELECT l.client_location_id AS 'Client Service ID',
        service_status AS Status,
        NULL AS 'Account Segment',

@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS v_iss_output_file CASCADE;
 CREATE OR REPLACE VIEW v_iss_output_file AS
 SELECT l.order_id,
        s.tenant_id,
@@ -158,7 +159,7 @@ FROM location l
                        MAX(closeout_code) AS closeout_code,
                        MAX(primary_uid) AS primary_uid,
                        MAX(secondary_uid) AS secondary_uid
-                FROM qto.activation_attempt
+                FROM activation_attempt
                 WHERE activation_attempt.scheduled_attempt_status = 'Complete'
                 GROUP BY service_id) sd ON s.service_id = sd.service_id
 WHERE s.update_client = TRUE
@@ -167,6 +168,7 @@ WHERE s.update_client = TRUE
 
 
 
+DROP VIEW IF EXISTS v_iss_notes_file CASCADE;
 CREATE OR REPLACE VIEW v_iss_notes_file AS
 SELECT n.note_id,
        n.tenant_id,

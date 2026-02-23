@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS pbi_i90_cost_history CASCADE;
 CREATE OR REPLACE VIEW pbi_i90_cost_history AS
 SELECT s.service_id AS 'Service ID',
        s.tenant_id AS 'Tenant ID',

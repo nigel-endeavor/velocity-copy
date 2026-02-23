@@ -4,7 +4,7 @@ CREATE TABLE company
 		PRIMARY KEY,
 	company_name           varchar(100)  NOT NULL,
 	company_type           varchar(100) NULL,
-	company_active         bit DEFAULT 1 NOT NULL,
+	company_active         boolean DEFAULT true NOT NULL,
 	company_uuid           varchar(100)  NOT NULL,
 	billing_account_number varchar(100) NULL,
 	address_id             int NULL,

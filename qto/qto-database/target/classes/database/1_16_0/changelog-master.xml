@@ -112,7 +112,7 @@
 
     <changeSet id="1_16_0-003" author="mwelicka">
         <addColumn tableName="equipment">
-            <column name="decommission" type="bit" defaultValueBoolean="false"/>
+            <column name="decommission" type="boolean" defaultValueBoolean="false"/>
             <column name="decommissioned_date" type="datetime"/>
         </addColumn>
     </changeSet>

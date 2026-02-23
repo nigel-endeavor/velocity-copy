@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS v_manage_disputes CASCADE;
 CREATE OR REPLACE VIEW v_manage_disputes AS
 SELECT d.dispute_id,
        s.service_id,
@@ -8,7 +9,7 @@ SELECT d.dispute_id,
        c.company_name,
        c.company_id,
        CONCAT(a.address_1,
-              IF(LENGTH(a.address_2), CONCAT('\n', a.address_2), ''),
+              CASE WHEN a.address_2 IS NOT NULL AND TRIM(COALESCE(a.address_2,'')) <> '' THEN CONCAT(E'\n', a.address_2) ELSE '' END,
               '\n', a.city, ', ', a.state_province, ' ', a.postal_code
            ) AS address,
        a.address_1, a.address_2, a.city, a.state_province, a.postal_code,

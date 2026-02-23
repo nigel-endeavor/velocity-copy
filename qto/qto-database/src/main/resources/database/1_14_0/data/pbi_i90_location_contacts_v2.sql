@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS pbi_i90_location_contacts CASCADE;
 CREATE OR REPLACE VIEW pbi_i90_location_contacts AS
 SELECT l.location_id AS 'Location ID',
        c.contact_id AS 'Contact ID',

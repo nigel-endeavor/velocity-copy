@@ -1,5 +1,6 @@
 
 
+DROP VIEW IF EXISTS pbi_iss_service_notes CASCADE;
 CREATE OR REPLACE VIEW pbi_iss_service_notes AS
 SELECT sn.service_id AS 'service ID',
        n.note AS Note,
@@ -11,6 +12,7 @@ FROM service_note sn
 WHERE n.tenant_id IN (SELECT tenant_id FROM v_tenant WHERE name = 'Endeavor');
 
 
+DROP VIEW IF EXISTS pbi_iss_activation_issues CASCADE;
 CREATE OR REPLACE VIEW pbi_iss_activation_issues AS
 SELECT s.service_id,
        aa.activation_attempt_id AS 'Activation Attempt ID',

@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS v_manage_location_inventory CASCADE;
 CREATE OR REPLACE VIEW v_manage_location_inventory AS
 SELECT
     o.order_id,
@@ -21,7 +22,7 @@ SELECT
     sv.services,
     l.progress_percentage,
     CONCAT(a.address_1,
-           IF(LENGTH(a.address_2), CONCAT('\n', a.address_2), ''),
+           CASE WHEN a.address_2 IS NOT NULL AND TRIM(COALESCE(a.address_2,'')) <> '' THEN CONCAT(E'\n', a.address_2) ELSE '' END,
            '\n', a.city, ', ', a.state_province, ' ', a.postal_code) AS address,
     a.address_1,
     a.address_2,
@@ -63,7 +64,7 @@ FROM company c
                           CASE WHEN COUNT(us.service_id) > 0 THEN 'UCaaS' END,
                           CASE WHEN COUNT(gs.service_id) > 0 THEN '4G/5G' END
                     ) AS services,
-                GROUP_CONCAT(DISTINCT s.sub_order_type) AS sub_order_types,
+                string_agg(DISTINCT s.sub_order_type, ',') AS sub_order_types,
                 MIN(vsmi.milestone_date) as inventory_added_date,
                 SUM(case when (vsmi.milestone_date is not null) then service_mrc else 0 end) as active_complete_mrc,
                 SUM(case when (vsmi.milestone_date is not null) then service_nrc else 0 end) as active_complete_nrc,

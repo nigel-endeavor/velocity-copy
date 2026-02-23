@@ -1,110 +1,108 @@
 -- ETHERNET_PRODUCT_TYPE
 INSERT INTO lookup_type (lookup_type_descr, lookup_type_code, lookup_type_active, modifiable, sort_strategy)
-VALUES ('Ethernet Product Type', 'ETHERNET_PRODUCT_TYPE', 1, 1, 0);
-
-SET @lookupTypeId = (SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'ETHERNET_PRODUCT_TYPE');
+VALUES ('Ethernet Product Type', 'ETHERNET_PRODUCT_TYPE', true, true, false);
 
 INSERT INTO lookup_value (lookup_type_id, lookup_display, lookup_value, sort_seq, lookup_value_active)
-VALUES (@lookupTypeId, 'EPL', 'EPL', 0, 1),
-        (@lookupTypeId, 'EVPL', 'EVPL', 0, 1),
-        (@lookupTypeId, 'Eline', 'Eline', 0, 1),
-        (@lookupTypeId, 'MPLS', 'MPLS', 0, 1),
-        (@lookupTypeId, 'Wave', 'Wave', 0, 1),
-        (@lookupTypeId, 'IPLC', 'IPLC', 0, 1),
-        (@lookupTypeId, 'IPVPN', 'IPVPN', 0, 1);
+VALUES ((SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'ETHERNET_PRODUCT_TYPE'), 'EPL', 'EPL', 0, true),
+        ((SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'ETHERNET_PRODUCT_TYPE'), 'EVPL', 'EVPL', 0, true),
+        ((SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'ETHERNET_PRODUCT_TYPE'), 'Eline', 'Eline', 0, true),
+        ((SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'ETHERNET_PRODUCT_TYPE'), 'MPLS', 'MPLS', 0, true),
+        ((SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'ETHERNET_PRODUCT_TYPE'), 'Wave', 'Wave', 0, true),
+        ((SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'ETHERNET_PRODUCT_TYPE'), 'IPLC', 'IPLC', 0, true),
+        ((SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'ETHERNET_PRODUCT_TYPE'), 'IPVPN', 'IPVPN', 0, true);
 
 INSERT INTO tenant_lookup_value (lookup_value_id, tenant_id)
 SELECT lookup_value_id, t.tenant_id
 FROM lookup_value
          join v_tenant t
-WHERE lookup_type_id = @lookupTypeId;
+WHERE lookup_type_id = (SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'ETHERNET_PRODUCT_TYPE');
 
 -- MTU
 INSERT INTO lookup_type (lookup_type_descr, lookup_type_code, lookup_type_active, modifiable, sort_strategy)
-VALUES ('MTU', 'MTU', 1, 1, 1);
+VALUES ('MTU', 'MTU', true, true, true);
 
-SET @lookupTypeId = (SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'MTU');
+
 
 INSERT INTO lookup_value (lookup_type_id, lookup_display, lookup_value, sort_seq, lookup_value_active)
-VALUES (@lookupTypeId, '1492MTU', '1492MTU', 10, 1),
-       (@lookupTypeId, '1452MTU-Optimal', '1452MTU-Optimal', 20, 1);
+VALUES ((SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'ETHERNET_PRODUCT_TYPE'), '1492MTU', '1492MTU', 10, true),
+       ((SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'ETHERNET_PRODUCT_TYPE'), '1452MTU-Optimal', '1452MTU-Optimal', 20, true);
 
 
 INSERT INTO tenant_lookup_value (lookup_value_id, tenant_id)
 SELECT lookup_value_id, t.tenant_id
 FROM lookup_value
          join v_tenant t
-WHERE lookup_type_id = @lookupTypeId;
+WHERE lookup_type_id = (SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'ETHERNET_PRODUCT_TYPE');
 
 -- CABLE_CATEGORY
 INSERT INTO lookup_type (lookup_type_descr, lookup_type_code, lookup_type_active, modifiable, sort_strategy)
-VALUES ('Cable Category', 'CABLE_CATEGORY', 1, 1, 1);
+VALUES ('Cable Category', 'CABLE_CATEGORY', true, true, true);
 
-SET @lookupTypeId = (SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'CABLE_CATEGORY');
+
 
 INSERT INTO lookup_value (lookup_type_id, lookup_display, lookup_value, sort_seq, lookup_value_active)
-VALUES (@lookupTypeId, 'Coax', 'Coax', 10, 1),
-         (@lookupTypeId, 'Fiber', 'Fiber', 20, 1),
-         (@lookupTypeId, 'STP', 'STP', 30, 1),
-         (@lookupTypeId, 'UTP', 'UTP', 40, 1);
+VALUES ((SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'ETHERNET_PRODUCT_TYPE'), 'Coax', 'Coax', 10, true),
+         ((SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'ETHERNET_PRODUCT_TYPE'), 'Fiber', 'Fiber', 20, true),
+         ((SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'ETHERNET_PRODUCT_TYPE'), 'STP', 'STP', 30, true),
+         ((SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'ETHERNET_PRODUCT_TYPE'), 'UTP', 'UTP', 40, true);
 
 
 INSERT INTO tenant_lookup_value (lookup_value_id, tenant_id)
 SELECT lookup_value_id, t.tenant_id
 FROM lookup_value
     join v_tenant t
-WHERE lookup_type_id = @lookupTypeId;
+WHERE lookup_type_id = (SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'ETHERNET_PRODUCT_TYPE');
 
 -- MUX
 INSERT INTO lookup_type (lookup_type_descr, lookup_type_code, lookup_type_active, modifiable, sort_strategy)
-VALUES ('MUX', 'MUX', 1, 1, 1);
+VALUES ('MUX', 'MUX', true, true, true);
 
-SET @lookupTypeId = (SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'MUX');
+
 
 INSERT INTO lookup_value (lookup_type_id, lookup_display, lookup_value, sort_seq, lookup_value_active)
-VALUES (@lookupTypeId, 'TDM', 'TDM', 10, 1),
-            (@lookupTypeId, 'WDM', 'WDM', 20, 1),
-            (@lookupTypeId, 'FDM', 'FDM', 30, 1),
-            (@lookupTypeId, 'CDM', 'CDM', 40, 1);
+VALUES ((SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'ETHERNET_PRODUCT_TYPE'), 'TDM', 'TDM', 10, true),
+            ((SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'ETHERNET_PRODUCT_TYPE'), 'WDM', 'WDM', 20, true),
+            ((SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'ETHERNET_PRODUCT_TYPE'), 'FDM', 'FDM', 30, true),
+            ((SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'ETHERNET_PRODUCT_TYPE'), 'CDM', 'CDM', 40, true);
 
 
 INSERT INTO tenant_lookup_value (lookup_value_id, tenant_id)
 SELECT lookup_value_id, t.tenant_id
 FROM lookup_value
     join v_tenant t
-WHERE lookup_type_id = @lookupTypeId;
+WHERE lookup_type_id = (SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'ETHERNET_PRODUCT_TYPE');
 
 -- ACCESS_TYPE
 INSERT INTO lookup_type (lookup_type_descr, lookup_type_code, lookup_type_active, modifiable, sort_strategy)
-VALUES ('Access Type', 'ACCESS_TYPE', 1, 1, 1);
+VALUES ('Access Type', 'ACCESS_TYPE', true, true, true);
 
-SET @lookupTypeId = (SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'ACCESS_TYPE');
+
 
 INSERT INTO lookup_value (lookup_type_id, lookup_display, lookup_value, sort_seq, lookup_value_active)
-VALUES (@lookupTypeId, 'On Net', 'On Net', 10, 1),
-            (@lookupTypeId, 'Off Net', 'Off Net', 20, 1);
+VALUES ((SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'ETHERNET_PRODUCT_TYPE'), 'On Net', 'On Net', 10, true),
+            ((SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'ETHERNET_PRODUCT_TYPE'), 'Off Net', 'Off Net', 20, true);
 
 
 INSERT INTO tenant_lookup_value (lookup_value_id, tenant_id)
 SELECT lookup_value_id, t.tenant_id
 FROM lookup_value
     join v_tenant t
-WHERE lookup_type_id = @lookupTypeId;
+WHERE lookup_type_id = (SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'ETHERNET_PRODUCT_TYPE');
 
 -- HANDOFF_FIBER_MODE
 INSERT INTO lookup_type (lookup_type_descr, lookup_type_code, lookup_type_active, modifiable, sort_strategy)
-VALUES ('Handoff Fiber Mode', 'HANDOFF_FIBER_MODE', 1, 1, 1);
+VALUES ('Handoff Fiber Mode', 'HANDOFF_FIBER_MODE', true, true, true);
 
-SET @lookupTypeId = (SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'HANDOFF_FIBER_MODE');
+
 
 INSERT INTO lookup_value (lookup_type_id, lookup_display, lookup_value, sort_seq, lookup_value_active)
-VALUES (@lookupTypeId, 'Single Mode', 'Single Mode', 10, 1),
-            (@lookupTypeId, 'Multi-Mode', 'Multi-Mode', 20, 1),
-            (@lookupTypeId, 'Plastic Optical Fiber', 'Plastic Optical Fiber', 30, 1);
+VALUES ((SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'ETHERNET_PRODUCT_TYPE'), 'Single Mode', 'Single Mode', 10, true),
+            ((SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'ETHERNET_PRODUCT_TYPE'), 'Multi-Mode', 'Multi-Mode', 20, true),
+            ((SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'ETHERNET_PRODUCT_TYPE'), 'Plastic Optical Fiber', 'Plastic Optical Fiber', 30, true);
 
 
 INSERT INTO tenant_lookup_value (lookup_value_id, tenant_id)
 SELECT lookup_value_id, t.tenant_id
 FROM lookup_value
     join v_tenant t
-WHERE lookup_type_id = @lookupTypeId;
+WHERE lookup_type_id = (SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'ETHERNET_PRODUCT_TYPE');

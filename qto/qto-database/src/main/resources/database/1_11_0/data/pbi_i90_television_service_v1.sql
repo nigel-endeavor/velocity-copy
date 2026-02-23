@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS pbi_i90_television_service CASCADE;
 CREATE OR REPLACE VIEW pbi_i90_television_service AS
 SELECT s.service_id,
        s.tenant_id AS 'Tenant ID',

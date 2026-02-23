@@ -55,10 +55,7 @@
 
     <changeSet id="1_7_0-007" author="mwelicka">
             <sql>
-                set @mdsid = (    select mdsi.milestone_display_set_include_id from milestone_display_set_include mdsi
-                join milestone m ON mdsi.milestone_id = m.milestone_id
-                join milestone_display_set mds ON mdsi.milestone_display_set_id = mds.milestone_display_set_id
-                where display_group = 'TELEVISION_SERVICE_MILESTONE' and milestone_code = 'ON_HOLD');
+                
                 update milestone_display_set_include set status = 'On Hold' where milestone_display_set_include_id = @mdsid;
             </sql>
     </changeSet>

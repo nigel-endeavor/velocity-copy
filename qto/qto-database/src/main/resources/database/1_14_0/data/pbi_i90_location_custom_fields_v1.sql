@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS pbi_i90_location_custom_fields CASCADE;
 CREATE OR REPLACE VIEW pbi_i90_location_custom_fields AS
 select l.location_id, l.tenant_id, l.current_inventory, cft.tab,
        MAX(CASE WHEN cf.generic_name = 'Custom 1' THEN cf.label else null END) AS 'Custom 1 Label',

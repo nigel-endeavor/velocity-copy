@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS v_manage_service_inventory CASCADE;
 CREATE OR REPLACE VIEW v_manage_service_inventory AS
 SELECT
     s.service_id,
@@ -6,7 +7,7 @@ SELECT
     l.client_location_id,
     CONCAT(
             a.address_1,
-            IF(LENGTH(a.address_2), CONCAT(' ', a.address_2), ''),
+            CASE WHEN a.address_2 IS NOT NULL AND TRIM(COALESCE(a.address_2,'')) <> '' THEN CONCAT(' ', a.address_2) ELSE '' END,
             '\n', a.city, ', ', a.state_province, ' ', a.postal_code
     ) AS address,
     a.address_1,
@@ -81,7 +82,7 @@ FROM
             COUNT(*) AS count_open_disputes,
             SUM(amount_disputed_mrc) AS open_dispute_mrc,
             SUM(amount_disputed_nrc) AS open_dispute_nrc,
-            GROUP_CONCAT(dispute_type) AS dispute_types
+            string_agg(dispute_type, ',') AS dispute_types
         FROM dispute
                  JOIN service s ON dispute.service_id = s.service_id
         WHERE dispute_status != 'Dispute Closed'
@@ -90,9 +91,9 @@ FROM
         LEFT JOIN (
         SELECT
             inventory_service_id,
-            GROUP_CONCAT(service_id) AS child_ids,
-            GROUP_CONCAT(order_type) AS child_order_types,
-            GROUP_CONCAT(sub_order_type) AS child_sub_order_types
+            string_agg(service_id, ',') AS child_ids,
+            string_agg(order_type, ',') AS child_order_types,
+            string_agg(sub_order_type, ',') AS child_sub_order_types
         FROM service
         WHERE inventory_service_id IS NOT NULL AND service_status NOT IN ('Service Complete', 'Disconnect Complete', 'Service Cancelled', 'Change in Assignment')
         GROUP BY inventory_service_id

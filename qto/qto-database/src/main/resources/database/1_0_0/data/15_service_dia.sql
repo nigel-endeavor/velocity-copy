@@ -1,6 +1,6 @@
 CREATE TABLE dia_service
 (
-	dia_service_id            int AUTO_INCREMENT
+	dia_service_id            SERIAL
 		PRIMARY KEY,
 	service_id                int           NOT NULL,
 	on_net                    varchar(100) NULL,

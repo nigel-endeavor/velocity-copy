@@ -1,6 +1,6 @@
 CREATE TABLE service_microsoft_licenses
 (
-    microsoft_licenses_service_id    int AUTO_INCREMENT
+    microsoft_licenses_service_id    SERIAL
         PRIMARY KEY,
     service_id int NOT NULL,
     e3 int NOT NULL,

@@ -86,7 +86,7 @@
             <column name="underlying_provider" type="varchar(100)"/>
             <column name="bill_cycle" type="int"/>
             <column name="tsp_code" type="varchar(100)"/>
-            <column name="tsp_code_expiration_date" type="datetime"/>
+            <column name="tsp_code_expiration_date" type="timestamp"/>
         </addColumn>
         <addColumn tableName="location">
             <column name="location_description" type="varchar(500)"/>
@@ -116,7 +116,7 @@
 
     <changeSet id="1_9_0-011" author="fcurran">
         <addColumn tableName="company">
-            <column name="duplicated_master_customer_details" type="bit" defaultValueBoolean="false"/>
+            <column name="duplicated_master_customer_details" type="boolean" defaultValueBoolean="false"/>
         </addColumn>
     </changeSet>
 

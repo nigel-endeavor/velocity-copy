@@ -1,6 +1,6 @@
 CREATE TABLE service
 (
-	service_id                   int AUTO_INCREMENT
+	service_id                   SERIAL
 		PRIMARY KEY,
 	location_id                  int                      NOT NULL,
 	client_service_id            varchar(100)             NOT NULL,

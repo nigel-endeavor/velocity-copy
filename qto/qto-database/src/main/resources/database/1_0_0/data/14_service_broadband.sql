@@ -1,6 +1,6 @@
 CREATE TABLE broadband_service
 (
-	broadband_service_id    int AUTO_INCREMENT
+	broadband_service_id    SERIAL
 		PRIMARY KEY,
 	service_id              int           NOT NULL,
 	on_net                  varchar(3) NULL,

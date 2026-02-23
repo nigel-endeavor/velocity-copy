@@ -11,7 +11,7 @@ CREATE TABLE dispute
     vendor_tracking_num      varchar(500)   NULL,
     dispute_note    longtext    NULL,
     dispute_follow_up_date      date    NULL,
-    credit_recognized bit NULL,
+    credit_recognized boolean NULL,
     billing_review_complete_date date NULL,
     dispute_closed_date  date NULL,
     version int DEFAULT 1 NOT NULL,

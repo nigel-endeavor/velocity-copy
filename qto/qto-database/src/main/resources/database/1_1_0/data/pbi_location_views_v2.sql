@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS pbi_iss_location CASCADE;
 Create or replace view pbi_iss_location as
 SELECT l.location_id as 'Location ID',
        p.company_name AS 'Master Customer',
@@ -46,6 +47,7 @@ group by ln.location_id) vw on ln.note_id = vw.note_id) jn on l.location_id = jn
 where l.tenant_id = (select tenant_id from v_tenant where name = 'Endeavor');
 
 
+DROP VIEW IF EXISTS pbi_iss_location_contacts CASCADE;
 create or replace view pbi_iss_location_contacts as
 SELECT lc.location_id AS 'Location ID',
        c.contact_id AS 'Contact ID',
@@ -60,6 +62,7 @@ FROM location_contact lc
      JOIN contact c ON lc.contact_id = c.contact_id
 where tenant_id = (select tenant_id from v_tenant where name = 'Endeavor');
 
+DROP VIEW IF EXISTS pbi_iss_location_jeops CASCADE;
 create or replace view pbi_iss_location_jeops as
 select lji.location_id as 'Location ID',
        lji.jeop_instance_id as 'Jeopardy Instance ID',
@@ -74,6 +77,7 @@ select lji.location_id as 'Location ID',
 join jeop_instance ji ON lji.jeop_instance_id = ji.jeop_instance_id
 where tenant_id = (select tenant_id from v_tenant where name = 'Endeavor');
 
+DROP VIEW IF EXISTS pbi_iss_location_notes CASCADE;
 create or replace view pbi_iss_location_notes as
 select ln.location_id as 'Location ID',
        n.note as Note,
@@ -84,6 +88,7 @@ from location_note ln
 join note n on ln.note_id = n.note_id
 where tenant_id = (select tenant_id from v_tenant where name = 'Endeavor');
 
+DROP VIEW IF EXISTS pbi_iss_location_milestone CASCADE;
 create or REPLACE view pbi_iss_location_milestone as
 select lmi.location_id,
        CAST(MAX(CASE WHEN (m.milestone_code = 'CANCELLED')
@@ -137,6 +142,7 @@ FROM milestone_instance mi
 where mi.tenant_id = (select tenant_id from v_tenant where name = 'Endeavor')
 Group by lmi.location_id ;
 
+DROP VIEW IF EXISTS pbi_iss_pvm_report CASCADE;
 Create or replace view pbi_iss_pvm_report as
 SELECT l.client_location_id AS 'Client Service ID',
        service_status AS Status,

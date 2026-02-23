@@ -36,7 +36,7 @@ public class LookupValue extends AbstractTenantOwnedEntity {
     private String value;
 
     /** Flag indicating whether this value is active or not.*/
-    @Column(name = "lookup_value_active", columnDefinition = "bit default 1")
+    @Column(name = "lookup_value_active", columnDefinition = "boolean DEFAULT true")
     private boolean active;
 
     /** A sequence used for sorting.*/

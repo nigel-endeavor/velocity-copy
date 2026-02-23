@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS v_activations_email_template CASCADE;
 create or replace view v_activations_email_template as
 select activation.activation_attempt_id,
        activation.network_complete_date,

@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS pbi_iss_location CASCADE;
 Create or replace view pbi_iss_location as
 SELECT l.location_id as 'Location ID',
        p.company_name AS 'Master Customer',

@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS pbi_i90_location_notes CASCADE;
 CREATE OR REPLACE VIEW pbi_i90_location_notes AS
 SELECT l.location_id AS 'Location ID',
        l.tenant_id AS 'Tenant ID',

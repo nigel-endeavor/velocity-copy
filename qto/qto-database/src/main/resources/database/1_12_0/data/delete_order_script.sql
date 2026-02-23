@@ -6,10 +6,8 @@
 # if they do, check to see if they want the inventory item deleted too and run it again with the inventory site id
 # if they don't want the inventory item deleted, check the provisioning_id on the inventory item and reset it to either the
 # previous ids or to null if there aren't any
-
-set @order_id = 4521;
-create temporary table service_ids as (select service_id from service where order_id = @order_id);
-create temporary table location_ids as (select location_id from location where order_id = @order_id);
+create temporary table service_ids as (select service_id from service where order_id = 4521);
+create temporary table location_ids as (select location_id from location where order_id = 4521);
 
 
 create temporary table surcharge_ids as (select surcharge_id from service_surcharge where service_id in (select service_id from service_ids));
@@ -39,9 +37,9 @@ drop table activation_schedule_ids;
 
 drop table if exists contact_ids;
 create table contact_ids as (select contact_id from location_contact where location_id in (select location_id from location_ids));
-insert into contact_ids (contact_id) select contact_id from order_contact where order_id = @order_id;
+insert into contact_ids (contact_id) select contact_id from order_contact where order_id = 4521;
 delete from location_contact where contact_id in (select contact_id from contact_ids);
-delete from order_contact where order_id = @order_id;
+delete from order_contact where order_id = 4521;
 delete from contact_info where contact_id in (select contact_id from contact_ids);
 delete from contact where contact_id in (select contact_id from contact_ids);
 
@@ -54,14 +52,14 @@ delete from custom_field_value where custom_field_value_id in (select custom_fie
 drop table IF EXISTS custom_field_value_ids;
 
 
-create temporary table note_ids as (select note_id from order_note where order_id = @order_id);
+create temporary table note_ids as (select note_id from order_note where order_id = 4521);
 insert into note_ids (note_id) select note_id from location_note where location_id in (select location_id from location_ids);
 insert into note_ids (note_id) select note_id from service_note where service_id in (select service_id from service_ids);
 create temporary table dispute_ids as (select dispute_id from dispute where service_id in (select service_id from service_ids));
 insert into note_ids (note_id) select note_id from dispute_note where dispute_id in (select dispute_id from dispute_ids);
 create temporary table jeop_ids as (select  ji.jeop_instance_id from jeop_instance ji join service_jeop_instance sji on ji.jeop_instance_id = sji.jeop_instance_id where service_id in (select service_id from service_ids));
 insert into jeop_ids (jeop_instance_id) select ji.jeop_instance_id from jeop_instance ji join location_jeop_instance lji on ji.jeop_instance_id = lji.jeop_instance_id where location_id in (select location_id from location_ids);
-insert into jeop_ids (jeop_instance_id) select ji.jeop_instance_id from jeop_instance ji join order_jeop_instance oji on ji.jeop_instance_id = oji.jeop_instance_id where order_id = @order_id;
+insert into jeop_ids (jeop_instance_id) select ji.jeop_instance_id from jeop_instance ji join order_jeop_instance oji on ji.jeop_instance_id = oji.jeop_instance_id where order_id = 4521;
 insert into note_ids (note_id) select note_id from jeop_instance_note where jeop_instance_id in (select jeop_instance_id from jeop_ids);
 delete from order_note where note_id in (select note_id from note_ids);
 delete from jeop_instance_note where note_id in (select note_id from note_ids);
@@ -75,7 +73,7 @@ drop table if exists jeop_ids;
 
 
 create temporary table file_attachment_ids as (select file_attachment_id from location_file_attachment where location_id in (select location_id from location_ids));
-insert into file_attachment_ids (file_attachment_id) select file_attachment_id from order_file_attachment where order_id = @order_id;
+insert into file_attachment_ids (file_attachment_id) select file_attachment_id from order_file_attachment where order_id = 4521;
 insert into file_attachment_ids (file_attachment_id) select file_attachment_id from service_file_attachment where service_id in (select service_id from service_ids);
 delete from location_file_attachment where file_attachment_id in (select file_attachment_id from file_attachment_ids);
 delete from order_file_attachment where file_attachment_id in (select file_attachment_id from file_attachment_ids);
@@ -100,7 +98,7 @@ drop table if exists interval_ids;
 
 create temporary table jeop_instance_ids as (select jeop_instance_id from location_jeop_instance where location_id in (select location_id from location_ids));
 insert into jeop_instance_ids (jeop_instance_id) (select jeop_instance_id from service_jeop_instance where service_id in (select service_id from service_ids));
-insert into jeop_instance_ids (jeop_instance_id) (select jeop_instance_id from order_jeop_instance where order_id = @order_id);
+insert into jeop_instance_ids (jeop_instance_id) (select jeop_instance_id from order_jeop_instance where order_id = 4521);
 delete from location_jeop_instance where jeop_instance_id in  (select jeop_instance_id from jeop_instance_ids);
 delete from service_jeop_instance where jeop_instance_id in (select jeop_instance_id from jeop_instance_ids);
 delete from order_jeop_instance where jeop_instance_id in (select jeop_instance_id from jeop_instance_ids);
@@ -115,7 +113,7 @@ drop table if EXISTS equipment_ids;
 
 create temporary table milestone_instance_ids as (select milestone_instance_id from location_milestone_instance where location_id in (select location_id from location_ids));
 insert into milestone_instance_ids (milestone_instance_id) (select milestone_instance_id from service_milestone_instance where service_id in (select service_id from service_ids));
-insert into milestone_instance_ids (milestone_instance_id) (select milestone_instance_id from order_milestone_instance where order_id = @order_id);
+insert into milestone_instance_ids (milestone_instance_id) (select milestone_instance_id from order_milestone_instance where order_id = 4521);
 delete from location_milestone_instance where milestone_instance_id in (select milestone_instance_id from milestone_instance_ids);
 delete from service_milestone_instance where milestone_instance_id in (select milestone_instance_id from milestone_instance_ids);
 delete from order_milestone_instance where milestone_instance_id in (select milestone_instance_id from milestone_instance_ids);
@@ -174,7 +172,7 @@ alter table service
     add constraint fk_service_service
         foreign key (parent_service_id) references service (service_id);
 delete from location where location_id in (select location_id from location_ids);
-delete from orders where order_id = @order_id;
+delete from orders where order_id = 4521;
 
 
 drop table if exists service_ids;

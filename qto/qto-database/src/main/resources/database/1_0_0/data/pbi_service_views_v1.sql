@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS pbi_iss_service CASCADE;
 create or replace view pbi_iss_service as
 SELECT s.service_id AS 'Service ID',
        location_id AS 'Location ID',
@@ -75,6 +76,7 @@ group by sn.service_id) vw on sn.note_id = vw.note_id) jn on s.service_id = jn.s
 where s.tenant_id in (select tenant_id from v_tenant where name = 'Endeavor');
 
 
+DROP VIEW IF EXISTS pbi_iss_broadband_service CASCADE;
 create or replace view pbi_iss_broadband_service as
 select bs.service_id AS 'Service ID',
        modem_make AS 'Modem Make',
@@ -88,6 +90,7 @@ from broadband_service bs
 join service s on bs.service_id = s.service_id
 where tenant_id in (select tenant_id from v_tenant where name = 'Endeavor');
 
+DROP VIEW IF EXISTS pbi_iss_dia_service CASCADE;
 create or replace view pbi_iss_dia_service as
 select ds.service_id AS 'Service ID',
        carrier_activation_method AS 'Carrier Activation Method',
@@ -103,6 +106,7 @@ from dia_service ds
 join service s on ds.service_id = s.service_id
 where tenant_id in (select tenant_id from v_tenant where name = 'Endeavor');
 
+DROP VIEW IF EXISTS pbi_iss_4g5g_service CASCADE;
 create or replace view pbi_iss_4g5g_service as
 select gs.service_id AS 'Service ID',
        billing_account_number AS 'Billing Account Number',
@@ -123,6 +127,7 @@ from `4g5g_service` gs
 join service s on gs.service_id = s.service_id
 where tenant_id in (select tenant_id from v_tenant where name = 'Endeavor');
 
+DROP VIEW IF EXISTS pbi_iss_ucass_service CASCADE;
 create or replace view pbi_iss_ucass_service as
 select us.service_id AS 'Service ID',
        published_tn AS 'Published TN',
@@ -132,6 +137,7 @@ from ucaas_service us
 join service s on us.service_id = s.service_id
 where tenant_id in (select tenant_id from v_tenant where name = 'Endeavor');
 
+DROP VIEW IF EXISTS pbi_iss_activation_attempts CASCADE;
 Create or replace view pbi_iss_activation_attempts as
 SELECT aa.service_id as 'Service ID',
        aa.activation_attempt_id as 'Activation Attempt ID',
@@ -163,6 +169,7 @@ SELECT aa.service_id as 'Service ID',
 FROM activation_attempt aa
 where tenant_id in (select tenant_id from v_tenant where name = 'Endeavor');
 
+DROP VIEW IF EXISTS pbi_iss_activation_issues CASCADE;
 create or replace view pbi_iss_activation_issues as
 select activation_issue_id as 'Activation Issue ID',
        activation_attempt_id as 'Activation Attempt ID',
@@ -177,6 +184,7 @@ where tenant_id = (Select tenant_id from v_tenant where name = 'Endeavor');
 
 
 
+DROP VIEW IF EXISTS pbi_iss_service_interval CASCADE;
 create or replace view pbi_iss_service_interval as
 SELECT sii.service_id,
        ii.interval_instance_id AS 'Interval Instance ID',
@@ -208,6 +216,7 @@ where s.tenant_id in (select tenant_id from v_tenant where name = 'Endeavor');
 
 
 
+DROP VIEW IF EXISTS pbi_iss_service_jeops CASCADE;
 create or replace VIEW pbi_iss_service_jeops as
 select sji.service_id as 'Service ID',
        sji.jeop_instance_id as 'Jeopardy Instance ID',
@@ -224,6 +233,7 @@ where tenant_id = (select tenant_id from v_tenant where name = 'Endeavor');
 
 
 
+DROP VIEW IF EXISTS pbi_iss_service_notes CASCADE;
 create or replace view pbi_iss_service_notes as
 select sn.service_id as 'service ID',
        n.note as Note,
@@ -239,6 +249,7 @@ where tenant_id in (select tenant_id from v_tenant where name = 'Endeavor');
 
 
 
+DROP VIEW IF EXISTS pbi_iss_service_milestone CASCADE;
 create or replace view pbi_iss_service_milestone as
 SELECT
        smi.service_id,

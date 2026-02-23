@@ -1,6 +1,6 @@
 CREATE TABLE address
 (
-	address_id     int AUTO_INCREMENT
+	address_id     SERIAL
 		PRIMARY KEY,
 	address_1      varchar(100) NULL,
 	address_2      varchar(100) NULL,

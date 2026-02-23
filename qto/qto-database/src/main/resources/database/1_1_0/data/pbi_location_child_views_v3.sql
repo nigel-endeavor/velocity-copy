@@ -1,6 +1,7 @@
 
 
 
+DROP VIEW IF EXISTS pbi_iss_location_contacts CASCADE;
 create or replace view pbi_iss_location_contacts as
 SELECT l.location_id AS 'Location ID',
        c.contact_id AS 'Contact ID',
@@ -16,6 +17,7 @@ FROM location l
    left  JOIN contact c ON lc.contact_id = c.contact_id
 where l.tenant_id = (select tenant_id from v_tenant where name = 'Endeavor');
 
+DROP VIEW IF EXISTS pbi_iss_location_jeops CASCADE;
 create or replace view pbi_iss_location_jeops as
 select l.location_id as 'Location ID',
        lji.jeop_instance_id as 'Jeopardy Instance ID',
@@ -31,6 +33,7 @@ select l.location_id as 'Location ID',
 left join jeop_instance ji ON lji.jeop_instance_id = ji.jeop_instance_id
 where l.tenant_id = (select tenant_id from v_tenant where name = 'Endeavor');
 
+DROP VIEW IF EXISTS pbi_iss_location_notes CASCADE;
 create or replace view pbi_iss_location_notes as
 select l.location_id as 'Location ID',
        n.note as Note,

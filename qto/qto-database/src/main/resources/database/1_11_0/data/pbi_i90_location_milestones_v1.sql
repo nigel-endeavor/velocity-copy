@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS pbi_i90_location_milestone CASCADE;
 CREATE OR REPLACE VIEW pbi_i90_location_milestone AS
 SELECT lmi.location_id,
        l.tenant_id AS 'Tenant ID',

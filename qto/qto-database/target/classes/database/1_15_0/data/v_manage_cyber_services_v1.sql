@@ -9,7 +9,7 @@ SELECT s.service_id,
        ec.company_id,
        s.service_type,
        CONCAT(l.address_1,
-              IF(LENGTH(l.address_2), CONCAT(' ', l.address_2), ''),
+              CASE WHEN l.address_2 IS NOT NULL AND TRIM(COALESCE(l.address_2,'')) <> '' THEN CONCAT(' ', l.address_2) ELSE '' END,
               '\n', l.city, ', ', l.state_province, ' ', l.postal_code
        ) AS address,
        l.address_1,

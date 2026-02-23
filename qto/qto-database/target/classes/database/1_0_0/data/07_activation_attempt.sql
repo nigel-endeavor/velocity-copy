@@ -21,7 +21,7 @@ CREATE TABLE activation_attempt
 	network_complete_date         date NULL,
 	voip_complete_date            date NULL,
 	issue_notes                   longtext NULL,
-	duplicate_to_related          bit DEFAULT 0 NOT NULL,
+	duplicate_to_related          boolean DEFAULT false NOT NULL,
 	warning_message               varchar(200) NULL,
 	po_number                     varchar(100) NULL,
 	version                       int     DEFAULT 1 NOT NULL

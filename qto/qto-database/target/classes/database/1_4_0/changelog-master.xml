@@ -106,7 +106,7 @@
 
     <changeSet id="1_4_0-010" author="rcasey">
         <addColumn tableName="activation_attempt">
-            <column name="same_day_schedule" type="bit" defaultValueBoolean="false"/>
+            <column name="same_day_schedule" type="boolean" defaultValueBoolean="false"/>
         </addColumn>
     </changeSet>
 

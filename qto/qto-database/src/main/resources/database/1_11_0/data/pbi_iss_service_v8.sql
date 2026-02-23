@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS pbi_iss_service CASCADE;
 CREATE OR REPLACE VIEW pbi_iss_service AS
 SELECT s.service_id AS 'Service ID',
        location_id AS 'Location ID',

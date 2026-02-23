@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS pbi_i90_service_notes CASCADE;
 CREATE OR REPLACE VIEW pbi_i90_service_notes AS
 SELECT sn.service_id AS 'service ID',
        s.tenant_id AS 'Tenant ID',

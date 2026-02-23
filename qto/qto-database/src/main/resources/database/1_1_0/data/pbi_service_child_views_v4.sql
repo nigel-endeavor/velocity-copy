@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS pbi_iss_activation_attempts CASCADE;
 CREATE OR REPLACE VIEW pbi_iss_activation_attempts AS
 SELECT s.service_id AS 'Service ID',
        aa.activation_attempt_id AS 'Activation Attempt ID',
@@ -33,6 +34,7 @@ FROM service s
      LEFT JOIN activation_attempt aa ON s.service_id = aa.service_id
 WHERE s.tenant_id IN (SELECT tenant_id FROM v_tenant WHERE name = 'Endeavor');
 
+DROP VIEW IF EXISTS pbi_iss_activation_issues CASCADE;
 CREATE OR REPLACE VIEW pbi_iss_activation_issues AS
 SELECT s.service_id,
        aa.activation_attempt_id AS 'Activation Attempt ID',
@@ -52,6 +54,7 @@ WHERE s.tenant_id = (SELECT tenant_id FROM v_tenant WHERE name = 'Endeavor');
 
 
 
+DROP VIEW IF EXISTS pbi_iss_service_jeops CASCADE;
 CREATE OR REPLACE VIEW pbi_iss_service_jeops AS
 SELECT s.service_id AS 'Service ID',
        sji.jeop_instance_id AS 'Jeopardy Instance ID',
@@ -69,6 +72,7 @@ WHERE s.tenant_id = (SELECT tenant_id FROM v_tenant WHERE name = 'Endeavor');
 
 
 
+DROP VIEW IF EXISTS pbi_iss_service_notes CASCADE;
 CREATE OR REPLACE VIEW pbi_iss_service_notes AS
 SELECT s.service_id AS 'service ID',
        n.note AS Note,

@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS v_note_union CASCADE;
 CREATE OR REPLACE VIEW v_note_union AS
 SELECT DISTINCT s.location_id, s.service_id, n.note_id, n.category, n.created_by, n.created_date, note
 FROM service s
@@ -15,7 +16,7 @@ UNION ALL
 
 SELECT DISTINCT l.location_id, s.service_id, n.note_id, n.category, n.created_by, n.created_date, n.note
 FROM location_note ln
-     JOIN qto.location l ON ln.location_id = l.location_id
-     JOIN qto.note n ON ln.note_id = n.note_id
+     JOIN location l ON ln.location_id = l.location_id
+     JOIN note n ON ln.note_id = n.note_id
      LEFT JOIN service s ON l.location_id = s.location_id
 WHERE service_id IS NULL;

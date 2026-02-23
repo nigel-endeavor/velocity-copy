@@ -65,14 +65,14 @@
         </sql>
     </changeSet>
 
-    <changeSet id="1_12_0-007" author="rcasey" context="test">
+    <changeSet id="1_12_0-007-test" author="rcasey" context="test">
         <sql>
             INSERT INTO config_property (config_property_key, config_property_value)
             VALUES ('ORDER_RECEIPT_VIEW_LINK', 'https://i90.uat.vertek.com/qto-ops/#/services?workflowView=Order%20Receipt');
         </sql>
     </changeSet>
 
-    <changeSet id="1_12_0-007" author="rcasey" context="prod">
+    <changeSet id="1_12_0-007-prod" author="rcasey" context="prod">
         <sql>
             INSERT INTO config_property (config_property_key, config_property_value)
             VALUES ('ORDER_RECEIPT_VIEW_LINK', 'https://i90.vertek.com/#/services?workflowView=Order%20Receipt');

@@ -15,15 +15,15 @@
 
     <changeSet id="1_6_0-002" author="rcasey">
         <sql>
-            SET @lookupTypeId = (SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'ACTIVATION_ISSUE_PRIMARY');
+            
             UPDATE lookup_type
             SET parent_lookup_type_id = @lookupTypeId
             WHERE lookup_type_code = 'ACTIVATION_ISSUE_SECONDARY';
-            SET @lookupTypeId = (SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'ACTIVATION_ISSUE_SECONDARY');
+            
             UPDATE lookup_type
             SET parent_lookup_type_id = @lookupTypeId
             WHERE lookup_type_code = 'ACTIVATION_ISSUE_TERTIARY';
-            SET @lookupTypeId = (SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'ORDER_TYPE');
+            
             UPDATE lookup_type
             SET parent_lookup_type_id = @lookupTypeId
             WHERE lookup_type_code = 'SUB_ORDER_TYPE';
@@ -249,16 +249,16 @@
 
     <changeSet id="1_6_9-020" author="mwelicka">
         <sql>
-            SET @lookupTypeId = (SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'CONTRACT_TERM');
-            SET @tenantId = (Select tenant_id from v_tenant t where t.name = 'QTO First Tenant');
+            
+            
             INSERT INTO lookup_value (lookup_type_id, lookup_display, lookup_value, sort_seq, lookup_value_active, parent_lookup_value_id, tenant_id)
             VALUES (@lookupTypeId, '48 Month', '48 Month', 43, TRUE, NULL, @tenantId),
                    (@lookupTypeId, '60 Month', '60 Month', 46, TRUE, NULL, @tenantId);
-            SET @tenantId = (Select tenant_id from v_tenant t where t.name = 'Demo Tenant');
+            
             INSERT INTO lookup_value (lookup_type_id, lookup_display, lookup_value, sort_seq, lookup_value_active, Parent_lookup_value_id, tenant_id)
             VALUES (@lookupTypeId, '48 Month', '48 Month', 43, TRUE, NULL, @tenantId),
                    (@lookupTypeId, '60 Month', '60 Month', 46, TRUE, NULL, @tenantId);
-            SET @tenantId = (Select tenant_id from v_tenant t where t.name = 'Endeavor');
+            
             INSERT INTO lookup_value (lookup_type_id, lookup_display, lookup_value, sort_seq, lookup_value_active, parent_lookup_value_id, tenant_id)
             VALUES (@lookupTypeId, '48 Month', '48 Month', 43, TRUE, NULL, @tenantId),
                    (@lookupTypeId, '60 Month', '60 Month', 46, TRUE, NULL, @tenantId);
@@ -311,7 +311,7 @@
 
     <changeSet id="1_6_0-023" author="rcasey">
         <sql>
-            SET @lookupTypeId = (SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'CONTRACT_TERM');
+            
             UPDATE lookup_value SET sort_seq = 10 WHERE lookup_type_id = @lookupTypeId AND lookup_value = 'MTM';
             UPDATE lookup_value SET sort_seq = 20 WHERE lookup_type_id = @lookupTypeId AND lookup_value = '12 Month';
             UPDATE lookup_value SET sort_seq = 30 WHERE lookup_type_id = @lookupTypeId AND lookup_value = '24 Month';
@@ -366,8 +366,8 @@
 
     <changeSet id="1_6_0-025" author="fcurran">
         <sql>
-            set @lookupTypeId = (Select lookup_type_id from qto.lookup_type where lookup_type_code = 'DISPATCH_VENDOR');
-            set @lookupValue = 'CTS';
+            
+            
             INSERT INTO lookup_value (lookup_type_id, lookup_display, lookup_value, sort_seq, lookup_value_active, parent_lookup_value_id, tenant_id)
             SELECT @lookupTypeId, @lookupValue, @lookupValue, 5, TRUE, NULL, t.tenant_id from v_tenant t;
             UPDATE lookup_type SET modifiable = FALSE WHERE lookup_type.lookup_type_id = @lookupTypeId;

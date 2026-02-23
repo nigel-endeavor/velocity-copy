@@ -8,18 +8,18 @@
         <addColumn tableName="service">
             <column name="inventory_service_id" type="int"/>
             <column name="provisioning_service_id" type="int"/>
-            <column name="final_update" type="bit" defaultValueBoolean="false"/>
+            <column name="final_update" type="boolean" defaultValueBoolean="false"/>
         </addColumn>
         <addColumn tableName="location">
             <column name="inventory_location_id" type="int"/>
             <column name="provisioning_location_id" type="int"/>
-            <column name="current_inventory" type="bit" defaultValueBoolean="false"/>
-            <column name="final_update" type="bit" defaultValueBoolean="false"/>
+            <column name="current_inventory" type="boolean" defaultValueBoolean="false"/>
+            <column name="final_update" type="boolean" defaultValueBoolean="false"/>
         </addColumn>
         <addColumn tableName="orders">
             <column name="inventory_order_id" type="int"/>
             <column name="provisioning_order_id" type="int"/>
-            <column name="current_inventory" type="bit" defaultValueBoolean="false"/>
+            <column name="current_inventory" type="boolean" defaultValueBoolean="false"/>
         </addColumn>
         <addColumn tableName="note">
             <column name="parent_note_id" type="int"/>
@@ -83,19 +83,19 @@
 
     <changeSet id="1_10_0-008" author="mwelicka">
         <addColumn tableName="orders">
-            <column name="final_update" type="bit" defaultValueBoolean="false"/>
+            <column name="final_update" type="boolean" defaultValueBoolean="false"/>
         </addColumn>
     </changeSet>
 
     <changeSet id="1_10_0-009" author="mwelicka">
         <addColumn tableName="service">
-            <column name="eligible_for_inventory" type="bit" defaultValueBoolean="false"/>
+            <column name="eligible_for_inventory" type="boolean" defaultValueBoolean="false"/>
         </addColumn>
         <addColumn tableName="location">
-            <column name="eligible_for_inventory" type="bit" defaultValueBoolean="false"/>
+            <column name="eligible_for_inventory" type="boolean" defaultValueBoolean="false"/>
         </addColumn>
         <addColumn tableName="orders">
-            <column name="eligible_for_inventory" type="bit" defaultValueBoolean="false"/>
+            <column name="eligible_for_inventory" type="boolean" defaultValueBoolean="false"/>
         </addColumn>
     </changeSet>
 
@@ -140,18 +140,18 @@
     <changeSet id="1_10_0-010" author="rcasey">
         <sql>
             INSERT INTO lookup_type (lookup_type_descr, lookup_type_code, lookup_type_active, modifiable, sort_strategy)
-            VALUES ('Brokerage', 'BROKERAGE', 1, 1, 0);
-            SET @lookupTypeId = (SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'BROKERAGE');
+            VALUES ('Brokerage', 'BROKERAGE', true, true, false);
+            
 
             INSERT INTO lookup_value (lookup_type_id, lookup_display, lookup_value, sort_seq, lookup_value_active, tenant_id)
-            VALUES (@lookupTypeId, 'Telarus', 'Telarus', 0, 1, 100),
-                   (@lookupTypeId, 'Avant', 'Avant', 0, 1, 100),
-                   (@lookupTypeId, 'Telarus', 'Telarus', 0, 1, (Select tenant_id from v_tenant t where t.name = 'Demo Tenant')),
-                   (@lookupTypeId, 'Avant', 'Avant', 0, 1, (Select tenant_id from v_tenant t where t.name = 'Demo Tenant')),
-                   (@lookupTypeId, 'Telarus', 'Telarus', 0, 1, (Select tenant_id from v_tenant t where t.name = 'Endeavor')),
-                   (@lookupTypeId, 'Avant', 'Avant', 0, 1, (Select tenant_id from v_tenant t where t.name = 'Endeavor')),
-                   (@lookupTypeId, 'Telarus', 'Telarus', 0, 1, (Select tenant_id from v_tenant t where t.name = 'Endeavor')),
-                   (@lookupTypeId, 'Avant', 'Avant', 0, 1, (Select tenant_id from v_tenant t where t.name = 'Endeavor'));
+            VALUES ((SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'BROKERAGE'), 'Telarus', 'Telarus', 0, true, 100),
+                   ((SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'BROKERAGE'), 'Avant', 'Avant', 0, true, 100),
+                   ((SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'BROKERAGE'), 'Telarus', 'Telarus', 0, true, (Select tenant_id from v_tenant t where t.name = 'Demo Tenant')),
+                   ((SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'BROKERAGE'), 'Avant', 'Avant', 0, true, (Select tenant_id from v_tenant t where t.name = 'Demo Tenant')),
+                   ((SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'BROKERAGE'), 'Telarus', 'Telarus', 0, true, (Select tenant_id from v_tenant t where t.name = 'Endeavor')),
+                   ((SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'BROKERAGE'), 'Avant', 'Avant', 0, true, (Select tenant_id from v_tenant t where t.name = 'Endeavor')),
+                   ((SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'BROKERAGE'), 'Telarus', 'Telarus', 0, true, (Select tenant_id from v_tenant t where t.name = 'Endeavor')),
+                   ((SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'BROKERAGE'), 'Avant', 'Avant', 0, true, (Select tenant_id from v_tenant t where t.name = 'Endeavor'));
         </sql>
     </changeSet>
 
@@ -361,7 +361,7 @@
     </changeSet>
 
     <changeSet id="1_10_0-022" author="fcurran">
-        <sql>UPDATE qto.email_template SET body = REPLACE(body, '$carrier', '$provider')</sql>
+        <sql>UPDATE email_template SET body = REPLACE(body, '$carrier', '$provider')</sql>
     </changeSet>
 
     <changeSet id="1_10_0-020" author="rcasey">

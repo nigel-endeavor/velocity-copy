@@ -1,6 +1,6 @@
 CREATE TABLE import_activity
 (
-	import_activity_id   int AUTO_INCREMENT
+	import_activity_id   SERIAL
 		PRIMARY KEY,
 	file_attachment_id   int           NULL,
 	status               varchar(25)   NOT NULL,
@@ -8,8 +8,8 @@ CREATE TABLE import_activity
 	num_successful       int           NULL,
 	num_failed           int           NULL,
 	uploaded_by_username varchar(200)  NULL,
-	import_start_date    datetime      NULL,
-	import_end_date      datetime      NULL,
+	import_start_date    timestamp      NULL,
+	import_end_date      timestamp      NULL,
 	import_type          varchar(50)   NULL,
 	tenant_id            int           NOT NULL,
 	version              int DEFAULT 1 NOT NULL,

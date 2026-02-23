@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS pbi_i90_master_company_tasks CASCADE;
 create or replace view pbi_i90_master_company_tasks as
        select c.company_id AS master_customer_id,
        c.tenant_id AS "Tenant ID",

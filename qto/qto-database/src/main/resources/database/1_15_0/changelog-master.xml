@@ -10,8 +10,8 @@
                 <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="template_name" type="varchar(100)"/>
-            <column name="is_default" type="bit" defaultValueBoolean="false"/>
-            <column name="active" type="bit" defaultValueBoolean="true"/>
+            <column name="is_default" type="boolean" defaultValueBoolean="false"/>
+            <column name="active" type="boolean" defaultValueBoolean="true"/>
             <column name="version" type="int" defaultValueNumeric="1">
                 <constraints nullable="false"/>
             </column>
@@ -39,7 +39,7 @@
             </column>
             <column name="value" type="varchar(100)"/>
             <column name="sort_order" type="int"/>
-            <column name="required" type="bit" defaultValueBoolean="true"/>
+            <column name="required" type="boolean" defaultValueBoolean="true"/>
             <column name="version" type="int" defaultValueNumeric="1">
                 <constraints nullable="false"/>
             </column>
@@ -58,7 +58,7 @@
             </column>
             <column name="task_id" type="int"/>
             <column name="value" type="varchar(100)"/>
-            <column name="complete_date" type="datetime"/>
+            <column name="complete_date" type="timestamp"/>
             <column name="comment" type="varchar(500)"/>
             <column name="assigned_to" type="varchar(100)"/>
             <column name="sort_order" type="int"/>
@@ -126,8 +126,8 @@
             <column name="mac_address" type="varchar(100)"/>
             <column name="ownership" type="varchar(100)"/>
             <column name="tracking_info" type="varchar(100)"/>
-            <column name="ship_date" type="datetime"/>
-            <column name="delivered_date" type="datetime"/>
+            <column name="ship_date" type="timestamp"/>
+            <column name="delivered_date" type="timestamp"/>
             <column name="description" type="varchar(500)"/>
             <column name="network_ip_range" type="varchar(100)"/>
             <column name="ip_address" type="varchar(100)"/>
@@ -277,7 +277,7 @@
 
     <changeSet id="1_15_0-15" author="bmccormick">
         <sql>
-            SET @displaySetId = (SELECT milestone_display_set_id FROM milestone_display_set WHERE display_group = 'THREATMDR_SERVICE_MILESTONE');
+            
             UPDATE milestone_display_set_include
             SET milestone_sequence = 5010
             WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'TECH_DATA_GATHERING_FORM_SENT')
@@ -390,7 +390,7 @@
             </column>
             <column name="author_id" type="long"/>
             <column name="content" type="longtext"/>
-            <column name="shared" type="bit" defaultValueBoolean="false"/>
+            <column name="shared" type="boolean" defaultValueBoolean="false"/>
             <column name="worklist_name" type="varchar(100)"/>
             <column name="name" type="varchar(100)"/>
             <column name="version" type="int" defaultValueNumeric="1">
@@ -407,7 +407,7 @@
         <dbms type="postgresql"/>
     </preConditions>
     <sql>
-        SET @displaySetId = (SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'THREATMDR_SERVICE_MILESTONE');
+        
         INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
         milestone_required, adjustable, workflow_driven, has_time, disallow_future, description, inventory_flag, progress_percentage, status)
         VALUES
@@ -432,7 +432,7 @@ CREATE TABLE company_file_attachment
 
     <changeSet id="1_15_0-20" author="mwelicka">
         <sql>
-            SET @displaySetId = (SELECT milestone_display_set_id FROM milestone_display_set WHERE display_group = 'THREATMDR_SERVICE_MILESTONE');
+            
             UPDATE milestone_display_set_include
             SET milestone_sequence = 2500
             WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'TECH_DATA_GATHERING_FORM_SENT')
@@ -552,7 +552,7 @@ CREATE TABLE company_file_attachment
 
     <changeSet id="1_15_0-24" author="mwelicka">
         <sql>
-            SET @typeId = (SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'EQUIPMENT_TYPE');
+            
             UPDATE lookup_type SET parent_lookup_type_id = @typeId WHERE lookup_type_code = 'EQUIPMENT_SUB_TYPE';
         </sql>
 
@@ -560,7 +560,7 @@ CREATE TABLE company_file_attachment
 
     <changeSet id="1_15_0-25" author="mwelicka">
         <sql>
-            SET @displaySetId = (SELECT milestone_display_set_id FROM milestone_display_set WHERE display_group = 'THREATMDR_SERVICE_MILESTONE');
+            
             UPDATE milestone_display_set_include
             SET adjustable = true
             WHERE milestone_id = (SELECT milestone_id FROM milestone WHERE milestone_code = 'TECH_DATA_GATHERING_FORM_SENT')
@@ -681,8 +681,7 @@ CREATE TABLE company_file_attachment
 
     <changeSet id="1_15_0-26" author="mwelicka">
         <sql>
-            SET
-            @displaySetId = (SELECT milestone_display_set_id FROM milestone_display_set WHERE display_group = 'THREATMDR_SERVICE_MILESTONE');
+            
 
             UPDATE milestone_display_set_include
             SET progress_percentage = 50

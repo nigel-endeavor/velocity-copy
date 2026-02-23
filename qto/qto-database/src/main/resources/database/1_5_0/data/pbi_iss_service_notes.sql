@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS pbi_iss_service_notes CASCADE;
 CREATE OR REPLACE VIEW pbi_iss_service_notes AS
 SELECT sn.service_id AS 'service ID',
        n.note AS Note,

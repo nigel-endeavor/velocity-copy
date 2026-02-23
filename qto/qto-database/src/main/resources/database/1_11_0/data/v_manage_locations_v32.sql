@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS v_manage_locations CASCADE;
 CREATE OR REPLACE VIEW v_manage_locations AS
 SELECT
     o.order_id,
@@ -17,7 +18,7 @@ SELECT
     sv.services,
     l.progress_percentage,
     CONCAT(l.address_1,
-           IF(LENGTH(l.address_2), CONCAT(' ', l.address_2), ''),
+           CASE WHEN l.address_2 IS NOT NULL AND TRIM(COALESCE(l.address_2,'')) <> '' THEN CONCAT(' ', l.address_2) ELSE '' END,
            '\n', l.city, ', ', l.state_province, ' ', l.postal_code) AS address,
     l.address_1,
     l.address_2,
@@ -37,7 +38,7 @@ SELECT
     l.client_location_info,
     l.client_location_type,
     IFNULL(vju.open_jeops, '') AS open_jeops,
-    (SELECT GROUP_CONCAT(distinct ji.responsibility SEPARATOR ', ')
+    (SELECT string_agg(distinct ji.responsibility, ', ')
      FROM location_jeop_instance lji
               inner join jeop_instance ji on lji.jeop_instance_id = ji.jeop_instance_id
      WHERE lji.location_id = l.location_id and ji.end_date is null) AS open_jeop_responsibilites,
@@ -78,7 +79,7 @@ FROM company c
         SUM(s.service_mrc) AS mrc,
         SUM(s.service_nrc) AS nrc,
         SUM(s.annual_recurring_cost) AS annual_recurring_cost,
-        GROUP_CONCAT(DISTINCT s.service_type) as services,
+        string_agg(DISTINCT s.service_type, ',') as services,
         COUNT(CASE WHEN s.order_type in ('Move', 'Add', 'Change') THEN 1 END) AS mac_count,
         SUM(CASE WHEN (s.linked) THEN 1 ELSE 0 END) AS count_linked_services,
         SUM(CASE WHEN (s.bundled) THEN 1 ELSE 0 END) AS count_bundled_services
@@ -89,7 +90,7 @@ FROM company c
          LEFT JOIN (
     SELECT
         location_id,
-        GROUP_CONCAT(DISTINCT level_jeop) AS open_jeops,
+        string_agg(DISTINCT level_jeop, ',') AS open_jeops,
         COUNT(*) AS show_jeop_icon
     FROM v_jeops_union
     WHERE jeop_level IN ('Order', 'Location') AND end_date IS NULL

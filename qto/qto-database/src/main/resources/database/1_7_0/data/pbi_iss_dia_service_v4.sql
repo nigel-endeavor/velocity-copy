@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS pbi_iss_dia_service CASCADE;
 CREATE OR REPLACE VIEW pbi_iss_dia_service AS
 SELECT ds.service_id AS 'Service ID',
        provider_activation_method AS 'Carrier Activation Method',

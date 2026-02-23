@@ -12,10 +12,10 @@
             </column>
             <column name="author_id" type="long"/>
             <column name="content" type="longtext"/>
-            <column name="shared" type="bit" defaultValueBoolean="false"/>
+            <column name="shared" type="boolean" defaultValueBoolean="false"/>
             <column name="worklist_name" type="varchar(100)"/>
             <column name="name" type="varchar(100)"/>
-            <column name="last_modified_date" type="datetime"/>
+            <column name="last_modified_date" type="timestamp"/>
             <column name="version" type="int" defaultValueNumeric="1">
                 <constraints nullable="false"/>
             </column>
@@ -32,8 +32,8 @@
                 <constraints nullable="false"/>
             </column>
             <column name="subject_id" type="int"/>
-            <column name="favorite" type="bit" defaultValueBoolean="false"/>
-            <column name="last_viewed_date" type="datetime"/>
+            <column name="favorite" type="boolean" defaultValueBoolean="false"/>
+            <column name="last_viewed_date" type="timestamp"/>
         </addColumn>
     </changeSet>
 
@@ -413,7 +413,7 @@
 
     <changeSet id="1_17_0-037" author="bmccormick">
         <sql>
-            SET @displaySetId = (SELECT milestone_display_set_id FROM milestone_display_set WHERE display_group = 'CYBER360_MDM_SERVICE_MILESTONE');
+            
 
             UPDATE milestone_display_set_include
             SET status = 'Technical Data Gathering Complete'

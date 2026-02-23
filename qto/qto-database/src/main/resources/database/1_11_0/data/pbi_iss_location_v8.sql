@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS pbi_iss_location CASCADE;
 Create or replace view pbi_iss_location as
 SELECT l.location_id                                         as 'Location ID',
        p.company_name                                        AS 'Master Customer',
@@ -63,7 +64,7 @@ FROM location l
                                    group by ln.location_id) vw on ln.note_id = vw.note_id) jn
                    on l.location_id = jn.location_id
          left join (select location_id,
-                           GROUP_CONCAT(DISTINCT CONCAT(service_type, '-', job_number)) as job_number,
+                           string_agg(DISTINCT CONCAT(service_type, '-', job_number, ',')) as job_number,
                            max(case
                                    when
                                        (service_type = 'Broadband' or service_type = 'DIA' or service_type = '4G/5G') and

@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS v_manage_cyber_services CASCADE;
 CREATE OR REPLACE VIEW v_manage_cyber_services AS
 SELECT s.service_id,
        s.location_id,
@@ -11,7 +12,7 @@ SELECT s.service_id,
        ec.client_id AS end_customer_client_id,
        s.service_type,
        CONCAT(IFNULL(l.address_1, ''),
-              IF(LENGTH(l.address_2), CONCAT(' ', l.address_2), ''),
+              CASE WHEN l.address_2 IS NOT NULL AND TRIM(COALESCE(l.address_2,'')) <> '' THEN CONCAT(' ', l.address_2) ELSE '' END,
               '\n',
               IFNULL(l.city, ''), ', ',
               IFNULL(l.state_province, ''), ' ',
@@ -80,7 +81,7 @@ FROM service s
      LEFT JOIN
      (SELECT se.service_id,
              COUNT(e.equipment_id) as equipment_count,
-             GROUP_CONCAT(DISTINCT e.equipment_type) AS equipment_types
+             string_agg(DISTINCT e.equipment_type, ',') AS equipment_types
       FROM service_equipment se
            JOIN equipment e ON se.equipment_id = e.equipment_id
       GROUP BY se.service_id) equip ON s.service_id = equip.service_id

@@ -201,7 +201,7 @@
 
     <changeSet id="1_5_0-008" author="mwelicka">
             <addColumn tableName="milestone_display_set_include">
-            <column name="inventory_flag" type="bit" defaultValueBoolean="false"/>
+            <column name="inventory_flag" type="boolean" defaultValueBoolean="false"/>
             <column name="progress_percentage" type="int"/>
         </addColumn>
     </changeSet>
@@ -254,7 +254,7 @@
 
     <changeSet id="1_5_0-0015" author="rcasey">
         <sql>
-            SET @lookupTypeId = (SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'ACCESS_TYPE');
+            
             DELETE FROM tenant_lookup_value WHERE lookup_value_id IN (SELECT lookup_value_id FROM lookup_value WHERE lookup_type_id = @lookupTypeId);
             DELETE FROM lookup_value WHERE lookup_type_id = @lookupTypeId;
 

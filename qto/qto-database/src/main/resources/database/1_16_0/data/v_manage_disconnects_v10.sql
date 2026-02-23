@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS v_manage_disconnects CASCADE;
 CREATE OR REPLACE VIEW v_manage_disconnects AS
 SELECT s.service_id,
        s.location_id,
@@ -12,7 +13,7 @@ SELECT s.service_id,
        pc.client_id AS parent_company_client_id,
        s.service_type,
        CONCAT(l.address_1,
-              IF(LENGTH(l.address_2), CONCAT(' ', l.address_2), ''),
+              CASE WHEN l.address_2 IS NOT NULL AND TRIM(COALESCE(l.address_2,'')) <> '' THEN CONCAT(' ', l.address_2) ELSE '' END,
               '\n', l.city, ', ', l.state_province, ' ', l.postal_code
 	       ) AS address,
        l.address_1,
@@ -47,9 +48,8 @@ SELECT s.service_id,
        IF(s.service_status NOT IN ('Service Complete', 'Service Cancelled', 'On Hold', 'Change in Assignment') AND
 #           # calculates datediff excluding weekends
           (5 * (DATEDIFF(NOW(), (SELECT created_date FROM note WHERE note_id = latest_note.note_id)) DIV 7) +
-           MID('0123444401233334012222340111123400012345001234550',
-               7 * WEEKDAY((SELECT created_date FROM note WHERE note_id = latest_note.note_id)) + WEEKDAY(NOW()) + 1,
-               1)) > 5, 1, 0) AS show_note_icon,
+           CAST(SUBSTRING(
+               7 * WEEKDAY((SELECT created_date FROM note WHERE note_id = latest_note.note_id)) + WEEKDAY(NOW()) + 1 FROM 0123444401233334012222340111123400012345001234550 FOR 1) AS integer)) > 5, 1, 0) AS show_note_icon,
        IF((SELECT COUNT(*)
            FROM v_jeops_union vju2
            WHERE vju2.service_id = s.service_id

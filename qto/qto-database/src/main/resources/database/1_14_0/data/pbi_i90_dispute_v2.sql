@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS pbi_i90_dispute CASCADE;
 CREATE OR REPLACE VIEW pbi_i90_dispute AS
 SELECT d.dispute_id,
        d.service_id,

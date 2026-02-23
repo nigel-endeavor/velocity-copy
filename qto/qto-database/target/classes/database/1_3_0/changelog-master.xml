@@ -60,8 +60,8 @@
         <dropColumn tableName="location" columnName="lcon_phone"/>
         <dropColumn tableName="service" columnName="inventory_added_date"/>
         <addColumn tableName="service">
-            <column name="current_inventory" type="bit" defaultValueBoolean="false"/>
-            <column name="billable" type="bit" defaultValueBoolean="false"/>
+            <column name="current_inventory" type="boolean" defaultValueBoolean="false"/>
+            <column name="billable" type="boolean" defaultValueBoolean="false"/>
             <column name="disconnect_reason" type="varchar(100)"/>
             <column name="early_termination_fee" type="decimal(19, 2)"/>
             <column name="parent_service_id" type="int">

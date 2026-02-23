@@ -1,5 +1,6 @@
 
 
+DROP VIEW IF EXISTS v_iss_notes_file CASCADE;
 CREATE OR REPLACE VIEW v_iss_notes_file AS
 SELECT n.note_id,
        n.tenant_id,

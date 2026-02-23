@@ -1,4 +1,5 @@
 DROP VIEW if exists v_note_union;
+DROP VIEW IF EXISTS v_note_union CASCADE;
 CREATE OR REPLACE VIEW v_note_union AS
 SELECT DISTINCT s.location_id, s.service_id, n.note_id, n.category, n.created_by, n.created_date, note, n.internal_only, n.version, n.tenant_id, n.master_customer_id
 FROM service s

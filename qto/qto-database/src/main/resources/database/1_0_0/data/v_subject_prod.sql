@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS v_subject CASCADE;
 CREATE OR REPLACE VIEW v_subject AS
 SELECT s.subject_id,
        s.username,
@@ -5,4 +6,4 @@ SELECT s.subject_id,
        s.email_address,
        s.active,
        s.version
-FROM platform_qto.subject s;
+from platform.subject s;

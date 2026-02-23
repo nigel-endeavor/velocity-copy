@@ -1,11 +1,11 @@
 CREATE TABLE contact
 (
-	contact_id     int AUTO_INCREMENT
+	contact_id     SERIAL
 		PRIMARY KEY,
 	company_id     int NULL,
 	first_name     varchar(100)  NOT NULL,
 	last_name      varchar(100) NULL,
-	contact_active bit DEFAULT 1 NOT NULL,
+	contact_active boolean DEFAULT true NOT NULL,
 	notes          varchar(1000) NULL,
 	contact_type   varchar(50) NULL,
 	address_id     int NULL,
@@ -18,13 +18,13 @@ CREATE TABLE contact
 
 CREATE TABLE contact_info
 (
-	contact_info_id   int AUTO_INCREMENT
+	contact_info_id   SERIAL
 		PRIMARY KEY,
 	contact_id        int           NOT NULL,
 	contact_method    varchar(100)  NOT NULL,
 	contact_data      varchar(200)  NOT NULL,
-	primary_by_method bit DEFAULT 0 NOT NULL,
-	preferred_method  bit DEFAULT 0 NOT NULL,
+	primary_by_method boolean DEFAULT false NOT NULL,
+	preferred_method  boolean DEFAULT false NOT NULL,
 	version           int DEFAULT 1 NOT NULL,
 	CONSTRAINT FK_contact_info_contact
 		FOREIGN KEY (contact_id) REFERENCES contact (contact_id)

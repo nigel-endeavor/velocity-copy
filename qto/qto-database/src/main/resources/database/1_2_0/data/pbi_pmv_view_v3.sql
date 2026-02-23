@@ -1,4 +1,5 @@
 
+DROP VIEW IF EXISTS pbi_iss_pvm_report CASCADE;
 Create or replace view pbi_iss_pvm_report as
 SELECT l.client_location_id AS 'Client Service ID',
        service_status AS Status,

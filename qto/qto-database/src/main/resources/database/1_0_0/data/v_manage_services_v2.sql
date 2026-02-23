@@ -1,10 +1,11 @@
+DROP VIEW IF EXISTS v_manage_services CASCADE;
 create or replace view v_manage_services as
 select
     s.service_id,
     s.location_id,
     l.client_location_id,
     CONCAT(a.address_1,
-           IF(LENGTH(a.address_2), CONCAT('\n', a.address_2), ''),
+           CASE WHEN a.address_2 IS NOT NULL AND TRIM(COALESCE(a.address_2,'')) <> '' THEN CONCAT(E'\n', a.address_2) ELSE '' END,
            '\n', a.city, ', ', a.state_province
         ) as address,
     s.order_id,

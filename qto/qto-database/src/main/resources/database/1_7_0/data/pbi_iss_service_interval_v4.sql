@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS pbi_iss_service_interval CASCADE;
 CREATE OR REPLACE VIEW pbi_iss_service_interval AS
 SELECT sii.service_id,
        ii.interval_instance_id AS 'Interval Instance ID',

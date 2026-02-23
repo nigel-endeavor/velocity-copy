@@ -1,6 +1,6 @@
 CREATE TABLE orders
 (
-	order_id            int AUTO_INCREMENT
+	order_id            SERIAL
 		PRIMARY KEY,
 	company_id          int                      NOT NULL,
 	client_order_id     varchar(100) NULL,

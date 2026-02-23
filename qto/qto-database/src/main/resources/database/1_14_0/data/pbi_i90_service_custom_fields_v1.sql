@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS pbi_i90_service_custom_fields CASCADE;
 CREATE OR REPLACE VIEW pbi_i90_service_custom_fields AS
 select s.service_id, s.tenant_id, s.current_inventory, cft.tab,
        MAX(CASE WHEN cf.generic_name = 'Custom 1' THEN cf.label else null END) AS 'Custom 1 Label',

@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS v_manage_locations CASCADE;
 CREATE OR REPLACE VIEW v_manage_locations AS
 SELECT o.order_id,
        l.location_id,
@@ -16,7 +17,7 @@ SELECT o.order_id,
        sv.services,
        l.progress_percentage,
        CONCAT(a.address_1,
-              IF(LENGTH(a.address_2), CONCAT('\n', a.address_2), ''),
+              CASE WHEN a.address_2 IS NOT NULL AND TRIM(COALESCE(a.address_2,'')) <> '' THEN CONCAT(E'\n', a.address_2) ELSE '' END,
               '\n', a.city, ', ', a.state_province, ' ', a.postal_code
            ) AS address,
        a.address_1, a.address_2, a.city, a.state_province, a.postal_code,
@@ -28,7 +29,7 @@ SELECT o.order_id,
        l.tenant_id,
        l.version,
        l.active,
-       (select GROUP_CONCAT(distinct level_jeop) from v_jeops_union  v where v.end_date is null and l.location_id = v.location_id) open_jeops
+       (select string_agg(distinct level_jeop, ',') from v_jeops_union  v where v.end_date is null and l.location_id = v.location_id) open_jeops
 FROM company c
          JOIN orders o ON c.company_id = o.company_id
          JOIN location l ON o.order_id = l.order_id
@@ -63,7 +64,7 @@ FROM company c
                     left JOIN `4g5g_service` gs ON s.service_id = gs.service_id
                     WHERE s.service_status != 'Service Cancelled'
                     GROUP BY location_id) sv ON l.location_id = sv.location_id
-         LEFT JOIN (SELECT order_id, location_id, GROUP_CONCAT(distinct level_jeop) AS open_jeops
+         LEFT JOIN (SELECT order_id, location_id, string_agg(distinct level_jeop, ',') AS open_jeops
                     FROM v_jeops_union
                     GROUP BY order_id, location_id) vju ON l.location_id = vju.location_id
-left join qto.address a on l.address_id = a.address_id;
+left join address a on l.address_id = a.address_id;

@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS v_service_milestone_instance CASCADE;
 create or replace view v_service_milestone_instance as
 select smi.service_id, mi.milestone_instance_id, mi.milestone_date, m.milestone_id, m.milestone_name, m.milestone_code
 from service_milestone_instance smi

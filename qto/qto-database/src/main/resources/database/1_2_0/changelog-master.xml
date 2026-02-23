@@ -5,7 +5,7 @@
 
     <changeSet id="1_2_0-001" author="rcasey">
         <addColumn tableName="location">
-            <column name="inventory_added_date" type="datetime"/>
+            <column name="inventory_added_date" type="timestamp"/>
         </addColumn>
     </changeSet>
 
@@ -99,7 +99,7 @@
 
     <changeSet id="1_2_0-010" author="rcasey">
         <addColumn tableName="service">
-            <column name="inventory_added_date" type="datetime"/>
+            <column name="inventory_added_date" type="timestamp"/>
         </addColumn>
     </changeSet>
 
@@ -110,23 +110,23 @@
     <changeSet id="1_2_0-012" author="fcurran">
         <dropColumn tableName="dispute" columnName="credit_recognized"/>
         <addColumn tableName="dispute">
-            <column name="credit_recognized" type="datetime"/>
+            <column name="credit_recognized" type="timestamp"/>
         </addColumn>
         <dropColumn tableName="dispute" columnName="open_date"/>
         <addColumn tableName="dispute">
-            <column name="open_date" type="datetime"/>
+            <column name="open_date" type="timestamp"/>
         </addColumn>
         <dropColumn tableName="dispute" columnName="dispute_follow_up_date"/>
         <addColumn tableName="dispute">
-            <column name="dispute_follow_up_date" type="datetime"/>
+            <column name="dispute_follow_up_date" type="timestamp"/>
         </addColumn>
         <dropColumn tableName="dispute" columnName="billing_review_complete_date"/>
         <addColumn tableName="dispute">
-            <column name="billing_review_complete_date" type="datetime"/>
+            <column name="billing_review_complete_date" type="timestamp"/>
         </addColumn>
         <dropColumn tableName="dispute" columnName="dispute_closed_date"/>
         <addColumn tableName="dispute">
-            <column name="dispute_closed_date" type="datetime"/>
+            <column name="dispute_closed_date" type="timestamp"/>
         </addColumn>
     </changeSet>
 

@@ -60,8 +60,8 @@
         <dropColumn tableName="location" columnName="lcon_phone"/>
         <dropColumn tableName="service" columnName="inventory_added_date"/>
         <addColumn tableName="service">
-            <column name="current_inventory" type="bit" defaultValueBoolean="false"/>
-            <column name="billable" type="bit" defaultValueBoolean="false"/>
+            <column name="current_inventory" type="boolean" defaultValueBoolean="false"/>
+            <column name="billable" type="boolean" defaultValueBoolean="false"/>
             <column name="disconnect_reason" type="varchar(100)"/>
             <column name="early_termination_fee" type="decimal(19, 2)"/>
             <column name="parent_service_id" type="int">
@@ -99,8 +99,7 @@
             <!--Order Type and Sub Order Type -->
             INSERT INTO lookup_type (lookup_type_descr, lookup_type_code, lookup_type_active, modifiable, sort_strategy)
             VALUES ('Order Type', 'ORDER_TYPE', 1, 1, 1);
-            SET
-            @lookupTypeCode = (SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'ORDER_TYPE');
+            
             INSERT INTO lookup_value (lookup_type_id, lookup_display, lookup_value, lookup_value_active, sort_seq)
             VALUES (@lookupTypeCode, 'Move', 'Move', 1, 1);
             INSERT INTO lookup_value (lookup_type_id, lookup_display, lookup_value, lookup_value_active, sort_seq)
@@ -112,25 +111,18 @@
 
             INSERT INTO lookup_type (lookup_type_descr, lookup_type_code, lookup_type_active, modifiable, sort_strategy)
             VALUES ('Sub Order Type', 'SUB_ORDER_TYPE', 1, 1, 1);
-            SET
-            @lookupTypeCode = (SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'SUB_ORDER_TYPE');
+            
             <!--Move-->
-            SET @parentLookupValueId = (SELECT lookup_value_id FROM lookup_value
-            WHERE lookup_type_id = (select lookup_type_id from lookup_type where lookup_type_code = 'ORDER_TYPE')
-            AND lookup_value = 'Move');
+            
             INSERT INTO lookup_value (lookup_type_id, lookup_display, lookup_value, sort_seq, lookup_value_active, parent_lookup_value_id) VALUES (@lookupTypeCode, 'Same Service - Change in floor/suite/MPOE/campus building', 'Same Service - Change in floor/suite/MPOE/campus building', 10, 1, @parentLookupValueId);
             INSERT INTO lookup_value (lookup_type_id, lookup_display, lookup_value, sort_seq, lookup_value_active, parent_lookup_value_id) VALUES (@lookupTypeCode, 'New Service - Change in floor/suite/MPOE/campus building', 'New Service - Change in floor/suite/MPOE/campus building', 20, 1, @parentLookupValueId);
             INSERT INTO lookup_value (lookup_type_id, lookup_display, lookup_value, sort_seq, lookup_value_active, parent_lookup_value_id) VALUES (@lookupTypeCode, 'New Service - Change in main address', 'New Service - Change in main address', 30, 1, @parentLookupValueId);
             <!--Add-->
-            SET @parentLookupValueId = (SELECT lookup_value_id FROM lookup_value
-            WHERE lookup_type_id = (select lookup_type_id from lookup_type where lookup_type_code = 'ORDER_TYPE')
-            AND lookup_value = 'Add');
+            
             INSERT INTO lookup_value (lookup_type_id, lookup_display, lookup_value, sort_seq, lookup_value_active, parent_lookup_value_id) VALUES (@lookupTypeCode, 'Static IP Add', 'Static IP Add', 10, 1, @parentLookupValueId);
             INSERT INTO lookup_value (lookup_type_id, lookup_display, lookup_value, sort_seq, lookup_value_active, parent_lookup_value_id) VALUES (@lookupTypeCode, 'Equipment / MPOE Reserve', 'Equipment / MPOE Reserve', 20, 1, @parentLookupValueId);
             <!--Change-->
-            SET @parentLookupValueId = (SELECT lookup_value_id FROM lookup_value
-            WHERE lookup_type_id = (select lookup_type_id from lookup_type where lookup_type_code = 'ORDER_TYPE')
-            AND lookup_value = 'Change');
+            
             INSERT INTO lookup_value (lookup_type_id, lookup_display, lookup_value, sort_seq, lookup_value_active, parent_lookup_value_id) VALUES (@lookupTypeCode, 'Billing Party Change - Outbound', 'Billing Party Change - Outbound', 10, 1, @parentLookupValueId);
             INSERT INTO lookup_value (lookup_type_id, lookup_display, lookup_value, sort_seq, lookup_value_active, parent_lookup_value_id) VALUES (@lookupTypeCode, 'Billing Party Change - Inbound', 'Billing Party Change - Inbound', 10, 1, @parentLookupValueId);
             INSERT INTO lookup_value (lookup_type_id, lookup_display, lookup_value, sort_seq, lookup_value_active, parent_lookup_value_id) VALUES (@lookupTypeCode, 'New Service - Change carrier', 'New Service - Change carrier', 10, 1, @parentLookupValueId);
@@ -140,9 +132,7 @@
             INSERT INTO lookup_value (lookup_type_id, lookup_display, lookup_value, sort_seq, lookup_value_active, parent_lookup_value_id) VALUES (@lookupTypeCode, 'Same service - Configuration/Feature change', 'Same service - Configuration/Feature change', 10, 1, @parentLookupValueId);
             INSERT INTO lookup_value (lookup_type_id, lookup_display, lookup_value, sort_seq, lookup_value_active, parent_lookup_value_id) VALUES (@lookupTypeCode, 'Same Service - Ethernet adding handoff/extension', 'Same Service - Ethernet adding handoff/extension', 10, 1, @parentLookupValueId);
             <!--Disconnect-->
-            SET @parentLookupValueId = (SELECT lookup_value_id FROM lookup_value
-            WHERE lookup_type_id = (select lookup_type_id from lookup_type where lookup_type_code = 'ORDER_TYPE')
-            AND lookup_value = 'Disconnect');
+            
             INSERT INTO lookup_value (lookup_type_id, lookup_display, lookup_value, sort_seq, lookup_value_active, parent_lookup_value_id) VALUES (@lookupTypeCode, '--Upgraded Speed -Service replaced with same carrier', '--Upgraded Speed -Service replaced with same carrier', 10, 1, @parentLookupValueId);
             INSERT INTO lookup_value (lookup_type_id, lookup_display, lookup_value, sort_seq, lookup_value_active, parent_lookup_value_id) VALUES (@lookupTypeCode, '--Poor Performance - Service replaced with same carrier', '--Poor Performance - Service replaced with same carrier', 10, 1, @parentLookupValueId);
             INSERT INTO lookup_value (lookup_type_id, lookup_display, lookup_value, sort_seq, lookup_value_active, parent_lookup_value_id) VALUES (@lookupTypeCode, '--Poor Performance - Service replaced with new carrier', '--Poor Performance - Service replaced with new carrier', 10, 1, @parentLookupValueId);
@@ -154,8 +144,7 @@
             <!--Disconnect Type/Reason -->
             INSERT INTO lookup_type (lookup_type_descr, lookup_type_code, lookup_type_active, modifiable, sort_strategy)
             VALUES ('Disconnect Type', 'DISCONNECT_TYPE', 1, 1, 1);
-            SET
-            @lookupTypeCode = (SELECT lookup_type_id FROM lookup_type WHERE lookup_type_code = 'DISCONNECT_TYPE');
+            
             INSERT INTO lookup_value (lookup_type_id, lookup_display, lookup_value, sort_seq, lookup_value_active)
             VALUES (@lookupTypeCode, 'Upgraded speed - Service replaced with same carrier', 'Upgraded speed - Service replaced with same carrier', 10, 1);
             INSERT INTO lookup_value (lookup_type_id, lookup_display, lookup_value, sort_seq, lookup_value_active)
@@ -175,7 +164,7 @@
 
             <!-- new milestone -->
             INSERT INTO milestone (milestone_name, milestone_code) VALUES ('Removed from Inventory', 'REMOVED_FROM_INVENTORY');
-            SET @displaySetId = (SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'LOCATION_MILESTONE');
+            
             INSERT INTO milestone_display_set_include (milestone_display_set_id, milestone_id, milestone_active, milestone_sequence,
                                                        milestone_required, adjustable, workflow_driven, has_time, disallow_future)
             VALUES (@displaySetId, (SELECT milestone_id FROM milestone WHERE milestone_code = 'REMOVED_FROM_INVENTORY'), 1, 1040, 0, 1, 1, 0, 0)
@@ -208,7 +197,7 @@
             <column name="subject_id" type="int">
                 <constraints nullable="false"/>
             </column>
-            <column name="company_subject_selected" type="bit(1)" defaultValue="0">
+            <column name="company_subject_selected" type="boolean" defaultValue="0">
                 <constraints nullable="false"/>
             </column>
             <column name="version" type="int" defaultValueNumeric="1">
@@ -386,7 +375,7 @@
             <dbms type="postgresql"/>
         </preConditions>
         <sql>
-            set @lookupTypeId = (select lookup_type_id from lookup_type where lookup_type_code = 'DISCONNECT_REASON');
+            
             insert into tenant_lookup_value (lookup_value_id, tenant_id)
             select lookup_value_id, tenant_id from lookup_value, v_tenant where lookup_type_id = @lookupTypeId;
         </sql>
@@ -410,7 +399,7 @@
         <comment>Missing lookup type rename and rerunning joiner.</comment>
         <sql>
             update lookup_type set lookup_type_code = 'DISCONNECT_REASON', lookup_type_descr = 'Disconnect Reason' where lookup_type_code = 'DISCONNECT_TYPE';
-            set @lookupTypeId = (select lookup_type_id from lookup_type where lookup_type_code = 'DISCONNECT_REASON');
+            
             insert into tenant_lookup_value (lookup_value_id, tenant_id)
             select lookup_value_id, tenant_id from lookup_value, v_tenant where lookup_type_id = @lookupTypeId;
         </sql>
@@ -537,7 +526,7 @@
       <changeSet id="1_3_0-0019" author="mwelicka">
         <comment>Column add.</comment>
         <addColumn tableName="pending_disconnect">
-            <column name="new_service_complete_date" type="datetime"/>
+            <column name="new_service_complete_date" type="timestamp"/>
         </addColumn>
     </changeSet>
 
@@ -634,10 +623,10 @@
         </preConditions>
         <comment>Missing tenant lookup values for order type and sub order type.</comment>
         <sql>
-            set @lookupTypeId = (select lookup_type_id from lookup_type where lookup_type_code = 'ORDER_TYPE');
+            
             insert into tenant_lookup_value (lookup_value_id, tenant_id)
             select lookup_value_id, tenant_id from lookup_value, v_tenant where lookup_type_id = @lookupTypeId;
-            set @lookupTypeId = (select lookup_type_id from lookup_type where lookup_type_code = 'SUB_ORDER_TYPE');
+            
             insert into tenant_lookup_value (lookup_value_id, tenant_id)
             select lookup_value_id, tenant_id from lookup_value, v_tenant where lookup_type_id = @lookupTypeId;
         </sql>
@@ -660,7 +649,7 @@
             <column name="old_value" type="decimal(19,2)"/>
             <column name="new_value" type="decimal(19,2)"/>
             <column name="change_reason" type="varchar(500)"/>
-            <column name="update_date" type="datetime"/>
+            <column name="update_date" type="timestamp"/>
             <column name="update_by" type="varchar(100)"/>
             <column name="master_customer_id" type="int"/>
             <column name="tenant_id" type="int"/>

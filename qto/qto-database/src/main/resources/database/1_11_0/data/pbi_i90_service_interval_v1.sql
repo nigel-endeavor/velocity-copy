@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS pbi_i90_service_interval CASCADE;
 CREATE OR REPLACE VIEW pbi_i90_service_interval AS
 SELECT sii.service_id,
        s.tenant_id AS 'Tenant ID',

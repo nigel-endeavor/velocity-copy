@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS v_activation_attempts CASCADE;
 create or replace view v_activation_attempts as
 SELECT company_name,
        o.tenant_id,
