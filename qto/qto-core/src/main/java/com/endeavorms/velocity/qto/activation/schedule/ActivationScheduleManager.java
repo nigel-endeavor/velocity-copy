@@ -1,6 +1,13 @@
 package com.endeavorms.velocity.qto.activation.schedule;
 
-import com.google.common.base.Strings;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
 import com.endeavorms.velocity.qto.activation.attempt.ActivationAttempt;
 import com.endeavorms.velocity.qto.activation.attempt.ActivationAttemptManager;
 import com.endeavorms.velocity.qto.common.StandardManager;
@@ -10,11 +17,9 @@ import com.endeavorms.velocity.qto.milestone.ServiceMilestoneInstance;
 import com.endeavorms.velocity.qto.milestone.ServiceMilestoneInstanceManager;
 import com.endeavorms.velocity.qto.service.Service;
 import com.endeavorms.velocity.qto.service.ServiceManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.google.common.base.Strings;
 
 import jakarta.annotation.Resource;
-import org.springframework.stereotype.Component;
 import jakarta.inject.Inject;
 import jakarta.jms.ObjectMessage;
 import jakarta.jms.Queue;
@@ -22,9 +27,6 @@ import jakarta.jms.QueueConnection;
 import jakarta.jms.QueueConnectionFactory;
 import jakarta.jms.QueueSender;
 import jakarta.jms.QueueSession;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 /**
  * @author rcasey
@@ -62,12 +64,14 @@ public class ActivationScheduleManager extends StandardManager<ActivationSchedul
     /**
      * JMS Queue.
      */
-    @Resource(mappedName = "java:/queue/qto.FtdiProcessingQueue")
+    @Resource(name = "queue")
     private Queue queue;
 
     /**
      * Connection factory name.
      */
+
+    @Resource(name = "connectionFactory")
     private static final String JMS_CONNECTION_FACTORY_NAME = "java:/JmsXA";
 
     /**

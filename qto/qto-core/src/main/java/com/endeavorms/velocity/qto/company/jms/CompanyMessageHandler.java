@@ -3,14 +3,14 @@ package com.endeavorms.velocity.qto.company.jms;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
+@ConditionalOnProperty(prefix = "app.jms", name = "enabled", havingValue = "true", matchIfMissing = false)
 public class CompanyMessageHandler {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(CompanyMessageHandler.class);
-
     public static final String COMPANY_QUEUE = "qto.CompanyMessageQueue";
 
     @Autowired
@@ -24,5 +24,4 @@ public class CompanyMessageHandler {
             LOGGER.error("Error sending to {}: {}", COMPANY_QUEUE, e.getMessage());
         }
     }
-
 }

@@ -1,5 +1,14 @@
 package com.endeavorms.velocity.qto.company;
 
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.endeavorms.velocity.qto.activation.requirement.RequirementTemplate;
 import com.endeavorms.velocity.qto.activation.requirement.RequirementTemplateManager;
 import com.endeavorms.velocity.qto.attachment.CompanyFileAttachment;
@@ -24,13 +33,9 @@ import com.endeavorms.velocity.qto.contact.order.OrderContactManager;
 import com.endeavorms.velocity.qto.order.Order;
 import com.endeavorms.velocity.qto.order.OrderManager;
 
-import org.springframework.stereotype.Component;
+import org.springframework.lang.Nullable;
+
 import jakarta.inject.Inject;
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Component
 public class CompanyManager extends StandardManager<Company> {
@@ -52,7 +57,8 @@ public class CompanyManager extends StandardManager<Company> {
     @Inject
     private CompanyConfigPropertyManager<CompanyConfigKey> configPropertyManager;
 
-    @Inject
+    @Autowired(required = false)
+    @Nullable
     private CompanyMessageHandler companyMessageHandler;
 
     @Inject

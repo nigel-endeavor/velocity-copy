@@ -2,6 +2,11 @@ spring:
   main:
     allow-circular-references: true
 
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jms.JmsAutoConfiguration
+      - org.springframework.boot.autoconfigure.jms.artemis.ArtemisAutoConfiguration
+
   # Disable Boot's single-datasource auto wiring assumptions for liquibase (we'll wire it ourselves)
   liquibase:
     enabled: false
@@ -10,6 +15,9 @@ spring:
     open-in-view: false
     hibernate:
       ddl-auto: none
+
+  artemis:
+    mode: embedded
 
 app:
   datasource:
@@ -23,3 +31,10 @@ app:
       username: platform_user
       password: changeme
       driver-class-name: com.mysql.cj.jdbc.Driver
+  jms:
+    enabled: false
+  
+qto:
+  jms:
+    broker-url: vm://0
+
