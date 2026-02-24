@@ -641,12 +641,27 @@
     </changeSet>
 
     <changeSet id="1_0_0-59" author="bmccormick">
-        <!-- Drop view so PostgreSQL can alter column type (view depends on orders.provisioner) -->
+        <!-- Drop dependent views so PostgreSQL can alter column types -->
+        <sql>DROP VIEW IF EXISTS v_manage_locations CASCADE;</sql>
         <sql>DROP VIEW IF EXISTS v_manage_services CASCADE;</sql>
-        <sql>update orders SET provisioner = null</sql>
+
+        <!-- Make values cast-safe -->
+        <sql>UPDATE orders SET provisioner = NULL;</sql>
         <modifyDataType tableName="orders" columnName="provisioner" newDataType="int"/>
-        <sql>update orders SET project_manager = null</sql>
+
+        <sql>UPDATE orders SET project_manager = NULL;</sql>
         <modifyDataType tableName="orders" columnName="project_manager" newDataType="int"/>
+
+        <!-- Recreate the views (recommended to keep the DB consistent) -->
+        <sqlFile path="data/v_manage_locations_v3.sql"
+                relativeToChangelogFile="true"
+                stripComments="true"
+                splitStatements="true"/>
+
+        <sqlFile path="data/v_manage_services.sql"
+                relativeToChangelogFile="true"
+                stripComments="true"
+                splitStatements="true"/>
     </changeSet>
 
     <changeSet id="1_0_0-60" author="rcasey">

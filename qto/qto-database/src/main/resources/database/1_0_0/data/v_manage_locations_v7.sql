@@ -25,7 +25,7 @@ FROM company c
          JOIN location l ON o.order_id = l.order_id
          LEFT JOIN (SELECT s.location_id,
                            COUNT(s.service_id) AS count_services,
-                           CONVERT(CONCAT(
+                           CAST(CONCAT(
                                    CASE WHEN count(bs.service_id) > 0 THEN
                                             CASE WHEN count(bs.service_id) > 1 THEN CONCAT('Broadband(', count(bs.service_id), ')')
                                                  ELSE 'Broadband' END
