@@ -11,7 +11,6 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    include: ['@azure/msal-browser', '@azure/msal-react'],
     esbuildOptions: {
       target: 'esnext',
     },

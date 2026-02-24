@@ -4,6 +4,8 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
     <changeSet id="0_0_0-platform-schema" author="bootstrap">
+        <validCheckSum>9:a4183fe18f927815a92dd9e0b4b39c35</validCheckSum>
+        <validCheckSum>9:98eb8e9acf3221ddf4a023d093c81504</validCheckSum>
         <sql>
             CREATE SCHEMA IF NOT EXISTS platform;
             CREATE TABLE IF NOT EXISTS platform.tenant (
@@ -30,6 +32,8 @@
     </changeSet>
 
     <changeSet author="mwelicka" id="1_0_0-002" context="common">
+        <validCheckSum>9:973521ab2b0210ffe952f0ff69650daa</validCheckSum>
+        <validCheckSum>9:23a0dcc72a88a5be20b3a283c497b2c2</validCheckSum>
         <preConditions onFail="CONTINUE">
             <dbms type="postgresql"/>
         </preConditions>

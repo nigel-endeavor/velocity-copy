@@ -1,8 +1,4 @@
-import { PublicClientApplication } from '@azure/msal-browser';
-import { msalConfig, tokenRequest } from '../config/msal.config';
 import { environment } from '../config/environment';
-
-const msalInstance = new PublicClientApplication(msalConfig);
 
 interface RequestConfig {
   method: string;
@@ -25,39 +21,14 @@ class ApiClient {
     this.baseURL = baseURL;
   }
 
-  private async getAuthToken(): Promise<string | null> {
-    const accounts = msalInstance.getAllAccounts();
-
-    if (accounts.length > 0) {
-      try {
-        const response = await msalInstance.acquireTokenSilent({
-          ...tokenRequest,
-          account: accounts[0],
-        });
-        return response.accessToken;
-      } catch (error) {
-        console.error('Token acquisition failed:', error);
-        return null;
-      }
-    }
-
-    return null;
-  }
-
   private async request<T = unknown>(
     url: string,
     config: RequestConfig
   ): Promise<ApiResponse<T>> {
-    const token = await this.getAuthToken();
-
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
       ...config.headers,
     };
-
-    if (token) {
-      headers.Authorization = `Bearer ${token}`;
-    }
 
     const fetchConfig: RequestInit = {
       method: config.method,
@@ -73,12 +44,10 @@ class ApiClient {
     try {
       const response = await fetch(fullUrl, fetchConfig);
 
-      // Handle unauthorized
       if (response.status === 401) {
         console.error('Unauthorized request');
       }
 
-      // Parse response based on type
       let data: T;
       const responseType = config.responseType || 'json';
 
@@ -91,9 +60,8 @@ class ApiClient {
         data = text ? JSON.parse(text) : null;
       }
 
-      // Check if response is ok
       if (!response.ok) {
-        const error = {
+        throw {
           response: {
             data,
             status: response.status,
@@ -102,7 +70,6 @@ class ApiClient {
           },
           message: `Request failed with status ${response.status}`,
         };
-        throw error;
       }
 
       return {
@@ -112,7 +79,6 @@ class ApiClient {
         headers: response.headers,
       };
     } catch (error) {
-      // Re-throw with consistent error structure
       if (error instanceof Error && 'response' in error) {
         throw error;
       }

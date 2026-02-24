@@ -13,14 +13,14 @@ dependencies {
     implementation(project(":qto-core"))
     implementation(project(":qto-database"))
 
-    // Source: https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
-    implementation("com.mysql:mysql-connector-j:9.4.0")
-
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework:spring-jms")
     implementation("org.springframework.boot:spring-boot-starter-artemis")
 
-    // runtimeOnly("org.postgresql:postgresql")
+    runtimeOnly("org.postgresql:postgresql")
+
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.security:spring-security-test")
 }

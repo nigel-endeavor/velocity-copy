@@ -1,20 +1,34 @@
 spring:
   application:
     name: qto
-  datasource:
-    url: jdbc:postgresql://localhost:5432/qto
-    username: qto_user
-    password: changeme
-    driver-class-name: org.postgresql.Driver
+  main:
+    allow-circular-references: true
+  # QtoLiquibaseConfig runs Liquibase on qtoDataSource
+  liquibase:
+    enabled: false
   jpa:
+    open-in-view: false
     hibernate:
-      ddl-auto: validate
+      ddl-auto: none
     show-sql: false
     properties:
       hibernate:
         format_sql: true
-  liquibase:
-    change-log: classpath:database/changelog-master.xml
+
+app:
+  datasource:
+    qto:
+      url: jdbc:postgresql://localhost:5432/qto
+      username: qto_user
+      password: changeme
+      driver-class-name: org.postgresql.Driver
+    platform:
+      url: jdbc:postgresql://localhost:5432/qto?currentSchema=platform
+      username: qto_user
+      password: changeme
+      driver-class-name: org.postgresql.Driver
 
 server:
   port: 8080
+  servlet:
+    context-path: /qto

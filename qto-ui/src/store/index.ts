@@ -79,11 +79,9 @@ export const store = configureStore({
           PERSIST,
           PURGE,
           REGISTER,
-          'msal/loginSuccess',
-          'msal/loginFailure',
         ],
         // Ignore these paths in the state (Set objects, MSAL instances)
-        ignoredPaths: ['msal', 'serviceWorklist.selectedServices'],
+        ignoredPaths: ['serviceWorklist.selectedServices'],
       },
     }).concat(baseApi.middleware), // RTK Query middleware
 

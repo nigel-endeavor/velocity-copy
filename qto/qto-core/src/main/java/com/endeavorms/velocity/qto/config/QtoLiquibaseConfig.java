@@ -19,6 +19,7 @@ public class QtoLiquibaseConfig {
 
     // This matches your mysql profile contexts
     liquibase.setContexts("common,dev");
+
     return liquibase;
   }
 }

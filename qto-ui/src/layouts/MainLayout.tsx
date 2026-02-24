@@ -1,20 +1,14 @@
 import { ReactNode } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { useMsal } from '@azure/msal-react';
+import { useAuthContext } from '@/contexts/AuthContext';
 
 interface MainLayoutProps {
   children?: ReactNode;
 }
 
 export const MainLayout = ({ children }: MainLayoutProps) => {
-  const { instance, accounts } = useMsal();
+  const { user, logout } = useAuthContext();
   const location = useLocation();
-
-  const handleLogout = () => {
-    instance.logoutRedirect({
-      postLogoutRedirectUri: '/',
-    });
-  };
 
   const isActive = (path: string) => {
     return location.pathname === path;
@@ -28,7 +22,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-8">
               <Link to="/" className="text-2xl font-bold hover:text-primary-100">
-                QTO Application
+                Endeavor Velocity
               </Link>
               <div className="hidden md:flex space-x-4">
                 <Link
@@ -50,11 +44,11 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
               </div>
             </div>
 
-            {accounts.length > 0 && (
+            {user && (
               <div className="flex items-center space-x-4">
-                <span className="text-sm">{accounts[0].username}</span>
+                <span className="text-sm">{user.username}</span>
                 <button
-                  onClick={handleLogout}
+                  onClick={logout}
                   className="px-4 py-2 bg-white text-primary-600 rounded-lg hover:bg-gray-100 transition-colors font-medium"
                 >
                   Logout
@@ -73,7 +67,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
       {/* Footer */}
       <footer className="bg-gray-800 text-white py-4">
         <div className="container mx-auto px-4 text-center text-sm">
-          <p>&copy; 2026 QTO Application - Quantum Task Orchestrator</p>
+          <p>&copy; 2026 Endeavor Velocity</p>
         </div>
       </footer>
     </div>

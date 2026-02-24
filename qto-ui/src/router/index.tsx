@@ -1,17 +1,21 @@
 import { createHashRouter, Navigate } from 'react-router-dom';
 import { MainLayout } from '../layouts/MainLayout';
 import { LandingPage } from '../pages/LandingPage';
+import { LoginPage } from '../pages/LoginPage';
 import { ServiceWorklist } from '../features/service-worklist/ServiceWorklist';
-import { MsalAuthenticationTemplate } from '@azure/msal-react';
-import { InteractionType } from '@azure/msal-browser';
+import { AuthGuard } from '../shared/guards/AuthGuard';
 
 export const router = createHashRouter([
   {
+    path: '/login',
+    element: <LoginPage />,
+  },
+  {
     path: '/',
     element: (
-      <MsalAuthenticationTemplate interactionType={InteractionType.Redirect}>
+      <AuthGuard>
         <MainLayout />
-      </MsalAuthenticationTemplate>
+      </AuthGuard>
     ),
     children: [
       {
@@ -22,10 +26,6 @@ export const router = createHashRouter([
         path: 'services',
         element: <ServiceWorklist />,
       },
-      // Add more routes here as features are converted
-      // { path: 'orders', element: <OrdersPage /> },
-      // { path: 'locations', element: <LocationsPage /> },
-      // etc.
     ],
   },
   {
