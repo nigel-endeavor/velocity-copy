@@ -13,7 +13,6 @@ import jakarta.persistence.EntityManager;
 
 import static com.endeavorms.velocity.qto.attachment.QCompanyFileAttachment.companyFileAttachment;
 
-
 @Component
 public class CompanyFileAttachmentJpaDao extends AbstractMasterCustomerJpaDao<CompanyFileAttachment> {
 

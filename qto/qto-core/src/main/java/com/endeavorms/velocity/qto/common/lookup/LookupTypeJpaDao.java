@@ -11,7 +11,6 @@ import jakarta.persistence.EntityManager;
 
 import static com.endeavorms.velocity.qto.common.lookup.QLookupType.lookupType;
 
-
 @Component
 public class LookupTypeJpaDao extends AbstractLookupTypeJpaDao<LookupType> {
 

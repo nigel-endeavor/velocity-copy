@@ -4,12 +4,13 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.endeavorms.velocity.qto.cdi.QtoDatabase;
 import com.endeavorms.velocity.qto.common.AbstractMultitenantJpaDao;
 import com.endeavorms.velocity.qto.common.PlatformDatabase;
-import com.endeavorms.velocity.qto.invoicing.surchargeType.SurchargeType;
 
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 
 import java.util.List;
+
+import org.springframework.stereotype.Repository;
 
 import static com.endeavorms.velocity.qto.invoicing.billableMilestone.QBillableMilestone.billableMilestone;
 
@@ -17,7 +18,7 @@ import static com.endeavorms.velocity.qto.invoicing.billableMilestone.QBillableM
  * @author mwelicka
  * @since 7/30/2023
  */
-
+@Repository
 public class BillableMilestoneJpaDao extends AbstractMultitenantJpaDao<BillableMilestone, Long> {
     @Override
     @Inject

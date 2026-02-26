@@ -1,6 +1,16 @@
 package com.endeavorms.velocity.qto.activation.schedule;
 
-import com.google.common.base.Strings;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Value;
+
+
 import com.endeavorms.velocity.qto.activation.attempt.ActivationAttempt;
 import com.endeavorms.velocity.qto.activation.attempt.ActivationAttemptManager;
 import com.endeavorms.velocity.qto.common.StandardManager;
@@ -10,11 +20,8 @@ import com.endeavorms.velocity.qto.milestone.ServiceMilestoneInstance;
 import com.endeavorms.velocity.qto.milestone.ServiceMilestoneInstanceManager;
 import com.endeavorms.velocity.qto.service.Service;
 import com.endeavorms.velocity.qto.service.ServiceManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.google.common.base.Strings;
 
-import jakarta.annotation.Resource;
-import org.springframework.stereotype.Component;
 import jakarta.inject.Inject;
 import jakarta.jms.ObjectMessage;
 import jakarta.jms.Queue;
@@ -22,9 +29,6 @@ import jakarta.jms.QueueConnection;
 import jakarta.jms.QueueConnectionFactory;
 import jakarta.jms.QueueSender;
 import jakarta.jms.QueueSession;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 /**
  * @author rcasey
@@ -62,18 +66,23 @@ public class ActivationScheduleManager extends StandardManager<ActivationSchedul
     /**
      * JMS Queue.
      */
-    @Resource(mappedName = "java:/queue/qto.FtdiProcessingQueue")
+    @Autowired(required = false)
     private Queue queue;
 
     /**
      * Connection factory name.
      */
-    private static final String JMS_CONNECTION_FACTORY_NAME = "java:/JmsXA";
+
+    // @Autowired(name = "connectionFactory")
+    // private static final String JMS_CONNECTION_FACTORY_NAME = "java:/JmsXA";
+    
+    @Value("${app.jms.enabled:false}")
+    private boolean jmsEnabled;
 
     /**
      * JMS connection factory.
      */
-    @Resource(mappedName = JMS_CONNECTION_FACTORY_NAME)
+    @Autowired(required = false)
     private QueueConnectionFactory connectionFactory;
 
     @Override
@@ -102,6 +111,7 @@ public class ActivationScheduleManager extends StandardManager<ActivationSchedul
 
         return created;
     }
+
     @Override
     public ActivationSchedule create(final ActivationSchedule entity) {
         Service service = serviceManager.retrieve(entity.getServiceId());
@@ -192,7 +202,17 @@ public class ActivationScheduleManager extends StandardManager<ActivationSchedul
 
     public void sendDispatchToQueue(final ActivationSchedule schedule, final FtdiDispatch ftdiDispatch) {
 
+        if (!jmsEnabled) {
+            LOGGER.debug("JMS disabled (app.jms.enabled=false) - skipping dispatch queue publish.");
+            return;
+        }
+        if (queue == null || connectionFactory == null) {
+            LOGGER.warn("JMS enabled but Queue/ConnectionFactory not configured - skipping publish.");
+            return;
+        }
+
         String jmsQueueName = null;
+
 
         try (QueueConnection connection = connectionFactory.createQueueConnection();
              QueueSession session = connection.createQueueSession(false, QueueSession.AUTO_ACKNOWLEDGE)) {
@@ -281,6 +301,4 @@ public class ActivationScheduleManager extends StandardManager<ActivationSchedul
     public ActivationSchedule findByLegacyAndTenant(final Long legacyId, final Long tenantId) {
             return dao.findByLegacyAndTenant(legacyId, tenantId);
     }
-
-
 }

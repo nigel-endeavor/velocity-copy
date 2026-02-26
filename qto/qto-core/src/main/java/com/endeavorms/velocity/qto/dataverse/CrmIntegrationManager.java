@@ -2,11 +2,13 @@ package com.endeavorms.velocity.qto.dataverse;
 
 import com.endeavorms.velocity.qto.common.StandardManager;
 
-import jakarta.inject.Inject;
+import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
 
+@Service
 public class CrmIntegrationManager extends StandardManager<CrmIntegration> {
 
-    @Inject
+    @Autowired
     private CrmIntegrationJpaDao dao;
 
     @Override

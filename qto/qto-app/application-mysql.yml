@@ -1,0 +1,43 @@
+spring:
+  main:
+    allow-circular-references: true
+
+  # Disable Boot's single-datasource auto wiring assumptions for liquibase (we'll wire it ourselves)
+  liquibase:
+    enabled: false
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+
+  artemis:
+    mode: native
+    broker-url: tcp://localhost:61616
+    user: admin
+    password: admin
+
+  # artemis:
+    # broker-url: tcp://artemis:61616
+
+app:
+  datasource:
+    qto:
+      url: jdbc:mysql://localhost:3306/qto?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      username: qto_user
+      password: changeme
+      driver-class-name: com.mysql.cj.jdbc.Driver
+    platform:
+      url: jdbc:mysql://localhost:3306/platform?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      username: platform_user
+      password: changeme
+      driver-class-name: com.mysql.cj.jdbc.Driver
+  jms:
+    enabled: true
+  
+qto:
+  jms:
+    broker-url: vm://0
+    ftdi-processing-queue: qto.FtdiProcessingQueue
+
+

@@ -5,6 +5,7 @@ import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.impl.JPAQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ import static com.endeavorms.velocity.qto.subject.QCompanySubject.companySubject
  * @author rcasey
  * @since 10/12/2023
  */
+@Repository
 public abstract class AbstractMasterCustomerJpaDao<T extends AbstractMasterCustomerOwnedEntity> extends AbstractMultitenantJpaDao<T, Long> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractMasterCustomerJpaDao.class);

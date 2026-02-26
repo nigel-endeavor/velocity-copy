@@ -9,9 +9,18 @@ import java.util.List;
  * @author rcasey
  * @since 2/17/2023
  */
+
+import com.endeavorms.velocity.qto.common.StandardManager;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
 public class MilestoneInstanceHistoryManager extends StandardManager<MilestoneInstanceHistory> {
 
-    @Inject
+    @Autowired
     private MilestoneInstanceHistoryJpaDao dao;
 
     @Override

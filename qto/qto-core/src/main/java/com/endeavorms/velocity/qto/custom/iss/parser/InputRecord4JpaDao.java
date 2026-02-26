@@ -1,5 +1,7 @@
 package com.endeavorms.velocity.qto.custom.iss.parser;
 
+import org.springframework.stereotype.Repository;
+
 import com.querydsl.jpa.impl.JPAQuery;
 import com.endeavorms.velocity.qto.cdi.QtoDatabase;
 import com.endeavorms.velocity.qto.common.AbstractJpaDao;
@@ -11,8 +13,10 @@ import java.util.List;
 
 import static com.endeavorms.velocity.qto.custom.iss.parser.QInputRecord4.inputRecord4;
 
+@Repository
 public class InputRecord4JpaDao extends AbstractJpaDao<InputRecord4, Long> {
-       @Override
+
+    @Override
     @Inject
     protected void setEntityManager(@QtoDatabase final EntityManager entityManager) {
         this.entityManager = entityManager;
