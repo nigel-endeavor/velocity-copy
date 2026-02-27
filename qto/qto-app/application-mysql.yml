@@ -1,24 +1,35 @@
 spring:
+  servlet:
+    context-path: /qto
   main:
     allow-circular-references: true
-
   # Disable Boot's single-datasource auto wiring assumptions for liquibase (we'll wire it ourselves)
   liquibase:
     enabled: false
-
   jpa:
     open-in-view: false
     hibernate:
       ddl-auto: none
-
   artemis:
     mode: native
     broker-url: tcp://localhost:61616
     user: admin
     password: admin
-
   # artemis:
     # broker-url: tcp://artemis:61616
+  security:
+    user:
+      name: admin
+      password: admin
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
 
 app:
   datasource:
