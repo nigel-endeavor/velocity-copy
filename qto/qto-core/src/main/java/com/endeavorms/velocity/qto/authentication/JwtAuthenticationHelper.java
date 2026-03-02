@@ -19,7 +19,8 @@ import java.util.stream.Collectors;
 
 /**
  * Validates JWT bearer tokens and sets Spring Security context.
- * Replaces Shiro-based JWT auth for WebSocket and other programmatic auth.
+ * Used for WebSocket and other programmatic auth.
+ * Configure jwt.secret in application config for HS256 validation (no Microsoft/Azure).
  */
 public final class JwtAuthenticationHelper {
 
@@ -50,18 +51,19 @@ public final class JwtAuthenticationHelper {
     }
 
     private static Jws<Claims> validateAccessToken(String accessToken) throws Exception {
-        String aadClientId = System.getProperty("aadClientId");
-        String aadTenantId = System.getProperty("aadTenantId");
-        String authority = "https://login.microsoftonline.com/" + aadTenantId;
-        String audience = "api://" + aadClientId;
-        String issuer = "https://sts.windows.net/" + aadTenantId + "/";
+        String jwtSecret = System.getProperty("jwt.secret");
+        if (jwtSecret == null || jwtSecret.isBlank()) {
+            jwtSecret = System.getenv("JWT_SECRET");
+        }
+        if (jwtSecret == null || jwtSecret.isBlank()) {
+            throw new JwtValidationException(
+                "JWT validation requires jwt.secret or JWT_SECRET. Microsoft/Azure auth removed.");
+        }
 
         try {
-            SigningKeyResolver resolver = new SigningKeyResolver(authority);
+            byte[] keyBytes = jwtSecret.getBytes(java.nio.charset.StandardCharsets.UTF_8);
             return Jwts.parser()
-                    .keyLocator(header -> resolver.resolveSigningKey((io.jsonwebtoken.JwsHeader) header, (Claims) null))
-                    .requireAudience(audience)
-                    .requireIssuer(issuer)
+                    .verifyWith(io.jsonwebtoken.security.Keys.hmacShaKeyFor(keyBytes))
                     .build()
                     .parseSignedClaims(accessToken);
         } catch (SignatureException ex) {

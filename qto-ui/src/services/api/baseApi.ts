@@ -25,13 +25,8 @@ const baseQuery = fetchBaseQuery({
       headers.set('X-Demo-Mode', 'true');
     }
 
-    // Get access token from MSAL
-    // Note: Token acquisition will be handled by axios interceptor
-    // or you can implement MSAL token acquisition here
-    // const token = await getAccessToken();
-    // if (token) {
-    //   headers.set('Authorization', `Bearer ${token}`);
-    // }
+    // Add auth header when using JWT/session auth
+    // headers.set('Authorization', `Bearer ${token}`);
 
     headers.set('Content-Type', 'application/json');
     return headers;
@@ -59,7 +54,6 @@ const baseQueryWithInterceptor: BaseQueryFn<
   // Handle 401 Unauthorized - redirect to login
   if (result.error && result.error.status === 401) {
     console.error('Unauthorized - redirecting to login');
-    // Trigger MSAL login
     // window.location.href = '/login';
   }
 

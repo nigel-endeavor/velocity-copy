@@ -21,7 +21,7 @@ import java.util.List;
 
 /**
  * Spring HttpMessageConverter for writing ResourceWrapper as Excel spreadsheet.
- * Replaces JAX-RS ExcelProvider.
+ * Excel HTTP message converter for Spring MVC.
  */
 public class ResourceWrapperExcelHttpMessageConverter implements HttpMessageConverter<ResourceWrapper> {
 

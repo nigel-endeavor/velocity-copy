@@ -4,11 +4,11 @@
 -- #
 -- #
 -- # By: Ron Cordell - roncordell
--- #  I didn't see this anywhere, so I thought I'd post it here. This is the script from Quartz to create the tables in a MySQL database, modified to use INNODB instead of MYISAM.
+-- Quartz schema for PostgreSQL (adapted from Quartz distribution).
 
 -- -----------------------------------------------------------------------------------------------
 -- Above comment taken from original file.
--- Quartz tables (this is a copy of tables_mysql_innodb.sql from the Quartz 2.3.2 distribution
+-- Quartz tables (PostgreSQL-compatible, from Quartz 2.3.2 distribution
 -- except that TYPE=innodb was replaced with COLLATE = utf8_general_ci in each create statement).
 -- After running this changeset, we can see that the engine is still InnoDB.
 -- -----------------------------------------------------------------------------------------------

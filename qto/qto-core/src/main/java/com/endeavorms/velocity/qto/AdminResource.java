@@ -3,7 +3,6 @@ package com.endeavorms.velocity.qto;
 import com.endeavorms.velocity.qto.common.SecurityUtils;
 import com.endeavorms.velocity.qto.common.TenantViewManager;
 import com.endeavorms.velocity.qto.company.CompanyManager;
-import com.endeavorms.velocity.qto.graph.MSGraph;
 import com.endeavorms.velocity.qto.inventory.PendingDisconnectManager;
 import com.endeavorms.velocity.qto.location.LocationManager;
 import com.endeavorms.velocity.qto.service.ServiceManager;
@@ -16,12 +15,9 @@ import org.slf4j.LoggerFactory;
 
 import jakarta.inject.Inject;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Resource class for admin operations.
@@ -36,10 +32,6 @@ public class AdminResource {
 
     /** Private Logger for this class. */
     private static final Logger LOGGER = LoggerFactory.getLogger(AdminResource.class);
-
-    /** The MSGraph service. */
-    @Inject
-    private MSGraph msGraph;
 
     @Inject
     private ServiceSnapshotManager serviceSnapshotManager;
@@ -61,27 +53,6 @@ public class AdminResource {
 
     @Inject
     private LocationManager locationManager;
-
-    @GetMapping("/azureAdGroups")
-    public ResponseEntity<?> getAzureAdGroups() {
-        try {
-            return ResponseEntity.ok(msGraph.getGroups());
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body(e.getMessage());
-        }
-    }
-
-    @PostMapping("/refreshAzureAdGroups")
-    public ResponseEntity<?> refreshAzureAdGroups() {
-        try {
-            LOGGER.debug("Azure AD group refresh requested by {}", SecurityUtils.getLoggedInUser());
-            Map<String, List<String>> groups = msGraph.loadGroups();
-            subjectManager.loadGroups();
-            return ResponseEntity.ok(groups);
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body(e.getMessage());
-        }
-    }
 
     /**
      * Test endpoint for ServiceSnapshotJob.

@@ -138,7 +138,7 @@ velocity/
 │   ├── gradlew
 │   ├── qto-core/                  # Core domain, managers, JPA entities
 │   ├── qto-database/              # Liquibase migrations, DB scripts
-│   ├── qto-rest-api/              # REST resources (JAX-RS + Spring MVC)
+│   ├── qto-rest-api/              # REST resources (Spring MVC)
 │   └── qto-spring-boot-app/       # Main Spring Boot application
 │       ├── src/
 │       ├── build.gradle.kts
@@ -415,7 +415,7 @@ lsof -ti:7887                 # Frontend port
 4. **Type imports** must use `import type { ... }` syntax for Vite compatibility
 5. **Clear Vite cache** if you see weird module errors: `rm -rf node_modules/.vite`
 6. **Gradle only** – no Maven; all `pom.xml` files have been removed
-7. **PostgreSQL only** – database migrated from MySQL
+7. **PostgreSQL only**
 
 ---
 

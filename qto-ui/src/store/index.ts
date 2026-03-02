@@ -80,7 +80,7 @@ export const store = configureStore({
           PURGE,
           REGISTER,
         ],
-        // Ignore these paths in the state (Set objects, MSAL instances)
+        // Ignore these paths in the state (Set objects, non-serializable)
         ignoredPaths: ['serviceWorklist.selectedServices'],
       },
     }).concat(baseApi.middleware), // RTK Query middleware

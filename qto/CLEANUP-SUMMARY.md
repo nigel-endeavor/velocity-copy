@@ -2,7 +2,7 @@
 
 ## Overview
 
-Successfully cleaned up the QTO project by removing all legacy JBoss/WildFly and Maven infrastructure, consolidating to a single modern Spring Boot application with Gradle.
+Successfully cleaned up the QTO project by removing all legacy JBoss/WildFly, J2EE, and Maven infrastructure, consolidating to a single modern Spring Boot application with Gradle.
 
 ## What Was Removed
 
@@ -37,29 +37,13 @@ qto/
 ├── .gitignore                   # New root-level ignore file
 ├── AI-README.md                 # Legacy reference (kept for historical context)
 ├── .github/                     # GitHub workflows
-└── qto-spring-boot-app/         # Modern Spring Boot application
-    ├── build.gradle.kts         # Gradle build with Kotlin DSL
-    ├── settings.gradle.kts
-    ├── gradle/                  # Gradle wrapper
-    ├── gradlew                  # Gradle wrapper script
-    ├── README.md                # Application documentation
-    ├── DATABASE-CONFIG.md       # NEW: Database setup guide
-    ├── TEST-SUMMARY.md          # Test documentation
-    ├── MIGRATION.md             # Migration strategy
-    └── src/
-        ├── main/
-        │   ├── java/com/endeavorms/qto/
-        │   │   ├── QtoApplication.java
-        │   │   └── controller/
-        │   │       └── StatusController.java
-        │   └── resources/
-        │       ├── application.yml           # Base config (database-agnostic)
-        │       ├── application-dev.yml       # Dev mode (no database)
-        │       ├── application-mysql.yml     # NEW: MySQL configuration
-        │       ├── application-postgres.yml  # NEW: PostgreSQL configuration
-        │       └── application-test.yml      # Test profile
-        └── test/
-            └── java/com/endeavorms/qto/      # 40 passing tests
+├── qto-core/                    # Domain entities and business logic
+├── qto-database/                # Liquibase migrations (PostgreSQL)
+├── qto-app/                     # Spring Boot application
+│   ├── build.gradle.kts         # Gradle build with Kotlin DSL
+│   └── src/main/resources/
+│       └── application.yml     # PostgreSQL configuration
+└── docker-compose.yml           # PostgreSQL + app services
 ```
 
 ## Size Reduction
@@ -70,22 +54,15 @@ qto/
 
 ## New Features Added
 
-### 1. Multi-Database Support
-✅ **MySQL 8+** - Original configuration maintained
-✅ **PostgreSQL 12+** - NEW support added
-- Both databases fully supported through Spring profiles
-- Easy switching via environment variables
-- No code changes required
+### 1. Database
+✅ **PostgreSQL 12+** - Single database
 
 ### 2. Configuration Profiles
-- **`mysql`** - MySQL database configuration
-- **`postgres`** - PostgreSQL database configuration
 - **`dev`** - Development mode (no database required)
 - **`test`** - Test mode (no database, used by test suite)
 
 ### 3. Environment Variables
 All database settings configurable via environment:
-- `SPRING_PROFILES_ACTIVE` - Select database (mysql/postgres/dev)
 - `DB_HOST` - Database host
 - `DB_PORT` - Database port
 - `DB_NAME` - Database name
@@ -100,26 +77,15 @@ All database settings configurable via environment:
 
 ## How to Use
 
-### Run with MySQL
-```bash
-export SPRING_PROFILES_ACTIVE=mysql
-export DB_PASSWORD=your_password
-cd qto-spring-boot-app
-./gradlew bootRun
-```
-
 ### Run with PostgreSQL
 ```bash
-export SPRING_PROFILES_ACTIVE=postgres
-export DB_PASSWORD=your_password
-cd qto-spring-boot-app
-./gradlew bootRun
+cd qto && docker compose up -d
+./gradlew :qto-app:bootRun
 ```
 
 ### Run without Database (Development)
 ```bash
-cd qto-spring-boot-app
-./gradlew bootRun --args='--spring.profiles.active=dev'
+./gradlew :qto-app:bootRun --args='--spring.profiles.active=dev'
 ```
 
 ### Run Tests
@@ -144,15 +110,7 @@ BUILD SUCCESSFUL in 19s
 40 tests completed, 0 failed
 ```
 
-## Database Configuration Examples
-
-### MySQL Setup
-```sql
-CREATE DATABASE qto CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER 'qto_user'@'localhost' IDENTIFIED BY 'your_password';
-GRANT ALL PRIVILEGES ON qto.* TO 'qto_user'@'localhost';
-FLUSH PRIVILEGES;
-```
+## Database Configuration
 
 ### PostgreSQL Setup
 ```sql
@@ -162,15 +120,11 @@ GRANT ALL PRIVILEGES ON DATABASE qto TO qto_user;
 ```
 
 ### Docker Compose
-See `DATABASE-CONFIG.md` for complete Docker Compose examples for both MySQL and PostgreSQL.
+See `docker-compose.yml` for PostgreSQL + app services.
 
-## Dependencies Updated
+## Dependencies
 
-### Added
 - ✅ `org.postgresql:postgresql` - PostgreSQL JDBC driver
-
-### Already Present
-- `com.mysql:mysql-connector-j` - MySQL JDBC driver
 - `org.springframework.boot:spring-boot-starter-web`
 - `org.springframework.boot:spring-boot-starter-data-jpa`
 - `org.springframework.boot:spring-boot-starter-actuator`
@@ -203,7 +157,6 @@ See `DATABASE-CONFIG.md` for complete Docker Compose examples for both MySQL and
 - Modern testing practices
 
 ### 3. Flexibility
-- Easy database switching (MySQL ↔ PostgreSQL)
 - Development without database
 - Docker-ready configuration
 - Cloud-native architecture
@@ -226,7 +179,7 @@ All existing functionality verified:
 ## Next Steps
 
 ### Immediate (Ready Now)
-1. Choose database (MySQL or PostgreSQL)
+1. Start PostgreSQL via Docker Compose
 2. Set environment variables
 3. Run application: `./gradlew bootRun`
 4. Test endpoints at `http://localhost:8080/qto/api/status`

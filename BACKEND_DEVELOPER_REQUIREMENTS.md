@@ -31,7 +31,7 @@ We're seeking an experienced **Backend Developer** to build, test, and deploy th
 - Implement type-safe database queries using QueryDSL and JPA Criteria API
 - Develop scheduled jobs using Quartz for background processing (disconnections, snapshots, cleanup)
 - Build multi-tenant features with platform-level tenant isolation
-- Integrate with Azure AD for authentication and Microsoft Graph API for user management
+- Implement authentication and user management
 
 **Database & Persistence**:
 - Design and maintain PostgreSQL database schema with 140+ tables
@@ -40,14 +40,13 @@ We're seeking an experienced **Backend Developer** to build, test, and deploy th
 - Develop database views for reporting and analytics
 
 **Integration Development**:
-- Implement Azure AD OAuth 2.0 / OpenID Connect authentication flows using MSAL4J
-- Build Microsoft Graph API integrations for user profile and group membership
+- Implement Spring Security authentication flows
 - Develop integrations with FTDI field services and CRM/Dataverse systems
 - Implement JMS queue processing for asynchronous bulk import operations
 
 **Security & Authorization**:
 - Implement permission-based access control using Apache Shiro
-- Configure custom authorization realms integrating Azure AD with Shiro
+- Configure Spring Security authorization
 - Secure REST endpoints with role-based permissions
 - Manage JWT token validation and session management
 
@@ -122,7 +121,7 @@ We're seeking an experienced **Backend Developer** to build, test, and deploy th
 
 ### Security & Authentication
 - **OAuth 2.0 / OpenID Connect** authentication flows
-- **Azure AD integration** with MSAL4J
+- **Spring Security** integration
 - **JWT token validation** and session management
 - Permission-based access control patterns
 
@@ -138,8 +137,7 @@ We're seeking an experienced **Backend Developer** to build, test, and deploy th
 ## Strong Nice-to-Have Skills
 
 ### Advanced Integrations
-- **Microsoft Graph API** for user and group management
-- **Azure Identity SDK** for cloud authentication
+- **User and group management**
 - JMS/Message queues for asynchronous processing
 - Apache POI for Excel report generation
 - Freemarker or similar templating engines for emails
@@ -252,7 +250,7 @@ We're seeking an experienced **Backend Developer** to build, test, and deploy th
 ## Why Join This Project?
 
 1. **Complex Domain**: Work on sophisticated enterprise B2B telecommunications platform
-2. **Modern Stack**: Java 11, Hibernate 6.2, Angular 16, Azure AD integration
+2. **Modern Stack**: Java 21, Hibernate 6.2, Spring Boot, PostgreSQL
 3. **Ownership Opportunity**: Lead testing infrastructure and CI/CD implementation
 4. **Scale Impact**: Support enterprise customers with mission-critical service management
 5. **Technical Growth**: Deep dive into enterprise Spring, multi-tenancy, and complex business logic

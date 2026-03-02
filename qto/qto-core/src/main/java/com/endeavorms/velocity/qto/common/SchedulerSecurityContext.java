@@ -10,7 +10,7 @@ import java.util.Collections;
 
 /**
  * Utility to run code with scheduler identity for JMS listeners and background jobs.
- * Replaces Shiro's createSchedulerSubjectThreadState for Spring Security.
+ * Sets Spring Security context for scheduler jobs.
  */
 public final class SchedulerSecurityContext {
 

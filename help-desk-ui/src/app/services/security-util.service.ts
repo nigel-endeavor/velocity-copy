@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { MsalService } from '@azure/msal-angular';
-import { AccountInfo } from '@azure/msal-browser';
-import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
+
+/** Stub user info when not using Microsoft auth. */
+export interface StubUserInfo {
+  name?: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -13,39 +15,27 @@ export class SecurityUtilService {
   about: any;
   aboutSubject: Subject<any> = new Subject<any>();
 
-  constructor(
-    private authService: MsalService,
-    private httpClient: HttpClient
-  ) { }
+  constructor(private httpClient: HttpClient) { }
 
-  getLoggedInUser(): AccountInfo {
-    return this.authService.instance.getAllAccounts()[0];
+  /** Stub: returns null when not using Microsoft auth. Replace with JWT/session auth later. */
+  getLoggedInUser(): StubUserInfo | null {
+    return null;
   }
 
-  userHasPermission(permission: string): boolean {
-    return this.getLoggedInUser().idTokenClaims!.roles!.includes(permission) || this.getLoggedInUser().idTokenClaims!.roles!.includes(Permissions.ADMIN);
+  /** Stub: returns false. Replace with real permission check when auth is implemented. */
+  userHasPermission(_permission: string): boolean {
+    return false;
   }
 
+  /** Stub: returns empty string. Replace with real token when auth is implemented. */
   getBearerToken(): string {
-    let localStorageKey = this.getLoggedInUser().homeAccountId
-      + '-login.windows.net-accesstoken-'
-      + this.getLoggedInUser().idTokenClaims!.aud
-      + '-'
-      + this.getLoggedInUser().idTokenClaims!.tid
-      + '-api://' + environment.azureClientId + '/qto--';
-    let accessToken = localStorage.getItem(localStorageKey);
-    if (accessToken) {
-      return JSON.parse(accessToken).secret;
-    }
     return '';
   }
 
-  // Admin
   getIsAdminUser(): boolean {
     return this.userHasPermission(Permissions.ADMIN);
   }
 
-  // Order
   getIsOrderReadUser(): boolean {
     return this.userHasPermission(Permissions.ORDER_READ);
   }
@@ -58,8 +48,6 @@ export class SecurityUtilService {
     return this.userHasPermission(Permissions.ORDER_WRITE_TERMINAL);
   }
 
-  // Invoicing 
-  // Refactor to use read and write permissions
   getIsInvoicingUser(): boolean {
     return this.userHasPermission(Permissions.INVOICING);
   }
@@ -72,7 +60,6 @@ export class SecurityUtilService {
     return this.userHasPermission(Permissions.INVOICE_WRITE);
   }
 
-  // Inventory
   getIsInventoryWriteUser(): boolean {
     return this.userHasPermission(Permissions.INVENTORY_WRITE);
   }
@@ -81,7 +68,6 @@ export class SecurityUtilService {
     return this.userHasPermission(Permissions.INVENTORY_READ);
   }
 
-  // File Import
   getIsFileImportUser(): boolean {
     return this.userHasPermission(Permissions.FILE_IMPORT);
   }
@@ -90,8 +76,8 @@ export class SecurityUtilService {
 export enum Permissions {
   ADMIN = '*',
   INVOICING = 'invoicing',
-  INVOICE_WRITE = 'invoice:write', // can finalize and unfinalize charges within Invoicing  
-  INVOICE_READ = 'invoice:read', // can view the invoices and charges 
+  INVOICE_WRITE = 'invoice:write',
+  INVOICE_READ = 'invoice:read',
   ORDER_WRITE_TERMINAL = 'order:write-terminal',
   ORDER_READ = 'order:read',
   ORDER_WRITE = 'order:write',

@@ -96,3 +96,12 @@ coverage/
 # Runtime process IDs
 .qto-backend.pid
 .qto-frontend.pid
+
+# Duplicate/backup files (e.g. "App 2.tsx", "pom 2.xml")
+* 2.*
+* 2
+
+# Migration/temp scripts
+qto/*.pl
+qto/qto/*.pl
+qto/test.sql

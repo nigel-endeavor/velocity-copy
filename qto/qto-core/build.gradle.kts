@@ -37,8 +37,9 @@ dependencies {
     implementation("com.querydsl:querydsl-core:5.0.0")
 
     annotationProcessor("com.querydsl:querydsl-apt:5.0.0:jakarta")
-    implementation("commons-beanutils:commons-beanutils:1.9.4")
+    // commons-fileupload still references javax.servlet; bridge for compatibility
     compileOnly("javax.servlet:javax.servlet-api:4.0.1")
+    implementation("commons-beanutils:commons-beanutils:1.9.4")
 
     implementation("io.jsonwebtoken:jjwt-api:0.12.3")
     implementation("io.jsonwebtoken:jjwt-impl:0.12.3")

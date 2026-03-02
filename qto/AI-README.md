@@ -1,6 +1,6 @@
 # QTO (Quantum Task Orchestrator) - AI Development Guide
 
-> **Migration Notice (2026)**: The project uses **Gradle**, **PostgreSQL**, and **Spring Boot**. Core modules: qto-core, qto-database, qto-app. No JBoss, WildFly, or Java EE.
+> **Migration Notice (2026)**: The project uses **Gradle**, **PostgreSQL**, and **Spring Boot** only. Core modules: qto-core, qto-database, qto-app. No J2EE, JBoss, WildFly, or Java EE.
 
 ## Project Overview
 
@@ -21,7 +21,7 @@
 - **Database**: PostgreSQL 12+
 - **ORM**: JPA 2.2 / Hibernate 6.2
 - **REST API**: Spring MVC
-- **Security**: Apache Shiro + Azure AD OAuth 2.0
+- **Security**: Spring Security
 - **Scheduler**: Quartz 2.3.2
 - **Database Migrations**: Liquibase 4.23.0
 
@@ -31,8 +31,6 @@
 - **Apache HttpClient 5.2.1**: External API integration
 - **JWT 4.4.0**: Token-based authentication
 - **SLF4J 2.0.7**: Logging facade
-- **Microsoft Graph API**: User management integration
-- **Azure Identity SDK**: Cloud authentication
 
 ## Project Structure
 
@@ -114,14 +112,7 @@ DELETE /api/services/{id}       # Delete service
 
 ### Authentication
 
-QTO uses **Apache Shiro + Azure AD OAuth 2.0**:
-
-1. **Azure AD Configuration**: Set environment variables or system properties
-   ```bash
-   -Dazure.tenant.id=your-tenant-id
-   -Dazure.client.id=your-client-id
-   -Dazure.client.secret=your-client-secret
-   ```
+QTO uses **Spring Security** for authentication and authorization.
 
 2. **API Authentication**: Include JWT token in Authorization header
    ```bash
@@ -141,10 +132,9 @@ QTO uses **Apache Shiro + Azure AD OAuth 2.0**:
 ./gradlew clean build -x test
 - Verify all required JARs are in `WEB-INF/lib`
 
-**Problem**: Datasource not found (JNDI lookup fails)
+**Problem**: Datasource not found
 - Verify datasource configuration in `application.yml`
-- Check JNDI name matches `persistence.xml` configuration
-- Ensure MySQL driver is deployed
+- Verify PostgreSQL driver and connection settings
 
 **Problem**: Port already in use (8080)
 ```bash
@@ -180,10 +170,9 @@ export JAVA_OPTS="-Xms2g -Xmx4g -XX:MetaspaceSize=512m"
 ./gradlew :qto-app:bootRun
 ```
 
-**Problem**: Azure AD authentication fails
-- Verify Azure AD configuration in system properties
-- Check tenant ID, client ID, and client secret
-- Ensure redirect URIs are configured in Azure portal
+**Problem**: Authentication fails
+- Verify Spring Security configuration
+- Check credentials and session configuration
 
 ## Key Configuration Files
 
@@ -192,7 +181,6 @@ export JAVA_OPTS="-Xms2g -Xmx4g -XX:MetaspaceSize=512m"
 | `build.gradle.kts` | Gradle build and dependencies |
 | `application.yml` | Spring Boot datasource and config |
 | `persistence.xml` | JPA configuration and entity mappings |
-| `shiro.ini` | Apache Shiro security configuration |
 
 ## Multi-Tenant Architecture
 
@@ -216,7 +204,7 @@ Start/stop jobs via REST API or JMX console.
 
 ## Integration Points
 
-1. **Azure AD / Microsoft Graph API**: User authentication and profile management
+1. **User management**: Subject and tenant management
 2. **FTDI Field Services**: Dispatch and appointment management
 3. **CRM / Dataverse**: Customer data synchronization
 4. **JMS Queues**: Asynchronous bulk import operations
@@ -257,7 +245,7 @@ GitHub Actions workflows in `.github/workflows/`:
 
 - **Spring Boot Documentation**: https://docs.spring.io/spring-boot/
 - **Hibernate ORM**: https://hibernate.org/orm/documentation/
-- **Apache Shiro**: https://shiro.apache.org/documentation.html
+- **Spring Security**: https://docs.spring.io/spring-security/reference/
 - **Liquibase**: https://docs.liquibase.com/
 
 ## Getting Help
@@ -274,25 +262,20 @@ For AI assistants working on this codebase:
 ## Quick Start Summary
 
 ```bash
-# 1. Set up databases
-mysql -u root -p < setup-databases.sql
-
-# 2. Start PostgreSQL
+# 1. Start PostgreSQL
 cd qto && docker compose up -d
 
-# 3. Run application
+# 2. Run application
 ./gradlew :qto-app:bootRun
 
-# 4. Build and deploy
+# 3. Build
 cd qto
-mvn clean install
-cd qto-war
-./gradlew :qto-app:bootRun
+./gradlew clean build
 
-# 5. Verify deployment
+# 4. Verify deployment
 curl http://localhost:8080/qto/api/health
 
-# 6. Monitor logs
+# 5. Monitor logs
 # Logs appear in console when using bootRun
 ```
 

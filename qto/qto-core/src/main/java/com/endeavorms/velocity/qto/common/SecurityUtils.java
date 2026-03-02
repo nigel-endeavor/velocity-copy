@@ -53,7 +53,7 @@ public final class SecurityUtils {
 
     /**
      * Check if the current user has the given authority/permission.
-     * Replaces Shiro's Subject.isPermitted().
+     * Checks if the current user has the given permission.
      */
     public static boolean hasAuthority(String permission) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

@@ -17,7 +17,7 @@ public class QtoLiquibaseConfig {
     // This matches your qto-app Liquibase changelog path
     liquibase.setChangeLog("classpath:database/changelog-master.xml");
 
-    // This matches your mysql profile contexts
+    // Liquibase context for qto datasource
     liquibase.setContexts("common,dev");
 
     return liquibase;
