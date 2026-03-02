@@ -22,6 +22,7 @@ Quantum Task Orchestrator - React Frontend
 ## 📚 Documentation
 
 - **`RUN_INSTRUCTIONS.md`** - Detailed run instructions (start/stop/troubleshoot)
+- **[Graphite workflow](agentx/graphite.agentx.md)** - Stacked branches and PR workflow
 - **`qto-ui/QUICK_START.md`** - Frontend quick start guide
 - **`qto-ui/MIGRATION_COMPLETE.md`** - Migration summary and features
 - **`qto-ui/COMPONENT_LIBRARY.md`** - Component usage guide

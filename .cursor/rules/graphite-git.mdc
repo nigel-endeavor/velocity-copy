@@ -1,0 +1,25 @@
+---
+description: Use Graphite CLI instead of raw git for branching and PR workflows
+alwaysApply: true
+---
+
+# Use Graphite for Git Operations
+
+When the user gives any git command (or asks for git operations), use **Graphite CLI** (`gt`) instead of raw `git` where applicable.
+
+## Mapping
+
+| Git command / intent | Use instead |
+|----------------------|-------------|
+| `git checkout -b feature/xyz` | `gt branch create feature/xyz` |
+| Create branch stacked on current | `gt branch create feature/xyz` |
+| Rebase / pull latest | `gt sync` |
+| Push and open PRs | `gt submit` |
+| `git status` (stack view) | `gt log` or `gt stack` |
+| Switch branch | `gt checkout <branch>` or `gt up` / `gt down` |
+
+## When to use raw git
+
+- `git add`, `git commit` — use as-is
+- `git diff`, `git log` (non-stack) — use as-is
+- Operations Graphite doesn't cover — fall back to `git`
