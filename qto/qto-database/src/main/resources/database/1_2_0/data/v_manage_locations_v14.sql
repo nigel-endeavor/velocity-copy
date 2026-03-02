@@ -58,7 +58,7 @@ FROM company c
                            COUNT(s.service_id) AS count_services,
                            COUNT(s.active = true or null) AS count_active_services,
                            COUNT(s.active = false or null) AS count_inactive_services,
-                           CONVERT(CONCAT(
+                           CAST(CONCAT(
                                    CASE WHEN count(bs.service_id) > 0 THEN
                                             CASE WHEN count(bs.service_id) > 1 THEN CONCAT('Broadband(', count(bs.service_id), ')')
                                                  ELSE 'Broadband' END
