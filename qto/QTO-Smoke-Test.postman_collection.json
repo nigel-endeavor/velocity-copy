@@ -1,0 +1,384 @@
+{
+  "info": {
+    "name": "QTO Smoke Test",
+    "description": "Smoke test for all backend endpoints in QTO.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Activation Schedules",
+      "item": [
+        {
+          "name": "Get Schedules",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/activationSchedules?serviceId=1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "activationSchedules"],
+              "query": [{"key": "serviceId", "value": "1"}]
+            }
+          }
+        },
+        {
+          "name": "Get Schedule by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/activationSchedules/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "activationSchedules", "1"]
+            }
+          }
+        },
+        {
+          "name": "Create Schedule",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"serviceId\": 1,\n  \"name\": \"Test Schedule\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/activationSchedules",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "activationSchedules"]
+            }
+          }
+        },
+        {
+          "name": "Edit Schedule",
+          "request": {
+            "method": "PUT",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": 1,\n  \"serviceId\": 1,\n  \"name\": \"Updated Schedule\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/activationSchedules/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "activationSchedules", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Addresses",
+      "item": [
+        {
+          "name": "Get Addresses",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/addresses",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "addresses"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Company File Attachments",
+      "item": [
+        {
+          "name": "Get Attachments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/companyFileAttachments?companyId=1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "companyFileAttachments"],
+              "query": [{"key": "companyId", "value": "1"}]
+            }
+          }
+        },
+        {
+          "name": "Upload Attachment",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/companyFileAttachments/upload?companyId=1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "companyFileAttachments", "upload"],
+              "query": [{"key": "companyId", "value": "1"}]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Cost History",
+      "item": [
+        {
+          "name": "Get Cost History",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/costHistory",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "costHistory"]
+            }
+          }
+        },
+        {
+          "name": "Get Cost History Meta",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/costHistory/meta",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "costHistory", "meta"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Contacts",
+      "item": [
+        {
+          "name": "Find by CompanyId and Type",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/contacts?companyId=1&type=SALES",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "contacts"],
+              "query": [
+                {"key": "companyId", "value": "1"},
+                {"key": "type", "value": "SALES"}
+              ]
+            }
+          }
+        },
+        {
+          "name": "Find by OrderId",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/contacts/order?orderId=1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "contacts", "order"],
+              "query": [{"key": "orderId", "value": "1"}]
+            }
+          }
+        },
+        {
+          "name": "Create Contact",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"companyId\": 1,\n  \"type\": \"SALES\",\n  \"name\": \"Test Contact\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/contacts",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "contacts"]
+            }
+          }
+        },
+        {
+          "name": "Edit Contact",
+          "request": {
+            "method": "PUT",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": 1,\n  \"companyId\": 1,\n  \"type\": \"SALES\",\n  \"name\": \"Updated Contact\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/contacts/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "contacts", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Location Jeops",
+      "item": [
+        {
+          "name": "Get Location Jeops",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/locationJeops",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "locationJeops"]
+            }
+          }
+        },
+        {
+          "name": "Create Location Jeop",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"locationId\": 1,\n  \"name\": \"Test Jeop\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/locationJeops",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "locationJeops"]
+            }
+          }
+        },
+        {
+          "name": "Edit Location Jeop",
+          "request": {
+            "method": "PUT",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": 1,\n  \"locationId\": 1,\n  \"name\": \"Updated Jeop\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/locationJeops/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "locationJeops", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Locations",
+      "item": [
+        {
+          "name": "Get Locations",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/locations",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "locations"]
+            }
+          }
+        },
+        {
+          "name": "Create Location",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test Location\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/locations",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "locations"]
+            }
+          }
+        },
+        {
+          "name": "Edit Location",
+          "request": {
+            "method": "PUT",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": 1,\n  \"name\": \"Updated Location\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/locations/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "locations", "1"]
+            }
+          }
+        },
+        {
+          "name": "Delete Location",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/locations/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "locations", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Lookup Types",
+      "item": [
+        {
+          "name": "List Modifiable Alphabetically",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/lookupTypes?offset=0&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "lookupTypes"],
+              "query": [
+                {"key": "offset", "value": "0"},
+                {"key": "limit", "value": "10"}
+              ]
+            }
+          }
+        },
+        {
+          "name": "Set Values",
+          "request": {
+            "method": "PUT",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": 1,\n  \"name\": \"Updated LookupType\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/lookupTypes/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "lookupTypes", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Order Jeops",
+      "item": [
+        {
+          "name": "Get Order Jeops",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/orderJeops",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "orderJeops"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    }
+  ]
+}
