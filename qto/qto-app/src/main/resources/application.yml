@@ -6,6 +6,10 @@ spring:
   # QtoLiquibaseConfig runs Liquibase on qtoDataSource
   liquibase:
     enabled: false
+  security:
+    user:
+      name: admin
+      password: admin
   jpa:
     open-in-view: false
     hibernate:

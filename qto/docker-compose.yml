@@ -33,17 +33,15 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-
-  # artemis:
-  #   image: apache/artemis:latest-alpine
-  #   container_name: artemis
-  #   ports:
-  #     - "61616:61616"
-  #     - "8161:8161"
-  #   environment:
-  #     ARTEMIS_USER: admin
-  #     ARTEMIS_PASSWORD: admin
-
+  artemis:
+    image: apache/artemis:latest-alpine
+    container_name: artemis
+    ports:
+      - "61616:61616"
+      - "8161:8161"
+    environment:
+      ARTEMIS_USER: admin
+      ARTEMIS_PASSWORD: admin
   qto-ui:
     build:
       context: ../qto-ui
