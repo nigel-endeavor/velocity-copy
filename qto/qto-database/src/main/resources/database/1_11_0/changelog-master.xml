@@ -6,7 +6,7 @@
 
     <changeSet id="1_11_0-001" author="rcasey">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/pbi_iss_service_v8.sql"
                  relativeToChangelogFile="true"
@@ -34,7 +34,7 @@
 
     <changeSet id="1_11_0-003" author="fcurran">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/pbi_iss_location_v8.sql"
                  relativeToChangelogFile="true"
@@ -63,7 +63,7 @@
 
     <changeSet id="1_11_0-006" author="fcurran">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/pbi_iss_activation_attempts_v6.sql"
                  relativeToChangelogFile="true"
@@ -73,7 +73,7 @@
 
     <changeSet id="1_11_0-007" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/iss_ouput_file_v13.sql"
                  relativeToChangelogFile="true"
@@ -83,7 +83,7 @@
 
     <changeSet id="1_11_0-008" author="rcasey">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/address_refactor.sql"
                  relativeToChangelogFile="true"
@@ -93,7 +93,7 @@
 
     <changeSet id="1_11_0-008" author="bmccormick">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_service_inventory_v16.sql"
                  relativeToChangelogFile="true"
@@ -118,7 +118,7 @@
 
     <changeSet id="1_11_0-009" author="rcasey">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_disputes_v11.sql"
                  relativeToChangelogFile="true"
@@ -148,7 +148,7 @@
 
     <changeSet id="1_11_0-010" author="rcasey">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_address_v1.sql"
                  relativeToChangelogFile="true"
@@ -158,7 +158,7 @@
 
     <changeSet id="1_11_0-011" author="rcasey">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/custom_field_schema.sql"
                  relativeToChangelogFile="true"
@@ -168,7 +168,7 @@
 
     <changeSet id="1_11_0-012" author="rcasey">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/custom_field_insert_demo_tenant.sql"
                  relativeToChangelogFile="true"
@@ -199,7 +199,7 @@
 
     <changeSet id="1_11_0-011" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/pbi_i90_4g5g_service_v1.sql"
                  relativeToChangelogFile="true"
@@ -446,7 +446,7 @@
 
     <changeSet id="1_11_0-017" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/custom_field_insert_new_order_Demo.sql"
                  relativeToChangelogFile="true"
@@ -456,7 +456,7 @@
 
     <changeSet id="1_11_0-014" author="rcasey">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_activations_v11.sql"
                  relativeToChangelogFile="true"
@@ -482,7 +482,7 @@
 
     <changeSet id="1_11_0-019" author="rcasey">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_address_v2.sql"
                  relativeToChangelogFile="true"
@@ -491,3 +491,4 @@
     </changeSet>
 
 </databaseChangeLog>
+

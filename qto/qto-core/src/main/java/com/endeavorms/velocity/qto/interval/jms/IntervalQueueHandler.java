@@ -13,12 +13,12 @@ public class IntervalQueueHandler {
 
     public static final String INTERVALS_QUEUE = "qto.IntervalQueue";
 
-    @Autowired
-    private JmsTemplate jmsTemplate;
+    // JMS disabled
+    // private JmsTemplate jmsTemplate;
 
     public void sendMessageToQueue(final IntervalMessage intervalMessage) {
         try {
-            jmsTemplate.convertAndSend(INTERVALS_QUEUE, intervalMessage);
+            // JMS disabled
             LOGGER.debug("Sent message to {}, entityId: {}, milestoneInstanceId: {}, messageType: {}",
                     INTERVALS_QUEUE, intervalMessage.getEntityId(),
                     intervalMessage.getMilestoneInstanceId(), intervalMessage.getMessageType());

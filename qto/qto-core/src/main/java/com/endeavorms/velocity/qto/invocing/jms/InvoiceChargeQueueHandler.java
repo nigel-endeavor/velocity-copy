@@ -13,12 +13,12 @@ public class InvoiceChargeQueueHandler {
 
     public static final String INVOICE_QUEUE = "qto.InvoiceChargeQueue";
 
-    @Autowired
-    private JmsTemplate jmsTemplate;
+    // JMS disabled
+    // private JmsTemplate jmsTemplate;
 
     public void sendMessageToQueue(final InvoiceChargeMessage invoiceChargeMessage) {
         try {
-            jmsTemplate.convertAndSend(INVOICE_QUEUE, invoiceChargeMessage);
+            // JMS disabled
             LOGGER.debug("Sent message to {}, invoiceId: {}, messageType: {}",
                     INVOICE_QUEUE, invoiceChargeMessage.getInvoiceId(), invoiceChargeMessage.getMessageType());
         } catch (Exception e) {

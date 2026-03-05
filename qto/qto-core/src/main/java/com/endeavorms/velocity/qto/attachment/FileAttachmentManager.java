@@ -1,5 +1,7 @@
 package com.endeavorms.velocity.qto.attachment;
 
+import org.springframework.stereotype.Component;
+
 import com.endeavorms.velocity.qto.common.AbstractFileAttachmentManager;
 
 import jakarta.inject.Inject;
@@ -8,6 +10,7 @@ import jakarta.inject.Inject;
  * @author rcasey
  * @since 9/1/2023
  */
+@Component
 public class FileAttachmentManager extends AbstractFileAttachmentManager<FileAttachment> {
 
     @Inject

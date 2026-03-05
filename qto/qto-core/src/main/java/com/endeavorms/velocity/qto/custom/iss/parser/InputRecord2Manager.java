@@ -1,9 +1,12 @@
 package com.endeavorms.velocity.qto.custom.iss.parser;
 
+import org.springframework.stereotype.Component;
+
 import com.endeavorms.velocity.qto.common.StandardManager;
 
 import jakarta.inject.Inject;
 
+@Component
 public class InputRecord2Manager extends StandardManager<InputRecord2> {
 
     /**

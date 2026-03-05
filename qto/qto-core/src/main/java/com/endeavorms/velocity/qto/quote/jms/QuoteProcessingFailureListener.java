@@ -14,6 +14,7 @@ import jakarta.jms.Message;
  * Dead letter queue for failed quote orders.
  */
 @Component
+@org.springframework.boot.autoconfigure.condition.ConditionalOnProperty(name = "qto.jms.enabled", havingValue = "true", matchIfMissing = false)
 public class QuoteProcessingFailureListener {
 
     /** Private Logger for this class. */

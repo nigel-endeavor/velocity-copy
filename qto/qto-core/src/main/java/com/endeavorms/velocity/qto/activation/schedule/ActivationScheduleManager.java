@@ -13,15 +13,8 @@ import com.endeavorms.velocity.qto.service.ServiceManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 import jakarta.inject.Inject;
-import jakarta.jms.ObjectMessage;
-import jakarta.jms.Queue;
-import jakarta.jms.QueueConnection;
-import jakarta.jms.QueueConnectionFactory;
-import jakarta.jms.QueueSender;
-import jakarta.jms.QueueSession;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -58,23 +51,8 @@ public class ActivationScheduleManager extends StandardManager<ActivationSchedul
      */
     @Inject
     private FtdiDispatchManager ftdiDispatchManager;
-
-    /**
-     * JMS Queue.
-     */
-    @Resource(mappedName = "java:/queue/qto.FtdiProcessingQueue")
-    private Queue queue;
-
-    /**
-     * Connection factory name.
-     */
-    private static final String JMS_CONNECTION_FACTORY_NAME = "java:/JmsXA";
-
-    /**
-     * JMS connection factory.
-     */
-    @Resource(mappedName = JMS_CONNECTION_FACTORY_NAME)
-    private QueueConnectionFactory connectionFactory;
+    
+    private static final String FTDI_PROCESSING_QUEUE = "qto.FtdiProcessingQueue";
 
     @Override
     protected ActivationScheduleJpaDao getDao() {
@@ -191,34 +169,9 @@ public class ActivationScheduleManager extends StandardManager<ActivationSchedul
     }
 
     public void sendDispatchToQueue(final ActivationSchedule schedule, final FtdiDispatch ftdiDispatch) {
-
-        String jmsQueueName = null;
-
-        try (QueueConnection connection = connectionFactory.createQueueConnection();
-             QueueSession session = connection.createQueueSession(false, QueueSession.AUTO_ACKNOWLEDGE)) {
-
-            jmsQueueName = queue.getQueueName();
-            ObjectMessage message = session.createObjectMessage();
-            message.setLongProperty("dispatchId", ftdiDispatch.getId());
-            message.setLongProperty("tenantId", schedule.getTenantId());
-            message.setStringProperty("action", "CREATE");
-            message.setStringProperty("vendor", "ENDEAVOR");
-
-            LOGGER.debug("About to send: {}, scheduleId = {}",
-                    jmsQueueName, schedule.getId());
-
-            try (QueueSender sender = session.createSender(queue)) {
-                sender.send(message);
-
-                LOGGER.debug("Sent: {}, scheduleId = {}",
-                        jmsQueueName, schedule.getId());
-            }
-
-        } catch (Exception e) {
-            LOGGER.error("Error closing connection: {}, scheduleId = {}",
-                    jmsQueueName, schedule.getId());
-        }
-
+        // JMS disabled for standalone testing - log instead
+        LOGGER.info("JMS disabled - would send dispatch to queue: {}, scheduleId = {}, dispatchId = {}", 
+                FTDI_PROCESSING_QUEUE, schedule.getId(), ftdiDispatch.getId());
     }
 
     public void setActivationMilestones(final ActivationSchedule schedule, final Boolean both) {

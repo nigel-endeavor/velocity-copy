@@ -5,7 +5,7 @@
 
     <changeSet id="1_12_0-01" author="bmccormick">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_services_v35.sql"
                  relativeToChangelogFile="true"
@@ -15,7 +15,7 @@
 
     <changeSet id="1_12_0-02" author="bmccormick">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_service_inventory_v18.sql"
                  relativeToChangelogFile="true"
@@ -25,7 +25,7 @@
 
     <changeSet id="1_12_0-03" author="bmccormick">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_disputes_v12.sql"
                  relativeToChangelogFile="true"
@@ -40,7 +40,7 @@
 
     <changeSet id="1_12_0-04" author="bmccormick">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_disputes_v13.sql"
                  relativeToChangelogFile="true"
@@ -58,21 +58,21 @@
         </sql>
     </changeSet>
 
-    <changeSet id="1_12_0-007" author="rcasey" context="dev">
+    <changeSet id="1_12_0-007-dev" author="rcasey" context="dev">
         <sql>
             INSERT INTO config_property (config_property_key, config_property_value)
             VALUES ('ORDER_RECEIPT_VIEW_LINK', 'https://i90.dev.vertek.com/qto-ops/#/services?workflowView=Order%20Receipt');
         </sql>
     </changeSet>
 
-    <changeSet id="1_12_0-007" author="rcasey" context="test">
+    <changeSet id="1_12_0-007-test" author="rcasey" context="test">
         <sql>
             INSERT INTO config_property (config_property_key, config_property_value)
             VALUES ('ORDER_RECEIPT_VIEW_LINK', 'https://i90.uat.vertek.com/qto-ops/#/services?workflowView=Order%20Receipt');
         </sql>
     </changeSet>
 
-    <changeSet id="1_12_0-007" author="rcasey" context="prod">
+    <changeSet id="1_12_0-007-prod" author="rcasey" context="prod">
         <sql>
             INSERT INTO config_property (config_property_key, config_property_value)
             VALUES ('ORDER_RECEIPT_VIEW_LINK', 'https://i90.vertek.com/#/services?workflowView=Order%20Receipt');
@@ -127,7 +127,7 @@
 
     <changeSet id="1_12_0-05" author="fcurran">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_services_v36.sql"
                  relativeToChangelogFile="true"
@@ -153,7 +153,7 @@
 
     <changeSet id="1_12_0-015" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_address_v3.sql"
                  relativeToChangelogFile="true"
@@ -183,7 +183,7 @@
 
     <changeSet id="1_12_0-018" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/service_lookups.sql"
                  relativeToChangelogFile="true"
@@ -193,7 +193,7 @@
 
     <changeSet id="1_12_0-019" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/tenant_service_lookups.sql"
                  relativeToChangelogFile="true"
@@ -201,9 +201,9 @@
                  splitStatements="true"/>
     </changeSet>
 
-    <changeSet id="1_12_0-018" author="bmccormick">
+    <changeSet id="1_12_0-020" author="bmccormick">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_services_v37.sql"
                  relativeToChangelogFile="true"
@@ -212,3 +212,4 @@
     </changeSet>
 
 </databaseChangeLog>
+

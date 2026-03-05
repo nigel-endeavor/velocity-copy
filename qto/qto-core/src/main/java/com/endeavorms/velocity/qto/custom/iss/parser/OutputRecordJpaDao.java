@@ -1,5 +1,7 @@
 package com.endeavorms.velocity.qto.custom.iss.parser;
 
+import org.springframework.stereotype.Repository;
+
 import com.querydsl.jpa.impl.JPAQuery;
 import com.endeavorms.velocity.qto.cdi.QtoDatabase;
 import com.endeavorms.velocity.qto.common.AbstractJpaDao;
@@ -11,6 +13,7 @@ import java.util.List;
 
 import static com.endeavorms.velocity.qto.custom.iss.parser.QOutputRecord.outputRecord;
 
+@Repository
 public class OutputRecordJpaDao extends AbstractJpaDao<OutputRecord, Long> {
     @Override
     @Inject
@@ -26,3 +29,4 @@ public class OutputRecordJpaDao extends AbstractJpaDao<OutputRecord, Long> {
                 .fetch();
     }
 }
+

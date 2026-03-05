@@ -5,7 +5,7 @@
 
     <changeSet id="1_4_0-001" author="rcasey">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_service_inventory_v5.sql"
                  relativeToChangelogFile="true"
@@ -15,7 +15,7 @@
 
     <changeSet id="1_4_0-002" author="rcasey">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_location_inventory_v5.sql"
                  relativeToChangelogFile="true"
@@ -25,7 +25,7 @@
 
     <changeSet id="1_4_0-003" author="rcasey">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_disconnects_v4.sql"
                  relativeToChangelogFile="true"
@@ -35,7 +35,7 @@
 
     <changeSet id="1_4_0-004" author="rcasey">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_services_v26.sql"
                  relativeToChangelogFile="true"
@@ -45,7 +45,7 @@
 
     <changeSet id="1_4_0-005" author="rcasey">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_services_v27.sql"
                  relativeToChangelogFile="true"
@@ -67,7 +67,7 @@
 
       <changeSet id="1_4_0-005" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile endDelimiter="//"
                  path="data/create_get_location_tree_root_procedure.sql"
@@ -86,7 +86,7 @@
 
     <changeSet id="1_4_0-008" author="rcasey">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_disputes_v5.sql"
                  relativeToChangelogFile="true"
@@ -96,7 +96,7 @@
 
     <changeSet id="1_4_0-009" author="rcasey">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_service_history_v2.sql"
                  relativeToChangelogFile="true"
@@ -112,7 +112,7 @@
 
     <changeSet id="1_4_0-011" author="rcasey">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/pbi_iss_activation_attempts.sql"
                  relativeToChangelogFile="true"
@@ -122,7 +122,7 @@
 
       <changeSet id="1_4_0-006" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_service_history_v3.sql"
                  relativeToChangelogFile="true"
@@ -269,7 +269,7 @@
 
     <changeSet id="1_4_0-018" author="rcasey">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/insert_project_name_lookup.sql"
                  relativeToChangelogFile="true"
@@ -285,7 +285,7 @@
 
     <changeSet id="1_4_0-020" author="rcasey">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_services_v28.sql"
                  relativeToChangelogFile="true"
@@ -295,7 +295,7 @@
 
     <changeSet id="1_4_0-021" author="rcasey">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_disconnects_v5.sql"
                  relativeToChangelogFile="true"
@@ -323,7 +323,7 @@
 
     <changeSet id="1_4_0-018" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/pbi_pmv_view_service_v6.sql"
                  relativeToChangelogFile="true"
@@ -333,7 +333,7 @@
 
     <changeSet id="1_4_0-019" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/pbi_iss_service_v4.sql"
                  relativeToChangelogFile="true"
@@ -343,3 +343,4 @@
 
 
 </databaseChangeLog>
+

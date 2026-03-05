@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import static com.endeavorms.velocity.qto.dispute.multidispute.MultiDisputeQueueHandler.MULTI_DISPUTE_QUEUE;
 
 @Component
+@org.springframework.boot.autoconfigure.condition.ConditionalOnProperty(name = "qto.jms.enabled", havingValue = "true", matchIfMissing = false)
 public class MultiDisputeListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MultiDisputeListener.class);

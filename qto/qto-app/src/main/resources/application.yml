@@ -1,20 +1,26 @@
 spring:
+  main:
+    allow-circular-references: true
   application:
     name: qto
   datasource:
-    url: jdbc:postgresql://localhost:5432/qto
+    url: jdbc:mysql://localhost:3307/qto?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=UTF-8
     username: qto_user
     password: changeme
-    driver-class-name: org.postgresql.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: none
     show-sql: false
     properties:
       hibernate:
         format_sql: true
   liquibase:
-    change-log: classpath:database/changelog-master.xml
+    enabled: false
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jms.JmsAutoConfiguration
+      - org.springframework.boot.autoconfigure.jms.artemis.ArtemisAutoConfiguration
 
 server:
   port: 8080

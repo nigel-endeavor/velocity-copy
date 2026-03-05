@@ -99,7 +99,7 @@
 
     <changeSet id="1_17_0-08" author="bmccormick">
     <preConditions onFail="CONTINUE">
-        <dbms type="postgresql"/>
+        <dbms type="mysql"/>
     </preConditions>
     <sqlFile path="data/v_manage_cyber_services_v6.sql"
              relativeToChangelogFile="true"
@@ -147,7 +147,7 @@
 
     <changeSet id="1_17_0-011" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_services_v38.sql"
                  relativeToChangelogFile="true"
@@ -157,7 +157,7 @@
 
     <changeSet id="1_17_0-012" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_cyber_services_v7.sql"
                  relativeToChangelogFile="true"
@@ -167,7 +167,7 @@
 
     <changeSet id="1_17_0-013" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_disconnects_v11.sql"
                  relativeToChangelogFile="true"
@@ -177,7 +177,7 @@
 
     <changeSet id="1_17_0-014" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_locations_v35.sql"
                  relativeToChangelogFile="true"
@@ -187,7 +187,7 @@
 
     <changeSet id="1_17_0-015" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_address_v4.sql"
                  relativeToChangelogFile="true"
@@ -207,7 +207,7 @@
 
     <changeSet id="1_17_0-017" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/pbi_i90_service_brokerage_v3.sql"
                  relativeToChangelogFile="true"
@@ -217,7 +217,7 @@
 
     <changeSet id="1_17_0-018" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_address_v5.sql"
                  relativeToChangelogFile="true"
@@ -270,7 +270,7 @@
 
     <changeSet id="1_17_0-024" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_company_v7.sql"
                  relativeToChangelogFile="true"
@@ -280,7 +280,7 @@
 
     <changeSet id="1_17_0-025" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_cyber_services_v8.sql"
                  relativeToChangelogFile="true"
@@ -290,7 +290,7 @@
 
     <changeSet id="1_17_0-026" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_disconnects_v12.sql"
                  relativeToChangelogFile="true"
@@ -300,7 +300,7 @@
 
     <changeSet id="1_17_0-027" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_location_inventory_v20.sql"
                  relativeToChangelogFile="true"
@@ -310,7 +310,7 @@
 
     <changeSet id="1_17_0-028" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_locations_v36.sql"
                  relativeToChangelogFile="true"
@@ -320,7 +320,7 @@
 
     <changeSet id="1_17_0-029" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_service_inventory_v20.sql"
                  relativeToChangelogFile="true"
@@ -330,7 +330,7 @@
 
     <changeSet id="1_17_0-030" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_services_v39.sql"
                  relativeToChangelogFile="true"
@@ -355,7 +355,7 @@
 
     <changeSet id="1_17_0-033" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/cyber360_IAM_milestone_resequence.sql"
                  relativeToChangelogFile="true"
@@ -370,7 +370,7 @@
 
     <changeSet id="1_17_0-035" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/cyber360_MDM_milestone_display_set.sql"
                  relativeToChangelogFile="true"
@@ -399,7 +399,7 @@
 
     <changeSet id="1_17_0-036" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/cyber360_endpoint_protection_milestones.sql"
                  relativeToChangelogFile="true"
@@ -424,7 +424,7 @@
 
     <changeSet id="1_17_0-038" author="bmccormick">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/cyber360_EMS_milestone_display_set.sql"
                  relativeToChangelogFile="true"
@@ -442,7 +442,7 @@
 
     <changeSet id="1_17_0-037" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/cyber360_information_protection_milestones.sql"
                  relativeToChangelogFile="true"
@@ -468,7 +468,7 @@
 
     <changeSet id="1_17_0-039" author="bmccormick">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/insert_lookup_mxdr.sql"
                  relativeToChangelogFile="true"
@@ -492,3 +492,4 @@
         </sql>
     </changeSet>
 </databaseChangeLog>
+

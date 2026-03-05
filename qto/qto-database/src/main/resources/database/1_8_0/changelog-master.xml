@@ -18,7 +18,7 @@
 
     <changeSet id="1_8_0-002" author="bmccormick">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_disputes_v8.sql"
                  relativeToChangelogFile="true"
@@ -68,7 +68,7 @@
 
     <changeSet id="1_8_0-006" author="fcurran">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_wip_reports_v8.sql"
                  relativeToChangelogFile="true"
@@ -78,7 +78,7 @@
 
     <changeSet id="1_8_0-006" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_wip_reports_v9.sql"
                  relativeToChangelogFile="true"
@@ -88,7 +88,7 @@
 
     <changeSet id="1_8_0-007" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_activation_attempt_v5.sql"
                  relativeToChangelogFile="true"
@@ -98,7 +98,7 @@
 
     <changeSet id="1_8_0-008" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_provider_intervals_v2.sql"
                  relativeToChangelogFile="true"
@@ -225,7 +225,7 @@
 
     <changeSet id="1_8_0-013" author="fcurran">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_services_v30.sql"
                  relativeToChangelogFile="true"
@@ -239,7 +239,7 @@
 
     <changeSet id="1_8_0-016" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_activations_v10.sql"
                  relativeToChangelogFile="true"
@@ -258,7 +258,7 @@
 
     <changeSet id="1_8_0-018" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_services_v31.sql"
                  relativeToChangelogFile="true"
@@ -294,7 +294,7 @@
 
     <changeSet id="1_8_0-019" author="rcasey">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_location_milestone_instance.sql"
                  relativeToChangelogFile="true"
@@ -304,7 +304,7 @@
 
     <changeSet id="1_8_0-020" author="rcasey">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_locations_v28.sql"
                  relativeToChangelogFile="true"
@@ -320,7 +320,7 @@
 
     <changeSet id="1_8_0-022" author="rcasey">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_location_inventory_v8.sql"
                  relativeToChangelogFile="true"
@@ -329,3 +329,4 @@
     </changeSet>
 
 </databaseChangeLog>
+

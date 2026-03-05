@@ -1,5 +1,7 @@
 package com.endeavorms.velocity.qto.milestone;
 
+import org.springframework.stereotype.Repository;
+
 import com.endeavorms.velocity.qto.cdi.QtoDatabase;
 import com.endeavorms.velocity.qto.common.AbstractJpaDao;
 
@@ -11,6 +13,7 @@ import java.util.List;
  * @author rcasey
  * @since 2/17/2023
  */
+@Repository
 public class MilestoneInstanceHistoryJpaDao extends AbstractJpaDao<MilestoneInstanceHistory, Long> {
     @Override
     @Inject
@@ -24,3 +27,4 @@ public class MilestoneInstanceHistoryJpaDao extends AbstractJpaDao<MilestoneInst
                 .getResultList();
     }
 }
+

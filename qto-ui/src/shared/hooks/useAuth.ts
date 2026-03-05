@@ -5,8 +5,43 @@
  * Wraps @azure/msal-react hooks with app-specific logic.
  */
 
-import { useMsal, useIsAuthenticated } from '@azure/msal-react';
-import { AccountInfo } from '@azure/msal-browser';
+// MSAL disabled for local development
+
+export type UserRole =
+  | 'admin'
+  | 'order-read'
+  | 'order-write'
+  | 'service-read'
+  | 'service-write'
+  | 'location-read'
+  | 'location-write'
+  | 'invoice-read'
+  | 'invoice-write'
+  | 'dispute-read'
+  | 'dispute-write'
+  | 'report-read';
+
+export interface UserInfo {
+  username: string;
+  name: string;
+  email: string;
+  roles: UserRole[];
+}
+
+// Mock useAuth for development
+export function useAuth() {
+  return {
+    user: {
+      username: 'devuser',
+      name: 'Dev User',
+      email: 'devuser@example.com',
+      roles: ['admin', 'order-read', 'order-write'],
+    },
+    isAuthenticated: true,
+  };
+}
+
+export default useAuth;
 
 /**
  * User Roles (from Angular app)

@@ -83,7 +83,7 @@
 
     <changeSet id="1_15_0-05" author="fcurran">
         <preConditions>
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sql>INSERT INTO lookup_type (lookup_type_descr, lookup_type_code, lookup_type_active, modifiable, sort_strategy, category)
              VALUES ('Account Onboarding Tasks', 'ACCOUNT_ONBOARDING_TASKS', 1, 1, 1, 'Customer');
@@ -92,7 +92,7 @@
 
     <changeSet id="1_15_0-06" author="fcurran">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_company_v4.sql"
                  relativeToChangelogFile="true"
@@ -146,7 +146,7 @@
 
     <changeSet id="1_15_0-09" author="fcurran">
         <preConditions>
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <comment>AB#2322</comment>
         <sql>
@@ -187,7 +187,7 @@
 
     <changeSet id="1_15_0-13" author="fcurran">
         <preConditions>
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sql>
             INSERT INTO lookup_type (lookup_type_descr, lookup_type_code, lookup_type_active, modifiable, sort_strategy, category)
@@ -203,7 +203,7 @@
 
     <changeSet id="1_15_0-08" author="bmccormick">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <comment>Adding threatMDR.</comment>
         <sqlFile path="data/service_threatMDR.sql"
@@ -214,7 +214,7 @@
 
     <changeSet author="bmccormick" id="1_15_0-09">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/insert_lookup_12.sql"
                  relativeToChangelogFile="true"
@@ -224,7 +224,7 @@
 
     <changeSet id="1_15_0-10" author="bmccormick">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <comment>Add television milestone display set.</comment>
         <sqlFile path="data/threatMDR_milestone_display_set.sql"
@@ -235,7 +235,7 @@
 
     <changeSet id="1_15_0-11" author="bmccormick">
         <preConditions>
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sql>INSERT INTO lookup_type (lookup_type_descr, lookup_type_code, lookup_type_active, modifiable, sort_strategy, category)
             VALUES ('USM Anywhere Control Node', 'USM_ANYWHERE_CONTROL_NODE', 1, 1, 1, 'Service Technical - Product Specific');
@@ -247,7 +247,7 @@
 
     <changeSet id="1_15_0-08" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_cyber_services_v1.sql"
                  relativeToChangelogFile="true"
@@ -257,7 +257,7 @@
 
     <changeSet id="1_15_0-11" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_cyber_services_v2.sql"
                  relativeToChangelogFile="true"
@@ -267,7 +267,7 @@
 
     <changeSet id="1_15_0-14" author="fcurran">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_company_v5.sql"
                  relativeToChangelogFile="true"
@@ -375,7 +375,7 @@
 
     <changeSet id="1_15_0-17" author="bmccormick">
         <preConditions>
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sql>INSERT INTO lookup_type (lookup_type_descr, lookup_type_code, lookup_type_active, modifiable, sort_strategy, category)
             VALUES ('Tier Expansion Storage Size', 'TIER_EXPANSION_STORAGE_SIZE', 1, 1, 1, 'Service Technical - Product Specific');
@@ -404,7 +404,7 @@
 
     <changeSet id="1_15_0-18" author="bmccormick">
     <preConditions>
-        <dbms type="postgresql"/>
+        <dbms type="mysql"/>
     </preConditions>
     <sql>
         SET @displaySetId = (SELECT milestone_display_set_id FROM milestone_display_set mds WHERE mds.display_group = 'THREATMDR_SERVICE_MILESTONE');
@@ -522,7 +522,7 @@ CREATE TABLE company_file_attachment
 
     <changeSet id="1_15_0-21" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_cyber_services_v3.sql"
                  relativeToChangelogFile="true"
@@ -532,7 +532,7 @@ CREATE TABLE company_file_attachment
 
     <changeSet id="1_15_0-22" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_location_inventory_v18.sql"
                  relativeToChangelogFile="true"
@@ -542,7 +542,7 @@ CREATE TABLE company_file_attachment
 
     <changeSet id="1_15_0-23" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_locations_v33.sql"
                  relativeToChangelogFile="true"
@@ -696,3 +696,4 @@ CREATE TABLE company_file_attachment
         </sql>
     </changeSet>
 </databaseChangeLog>
+

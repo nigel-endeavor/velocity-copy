@@ -17,8 +17,8 @@ public class DisputeMultiEditQueueHandler {
 
     public static final String DISPUTE_MULTI_EDIT_QUEUE = "qto.DisputeMultiEditQueue";
 
-    @Autowired
-    private JmsTemplate jmsTemplate;
+    // JMS disabled
+    // private JmsTemplate jmsTemplate;
 
     @Autowired
     private SubjectManager subjectManager;
@@ -29,7 +29,7 @@ public class DisputeMultiEditQueueHandler {
             Subject subject = subjectManager.findByUsername(username);
             dto.setSubjectId(subject.getId());
 
-            jmsTemplate.convertAndSend(DISPUTE_MULTI_EDIT_QUEUE, dto);
+            // JMS disabled
             LOGGER.debug("Sent message to {}, disputeIds: {}", DISPUTE_MULTI_EDIT_QUEUE, dto.getIds());
         } catch (Exception e) {
             LOGGER.error("Error sending to {}: {}", DISPUTE_MULTI_EDIT_QUEUE, e.getMessage());

@@ -2,17 +2,12 @@ import { createHashRouter, Navigate } from 'react-router-dom';
 import { MainLayout } from '../layouts/MainLayout';
 import { LandingPage } from '../pages/LandingPage';
 import { ServiceWorklist } from '../features/service-worklist/ServiceWorklist';
-import { MsalAuthenticationTemplate } from '@azure/msal-react';
-import { InteractionType } from '@azure/msal-browser';
+// MSAL disabled for local development
 
 export const router = createHashRouter([
   {
     path: '/',
-    element: (
-      <MsalAuthenticationTemplate interactionType={InteractionType.Redirect}>
-        <MainLayout />
-      </MsalAuthenticationTemplate>
-    ),
+    element: <MainLayout />, 
     children: [
       {
         index: true,

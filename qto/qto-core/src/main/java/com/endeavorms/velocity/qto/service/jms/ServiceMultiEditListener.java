@@ -19,6 +19,7 @@ import static com.endeavorms.velocity.qto.service.multiedit.ServiceMultiEditQueu
  * @since 7/14/2023
  */
 @Component
+@org.springframework.boot.autoconfigure.condition.ConditionalOnProperty(name = "qto.jms.enabled", havingValue = "true", matchIfMissing = false)
 public class ServiceMultiEditListener {
 
     /** Private Logger for this class. */

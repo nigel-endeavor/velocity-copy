@@ -17,8 +17,8 @@ public class DisconnectMultiEditQueueHandler {
 
     public static final String DISCONNECT_MULTI_EDIT_QUEUE = "qto.DisconnectMultiEditQueue";
 
-    @Autowired
-    private JmsTemplate jmsTemplate;
+    // JMS disabled
+    // private JmsTemplate jmsTemplate;
 
     @Autowired
     private SubjectManager subjectManager;
@@ -29,7 +29,7 @@ public class DisconnectMultiEditQueueHandler {
             Subject subject = subjectManager.findByUsername(username);
             dto.setSubjectId(subject.getId());
 
-            jmsTemplate.convertAndSend(DISCONNECT_MULTI_EDIT_QUEUE, dto);
+            // JMS disabled
             LOGGER.debug("Sent message to {}, serviceIds: {}", DISCONNECT_MULTI_EDIT_QUEUE, dto.getIds());
         } catch (Exception e) {
             LOGGER.error("Error sending to {}: {}", DISCONNECT_MULTI_EDIT_QUEUE, e.getMessage());

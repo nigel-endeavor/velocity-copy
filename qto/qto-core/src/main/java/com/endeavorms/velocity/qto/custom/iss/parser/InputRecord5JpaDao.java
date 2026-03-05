@@ -1,5 +1,7 @@
 package com.endeavorms.velocity.qto.custom.iss.parser;
 
+import org.springframework.stereotype.Repository;
+
 import com.querydsl.jpa.impl.JPAQuery;
 import com.endeavorms.velocity.qto.cdi.QtoDatabase;
 import com.endeavorms.velocity.qto.common.AbstractJpaDao;
@@ -10,6 +12,7 @@ import jakarta.persistence.EntityManager;
 import static com.endeavorms.velocity.qto.custom.iss.parser.QInputRecord2.inputRecord2;
 import static com.endeavorms.velocity.qto.custom.iss.parser.QInputRecord5.inputRecord5;
 
+@Repository
 public class InputRecord5JpaDao extends AbstractJpaDao<InputRecord5, Long> {
        @Override
     @Inject
@@ -22,3 +25,4 @@ public class InputRecord5JpaDao extends AbstractJpaDao<InputRecord5, Long> {
                 .from(inputRecord5).where(inputRecord5.inputRecord1Id.eq(inputRecord1Id)).fetchOne();
     }
 }
+

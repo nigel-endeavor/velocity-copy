@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import static com.endeavorms.velocity.qto.disconnect.multiedit.DisconnectMultiEditQueueHandler.DISCONNECT_MULTI_EDIT_QUEUE;
 
 @Component
+@org.springframework.boot.autoconfigure.condition.ConditionalOnProperty(name = "qto.jms.enabled", havingValue = "true", matchIfMissing = false)
 public class DisconnectMultiEditListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DisconnectMultiEditListener.class);

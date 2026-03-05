@@ -16,8 +16,8 @@ public class MultiDisputeQueueHandler {
 
     public static final String MULTI_DISPUTE_QUEUE = "qto.MultiDisputeQueue";
 
-    @Autowired
-    private JmsTemplate jmsTemplate;
+    // JMS disabled
+    // private JmsTemplate jmsTemplate;
 
     @Autowired
     private SubjectManager subjectManager;
@@ -28,7 +28,7 @@ public class MultiDisputeQueueHandler {
             Subject subject = subjectManager.findByUsername(username);
             dto.setSubjectId(subject.getId());
 
-            jmsTemplate.convertAndSend(MULTI_DISPUTE_QUEUE, dto);
+            // JMS disabled
             LOGGER.debug("Sent message to {}, serviceIds: {}", MULTI_DISPUTE_QUEUE, dto.getServiceIds());
         } catch (Exception e) {
             LOGGER.error("Error sending to {}: {}", MULTI_DISPUTE_QUEUE, e.getMessage());

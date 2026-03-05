@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import static com.endeavorms.velocity.qto.company.jms.CompanyMessageHandler.COMPANY_QUEUE;
 
 @Component
+@org.springframework.boot.autoconfigure.condition.ConditionalOnProperty(name = "qto.jms.enabled", havingValue = "true", matchIfMissing = false)
 public class CompanyMessageListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CompanyMessageListener.class);

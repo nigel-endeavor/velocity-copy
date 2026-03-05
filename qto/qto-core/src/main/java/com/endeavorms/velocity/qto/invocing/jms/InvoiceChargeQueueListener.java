@@ -17,6 +17,7 @@ import static com.endeavorms.velocity.qto.invocing.jms.InvoiceChargeQueueHandler
  * @since 08/10/2023
  */
 @Component
+@org.springframework.boot.autoconfigure.condition.ConditionalOnProperty(name = "qto.jms.enabled", havingValue = "true", matchIfMissing = false)
 public class InvoiceChargeQueueListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InvoiceChargeQueueListener.class);

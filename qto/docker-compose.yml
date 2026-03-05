@@ -1,4 +1,23 @@
 services:
+  mysql:
+    image: mysql:8.0
+    container_name: qto-mysql
+    environment:
+      MYSQL_DATABASE: qto
+      MYSQL_USER: qto_user
+      MYSQL_PASSWORD: changeme
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "qto_user", "-pchangeme"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
   postgres:
     image: postgres:16-alpine
     container_name: qto-postgres
@@ -9,15 +28,15 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres-data:/var/lib/postgresql/data  # Persistent DB data
+      - postgres-data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U qto_user -d qto"]
       interval: 5s
       timeout: 5s
       retries: 5
 
-# Named volumes persist data across container restarts and removals.
-# Data survives `docker compose down` (use `docker compose down -v` to remove).
 volumes:
+  mysql-data:
+    driver: local
   postgres-data:
     driver: local

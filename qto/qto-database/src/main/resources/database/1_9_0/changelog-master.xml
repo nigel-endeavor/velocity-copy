@@ -5,7 +5,7 @@
 
     <changeSet id="1_9_0-001" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_service_inventory_v8.sql"
                  relativeToChangelogFile="true"
@@ -23,7 +23,7 @@
   
     <changeSet id="1_9_0-002" author="rcasey">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_locations_v29.sql"
                  relativeToChangelogFile="true"
@@ -33,7 +33,7 @@
 
     <changeSet id="1_9_0-003" author="rcasey">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_disconnects_v7.sql"
                  relativeToChangelogFile="true"
@@ -43,7 +43,7 @@
 
     <changeSet id="1_9_0-004" author="rcasey">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_disputes_v9.sql"
                  relativeToChangelogFile="true"
@@ -53,7 +53,7 @@
 
     <changeSet id="1_9_0-005" author="rcasey">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_location_inventory_v9.sql"
                  relativeToChangelogFile="true"
@@ -63,7 +63,7 @@
 
     <changeSet id="1_9_0-006" author="rcasey">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_service_inventory_v9.sql"
                  relativeToChangelogFile="true"
@@ -73,7 +73,7 @@
 
     <changeSet id="1_9_0-007" author="rcasey">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_services_v32.sql"
                  relativeToChangelogFile="true"
@@ -98,7 +98,7 @@
 
     <changeSet id="1_0_9-009" author="fcurran">
         <preConditions>
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sql>INSERT INTO lookup_type (lookup_type_descr, lookup_type_code, lookup_type_active, modifiable, sort_strategy, category)
              VALUES ('Underlying Provider', 'UNDERLYING_PROVIDER', 1, 1, 0, 'Location/Service General');</sql>
@@ -106,7 +106,7 @@
 
     <changeSet id="1_9_0-010" author="fcurran">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/update_field_mapping_config_v5.sql"
                  relativeToChangelogFile="true"
@@ -121,3 +121,4 @@
     </changeSet>
 
 </databaseChangeLog>
+

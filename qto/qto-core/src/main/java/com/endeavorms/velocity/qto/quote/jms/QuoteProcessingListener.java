@@ -47,6 +47,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
+@org.springframework.boot.autoconfigure.condition.ConditionalOnProperty(name = "qto.jms.enabled", havingValue = "true", matchIfMissing = false)
 public class QuoteProcessingListener {
 
     /** Private Logger for this class. */

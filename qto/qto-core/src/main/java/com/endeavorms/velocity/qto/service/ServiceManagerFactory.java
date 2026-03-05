@@ -1,5 +1,9 @@
 package com.endeavorms.velocity.qto.service;
 
+import org.springframework.stereotype.Component;
+import org.springframework.context.ApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.endeavorms.velocity.qto.service._4g5g.GServiceManager;
 import com.endeavorms.velocity.qto.service.broadband.BroadbandServiceManager;
 import com.endeavorms.velocity.qto.service.crossconnect.CrossConnectServiceManager;
@@ -21,22 +25,19 @@ import com.endeavorms.velocity.qto.service.ucaas.UcaasServiceManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jakarta.enterprise.inject.Any;
-import jakarta.enterprise.inject.Instance;
-import jakarta.inject.Inject;
 import java.util.EnumMap;
 
 /**
  * Simple factory for getting the correctly injected manager for a given service type.
  */
+@Component
 public class ServiceManagerFactory {
     /** Logger. */
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceManagerFactory.class);
 
-    /** Factory instance. */
-    @Inject
-    @Any
-    private Instance<AbstractServiceManager<? extends Service>> factoryInstance;
+    /** Spring Application Context. */
+    @Autowired
+    private ApplicationContext applicationContext;
 
     /** Known managers. */
     private static final EnumMap<ServiceType, Class<? extends AbstractServiceManager<? extends Service>>> managers
@@ -70,21 +71,17 @@ public class ServiceManagerFactory {
      * @return the proper injected manager.
      */
     public AbstractServiceManager<? extends Service> getManager(final ServiceType serviceType) {
-        if (factoryInstance.isUnsatisfied()) {
-            LOGGER.debug("issue with managers injected into factory:  unsatisfied = {}",
-                    factoryInstance.isUnsatisfied());
-        }
-
         Class<? extends AbstractServiceManager<? extends Service>> managerClass = managers.get(serviceType);
-
-        for (AbstractServiceManager<? extends Service> manager : factoryInstance) {
-            if (managerClass.isAssignableFrom(manager.getClass())) {
-                return manager;
-            } else {
-                LOGGER.debug("manager {} not found", manager.getClass().getName());
-            }
+        
+        if (managerClass == null) {
+            throw new RuntimeException("No manager registered for service type: " + serviceType);
         }
-
-        throw new RuntimeException("Cannot create manager of type " + managerClass.getName());
+        
+        try {
+            return applicationContext.getBean(managerClass);
+        } catch (Exception e) {
+            LOGGER.error("Cannot create manager of type {}", managerClass.getName(), e);
+            throw new RuntimeException("Cannot create manager of type " + managerClass.getName(), e);
+        }
     }
 }

@@ -5,7 +5,7 @@
 
     <changeSet author="mwelicka" id="1_0_0-001" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/01_address.sql"
                  relativeToChangelogFile="true"
@@ -15,7 +15,7 @@
 
     <changeSet author="mwelicka" id="1_0_0-002" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/02_company.sql"
                  relativeToChangelogFile="true"
@@ -54,7 +54,7 @@
 
     <changeSet author="mwelicka" id="1_0_0-003" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/03_note.sql"
                  relativeToChangelogFile="true"
@@ -64,7 +64,7 @@
 
     <changeSet author="mwelicka" id="1_0_0-004" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/04_jeop.sql"
                  relativeToChangelogFile="true"
@@ -74,7 +74,7 @@
 
     <changeSet author="mwelicka" id="1_0_0-005" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/05_shipment_tracking.sql"
                  relativeToChangelogFile="true"
@@ -84,7 +84,7 @@
 
     <changeSet author="mwelicka" id="1_0_0-006" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/06_milestone.sql"
                  relativeToChangelogFile="true"
@@ -94,7 +94,7 @@
 
     <changeSet author="mwelicka" id="1_0_0-007" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/07_activation_attempt.sql"
                  relativeToChangelogFile="true"
@@ -104,7 +104,7 @@
 
     <changeSet author="mwelicka" id="1_0_0-008" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/08_contact.sql"
                  relativeToChangelogFile="true"
@@ -114,7 +114,7 @@
 
     <changeSet author="mwelicka" id="1_0_0-009" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/09_file_attachment.sql"
                  relativeToChangelogFile="true"
@@ -124,7 +124,7 @@
 
     <changeSet author="mwelicka" id="1_0_0-010" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/10_lookup.sql"
                  relativeToChangelogFile="true"
@@ -134,7 +134,7 @@
 
     <changeSet author="mwelicka" id="1_0_0-011" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/11_order.sql"
                  relativeToChangelogFile="true"
@@ -144,7 +144,7 @@
 
     <changeSet author="mwelicka" id="1_0_0-012" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/12_location.sql"
                  relativeToChangelogFile="true"
@@ -154,7 +154,7 @@
 
     <changeSet author="mwelicka" id="1_0_0-013" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/13_service.sql"
                  relativeToChangelogFile="true"
@@ -164,7 +164,7 @@
 
     <changeSet author="mwelicka" id="1_0_0-014" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/14_service_broadband.sql"
                  relativeToChangelogFile="true"
@@ -174,7 +174,7 @@
 
     <changeSet author="mwelicka" id="1_0_0-015" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/15_service_dia.sql"
                  relativeToChangelogFile="true"
@@ -184,7 +184,7 @@
 
     <changeSet author="mwelicka" id="1_0_0-016" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/16_config.sql"
                  relativeToChangelogFile="true"
@@ -194,7 +194,7 @@
 
     <changeSet author="mwelicka" id="1_0_0-017" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/17_intervals.sql"
                  relativeToChangelogFile="true"
@@ -204,7 +204,7 @@
 
     <changeSet author="mwelicka" id="1_0_0-018" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/18_import_activity.sql"
                  relativeToChangelogFile="true"
@@ -214,7 +214,7 @@
 
     <changeSet author="mwelicka" id="1_0_0-019" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/19_v_tenant.sql"
                  relativeToChangelogFile="true"
@@ -224,7 +224,7 @@
 
     <changeSet id="1_0_0-019-2" author="mwelicka" context="prod">
     <preConditions onFail="CONTINUE">
-        <dbms type="postgresql"/>
+        <dbms type="mysql"/>
     </preConditions>
     <sqlFile path="data/19_v_tenant_prod.sql"
              relativeToChangelogFile="true"
@@ -258,7 +258,7 @@
 
     <changeSet author="mwelicka" id="1_0_0-026" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/insert_lookup.sql"
                  relativeToChangelogFile="true"
@@ -268,7 +268,7 @@
 
     <changeSet author="mwelicka" id="1_0_0-027" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/insert_milestones.sql"
                  relativeToChangelogFile="true"
@@ -293,7 +293,7 @@
 
     <changeSet author="mwelicka" id="1_0_0-020" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/19_jeops_union.sql"
                  relativeToChangelogFile="true"
@@ -304,7 +304,7 @@
 
     <changeSet author="mwelicka" id="1_0_0-021" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/21_v_manage_locations.sql"
                  relativeToChangelogFile="true"
@@ -327,7 +327,7 @@
 
     <changeSet author="mwelicka" id="1_0_0-032" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/21_v_manage_locations_v2.sql"
                  relativeToChangelogFile="true"
@@ -364,7 +364,7 @@
 
     <changeSet id="1_0_0-036" author="llevit">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/22_v_note_union.sql"
                  relativeToChangelogFile="true"
@@ -490,7 +490,7 @@
 
     <changeSet author="rcasey" id="1_0_0-51" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/insert_lookup_2.sql"
                  relativeToChangelogFile="true"
@@ -504,7 +504,7 @@
 
     <changeSet author="rcasey" id="1_0_0-53" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/insert_lookup_3.sql"
                  relativeToChangelogFile="true"
@@ -565,7 +565,7 @@
 
     <changeSet author="rcasey" id="1_0_0-59" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/insert_milestones_2.sql"
                  relativeToChangelogFile="true"
@@ -583,7 +583,7 @@
 
     <changeSet author="rcasey" id="1_0_0-61" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_service_milestone_instance.sql"
                  relativeToChangelogFile="true"
@@ -593,7 +593,7 @@
 
     <changeSet author="rcasey" id="1_0_0-62" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_services.sql"
                  relativeToChangelogFile="true"
@@ -619,7 +619,7 @@
 
     <changeSet author="rcasey" id="1_0_0-65" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_locations_v3.sql"
                  relativeToChangelogFile="true"
@@ -646,7 +646,7 @@
 
     <changeSet author="rcasey" id="1_0_0-67" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/insert_activation_status_lookups.sql"
                  relativeToChangelogFile="true"
@@ -656,7 +656,7 @@
 
     <changeSet author="rcasey" id="1_0_0-68" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_activations.sql"
                  relativeToChangelogFile="true"
@@ -738,7 +738,7 @@
 
     <changeSet author="rcasey" id="1_0_0-73" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/insert_activation_requirements_lookup.sql"
                  relativeToChangelogFile="true"
@@ -748,7 +748,7 @@
 
     <changeSet author="llevit" id="1_0_0-063" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/insert_lookup_4.sql"
                  relativeToChangelogFile="true"
@@ -765,7 +765,7 @@
 
     <changeSet author="llevit" id="1_0_0-065" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <comment>Run union again after adding column</comment>
         <sqlFile path="data/19_jeops_union.sql"
@@ -784,7 +784,7 @@
 
     <changeSet author="bmccormick" id="1_0_0-067">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_locations_v4.sql"
                  relativeToChangelogFile="true"
@@ -794,7 +794,7 @@
 
     <changeSet author="rcasey" id="1_0_0-74" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_services_v2.sql"
                  relativeToChangelogFile="true"
@@ -804,7 +804,7 @@
 
     <changeSet author="rcasey" id="1_0_0-75">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_locations_v5.sql"
                  relativeToChangelogFile="true"
@@ -814,7 +814,7 @@
 
     <changeSet author="rcasey" id="1_0_0-76">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_locations_v6.sql"
                  relativeToChangelogFile="true"
@@ -824,7 +824,7 @@
 
     <changeSet author="rcasey" id="1_0_0-77">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_locations_v7.sql"
                  relativeToChangelogFile="true"
@@ -834,7 +834,7 @@
 
     <changeSet author="rcasey" id="1_0_0-78">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_services_v3.sql"
                  relativeToChangelogFile="true"
@@ -939,7 +939,7 @@
 
     <changeSet author="rcasey" id="1_0_0-84">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/insert_interval_types.sql"
                  relativeToChangelogFile="true"
@@ -949,7 +949,7 @@
 
     <changeSet author="mwelicka" id="1_0_0-79" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_services_v4.sql"
                  relativeToChangelogFile="true"
@@ -976,7 +976,7 @@
 
     <changeSet author="mwelicka" id="1_0_0-083" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <comment>Set milestone adjustable and workflow flags</comment>
         <sqlFile path="data/update_milestones.sql"
@@ -987,7 +987,7 @@
 
     <changeSet author="mwelicka" id="1_0_0-084" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <comment>adding Service Jeops</comment>
         <sqlFile path="data/insert_lookup_5.sql"
@@ -998,7 +998,7 @@
 
     <changeSet author="bmccormick" id="1_0_0-85">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_services_v5.sql"
                  relativeToChangelogFile="true"
@@ -1008,7 +1008,7 @@
 
     <changeSet author="rcasey" id="1_0_0-86">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/insert_country_state_lookups.sql"
                  relativeToChangelogFile="true"
@@ -1027,7 +1027,7 @@
 
     <changeSet id="1_0_0-80"  author="llevit">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_wip_reports.sql"
                  relativeToChangelogFile="true"
@@ -1177,7 +1177,7 @@
 
     <changeSet id="1_0_0-090"  author="llevit">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <comment>rerun the wip script to add active flag and data_provisioning_complete date</comment>
         <sqlFile path="data/v_wip_reports_v2.sql"
@@ -1194,7 +1194,7 @@
 
     <changeSet id="1_0_0-91"  author="rcasey">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/insert_activation_issues_lookups.sql"
                  relativeToChangelogFile="true"
@@ -1204,7 +1204,7 @@
 
     <changeSet id="1_0_0-091"  author="llevit">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <comment>add carrier reports view</comment>
         <sqlFile path="data/v_carrier_reports.sql"
@@ -1259,7 +1259,7 @@
 
     <changeSet id="1_0_0-095"  author="fcurran">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/milestone_descriptions.sql"
                  relativeToChangelogFile="true"
@@ -1269,7 +1269,7 @@
 
     <changeSet author="bmccormick" id="1_0_0-096">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_services_v6.sql"
                  relativeToChangelogFile="true"
@@ -1279,7 +1279,7 @@
 
     <changeSet author="bmccormick" id="1_0_0-097" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/insert_lookup_6.sql"
                  relativeToChangelogFile="true"
@@ -1406,7 +1406,7 @@
 
     <changeSet author="bmccormick" id="1_0_0-109" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/insert_lookup_7.sql"
                  relativeToChangelogFile="true"
@@ -1432,7 +1432,7 @@
 
     <changeSet author="rcasey" id="1_0_0-110" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_locations_v8.sql"
                  relativeToChangelogFile="true"
@@ -1442,7 +1442,7 @@
 
     <changeSet author="rcasey" id="1_0_0-111" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_services_v7.sql"
                  relativeToChangelogFile="true"
@@ -1457,7 +1457,7 @@
 
     <changeSet author="rcasey" id="1_0_0-112" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_services_v8.sql"
                  relativeToChangelogFile="true"
@@ -1531,7 +1531,7 @@
 
     <changeSet author="llevit" id="1_0_0-118" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <comment>Added active flag to services view</comment>
         <sqlFile path="data/v_manage_services_v9.sql"
@@ -1542,7 +1542,7 @@
 
     <changeSet author="rcasey" id="1_0_0-118" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/insert_ftdi_lookups.sql"
                  relativeToChangelogFile="true"
@@ -1552,7 +1552,7 @@
 
     <changeSet author="llevit" id="1_0_0-119" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <comment>Added active flag to locations view</comment>
         <sqlFile path="data/v_manage_locations_v9.sql"
@@ -1569,7 +1569,7 @@
 
     <changeSet author="rcasey" id="1_0_0-120" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/insert_lookup_8.sql"
                  relativeToChangelogFile="true"
@@ -1579,7 +1579,7 @@
 
     <changeSet id="1_0_0-118" author="fcurran" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/insert_lookup_9.sql"
                  relativeToChangelogFile="true"
@@ -1596,7 +1596,7 @@
 
     <changeSet id="1_0_0-121" author="rcasey" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/add_tenant_id_col.sql"
                  relativeToChangelogFile="true"
@@ -1606,7 +1606,7 @@
 
     <changeSet id="1_0_0-122" author="rcasey" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_note_union_v2.sql"
                  relativeToChangelogFile="true"
@@ -1616,7 +1616,7 @@
 
     <changeSet id="1_0_0-121" author="fcurran">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <comment>rerun the wip script to add mrc and complete date</comment>
         <sqlFile path="data/v_wip_reports_v3.sql"
@@ -1628,7 +1628,7 @@
 
     <changeSet author="mwelicka" id="1_0_0-122" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <comment>Run union again after tenant_ID</comment>
         <sqlFile path="data/19_jeops_union.sql"
@@ -1662,7 +1662,7 @@
 
     <changeSet id="1_0_0-125" author="rcasey">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/update_jeop_lookups.sql"
                  relativeToChangelogFile="true"
@@ -1731,7 +1731,7 @@
 
     <changeSet author="fcurran" id="1_0_0-129" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_activations_v2.sql"
                  relativeToChangelogFile="true"
@@ -1741,7 +1741,7 @@
 
         <changeSet author="mwelicka" id="1_0_0-121" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/ISS_lookups.sql"
                  relativeToChangelogFile="true"
@@ -1751,7 +1751,7 @@
 
     <changeSet author="bmccormick" id="1_0_0-130" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_activation_attempt.sql"
                  relativeToChangelogFile="true"
@@ -1976,7 +1976,7 @@
 
     <changeSet author="rcasey" id="1_0_0-132" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_activations_v3.sql"
                  relativeToChangelogFile="true"
@@ -1986,7 +1986,7 @@
 
     <changeSet author="rcasey" id="1_0_0-133" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_wip_reports_v4.sql"
                  relativeToChangelogFile="true"
@@ -1996,7 +1996,7 @@
 
     <changeSet author="rcasey" id="1_0_0-134" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_carrier_reports_v2.sql"
                  relativeToChangelogFile="true"
@@ -2006,7 +2006,7 @@
 
     <changeSet author="rcasey" id="1_0_0-144" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/populate_tenant_lookup_values.sql"
                  relativeToChangelogFile="true"
@@ -2016,7 +2016,7 @@
 
     <changeSet author="rcasey" id="1_0_0-145" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_locations_v10.sql"
                  relativeToChangelogFile="true"
@@ -2026,7 +2026,7 @@
 
     <changeSet author="rcasey" id="1_0_0-146" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_services_v10.sql"
                  relativeToChangelogFile="true"
@@ -2042,7 +2042,7 @@
 
     <changeSet author="rcasey" id="1_0_0-148" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_services_v11.sql"
                  relativeToChangelogFile="true"
@@ -2060,7 +2060,7 @@
 
     <changeSet author="rcasey" id="1_0_0-150" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/insert_lookup_10.sql"
                  relativeToChangelogFile="true"
@@ -2070,7 +2070,7 @@
 
     <changeSet author="rcasey" id="1_0_0-151" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/insert_lookup_11.sql"
                  relativeToChangelogFile="true"
@@ -2104,7 +2104,7 @@
 
     <changeSet author="mwelicka" id="1_0_0-151" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_activations_v4.sql"
                  relativeToChangelogFile="true"
@@ -2114,7 +2114,7 @@
 
     <changeSet author="rcasey" id="1_0_0-154" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_services_v12.sql"
                  relativeToChangelogFile="true"
@@ -2124,7 +2124,7 @@
 
     <changeSet author="rcasey" id="1_0_0-155" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_locations_v11.sql"
                  relativeToChangelogFile="true"
@@ -2139,7 +2139,7 @@
 
     <changeSet author="rcasey" id="1_0_0-157" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/service_ucaas.sql"
                  relativeToChangelogFile="true"
@@ -2149,7 +2149,7 @@
 
     <changeSet author="rcasey" id="1_0_0-158" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/service_ucaas_milestones.sql"
                  relativeToChangelogFile="true"
@@ -2159,7 +2159,7 @@
 
     <changeSet author="rcasey" id="1_0_0-159" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/update_service_milestone_sequence.sql"
                  relativeToChangelogFile="true"
@@ -2185,7 +2185,7 @@
 
     <changeSet author="rcasey" id="1_0_0-160" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/service_4g5g.sql"
                  relativeToChangelogFile="true"
@@ -2195,7 +2195,7 @@
 
     <changeSet author="rcasey" id="1_0_0-161" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/service_4g5g_milestones.sql"
                  relativeToChangelogFile="true"
@@ -2367,7 +2367,7 @@
 
     <changeSet author="mwelicka" id="1_0_0-163" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/ISS_port_add_legacy_ids.sql"
                  relativeToChangelogFile="true"
@@ -2383,7 +2383,7 @@
 
     <changeSet id="1_0_0-165" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_locations_v12.sql"
                  relativeToChangelogFile="true"
@@ -2401,7 +2401,7 @@
 
     <changeSet author="bmccormick" id="1_0_0-166" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_services_v13.sql"
                  relativeToChangelogFile="true"
@@ -2415,7 +2415,7 @@
 
     <changeSet id="1_0_0-167" author="rcasey" context="dev,test">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_subject_local_uat.sql"
                  relativeToChangelogFile="true"
@@ -2425,7 +2425,7 @@
 
   <changeSet author="rcasey" id="1_0_0-163" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_services_v13.sql"
                  relativeToChangelogFile="true"
@@ -2435,7 +2435,7 @@
 
     <changeSet id="1_0_0-168" author="rcasey" context="prod">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_subject_prod.sql"
                  relativeToChangelogFile="true"
@@ -2445,7 +2445,7 @@
 
   <changeSet author="rcasey" id="1_0_0-164" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_services_v14.sql"
                  relativeToChangelogFile="true"
@@ -2455,7 +2455,7 @@
 
     <changeSet id="1_0_0-169" author="rcasey">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_locations_v13-2.sql"
                  relativeToChangelogFile="true"
@@ -2465,7 +2465,7 @@
 
     <changeSet id="1_0_0-170" author="rcasey">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_services_v13-2.sql"
                  relativeToChangelogFile="true"
@@ -2485,7 +2485,7 @@
 
     <changeSet id="1_0_0-171" author="rcasey">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/speed_lookup_sort_order.sql"
                  relativeToChangelogFile="true"
@@ -2522,7 +2522,7 @@
 
     <changeSet author="mwelicka" id="1_0_0-169" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/insert_jeop.sql"
                  relativeToChangelogFile="true"
@@ -2833,7 +2833,7 @@
 
     <changeSet author="rcasey" id="1_0_0-186" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_activation_attempt_v2.sql"
                  relativeToChangelogFile="true"
@@ -2843,7 +2843,7 @@
 
     <changeSet author="rcasey" id="1_0_0-187" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_carrier_reports_v3.sql"
                  relativeToChangelogFile="true"
@@ -2853,7 +2853,7 @@
 
     <changeSet author="rcasey" id="1_0_0-188" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_wip_reports_v5.sql"
                  relativeToChangelogFile="true"
@@ -2863,7 +2863,7 @@
 
     <changeSet id="1_0_0-189" author="rcasey">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_activations_v5.sql"
                  relativeToChangelogFile="true"
@@ -2873,7 +2873,7 @@
 
      <changeSet author="mwelicka" id="1_0_0-190" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_services_v15.sql"
                  relativeToChangelogFile="true"
@@ -2918,7 +2918,7 @@
 
     <changeSet id="mwelicka" author="1_0_0-190-1">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
             <sqlCheck expectedResult="0">SELECT COUNT(*) FROM company WHERE company_name = 'QTO First Tenant' AND company_type = 'Vertek Client'</sqlCheck>
         </preConditions>
         <sql>
@@ -2929,7 +2929,7 @@
 
     <changeSet id="mwelicka" author="1_0_0-190-2">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
             <sqlCheck expectedResult="0">SELECT COUNT(*) FROM company WHERE company_name = 'Endeavor' AND company_type = 'Vertek Client'</sqlCheck>
         </preConditions>
         <sql>
@@ -2940,7 +2940,7 @@
 
     <changeSet id="mwelicka" author="1_0_0-190-3">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
             <sqlCheck expectedResult="0">SELECT COUNT(*) FROM v_tenant WHERE name = 'Demo Tenant'</sqlCheck>
         </preConditions>
         <sql>
@@ -2977,7 +2977,7 @@
 
     <changeSet author="rcasey" id="1_0_0-196" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_activations_v6.sql"
                  relativeToChangelogFile="true"
@@ -3456,7 +3456,7 @@
 
     <changeSet author="rcasey" id="1_0_0-202" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <comment>Update the view to use the mappings.</comment>
         <sqlFile path="data/v_manage_services_v16.sql"
@@ -3467,7 +3467,7 @@
 
     <changeSet author="mwelicka" id="1_0_0-202" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <comment>Update the view to use the mappings.</comment>
         <sqlFile path="data/pbi_location_views_v1.sql"
@@ -3478,7 +3478,7 @@
 
     <changeSet author="mwelicka" id="1_0_0-203" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <comment>Update the view to use the mappings.</comment>
         <sqlFile path="data/pbi_service_views_v1.sql"
@@ -3491,7 +3491,7 @@
 
     <changeSet author="mwelicka" id="1_0_0-204" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <comment>Update the view to use the mappings.</comment>
         <sqlFile path="data/pbi_service_views_v2.sql"
@@ -3501,3 +3501,4 @@
     </changeSet>
 
 </databaseChangeLog>
+

@@ -1,5 +1,7 @@
 package com.endeavorms.velocity.qto.milestone;
 
+import org.springframework.stereotype.Repository;
+
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -21,6 +23,7 @@ import static com.endeavorms.velocity.qto.milestone.QServiceMilestoneInstance.se
  *
  * @author fcurran
  */
+@Repository
 public class ServiceMilestoneInstanceJpaDao extends AbstractMilestoneInstanceJpaDao<ServiceMilestoneInstance> {
     @Override
     public List<ServiceMilestoneInstance> listByRecord(final Long serviceId) {
@@ -164,3 +167,4 @@ public class ServiceMilestoneInstanceJpaDao extends AbstractMilestoneInstanceJpa
                 .fetch();
     }
 }
+

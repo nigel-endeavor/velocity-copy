@@ -6,8 +6,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 
 
 /**
@@ -16,26 +16,23 @@ import org.springframework.context.annotation.Bean;
  * @since 1.0.0
  */
 @Configuration
-@DependsOn("LiquibaseStartupBean")
 public class ApplicationResources {
 
-    /** The QTO Database EntityManager.*/
-    @PersistenceContext(unitName = "qto")
-    private EntityManager qtoEntityManager;
-
-    @PersistenceContext(unitName = "platform")
-    private EntityManager platformEntityManager;
+    /** The single EntityManager used for both QTO and Platform databases.*/
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Bean
+    @Primary
     @QtoDatabase
     public EntityManager getQtoEntityManager() {
-        return qtoEntityManager;
+        return entityManager;
     }
 
     @Bean
     @PlatformDatabase
     public EntityManager getPlatformEntityManager() {
-        return platformEntityManager;
+        return entityManager;
     }
 
 }

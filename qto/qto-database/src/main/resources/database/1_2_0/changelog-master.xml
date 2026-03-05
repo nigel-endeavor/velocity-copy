@@ -11,7 +11,7 @@
 
     <changeSet id="1_2_0-002" author="rcasey">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <comment>Update power bi PMV Service Report view.</comment>
         <sqlFile path="data/v_manage_locations_v14.sql"
@@ -46,7 +46,7 @@
 
     <changeSet author="llevit" id="1_2_0-003" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <comment>Create disputes table.</comment>
         <sqlFile path="data/disputes.sql"
@@ -57,7 +57,7 @@
 
     <changeSet id="1_2_0-004" author="rcasey">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <comment>Create disputes table.</comment>
         <sqlFile path="data/v_manage_locations_v15.sql"
@@ -78,7 +78,7 @@
 
     <changeSet id="1_2_0-006" author="fcurran">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <comment>Create disputes worklist.</comment>
         <sqlFile path="data/v_manage_disputes_v1.sql"
@@ -139,7 +139,7 @@
 
     <changeSet id="1_2_0-013" author="rcasey">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <comment>Create disputes table.</comment>
         <sqlFile path="data/insert_dispute_type_lookup.sql"
@@ -150,7 +150,7 @@
 
     <changeSet id="1_2_0-014" author="rcasey">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <comment>Create disputes table.</comment>
         <sqlFile path="data/v_manage_locations_v16.sql"
@@ -179,7 +179,7 @@
 
     <changeSet id="1_2_0-016" author="fcurran">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <comment>Missing fields.</comment>
         <sqlFile path="data/v_manage_disputes_v2.sql"
@@ -194,7 +194,7 @@
 
     <changeSet id="1_2_0-017" author="rcasey">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_services_v19.sql"
                  relativeToChangelogFile="true"
@@ -204,7 +204,7 @@
 
     <changeSet id="1_2_0-018" author="rcasey">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_locations_v17.sql"
                  relativeToChangelogFile="true"
@@ -214,7 +214,7 @@
 
     <changeSet id="1_2_0-018" author="fcurran">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_services_v20.sql"
                  relativeToChangelogFile="true"
@@ -224,7 +224,7 @@
 
     <changeSet id="1_2_0-019" author="rcasey">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_services_v21.sql"
                  relativeToChangelogFile="true"
@@ -234,7 +234,7 @@
 
     <changeSet id="1_2_0-020" author="rcasey">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_locations_v18.sql"
                  relativeToChangelogFile="true"
@@ -244,7 +244,7 @@
 
     <changeSet id="1_2_0-021" author="rcasey">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_locations_v19.sql"
                  relativeToChangelogFile="true"
@@ -254,7 +254,7 @@
 
     <changeSet id="1_2_0-022" author="fcurran">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_locations_v20.sql"
                  relativeToChangelogFile="true"
@@ -268,7 +268,7 @@
 
     <changeSet id="1_2_0-024" author="rcasey">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/insert_field_mapping_config.sql"
                  relativeToChangelogFile="true"
@@ -277,3 +277,4 @@
     </changeSet>
 
 </databaseChangeLog>
+

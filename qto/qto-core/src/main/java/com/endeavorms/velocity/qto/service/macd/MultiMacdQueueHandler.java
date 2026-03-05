@@ -21,8 +21,8 @@ public class MultiMacdQueueHandler {
 
     public static final String MULTI_MACD_QUEUE = "qto.MultiMacdQueue";
 
-    @Autowired
-    private JmsTemplate jmsTemplate;
+    // JMS disabled
+    // private JmsTemplate jmsTemplate;
 
     @Autowired
     private SubjectManager subjectManager;
@@ -33,7 +33,7 @@ public class MultiMacdQueueHandler {
             Subject subject = subjectManager.findByUsername(username);
             dto.setSubjectId(subject.getId());
 
-            jmsTemplate.convertAndSend(MULTI_MACD_QUEUE, dto);
+            // JMS disabled
             LOGGER.debug("Sent message to {}, serviceIds: {}", MULTI_MACD_QUEUE, dto.getIds());
         } catch (Exception e) {
             LOGGER.error("Error sending to {}: {}", MULTI_MACD_QUEUE, e.getMessage());

@@ -5,7 +5,7 @@
 
     <changeSet id="1_16_0-01" author="bmccormick">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <comment>Adding threatMDR.</comment>
         <sqlFile path="data/service_ransomMDR.sql"
@@ -16,7 +16,7 @@
 
     <changeSet author="bmccormick" id="1_16_0-02">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/insert_lookup_13.sql"
                  relativeToChangelogFile="true"
@@ -34,7 +34,7 @@
 
     <changeSet id="1_16_0-04" author="bmccormick">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <comment>Add Ransom MDR milestone display set.</comment>
         <sqlFile path="data/ransomMDR_milestone_display_set.sql"
@@ -45,7 +45,7 @@
 
     <changeSet id="1_16_0-05" author="bmccormick">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <comment>Adding threatMDR.</comment>
         <sqlFile path="data/service_riskMDR.sql"
@@ -70,7 +70,7 @@
 
     <changeSet id="1_16_0--2" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/pbi_i90_end_company_v3.sql"
                  relativeToChangelogFile="true"
@@ -119,7 +119,7 @@
 
     <changeSet id="1_16_0-06" author="bmccormick">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <comment>Add RiskMDR milestone display set.</comment>
         <sqlFile path="data/riskMDR_milestone_display_set.sql"
@@ -150,7 +150,7 @@
 
     <changeSet id="1_16_0-09" author="bmccormick">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <comment>Adding cloud services-iam.</comment>
         <sqlFile path="data/service_cloudServicesIAM.sql"
@@ -228,7 +228,7 @@
 
     <changeSet id="1_16_0-13" author="bmccormick">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <comment>Add Cloud Services-IAM milestone display set.</comment>
         <sqlFile path="data/cloudServicesIAM_milestone_display_set.sql"
@@ -238,3 +238,4 @@
     </changeSet>
 
 </databaseChangeLog>
+

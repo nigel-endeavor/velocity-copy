@@ -5,7 +5,7 @@
 
     <changeSet id="1_18_1-001" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_disconnects_v14.sql"
                  relativeToChangelogFile="true"
@@ -15,3 +15,4 @@
 
 
 </databaseChangeLog>
+

@@ -1,5 +1,7 @@
 package com.endeavorms.velocity.qto.milestone;
 
+import org.springframework.stereotype.Repository;
+
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -20,6 +22,7 @@ import static com.endeavorms.velocity.qto.milestone.QLocationMilestoneInstance.l
  *
  * @author fcurran
  */
+@Repository
 public class LocationMilestoneInstanceJpaDao extends AbstractMilestoneInstanceJpaDao<LocationMilestoneInstance> {
     @Override
     public List<LocationMilestoneInstance> listByRecord(final Long locationId) {
@@ -147,3 +150,4 @@ public class LocationMilestoneInstanceJpaDao extends AbstractMilestoneInstanceJp
     }
 
 }
+

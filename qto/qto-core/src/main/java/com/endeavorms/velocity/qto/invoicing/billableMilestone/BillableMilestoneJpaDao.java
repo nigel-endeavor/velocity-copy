@@ -1,5 +1,7 @@
 package com.endeavorms.velocity.qto.invoicing.billableMilestone;
 
+import org.springframework.stereotype.Repository;
+
 import com.querydsl.jpa.impl.JPAQuery;
 import com.endeavorms.velocity.qto.cdi.QtoDatabase;
 import com.endeavorms.velocity.qto.common.AbstractMultitenantJpaDao;
@@ -18,6 +20,7 @@ import static com.endeavorms.velocity.qto.invoicing.billableMilestone.QBillableM
  * @since 7/30/2023
  */
 
+@Repository
 public class BillableMilestoneJpaDao extends AbstractMultitenantJpaDao<BillableMilestone, Long> {
     @Override
     @Inject
@@ -43,3 +46,4 @@ public class BillableMilestoneJpaDao extends AbstractMultitenantJpaDao<BillableM
     }
 
 }
+

@@ -10,7 +10,7 @@
 
     <changeSet author="mwelicka" id="1_1_0-001" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <comment>Update power bi location views.</comment>
         <sqlFile path="data/pbi_location_views_v2.sql"
@@ -20,7 +20,7 @@
     </changeSet>
  <changeSet author="mwelicka" id="1_1_0-002" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <comment>Update power bi service views.</comment>
         <sqlFile path="data/pbi_location_views_v2.sql"
@@ -64,7 +64,7 @@
 
     <changeSet author="bmccormick" id="1_0_0-197" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_manage_activations_v7.sql"
                  relativeToChangelogFile="true"
@@ -85,7 +85,7 @@
 
     <changeSet author="mwelicka" id="1_1_0-008" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <comment>Update power bi views.</comment>
         <sqlFile path="data/pbi_location_child_views_v3.sql"
@@ -96,7 +96,7 @@
 
     <changeSet author="mwelicka" id="1_1_0-009" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <comment>Update power bi location view.</comment>
         <sqlFile path="data/pbi_location_view_v3.sql"
@@ -107,7 +107,7 @@
 
     <changeSet author="mwelicka" id="1_1_0-010" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <comment>Update power bi service child views.</comment>
         <sqlFile path="data/pbi_service_child_views_v4.sql"
@@ -118,7 +118,7 @@
 
     <changeSet author="mwelicka" id="1_1_0-011" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <comment>Update power bi service view.</comment>
         <sqlFile path="data/pbi_service_view_v3.sql"
@@ -129,7 +129,7 @@
 
     <changeSet author="mwelicka" id="1_1_0-012" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <comment>Update power bi pmv report view.</comment>
         <sqlFile path="data/pbi_pmv_view_v3.sql"
@@ -140,7 +140,7 @@
 
     <changeSet author="mwelicka" id="1_1_0-013" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <comment>Update power bi invoice view.</comment>
         <sqlFile path="data/pbi_iss_invoice_view_v1.sql"
@@ -151,7 +151,7 @@
 
     <changeSet author="mwelicka" id="1_1_0-014" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <comment>Update power bi invoice charge view.</comment>
         <sqlFile path="data/pbi_iss_invoice_charge_view_v1.sql"
@@ -182,7 +182,7 @@
 
     <changeSet author="mwelicka" id="1_1_0-015" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <comment>Update power bi location view.</comment>
         <sqlFile path="data/pbi_location_view_v4.sql"
@@ -205,7 +205,7 @@
 
     <changeSet author="rcasey" id="1_1_0-017" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <comment>Update power bi location view.</comment>
         <sqlFile path="data/v_manage_services_v17.sql"
@@ -216,7 +216,7 @@
 
     <changeSet author="mwelicka" id="1_1_0-017" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <comment>Update power bi PMV Service Report view.</comment>
         <sqlFile path="data/pbi_pmv_view_service_v1.sql"
@@ -258,7 +258,7 @@
 
     <changeSet author="bmccormick" id="1_1_0-022" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <comment>Update power bi location view.</comment>
         <sqlFile path="data/v_manage_services_v18.sql"
@@ -278,7 +278,7 @@
 
     <changeSet author="rcasey" id="1_1_1-002" context="common">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_pbi_iss_activation_attempts_v2.sql"
                  relativeToChangelogFile="true"
@@ -287,3 +287,4 @@
     </changeSet>
 
 </databaseChangeLog>
+

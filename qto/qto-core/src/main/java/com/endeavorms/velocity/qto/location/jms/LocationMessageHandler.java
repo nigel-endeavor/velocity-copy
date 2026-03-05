@@ -13,12 +13,12 @@ public class LocationMessageHandler {
 
     public static final String LOCATION_QUEUE = "qto.LocationMessageQueue";
 
-    @Autowired
-    private JmsTemplate jmsTemplate;
+    // JMS disabled
+    // private JmsTemplate jmsTemplate;
 
     public void sendMessageToQueue(final LocationMessage locationMessage) {
         try {
-            jmsTemplate.convertAndSend(LOCATION_QUEUE, locationMessage);
+            // JMS disabled
             LOGGER.debug("Sent message to {}, locationId: {}, messageType: {}",
                     LOCATION_QUEUE, locationMessage.getLocationId(), locationMessage.getMessageType());
         } catch (Exception e) {

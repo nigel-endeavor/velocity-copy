@@ -31,7 +31,7 @@
 
     <changeSet id="1_14_0-04" author="fcurran">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_note_union_v5.sql"
                  relativeToChangelogFile="true"
@@ -54,7 +54,7 @@
 
     <changeSet id="1_14_0-06" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/v_company_v3.sql"
                  relativeToChangelogFile="true"
@@ -94,7 +94,7 @@
 
     <changeSet id="1_14_0-09" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/pbi_i90_activation_attempts_v2.sql"
                  relativeToChangelogFile="true"
@@ -152,7 +152,7 @@
 
      <changeSet id="1_14_0-10" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/pbi_iss_ucaas_v4.sql"
                  relativeToChangelogFile="true"
@@ -162,7 +162,7 @@
 
      <changeSet id="1_14_0-11" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/pbi_i90_service_brokerage_v2.sql"
                  relativeToChangelogFile="true"
@@ -172,7 +172,7 @@
 
      <changeSet id="1_14_0-12" author="mwelicka">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/pbi_i90_dispute_v2.sql"
                  relativeToChangelogFile="true"
@@ -182,3 +182,4 @@
 
 
 </databaseChangeLog>
+

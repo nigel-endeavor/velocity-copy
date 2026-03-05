@@ -5,7 +5,7 @@
 
     <changeSet id="1_2_1-001" author="fcurran">
         <preConditions onFail="CONTINUE">
-            <dbms type="postgresql"/>
+            <dbms type="mysql"/>
         </preConditions>
         <sqlFile path="data/update_field_mapping_config.sql"
                  relativeToChangelogFile="true"
@@ -14,3 +14,4 @@
     </changeSet>
 
 </databaseChangeLog>
+

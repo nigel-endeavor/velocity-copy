@@ -1,5 +1,7 @@
 package com.endeavorms.velocity.qto.milestone;
 
+import org.springframework.stereotype.Component;
+
 import com.endeavorms.velocity.qto.common.StandardManager;
 
 import jakarta.inject.Inject;
@@ -9,6 +11,7 @@ import java.util.List;
  * @author rcasey
  * @since 2/17/2023
  */
+@Component
 public class MilestoneInstanceHistoryManager extends StandardManager<MilestoneInstanceHistory> {
 
     @Inject

@@ -22,6 +22,7 @@ import java.util.Objects;
 import static com.endeavorms.velocity.qto.location.jms.LocationMessageHandler.LOCATION_QUEUE;
 
 @Component
+@org.springframework.boot.autoconfigure.condition.ConditionalOnProperty(name = "qto.jms.enabled", havingValue = "true", matchIfMissing = false)
 public class LocationMessageListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LocationMessageListener.class);
