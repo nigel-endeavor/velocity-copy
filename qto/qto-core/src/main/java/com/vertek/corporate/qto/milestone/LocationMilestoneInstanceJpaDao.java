@@ -7,8 +7,8 @@ import com.vertek.corporate.qto.cdi.QtoDatabase;
 import com.vertek.corporate.qto.common.PlatformDatabase;
 import com.vertek.corporate.qto.common.PreconditionsUtil;
 
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;

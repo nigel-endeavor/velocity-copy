@@ -24,7 +24,7 @@ import com.vertek.corporate.qto.service.ServiceManager;
 import com.vertek.corporate.qto.subject.Subject;
 import com.vertek.corporate.qto.subject.SubjectManager;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

@@ -2,9 +2,9 @@ package com.vertek.corporate.qto.contact.masterCustomer;
 
 import com.vertek.corporate.qto.contact.Contact;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "master_customer_contact")

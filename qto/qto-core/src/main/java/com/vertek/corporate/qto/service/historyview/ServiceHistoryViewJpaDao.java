@@ -5,9 +5,9 @@ import com.vertek.corporate.qto.cdi.QtoDatabase;
 import com.vertek.corporate.qto.common.AbstractMasterCustomerJpaDao;
 import com.vertek.corporate.qto.common.PlatformDatabase;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
 import java.util.List;
 
 import static com.vertek.corporate.qto.service.historyview.QServiceHistoryView.serviceHistoryView;

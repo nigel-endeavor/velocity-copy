@@ -3,8 +3,8 @@ package com.vertek.corporate.qto.milestone;
 import com.vertek.corporate.qto.cdi.QtoDatabase;
 import com.vertek.corporate.qto.common.AbstractJpaDao;
 
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
 import java.util.List;
 
 /**

@@ -9,7 +9,7 @@ import java.util.Date;
 import com.vertek.corporate.qto.attachment.FileAttachmentContent;
 import org.apache.commons.io.IOUtils;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 public abstract class AbstractFileAttachmentManager<T extends FileAttachment> extends AbstractManager<T, Long> {
     @Inject

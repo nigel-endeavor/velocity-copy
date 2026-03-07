@@ -2,12 +2,12 @@ package com.vertek.corporate.qto.cdi;
 
 import com.vertek.corporate.qto.common.PlatformDatabase;
 
-import javax.ejb.DependsOn;
-import javax.ejb.Startup;
-import javax.enterprise.inject.Produces;
-import javax.inject.Singleton;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.ejb.DependsOn;
+import jakarta.ejb.Startup;
+import jakarta.enterprise.inject.Produces;
+import jakarta.inject.Singleton;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 
 /**

@@ -2,16 +2,16 @@ package com.vertek.corporate.qto;
 
 import com.vertek.corporate.qto.config.ConfigPropertyManager;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
-import javax.mail.Authenticator;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
+import jakarta.mail.Authenticator;
+import jakarta.mail.Message;
+import jakarta.mail.MessagingException;
+import jakarta.mail.PasswordAuthentication;
+import jakarta.mail.Session;
+import jakarta.mail.Transport;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
 import java.util.List;
 import java.util.Properties;
 

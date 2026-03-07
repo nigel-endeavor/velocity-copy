@@ -6,9 +6,9 @@ import com.vertek.corporate.qto.common.mapping.ValidatingSourceMapper;
 import com.vertek.corporate.qto.company.Company;
 import com.vertek.corporate.qto.fileimport.importactivity.ImportActivity;
 
-import javax.ejb.Stateless;
-import javax.ejb.TransactionManagement;
-import javax.ejb.TransactionManagementType;
+import jakarta.ejb.Stateless;
+import jakarta.ejb.TransactionManagement;
+import jakarta.ejb.TransactionManagementType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

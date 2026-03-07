@@ -17,9 +17,9 @@ import com.vertek.corporate.qto.common.AbstractMasterCustomerJpaDao;
 import com.vertek.corporate.qto.common.PaginatedResult;
 import com.vertek.corporate.qto.common.PlatformDatabase;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.util.List;
 

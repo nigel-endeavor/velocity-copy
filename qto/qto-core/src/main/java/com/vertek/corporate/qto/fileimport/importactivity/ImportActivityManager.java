@@ -10,12 +10,12 @@ import com.vertek.corporate.qto.common.TenantSubjectManager;
 import com.vertek.corporate.qto.fileimport.FileImportQueueHandler;
 import com.vertek.corporate.qto.subject.Subject;
 import com.vertek.corporate.qto.subject.SubjectManager;
-import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload2.core.DiskFileItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
 import java.util.Date;
 
 /**
@@ -44,7 +44,7 @@ public class ImportActivityManager extends StandardManager<ImportActivity> {
         return dao;
     }
 
-    public ImportActivity create(final String type, final FileItem fileItem) {
+    public ImportActivity create(final String type, final DiskFileItem fileItem) {
         try {
             String username = SecurityUtils.getLoggedInUser();
             Subject subject = subjectManager.findByUsername(username);

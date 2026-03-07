@@ -5,8 +5,8 @@ import com.vertek.corporate.qto.common.StandardManager;
 import com.vertek.corporate.qto.common.TenantSubjectManager;
 import com.vertek.corporate.qto.common.lookup.LookupValueManager;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

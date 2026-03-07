@@ -7,9 +7,9 @@ import com.vertek.corporate.qto.common.PaginatedResult;
 import com.vertek.corporate.qto.common.PlatformDatabase;
 import com.vertek.corporate.qto.template.TemplateType;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
 
 import static com.vertek.corporate.qto.template.email.QEmailTemplate.emailTemplate;
 

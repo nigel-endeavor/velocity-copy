@@ -3,7 +3,7 @@ package com.vertek.corporate.qto.service._4g5g;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.vertek.corporate.qto.service.AbstractServiceJpaDao;
 
-import javax.ejb.Stateless;
+import jakarta.ejb.Stateless;
 import java.util.List;
 
 import static com.vertek.corporate.qto.service._4g5g.QGService.gService;

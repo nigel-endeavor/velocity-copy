@@ -4,8 +4,8 @@ import com.vertek.corporate.qto.activation.attempt.ActivationAttempt;
 import com.vertek.corporate.qto.activation.attempt.ActivationAttemptManager;
 import com.vertek.corporate.qto.common.StandardManager;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
 import java.util.List;
 
 /**

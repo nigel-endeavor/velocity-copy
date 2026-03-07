@@ -21,14 +21,16 @@ import com.vertek.corporate.qto.service.ucaas.UcaasServiceManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.enterprise.inject.Any;
-import javax.enterprise.inject.Instance;
-import javax.inject.Inject;
+import jakarta.enterprise.inject.Any;
+import jakarta.enterprise.inject.Instance;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import java.util.EnumMap;
 
 /**
  * Simple factory for getting the correctly injected manager for a given service type.
  */
+@ApplicationScoped
 public class ServiceManagerFactory {
     /** Logger. */
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceManagerFactory.class);

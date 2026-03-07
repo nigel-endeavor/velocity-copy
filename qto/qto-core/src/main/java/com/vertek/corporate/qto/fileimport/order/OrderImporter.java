@@ -30,10 +30,10 @@ import com.vertek.corporate.qto.service.Service;
 import com.vertek.corporate.qto.service.ServiceManager;
 import com.vertek.corporate.qto.service.ServiceType;
 
-import javax.ejb.Stateless;
-import javax.ejb.TransactionManagement;
-import javax.ejb.TransactionManagementType;
-import javax.inject.Inject;
+import jakarta.ejb.Stateless;
+import jakarta.ejb.TransactionManagement;
+import jakarta.ejb.TransactionManagementType;
+import jakarta.inject.Inject;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;

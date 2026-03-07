@@ -4,8 +4,8 @@ import com.vertek.corporate.qto.common.StandardManager;
 import com.vertek.corporate.qto.location.LocationManager;
 import com.vertek.corporate.qto.service.ServiceManager;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
 import java.util.List;
 
 @Deprecated

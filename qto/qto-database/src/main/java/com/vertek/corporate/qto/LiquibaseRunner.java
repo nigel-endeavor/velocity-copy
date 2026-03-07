@@ -9,13 +9,13 @@ import liquibase.resource.ResourceAccessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.annotation.Resource;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
-import javax.ejb.TransactionManagement;
-import javax.ejb.TransactionManagementType;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
+import jakarta.annotation.Resource;
+import jakarta.ejb.Singleton;
+import jakarta.ejb.Startup;
+import jakarta.ejb.TransactionManagement;
+import jakarta.ejb.TransactionManagementType;
 import javax.sql.DataSource;
 import java.sql.Connection;
 
@@ -47,6 +47,11 @@ public class LiquibaseRunner {
      */
     @PostConstruct
     protected void postConstruct() throws Exception {
+        String enabled = System.getProperty("liquibase.enabled", "true");
+        if ("false".equalsIgnoreCase(enabled)) {
+            LOGGER.info("Liquibase is disabled via system property liquibase.enabled=false, skipping database migrations.");
+            return;
+        }
         String contexts = System.getProperty("liquibase.contexts", "");
         LOGGER.debug("Constructing {} with contexts: {}", this.getClass().getSimpleName(), contexts);
 

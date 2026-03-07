@@ -5,9 +5,9 @@ import com.vertek.corporate.qto.cdi.QtoDatabase;
 import com.vertek.corporate.qto.common.AbstractJpaDao;
 import com.vertek.corporate.qto.quote.Quote;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
 
 import static com.vertek.corporate.qto.solution.QSolution.solution;
 

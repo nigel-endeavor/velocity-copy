@@ -3,7 +3,7 @@ package com.vertek.corporate.qto.company.task;
 import com.vertek.corporate.qto.common.BaseSearchCriteria;
 import com.vertek.corporate.qto.contact.location.LocationContact;
 
-import javax.ws.rs.QueryParam;
+import jakarta.ws.rs.QueryParam;
 
 /**
  * Search criteria used for filtering task groups.

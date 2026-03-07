@@ -3,8 +3,8 @@ package com.vertek.corporate.qto.activation.attempt.emailView;
 import com.vertek.corporate.qto.common.GenericDao;
 import com.vertek.corporate.qto.common.StandardManager;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
 
 /**
  * @author fcurran

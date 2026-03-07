@@ -4,8 +4,8 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.vertek.corporate.qto.cdi.QtoDatabase;
 import com.vertek.corporate.qto.common.AbstractJpaDao;
 
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
 
 import static com.vertek.corporate.qto.custom.iss.parser.QInputRecord2.inputRecord2;
 import static com.vertek.corporate.qto.custom.iss.parser.QInputRecord5.inputRecord5;

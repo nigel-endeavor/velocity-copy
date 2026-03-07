@@ -2,7 +2,7 @@ package com.vertek.corporate.qto.template.email;
 
 import com.vertek.corporate.qto.common.BaseSearchCriteria;
 
-import javax.ws.rs.QueryParam;
+import jakarta.ws.rs.QueryParam;
 
 /**
  * Search criteria for email template.

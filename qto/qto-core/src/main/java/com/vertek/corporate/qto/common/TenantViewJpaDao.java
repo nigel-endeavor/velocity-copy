@@ -3,9 +3,9 @@ package com.vertek.corporate.qto.common;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.vertek.corporate.qto.cdi.QtoDatabase;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
 import java.util.List;
 
 import static com.vertek.corporate.qto.common.QTenantView.tenantView;

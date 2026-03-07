@@ -6,8 +6,8 @@ import org.apache.shiro.authz.UnauthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
 import java.util.List;
 
 import static com.vertek.corporate.qto.subject.QTenantSubject.tenantSubject;
@@ -31,7 +31,8 @@ public class TenantSubjectJpaDao extends AbstractJpaDao<TenantSubject, Long> {
 
     /**
      * Gets the currently selected Tenant.
-     * @return the currently selected Tenant.
+     * Falls back to the first active tenant linked to the user if none is explicitly selected.
+     * @return the currently selected Tenant, or null if user has no linked tenants.
      */
     public Tenant getCurrentTenant() {
         Tenant selectedTenant = (Tenant) ((JPAQuery) new JPAQuery(entityManager)
@@ -40,6 +41,19 @@ public class TenantSubjectJpaDao extends AbstractJpaDao<TenantSubject, Long> {
                 .where(tenantSubject.subject.emailAddress.eq(SecurityUtils.getLoggedInUser())
                         .and(tenantSubject.isSelected.isTrue()).and(tenantSubject.tenant.active.isTrue())))
                 .fetchOne();
+
+        // Fallback: if no explicitly-selected tenant, return the first active tenant for this user
+        if (selectedTenant == null) {
+            LOGGER.debug("No selected tenant found for user '{}'; falling back to first active tenant.",
+                    SecurityUtils.getLoggedInUser());
+            selectedTenant = (Tenant) ((JPAQuery) new JPAQuery(entityManager)
+                    .select(tenantSubject.tenant)
+                    .from(tenantSubject)
+                    .where(tenantSubject.subject.emailAddress.eq(SecurityUtils.getLoggedInUser())
+                            .and(tenantSubject.tenant.active.isTrue()))
+                    .limit(1))
+                    .fetchFirst();
+        }
 
         return selectedTenant;
     }

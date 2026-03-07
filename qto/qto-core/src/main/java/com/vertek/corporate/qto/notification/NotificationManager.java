@@ -5,10 +5,10 @@ import com.vertek.corporate.qto.common.StandardManager;
 import com.vertek.corporate.qto.subject.Subject;
 import com.vertek.corporate.qto.subject.SubjectManager;
 
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.inject.Inject;
+import jakarta.ejb.Stateless;
+import jakarta.ejb.TransactionAttribute;
+import jakarta.ejb.TransactionAttributeType;
+import jakarta.inject.Inject;
 import java.util.Date;
 import java.util.List;
 

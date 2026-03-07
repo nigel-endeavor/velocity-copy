@@ -3,7 +3,7 @@ package com.vertek.corporate.qto.service.cyber360MXDR;
 import com.vertek.corporate.qto.service.Service;
 import com.vertek.corporate.qto.service.ServiceType;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "service_cyber360_mxdr")

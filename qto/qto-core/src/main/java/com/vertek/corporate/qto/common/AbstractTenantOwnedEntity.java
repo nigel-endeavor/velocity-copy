@@ -3,8 +3,8 @@ package com.vertek.corporate.qto.common;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.vertek.corporate.qto.common.StandardVersionedBaseEntity;
 
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
+import jakarta.persistence.Column;
+import jakarta.persistence.MappedSuperclass;
 
 /**
  * From platform.

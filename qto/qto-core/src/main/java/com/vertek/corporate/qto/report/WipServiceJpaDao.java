@@ -9,9 +9,9 @@ import com.vertek.corporate.qto.location.TerminalLocationStatuses;
 import com.vertek.corporate.qto.service.TerminalServiceStatuses;
 import com.vertek.corporate.qto.subject.CompanySubjectManager;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Calendar;

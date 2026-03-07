@@ -4,8 +4,8 @@ import com.vertek.corporate.qto.cdi.QtoDatabase;
 import com.vertek.corporate.qto.common.AbstractMasterCustomerJpaDao;
 import com.vertek.corporate.qto.common.PlatformDatabase;
 
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
 
 /**
  * @author rcasey

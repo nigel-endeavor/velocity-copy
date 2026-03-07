@@ -5,8 +5,8 @@ import com.vertek.corporate.qto.common.StandardManager;
 import com.vertek.corporate.qto.order.Order;
 import com.vertek.corporate.qto.order.OrderManager;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
 import java.util.List;
 
 /**

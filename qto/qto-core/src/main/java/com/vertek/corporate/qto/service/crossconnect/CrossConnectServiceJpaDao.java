@@ -2,7 +2,7 @@ package com.vertek.corporate.qto.service.crossconnect;
 
 import com.vertek.corporate.qto.service.AbstractServiceJpaDao;
 
-import javax.ejb.Stateless;
+import jakarta.ejb.Stateless;
 
 /**
  * Persistence tier for Cross Connect service.

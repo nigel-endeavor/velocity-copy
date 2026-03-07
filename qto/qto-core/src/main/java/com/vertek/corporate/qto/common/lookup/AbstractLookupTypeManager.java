@@ -4,7 +4,7 @@ import com.vertek.corporate.qto.common.PaginatedResult;
 import com.vertek.corporate.qto.common.PreconditionsUtil;
 import com.vertek.corporate.qto.common.StandardManager;
 
-import javax.ws.rs.NotFoundException;
+import jakarta.ws.rs.NotFoundException;
 
 /**
  * Base class for LookupType related business logic.

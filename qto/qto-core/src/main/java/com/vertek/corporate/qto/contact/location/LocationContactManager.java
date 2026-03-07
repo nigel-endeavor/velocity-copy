@@ -7,8 +7,8 @@ import com.vertek.corporate.qto.company.CompanyManager;
 import com.vertek.corporate.qto.contact.ContactType;
 import com.vertek.corporate.qto.location.LocationManager;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
 import java.util.List;
 
 /**

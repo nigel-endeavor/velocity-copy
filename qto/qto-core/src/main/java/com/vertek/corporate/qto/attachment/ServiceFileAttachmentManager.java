@@ -3,8 +3,8 @@ package com.vertek.corporate.qto.attachment;
 import com.vertek.corporate.qto.common.AbstractFileAttachmentManager;
 import com.vertek.corporate.qto.common.PaginatedResult;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
 import java.util.List;
 
 /**

@@ -6,7 +6,7 @@ import com.vertek.corporate.qto.common.StandardManager;
 import com.vertek.corporate.qto.interval.IntervalInstance;
 import com.vertek.corporate.qto.interval.IntervalInstanceManager;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.util.Date;
 import java.util.List;
 

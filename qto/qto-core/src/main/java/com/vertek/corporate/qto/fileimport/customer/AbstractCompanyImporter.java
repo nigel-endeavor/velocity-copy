@@ -11,7 +11,7 @@ import com.vertek.corporate.qto.contact.ContactManager;
 import com.vertek.corporate.qto.contact.ContactType;
 import com.vertek.corporate.qto.fileimport.AbstractImporter;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.util.HashMap;
 import java.util.Map;
 

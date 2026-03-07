@@ -4,8 +4,8 @@ import com.google.common.base.Strings;
 import com.vertek.corporate.qto.common.PaginatedResult;
 import com.vertek.corporate.qto.common.StandardManager;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;

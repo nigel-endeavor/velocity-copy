@@ -2,7 +2,7 @@ package com.vertek.corporate.qto.attachment;
 
 import com.vertek.corporate.qto.common.AbstractFileAttachmentManager;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 /**
  * @author rcasey

@@ -4,10 +4,10 @@ import com.vertek.corporate.qto.AbstractServiceResource;
 import com.vertek.corporate.qto.service.crossconnect.CrossConnectService;
 import com.vertek.corporate.qto.service.crossconnect.CrossConnectServiceManager;
 
-import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
 
 /**
  * Cross Connect Service Resource.

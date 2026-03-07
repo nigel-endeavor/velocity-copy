@@ -3,8 +3,8 @@ package com.vertek.corporate.qto.customfield.value;
 import com.vertek.corporate.qto.service.Service;
 import com.vertek.corporate.qto.service.ServiceManager;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -3,7 +3,7 @@ package com.vertek.corporate.qto.service.broadband;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.vertek.corporate.qto.service.AbstractServiceJpaDao;
 
-import javax.ejb.Stateless;
+import jakarta.ejb.Stateless;
 
 import static com.vertek.corporate.qto.service.broadband.QBroadbandService.broadbandService;
 

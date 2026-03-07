@@ -19,10 +19,10 @@ import com.vertek.corporate.qto.common.Tenant;
 import com.vertek.corporate.qto.common.TenantSubjectManager;
 import com.vertek.corporate.qto.location.inventoryview.InventoryWorklistMeta;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;

@@ -1,7 +1,7 @@
 package com.vertek.corporate.qto.milestone;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
 
 /**
  * Business methods for Milestones.

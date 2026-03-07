@@ -24,8 +24,8 @@ import com.vertek.corporate.qto.contact.order.OrderContactManager;
 import com.vertek.corporate.qto.order.Order;
 import com.vertek.corporate.qto.order.OrderManager;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;

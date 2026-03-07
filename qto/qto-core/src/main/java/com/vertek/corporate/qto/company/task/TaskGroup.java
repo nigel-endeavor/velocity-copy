@@ -3,17 +3,17 @@ package com.vertek.corporate.qto.company.task;
 import com.vertek.corporate.qto.common.AbstractMasterCustomerOwnedEntity;
 import org.hibernate.annotations.Formula;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
+import jakarta.persistence.Table;
 import java.util.List;
 
 /**
@@ -40,7 +40,7 @@ public class TaskGroup extends AbstractMasterCustomerOwnedEntity {
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "task_group_id", referencedColumnName = "task_group_id")
-    @OrderBy("sort_order")
+    @OrderBy("sortOrder")
     private List<Task> tasks;
 
     @Formula("(SELECT REPLACE(GROUP_CONCAT(t.value ORDER BY t.sort_order), ',', ', ') FROM task t" +

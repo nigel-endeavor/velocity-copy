@@ -16,10 +16,10 @@ import com.vertek.corporate.qto.service.ServiceManager;
 import com.vertek.corporate.qto.service.television.TelevisionService;
 import com.vertek.corporate.qto.service.television.TelevisionServiceManager;
 
-import javax.ejb.Stateless;
-import javax.ejb.TransactionManagement;
-import javax.ejb.TransactionManagementType;
-import javax.inject.Inject;
+import jakarta.ejb.Stateless;
+import jakarta.ejb.TransactionManagement;
+import jakarta.ejb.TransactionManagementType;
+import jakarta.inject.Inject;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;

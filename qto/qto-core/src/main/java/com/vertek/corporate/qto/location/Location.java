@@ -14,20 +14,20 @@ import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.Where;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.PostLoad;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
+import jakarta.persistence.PostLoad;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -138,14 +138,14 @@ public class Location extends AbstractMasterCustomerOwnedEntity {
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "location_id", referencedColumnName = "location_id")
     @Where(clause = "marked_for_deletion = false")
-    @OrderBy("linked_bundled_parent_id DESC, linked_bundled_parent DESC, sortOrder ASC, id ASC")
+    @OrderBy("linkedBundledParentId DESC, linkedBundledParent DESC, sortOrder ASC, id ASC")
     private List<Service> services = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
     @JoinColumn(name = "location_id", referencedColumnName = "location_id")
     @Where(clause = "current_inventory = true and marked_for_deletion = false")
-    @OrderBy("linked_bundled_parent_id DESC, linked_bundled_parent DESC, inventorySortOrder ASC, id ASC")
+    @OrderBy("linkedBundledParentId DESC, linkedBundledParent DESC, inventorySortOrder ASC, id ASC")
     private List<Service> inventoryServices = new ArrayList<>();
 
     @Column(name = "last_update_by")

@@ -5,8 +5,8 @@ import com.vertek.corporate.qto.common.PaginatedResult;
 import com.vertek.corporate.qto.common.StandardManager;
 import com.vertek.corporate.qto.company.CompanyManager;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
 
 /**
  * Business logic layer for Email Templates.

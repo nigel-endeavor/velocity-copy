@@ -2,7 +2,7 @@ package com.vertek.corporate.qto.invoicing.surcharge.service;
 
 import com.vertek.corporate.qto.common.BaseSearchCriteria;
 
-import javax.ws.rs.QueryParam;
+import jakarta.ws.rs.QueryParam;
 
 /**
  * Search criteria used for filtering service surcharges.

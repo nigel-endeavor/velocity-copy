@@ -10,10 +10,10 @@ import com.vertek.corporate.qto.common.TenantSubjectManager;
 import com.vertek.corporate.qto.company.CompanyManager;
 import com.vertek.corporate.qto.report.DashboardSearchCriteria;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;

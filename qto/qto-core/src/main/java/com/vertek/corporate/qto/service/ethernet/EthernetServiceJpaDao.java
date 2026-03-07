@@ -2,7 +2,7 @@ package com.vertek.corporate.qto.service.ethernet;
 
 import com.vertek.corporate.qto.service.AbstractServiceJpaDao;
 
-import javax.ejb.Stateless;
+import jakarta.ejb.Stateless;
 
 /**
  * Persistence tier for Ethernet service.

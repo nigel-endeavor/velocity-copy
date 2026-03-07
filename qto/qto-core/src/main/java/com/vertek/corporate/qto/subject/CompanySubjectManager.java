@@ -5,7 +5,7 @@ import com.vertek.corporate.qto.common.TenantSubjectManager;
 import com.vertek.corporate.qto.company.Company;
 import com.vertek.corporate.qto.company.CompanyManager;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.util.List;
 
 public class CompanySubjectManager extends StandardManager<CompanySubject> {

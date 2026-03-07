@@ -10,15 +10,15 @@ import com.vertek.corporate.qto.config.CompanyConfigPropertyManager;
 import com.vertek.corporate.qto.config.CompanyConfigurationProperty;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Response;
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.PUT;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.Response;
 import java.util.List;
 
 @Stateless
@@ -39,7 +39,12 @@ public class CompanyConfigPropertyResource extends AbstractResource<CompanyConfi
     @GET
     @Path("/{key: .+}")
     public Response getValue(@PathParam("key") final CompanyConfigKey key) {
-        Company tenantCompany = companyManager.findTenantByName(tenantSubjectManager.getCurrentTenant().getName());
+        com.vertek.corporate.qto.common.Tenant currentTenant = tenantSubjectManager.getCurrentTenant();
+        if (currentTenant == null) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("No active tenant found for the current user.").build();
+        }
+        Company tenantCompany = companyManager.findTenantByName(currentTenant.getName());
         return Response.ok(wrapResource(manager.findByKey(tenantCompany.getId(), key))).build();
     }
 

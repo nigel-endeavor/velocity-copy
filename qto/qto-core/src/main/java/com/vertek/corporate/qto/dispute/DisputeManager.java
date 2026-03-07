@@ -16,8 +16,8 @@ import com.vertek.corporate.qto.service.ServiceManager;
 import com.vertek.corporate.qto.subject.Subject;
 import com.vertek.corporate.qto.subject.SubjectManager;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;

@@ -4,7 +4,7 @@ import com.vertek.corporate.qto.common.BaseSearchCriteria;
 import com.vertek.corporate.qto.common.DateRangeType;
 import com.vertek.corporate.qto.common.RangeType;
 
-import javax.ws.rs.QueryParam;
+import jakarta.ws.rs.QueryParam;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;

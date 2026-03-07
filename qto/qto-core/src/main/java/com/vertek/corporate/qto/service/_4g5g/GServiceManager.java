@@ -2,8 +2,8 @@ package com.vertek.corporate.qto.service._4g5g;
 
 import com.vertek.corporate.qto.service.AbstractServiceManager;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
 import java.util.List;
 
 /**

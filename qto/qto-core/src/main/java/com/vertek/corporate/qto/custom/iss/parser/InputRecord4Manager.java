@@ -2,7 +2,7 @@ package com.vertek.corporate.qto.custom.iss.parser;
 
 import com.vertek.corporate.qto.common.StandardManager;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.util.List;
 
 public class InputRecord4Manager extends StandardManager<InputRecord4> {

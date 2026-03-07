@@ -6,8 +6,8 @@ import com.vertek.corporate.qto.common.StandardManager;
 import com.vertek.corporate.qto.service.Service;
 import com.vertek.corporate.qto.service.ServiceManager;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;

@@ -14,9 +14,9 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.vertek.corporate.qto.cdi.QtoDatabase;
 import com.vertek.corporate.qto.common.*;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;

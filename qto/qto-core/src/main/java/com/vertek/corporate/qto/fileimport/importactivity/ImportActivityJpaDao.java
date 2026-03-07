@@ -13,9 +13,9 @@ import com.vertek.corporate.qto.common.AbstractMultitenantJpaDao;
 import com.vertek.corporate.qto.common.PaginatedResult;
 import com.vertek.corporate.qto.common.PlatformDatabase;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
 
 import static com.vertek.corporate.qto.activation.QActivationView.activationView;
 import static com.vertek.corporate.qto.fileimport.importactivity.QImportActivity.importActivity;

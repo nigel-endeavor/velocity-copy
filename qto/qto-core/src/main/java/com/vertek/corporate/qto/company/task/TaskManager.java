@@ -2,7 +2,7 @@ package com.vertek.corporate.qto.company.task;
 
 import com.vertek.corporate.qto.common.StandardManager;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.util.List;
 
 public class TaskManager extends StandardManager<Task> {

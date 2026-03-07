@@ -9,10 +9,10 @@ import com.vertek.corporate.qto.common.PreconditionsUtil;
 import com.vertek.corporate.qto.graph.AzureADGroups;
 import com.vertek.corporate.qto.graph.MSGraph;
 
-import javax.annotation.PostConstruct;
-import javax.ejb.Stateless;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
+import jakarta.annotation.PostConstruct;
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 

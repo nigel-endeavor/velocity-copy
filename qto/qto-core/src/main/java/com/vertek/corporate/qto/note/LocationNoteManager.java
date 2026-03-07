@@ -7,8 +7,8 @@ import com.vertek.corporate.qto.location.Location;
 import com.vertek.corporate.qto.location.LocationManager;
 import com.vertek.corporate.qto.subject.Subject;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
 import java.util.Date;
 import java.util.List;
 

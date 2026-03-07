@@ -2,7 +2,7 @@ package com.vertek.corporate.qto.subject;
 
 import com.vertek.corporate.qto.common.BaseSearchCriteria;
 
-import javax.ws.rs.QueryParam;
+import jakarta.ws.rs.QueryParam;
 
 /**
  * Search criteria for subjects.

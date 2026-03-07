@@ -2,7 +2,7 @@ package com.vertek.corporate.qto.dataverse;
 
 import com.vertek.corporate.qto.common.StandardManager;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 public class CrmIntegrationManager extends StandardManager<CrmIntegration> {
 

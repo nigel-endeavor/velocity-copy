@@ -2,7 +2,7 @@ package com.vertek.corporate.qto.fileimport.importactivity;
 
 import com.vertek.corporate.qto.common.BaseSearchCriteria;
 
-import javax.ws.rs.QueryParam;
+import jakarta.ws.rs.QueryParam;
 import java.util.List;
 
 public class ImportActivitySearchCriteria extends BaseSearchCriteria<ImportActivity> {

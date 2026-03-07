@@ -6,8 +6,8 @@ import com.vertek.corporate.qto.common.AbstractMultitenantJpaDao;
 import com.vertek.corporate.qto.common.PlatformDatabase;
 import com.vertek.corporate.qto.invoicing.surchargeType.SurchargeType;
 
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
 
 import java.util.List;
 

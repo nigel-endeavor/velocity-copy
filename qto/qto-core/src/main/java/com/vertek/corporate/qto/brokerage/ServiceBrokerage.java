@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.vertek.corporate.qto.common.AbstractMasterCustomerOwnedEntity;
 import com.vertek.corporate.qto.service.Service;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.math.BigDecimal;
 
 @Entity

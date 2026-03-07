@@ -12,8 +12,8 @@ import com.vertek.corporate.qto.service.ServiceManager;
 import com.vertek.corporate.qto.service.ServiceManagerFactory;
 import com.vertek.corporate.qto.service.ServiceType;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;

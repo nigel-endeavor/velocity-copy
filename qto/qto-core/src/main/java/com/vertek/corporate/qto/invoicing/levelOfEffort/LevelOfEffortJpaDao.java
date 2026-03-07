@@ -8,9 +8,9 @@ import com.vertek.corporate.qto.common.AbstractMultitenantJpaDao;
 import com.vertek.corporate.qto.common.PlatformDatabase;
 import com.vertek.corporate.qto.subject.CompanySubjectManager;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

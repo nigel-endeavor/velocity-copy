@@ -16,22 +16,23 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.DefaultValue;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.StreamingOutput;
+import jakarta.inject.Inject;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.ws.rs.DefaultValue;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.StreamingOutput;
 
 import com.vertek.corporate.qto.config.ConfigPropertyManager;
 import com.vertek.corporate.qto.config.ConfigurationProperty;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.fileupload2.core.DiskFileItem;
+import org.apache.commons.fileupload2.core.DiskFileItemFactory;
+import org.apache.commons.fileupload2.core.FileItem;
+import org.apache.commons.fileupload2.jakarta.servlet6.JakartaServletFileUpload;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -116,10 +117,10 @@ public abstract class AbstractFileAttachmentResource<T extends FileAttachment> e
                 excludedFileExtensions = Arrays.asList(excludedFileExtensionsProperty.getValue().split(","));
             }
 
-            ServletFileUpload servletFileUpload = new ServletFileUpload(new DiskFileItemFactory());
+            JakartaServletFileUpload<DiskFileItem, DiskFileItemFactory> servletFileUpload = new JakartaServletFileUpload<>(DiskFileItemFactory.builder().get());
             servletFileUpload.setFileCountMax(getFileCountMax());
 
-            List<FileItem> fileItems = servletFileUpload.parseRequest(servletRequest);
+            List<DiskFileItem> fileItems = servletFileUpload.parseRequest(servletRequest);
             SimpleDateFormat dateFormat = new SimpleDateFormat("E, d MMM yyyy k:m:s z");
             Dictionary<Integer, String> descriptions = new Hashtable();
             Dictionary<Integer, Date> modifiedDates = new Hashtable();
@@ -128,7 +129,7 @@ public abstract class AbstractFileAttachmentResource<T extends FileAttachment> e
             Iterator var14 = fileItems.iterator();
 
             while(var14.hasNext()) {
-                FileItem fileItem = (FileItem)var14.next();
+                DiskFileItem fileItem = (DiskFileItem)var14.next();
                 if (fileItem.isFormField()) {
                     if (fileItem.getFieldName().equals("description")) {
                         String description = fileItem.getString();
@@ -161,7 +162,7 @@ public abstract class AbstractFileAttachmentResource<T extends FileAttachment> e
             Iterator var25 = fileItems.iterator();
 
             while(var25.hasNext()) {
-                FileItem fileItem = (FileItem)var25.next();
+                DiskFileItem fileItem = (DiskFileItem)var25.next();
                 if (!fileItem.isFormField()) {
                     String filename = (new File(fileItem.getName())).getName();
                     String description = (String)descriptions.get(i);

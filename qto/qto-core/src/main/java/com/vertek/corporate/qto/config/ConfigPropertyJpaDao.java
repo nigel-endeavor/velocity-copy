@@ -7,10 +7,10 @@ import com.vertek.corporate.qto.common.PaginatedResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.validation.constraints.NotNull;
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.validation.constraints.NotNull;
 
 
 import static com.vertek.corporate.qto.config.QConfigurationProperty.configurationProperty;

@@ -1,8 +1,8 @@
 package com.vertek.corporate.qto;
 
-import javax.ejb.Singleton;
-import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Application;
+import jakarta.ejb.Singleton;
+import jakarta.ws.rs.ApplicationPath;
+import jakarta.ws.rs.core.Application;
 
 /**
  * REST API Configuration.

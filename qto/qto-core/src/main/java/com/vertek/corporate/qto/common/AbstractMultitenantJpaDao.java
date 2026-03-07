@@ -9,11 +9,11 @@ import com.querydsl.jpa.impl.JPAQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Root;
-import javax.ws.rs.NotFoundException;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.Root;
+import jakarta.ws.rs.NotFoundException;
 import java.io.Serializable;
 import java.util.List;
 
@@ -385,8 +385,8 @@ public abstract class AbstractMultitenantJpaDao<T extends TenantOwnedEntity<KeyT
      * @param includeAllTenants true to include all allowed tenants, false for selected tenant only.
      * @return predicates including the new tenant predicate (if any).
      */
-    protected List<javax.persistence.criteria.Predicate> addTenantFilter(
-            final List<javax.persistence.criteria.Predicate> predicates, final CriteriaBuilder cb,
+    protected List<jakarta.persistence.criteria.Predicate> addTenantFilter(
+            final List<jakarta.persistence.criteria.Predicate> predicates, final CriteriaBuilder cb,
             final Root<T> root, final Boolean includeAllTenants) {
 
         String loggedInUser = SecurityUtils.getLoggedInUser();

@@ -5,8 +5,8 @@ import com.vertek.corporate.qto.common.StandardManager;
 import com.vertek.corporate.qto.common.Tenant;
 import com.vertek.corporate.qto.common.TenantSubjectManager;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;

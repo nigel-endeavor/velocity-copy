@@ -8,8 +8,8 @@ import com.google.common.collect.Lists;
 import com.querydsl.core.QueryResults;
 
 import java.util.List;
-import javax.ws.rs.DefaultValue;
-import javax.ws.rs.QueryParam;
+import jakarta.ws.rs.DefaultValue;
+import jakarta.ws.rs.QueryParam;
 
 @JacksonXmlRootElement
 public class PaginatedResult<T extends BaseEntity> {

@@ -2,7 +2,7 @@ package com.vertek.corporate.qto.service.dia;
 
 import com.vertek.corporate.qto.service.AbstractServiceJpaDao;
 
-import javax.ejb.Stateless;
+import jakarta.ejb.Stateless;
 
 /**
  * @author fcurran

@@ -3,8 +3,8 @@ package com.vertek.corporate.qto.ftdi;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.vertek.corporate.qto.common.StandardManager;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
 
 import static com.vertek.corporate.qto.ftdi.QFtdiCustomField.ftdiCustomField;
 

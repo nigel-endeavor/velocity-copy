@@ -23,8 +23,8 @@ import com.vertek.corporate.qto.service.TerminalServiceStatuses;
 import com.vertek.corporate.qto.service.broadband.BroadbandServiceManager;
 import org.apache.shiro.SecurityUtils;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;

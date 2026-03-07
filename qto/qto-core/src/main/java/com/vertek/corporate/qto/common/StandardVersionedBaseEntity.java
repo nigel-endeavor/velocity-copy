@@ -1,6 +1,6 @@
 package com.vertek.corporate.qto.common;
 
-import javax.persistence.MappedSuperclass;
+import jakarta.persistence.MappedSuperclass;
 
 /**
  * From vertek-commons.

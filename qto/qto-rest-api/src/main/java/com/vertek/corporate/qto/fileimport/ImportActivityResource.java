@@ -8,13 +8,13 @@ import com.vertek.corporate.qto.fileimport.importactivity.ImportActivitySearchCr
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.jboss.resteasy.annotations.Form;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Response;
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.Response;
 
 /**
  * @author rcasey

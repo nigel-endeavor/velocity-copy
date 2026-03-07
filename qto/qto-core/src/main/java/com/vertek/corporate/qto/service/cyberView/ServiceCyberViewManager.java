@@ -10,8 +10,8 @@ import com.vertek.corporate.qto.service.ServiceManager;
 import com.vertek.corporate.qto.subject.Subject;
 import com.vertek.corporate.qto.subject.SubjectManager;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
 
 @Stateless
 public class ServiceCyberViewManager extends StandardManager<ServiceCyberView> {

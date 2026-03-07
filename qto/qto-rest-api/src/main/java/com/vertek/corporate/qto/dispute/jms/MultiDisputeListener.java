@@ -17,11 +17,11 @@ import org.apache.shiro.util.ThreadState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ejb.ActivationConfigProperty;
-import javax.ejb.MessageDriven;
-import javax.inject.Inject;
-import javax.jms.Message;
-import javax.jms.MessageListener;
+import jakarta.ejb.ActivationConfigProperty;
+import jakarta.ejb.MessageDriven;
+import jakarta.inject.Inject;
+import jakarta.jms.Message;
+import jakarta.jms.MessageListener;
 
 import java.util.List;
 import java.util.Map;
@@ -34,7 +34,7 @@ import static com.vertek.corporate.qto.dispute.multidispute.MultiDisputeQueueHan
  * @since 6/6/2024
  */
 @MessageDriven(activationConfig = {
-        @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
+        @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "jakarta.jms.Queue"),
         @ActivationConfigProperty(propertyName = "destination", propertyValue = MULTI_DISPUTE_QUEUE),
         @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge"),
         @ActivationConfigProperty(propertyName = "maxSession", propertyValue = "1")
@@ -60,7 +60,7 @@ public class MultiDisputeListener implements MessageListener {
         try {
             jmsMessageId = message.getJMSMessageID();
             LOGGER.debug("Got message with JMSMessageId = {}, redelivered = {}", jmsMessageId, message.getJMSRedelivered());
-            dto = (MultiDisputeRequestDto) ((javax.jms.ObjectMessage) message).getObject();
+            dto = (MultiDisputeRequestDto) ((jakarta.jms.ObjectMessage) message).getObject();
             threadState = createSchedulerSubjectThreadState();
 
             Long numDisputesCreated = disputeManager.multiCreate(dto);

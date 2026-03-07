@@ -2,7 +2,7 @@ package com.vertek.corporate.qto.service.television;
 
 import com.vertek.corporate.qto.service.AbstractServiceJpaDao;
 
-import javax.ejb.Stateless;
+import jakarta.ejb.Stateless;
 
 /**
  * @author bmccormick

@@ -3,8 +3,8 @@ package com.vertek.corporate.qto.company.task;
 import com.vertek.corporate.qto.common.StandardManager;
 import com.vertek.corporate.qto.company.Company;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 

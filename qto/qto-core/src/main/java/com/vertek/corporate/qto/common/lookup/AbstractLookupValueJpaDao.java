@@ -13,7 +13,7 @@ import com.vertek.corporate.qto.common.PreconditionsUtil;
 import com.vertek.corporate.qto.common.TenantSubjectManager;
 import com.vertek.corporate.qto.subject.CompanySubjectManager;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.util.List;
 import java.util.Locale;
 
@@ -263,8 +263,12 @@ public abstract class AbstractLookupValueJpaDao<T extends LookupValue> extends A
                     lookupValue.getMetadata());
             orderBy = new OrderSpecifier(criteria.getSortDirection(), pathBuilder.get(sortField));
         } else {
+            String typeCode = criteria.getTypeCode();
+            if (typeCode == null) {
+                return orderBy; // default: lookupValue.sortSequence.asc()
+            }
             LookupType type = ((JPAQuery<LookupType>) new JPAQuery(entityManager).from(lookupType)
-                    .where(lookupType.typeCode.eq(criteria.getTypeCode())))
+                    .where(lookupType.typeCode.eq(typeCode)))
                     .fetchOne();
             if (type.getSortStrategy() == 0) {
                 //this used to be lookupValue.value.asc(), but in most cases value and display are the same

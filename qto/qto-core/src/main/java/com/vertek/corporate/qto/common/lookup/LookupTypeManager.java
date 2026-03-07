@@ -9,8 +9,8 @@ import com.vertek.corporate.qto.company.task.TaskGroup;
 import com.vertek.corporate.qto.company.task.TaskGroupManager;
 import com.vertek.corporate.qto.company.task.TaskManager;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
 import java.util.List;
 import java.util.stream.Collectors;
 

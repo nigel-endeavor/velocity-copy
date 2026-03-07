@@ -2,7 +2,7 @@ package com.vertek.corporate.qto.jeop;
 
 import com.vertek.corporate.qto.common.BaseSearchCriteria;
 
-import javax.ws.rs.QueryParam;
+import jakarta.ws.rs.QueryParam;
 
 public class JeopUnionViewSearchCriteria extends BaseSearchCriteria<JeopUnionView> {
 

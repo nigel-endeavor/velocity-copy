@@ -3,7 +3,7 @@ package com.vertek.corporate.qto.common;
 import com.querydsl.core.types.Order;
 
 import java.io.Serializable;
-import javax.ws.rs.QueryParam;
+import jakarta.ws.rs.QueryParam;
 
 /**
  * from vertek-commons.

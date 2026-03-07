@@ -11,10 +11,10 @@ import com.vertek.corporate.qto.invoicing.invoice.InvoiceManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
-import javax.interceptor.AroundInvoke;
-import javax.interceptor.InvocationContext;
-import javax.ws.rs.core.Response;
+import jakarta.inject.Inject;
+import jakarta.interceptor.AroundInvoke;
+import jakarta.interceptor.InvocationContext;
+import jakarta.ws.rs.core.Response;
 import java.util.List;
 
 /**

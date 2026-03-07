@@ -4,29 +4,30 @@ import com.vertek.corporate.qto.common.TenantSubjectManager;
 import com.vertek.corporate.qto.fileimport.importactivity.ImportActivity;
 import com.vertek.corporate.qto.fileimport.importactivity.ImportActivityManager;
 import com.vertek.corporate.qto.fileimport.order.OrderImporter;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.fileupload2.core.FileItem;
+import org.apache.commons.fileupload2.core.DiskFileItem;
+import org.apache.commons.fileupload2.core.DiskFileItemFactory;
+import org.apache.commons.fileupload2.jakarta.servlet6.JakartaServletFileUpload;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 
-import javax.annotation.Resource;
-import javax.ejb.EJBContext;
-import javax.ejb.Stateless;
-import javax.ejb.TransactionManagement;
-import javax.ejb.TransactionManagementType;
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.transaction.UserTransaction;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.StreamingOutput;
+import jakarta.annotation.Resource;
+import jakarta.ejb.EJBContext;
+import jakarta.ejb.Stateless;
+import jakarta.ejb.TransactionManagement;
+import jakarta.ejb.TransactionManagementType;
+import jakarta.inject.Inject;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.UserTransaction;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.StreamingOutput;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -78,9 +79,9 @@ public class FileImportResource {
     public Response uploadFile(@PathParam("type") final String type,
                                @Context final HttpServletRequest servletRequest) throws Exception {
 
-        ServletFileUpload servletFileUpload = new ServletFileUpload(new DiskFileItemFactory());
+        JakartaServletFileUpload<DiskFileItem, DiskFileItemFactory> servletFileUpload = new JakartaServletFileUpload<>(DiskFileItemFactory.builder().get());
         servletFileUpload.setFileCountMax(1);
-        List<FileItem> fileItems = servletFileUpload.parseRequest(servletRequest);
+        List<DiskFileItem> fileItems = servletFileUpload.parseRequest(servletRequest);
 
         //verify that we have a file
         if (fileItems == null || fileItems.isEmpty()) {
@@ -88,7 +89,7 @@ public class FileImportResource {
         }
 
         //verify that the file is a valid format
-        FileItem fileItem = fileItems.get(0);
+        DiskFileItem fileItem = fileItems.get(0);
         if (!SPREADSHEET_MIME_TYPES.contains(fileItem.getContentType())) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Invalid file type. The file must be in xlsx or xls format.").build();
         }
