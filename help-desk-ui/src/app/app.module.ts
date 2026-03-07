@@ -53,7 +53,6 @@ import { MatCommonModule } from '@angular/material/core';
   MatCommonModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: MsalInterceptor, multi: true },
     { provide: APP_BASE_HREF, useValue: environment.baseHref },
   ],
   bootstrap: [AppComponent, MsalRedirectComponent]

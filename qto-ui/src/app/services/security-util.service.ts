@@ -20,9 +20,14 @@ export class SecurityUtilService {
 
   loadAppAbout(): void {
     let url = environment.publicUrl + '/about.json';
-    this.httpClient.get(url).subscribe((res: any) => {
-      this.about = res;
-      this.aboutSubject.next(this.about);
+    this.httpClient.get(url).subscribe({
+      next: (res: any) => {
+        this.about = res;
+        this.aboutSubject.next(this.about);
+      },
+      error: (err) => {
+        console.warn('Could not load about.json:', err.status || err.message);
+      }
     });
   }
 
@@ -31,15 +36,24 @@ export class SecurityUtilService {
   }
 
   userHasPermission(permission: string): boolean {
-    return this.getLoggedInUser().idTokenClaims!.roles!.includes(permission) || this.getLoggedInUser().idTokenClaims!.roles!.includes(Permissions.ADMIN);
+    const user = this.getLoggedInUser();
+    if (!user || !user.idTokenClaims || !(user.idTokenClaims as any)['roles']) {
+      return false;
+    }
+    const roles = (user.idTokenClaims as any)['roles'] as string[];
+    return roles.includes(permission) || roles.includes(Permissions.ADMIN);
   }
 
   getBearerToken(): string {
-    let localStorageKey = this.getLoggedInUser().homeAccountId
+    const user = this.getLoggedInUser();
+    if (!user || !user.idTokenClaims) {
+      return '';
+    }
+    let localStorageKey = user.homeAccountId
       + '-login.windows.net-accesstoken-'
-      + this.getLoggedInUser().idTokenClaims!.aud
+      + (user.idTokenClaims as any).aud
       + '-'
-      + this.getLoggedInUser().idTokenClaims!.tid
+      + (user.idTokenClaims as any).tid
       + '-api://' + environment.azureClientId + '/qto--';
     let accessToken = localStorage.getItem(localStorageKey);
     if (accessToken) {

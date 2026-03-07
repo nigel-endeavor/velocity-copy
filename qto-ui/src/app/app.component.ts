@@ -48,14 +48,29 @@ export class AppComponent implements OnInit, AfterViewInit {
           } else {
             this.checkForNewRelease();
           }
-          this.companyConfigService.getValue('TELECOM_CLIENT').subscribe((res: { value: string; }) => {
-            if (res && res.value) {
-              localStorage.setItem('TELECOM_CLIENT',JSON.parse(res.value.toLowerCase()));
+          this.companyConfigService.getValue('TELECOM_CLIENT').subscribe({
+            next: (res: { value: string; }) => {
+              if (res && res.value) {
+                localStorage.setItem('TELECOM_CLIENT', JSON.parse(res.value.toLowerCase()));
+              }
+            },
+            error: (err) => {
+              // 404 means no tenant config yet – not an application error
+              if (err?.status !== 404) {
+                console.warn('Could not load TELECOM_CLIENT config:', err?.status);
+              }
             }
           });
-          this.companyConfigService.getValue('CYBER_SECURITY_CLIENT').subscribe((res: { value: string; }) => {
-            if (res && res.value) {
-              localStorage.setItem('CYBER_SECURITY_CLIENT', JSON.parse(res.value.toLowerCase()));
+          this.companyConfigService.getValue('CYBER_SECURITY_CLIENT').subscribe({
+            next: (res: { value: string; }) => {
+              if (res && res.value) {
+                localStorage.setItem('CYBER_SECURITY_CLIENT', JSON.parse(res.value.toLowerCase()));
+              }
+            },
+            error: (err) => {
+              if (err?.status !== 404) {
+                console.warn('Could not load CYBER_SECURITY_CLIENT config:', err?.status);
+              }
             }
           });
 

@@ -4,14 +4,14 @@
 
 export const environment = {
   production: false,
-  appUrl: 'https://127.0.0.1:8443/qto/api',
-  wsUrl: 'ws://127.0.0.1:8080/qto',
-  publicUrl: 'http://127.0.0.1:8080/public',
-  baseHref: '/qto-ops/',
-  //Azure Config
+  appUrl: '/qto/api',
+  wsUrl: 'ws://localhost:8080/qto',
+  publicUrl: '/public',
+  baseHref: '/',
+  //Azure Config (disabled for local dev)
   azureClientId: '77dd2c9c-5d15-46ad-98d9-039c62d8ef9a',
   azureAuthority: 'https://login.microsoftonline.com/119de762-6e78-4af0-a159-76b9a12af1a4',
-  azureRedirectUri: 'http://localhost:4200/qto-ops/'
+  azureRedirectUri: 'http://localhost:4200/'
 };
 
 /*

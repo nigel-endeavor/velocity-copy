@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MsalGuard } from '@azure/msal-angular';
 import { ApplicationWrapperComponent } from './application-wrapper/application-wrapper.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { PermissionGuard } from './guards/permission-guard';
@@ -15,10 +14,10 @@ import { OrderCreateGuard } from './guards/order-create-guard';
 import { FileImportGuard } from './guards/file-import-guard';
 
 const routes: Routes = [
-  { path: '', component: LandingPageComponent, canActivate: [MsalGuard] },
+  { path: '', component: LandingPageComponent },
   { path: 'code', redirectTo: '', },
   {
-    path: '', canActivate: [MsalGuard, PermissionGuard], children: [
+    path: '', canActivate: [PermissionGuard], children: [
 
       { path: 'services',
         loadChildren: () => import('./features/service-worklist/service-worklist.module').then(m => m.ServiceWorklistModule)

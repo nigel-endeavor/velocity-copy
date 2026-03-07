@@ -42,6 +42,9 @@
         <extension module="org.wildfly.extension.undertow"/>
         <extension module="org.wildfly.iiop-openjdk"/>
     </extensions>
+    <system-properties>
+        <property name="liquibase.enabled" value="false"/>
+    </system-properties>
     <management>
         <audit-log>
             <formatters>
@@ -137,9 +140,49 @@
                         <password>sa</password>
                     </security>
                 </datasource>
+                <datasource jndi-name="java:jboss/datasources/qto" pool-name="qto" enabled="true" use-java-context="true">
+                    <connection-url>jdbc:mysql://localhost:3306/qto-nigel-branch?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=UTC</connection-url>
+                    <driver>mysql</driver>
+                    <security>
+                        <user-name>qto_user</user-name>
+                        <password>changeme</password>
+                    </security>
+                    <validation>
+                        <valid-connection-checker class-name="org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLValidConnectionChecker"/>
+                        <exception-sorter class-name="org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLExceptionSorter"/>
+                    </validation>
+                </datasource>
+                <datasource jndi-name="java:jboss/datasources/qto-ddl" pool-name="qto-ddl" enabled="true" use-java-context="true">
+                    <connection-url>jdbc:mysql://localhost:3306/qto-nigel-branch?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=UTC</connection-url>
+                    <driver>mysql</driver>
+                    <security>
+                        <user-name>qto_user</user-name>
+                        <password>changeme</password>
+                    </security>
+                    <validation>
+                        <valid-connection-checker class-name="org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLValidConnectionChecker"/>
+                        <exception-sorter class-name="org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLExceptionSorter"/>
+                    </validation>
+                </datasource>
+                <datasource jndi-name="java:jboss/datasources/platform" pool-name="platform" enabled="true" use-java-context="true">
+                    <connection-url>jdbc:mysql://localhost:3306/platform?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=UTC</connection-url>
+                    <driver>mysql</driver>
+                    <security>
+                        <user-name>qto_user</user-name>
+                        <password>changeme</password>
+                    </security>
+                    <validation>
+                        <valid-connection-checker class-name="org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLValidConnectionChecker"/>
+                        <exception-sorter class-name="org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLExceptionSorter"/>
+                    </validation>
+                </datasource>
                 <drivers>
                     <driver name="h2" module="com.h2database.h2">
                         <xa-datasource-class>org.h2.jdbcx.JdbcDataSource</xa-datasource-class>
+                    </driver>
+                    <driver name="mysql" module="com.mysql">
+                        <driver-class>com.mysql.cj.jdbc.Driver</driver-class>
+                        <xa-datasource-class>com.mysql.cj.jdbc.MysqlXADataSource</xa-datasource-class>
                     </driver>
                 </drivers>
             </datasources>
@@ -473,6 +516,19 @@
                 </in-vm-acceptor>
                 <jms-queue name="ExpiryQueue" entries="java:/jms/queue/ExpiryQueue"/>
                 <jms-queue name="DLQ" entries="java:/jms/queue/DLQ"/>
+                <jms-queue name="qto.CompanyMessageQueue" entries="java:/queue/qto.CompanyMessageQueue"/>
+                <jms-queue name="qto.DisconnectMultiEditQueue" entries="java:/queue/qto.DisconnectMultiEditQueue"/>
+                <jms-queue name="qto.DisputeMultiEditQueue" entries="java:/queue/qto.DisputeMultiEditQueue"/>
+                <jms-queue name="qto.FileImportQueue" entries="java:/queue/qto.FileImportQueue"/>
+                <jms-queue name="qto.IntervalQueue" entries="java:/queue/qto.IntervalQueue"/>
+                <jms-queue name="qto.InvoiceChargeQueue" entries="java:/queue/qto.InvoiceChargeQueue"/>
+                <jms-queue name="qto.LocationMessageQueue" entries="java:/queue/qto.LocationMessageQueue"/>
+                <jms-queue name="qto.MultiDisputeQueue" entries="java:/queue/qto.MultiDisputeQueue"/>
+                <jms-queue name="qto.MultiMacdQueue" entries="java:/queue/qto.MultiMacdQueue"/>
+                <jms-queue name="qto.QuoteProcessingFailureQueue" entries="java:/queue/qto.QuoteProcessingFailureQueue"/>
+                <jms-queue name="qto.QuoteProcessingQueue" entries="java:/queue/qto.QuoteProcessingQueue"/>
+                <jms-queue name="qto.ServiceMultiEditQueue" entries="java:/queue/qto.ServiceMultiEditQueue"/>
+                <jms-queue name="qto.FtdiProcessingQueue" entries="java:/queue/qto.FtdiProcessingQueue"/>
                 <connection-factory name="InVmConnectionFactory" entries="java:/ConnectionFactory" connectors="in-vm"/>
                 <connection-factory name="RemoteConnectionFactory" entries="java:jboss/exported/jms/RemoteConnectionFactory" connectors="http-connector"/>
                 <pooled-connection-factory name="activemq-ra" entries="java:/JmsXA java:jboss/DefaultJMSConnectionFactory" connectors="in-vm" transaction="xa"/>

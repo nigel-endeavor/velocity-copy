@@ -199,7 +199,6 @@ declare const toastr: Toastr;
       useClass: DemoInterceptor,
       multi: true,
     },
-    { provide: HTTP_INTERCEPTORS, useClass: MsalInterceptor, multi: true },
     { provide: ErrorHandler, useClass: GlobalErrorHandler },
     { provide: TOASTR_TOKEN, useValue: toastr },
     { provide: APP_BASE_HREF, useValue: environment.baseHref }

@@ -136,34 +136,48 @@
                     </security>
                 </datasource>
                 <datasource jndi-name="java:jboss/datasources/qto" pool-name="qto" enabled="true" use-java-context="true">
-                    <connection-url>jdbc:postgresql://localhost:5432/qto</connection-url>
-                    <driver>postgresql</driver>
+                    <connection-url>jdbc:mysql://localhost:3306/qto-nigel-branch?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=UTC</connection-url>
+                    <driver>mysql</driver>
                     <security>
-                        <user-name>johnnycrupi</user-name>
+                        <user-name>qto_user</user-name>
+                        <password>changeme</password>
                     </security>
                     <validation>
-                        <valid-connection-checker class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"/>
-                        <exception-sorter class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"/>
+                        <valid-connection-checker class-name="org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLValidConnectionChecker"/>
+                        <exception-sorter class-name="org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLExceptionSorter"/>
+                    </validation>
+                </datasource>
+                <datasource jndi-name="java:jboss/datasources/qto-ddl" pool-name="qto-ddl" enabled="true" use-java-context="true">
+                    <connection-url>jdbc:mysql://localhost:3306/qto-nigel-branch?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=UTC</connection-url>
+                    <driver>mysql</driver>
+                    <security>
+                        <user-name>qto_user</user-name>
+                        <password>changeme</password>
+                    </security>
+                    <validation>
+                        <valid-connection-checker class-name="org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLValidConnectionChecker"/>
+                        <exception-sorter class-name="org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLExceptionSorter"/>
                     </validation>
                 </datasource>
                 <datasource jndi-name="java:jboss/datasources/platform" pool-name="platform" enabled="true" use-java-context="true">
-                    <connection-url>jdbc:postgresql://localhost:5432/platform</connection-url>
-                    <driver>postgresql</driver>
+                    <connection-url>jdbc:mysql://localhost:3306/platform?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=UTC</connection-url>
+                    <driver>mysql</driver>
                     <security>
-                        <user-name>johnnycrupi</user-name>
+                        <user-name>qto_user</user-name>
+                        <password>changeme</password>
                     </security>
                     <validation>
-                        <valid-connection-checker class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"/>
-                        <exception-sorter class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"/>
+                        <valid-connection-checker class-name="org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLValidConnectionChecker"/>
+                        <exception-sorter class-name="org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLExceptionSorter"/>
                     </validation>
                 </datasource>
                 <drivers>
                     <driver name="h2" module="com.h2database.h2">
                         <xa-datasource-class>org.h2.jdbcx.JdbcDataSource</xa-datasource-class>
                     </driver>
-                    <driver name="postgresql" module="org.postgresql">
-                        <driver-class>org.postgresql.Driver</driver-class>
-                        <xa-datasource-class>org.postgresql.xa.PGXADataSource</xa-datasource-class>
+                    <driver name="mysql" module="com.mysql">
+                        <driver-class>com.mysql.cj.jdbc.Driver</driver-class>
+                        <xa-datasource-class>com.mysql.cj.jdbc.MysqlXADataSource</xa-datasource-class>
                     </driver>
                 </drivers>
             </datasources>

@@ -60,6 +60,9 @@ set "JAVA_OPTS=%JAVA_OPTS% -Djboss.modules.system.pkgs=org.jboss.byteman"
 
 set "JAVA_OPTS=%JAVA_OPTS% -Djava.awt.headless=true"
 
+rem # Allow multiple non-XA last resources in same JTA transaction (local dev only)
+set "JAVA_OPTS=%JAVA_OPTS% -Dcom.arjuna.ats.arjuna.allowMultipleLastResources=true"
+
 rem # Sample JPDA settings for remote socket debugging
 rem set "JAVA_OPTS=%JAVA_OPTS% -agentlib:jdwp=transport=dt_socket,address=8787,server=y,suspend=n"
 
