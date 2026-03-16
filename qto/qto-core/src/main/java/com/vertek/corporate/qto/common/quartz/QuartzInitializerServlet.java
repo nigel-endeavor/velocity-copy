@@ -1,15 +1,15 @@
 package com.vertek.corporate.qto.common.quartz;
 
-import org.quartz.SchedulerException;
-import org.quartz.impl.StdSchedulerFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebServlet;
+
+import org.quartz.SchedulerException;
+import org.quartz.impl.StdSchedulerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * WebServlet for initilizing the Quartz Scheduler without the need for configuration via web.xml.
@@ -31,6 +31,12 @@ public class QuartzInitializerServlet extends org.quartz.ee.servlet.QuartzInitia
 
     @Override
     public void init(final ServletConfig cfg) throws ServletException {
+
+        // Local dev: skip Quartz initialization if disabled via system property
+        if ("true".equalsIgnoreCase(System.getProperty("quartz.disabled"))) {
+            LOGGER.info("Quartz scheduler disabled via quartz.disabled system property - skipping initialization");
+            return;
+        }
 
         super.init(cfg);
 

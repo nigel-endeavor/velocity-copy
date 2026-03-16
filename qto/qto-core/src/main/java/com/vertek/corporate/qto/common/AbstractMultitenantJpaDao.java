@@ -53,6 +53,21 @@ public abstract class AbstractMultitenantJpaDao<T extends TenantOwnedEntity<KeyT
     public Long getTenantId() {
         // todo: we probably should be checking the active flag here too.
         String username = SecurityUtils.getLoggedInUser();
+
+        // SCHEDULER (demo/no-auth mode): return the first active tenant
+        if (SCHEDULER.equals(username)) {
+            JPAQuery firstTenantQuery = (JPAQuery) new JPAQuery(platformEntityManager)
+                    .select(tenantSubject.tenant.id)
+                    .from(tenantSubject)
+                    .limit(1);
+            Long firstTenantId = (Long) firstTenantQuery.fetchOne();
+            if (firstTenantId != null) {
+                return firstTenantId;
+            }
+            // fallback - return 1 if no tenant_subject rows exist
+            return 1L;
+        }
+
         JPAQuery tenantIdQuery = (JPAQuery) new JPAQuery(platformEntityManager)
                 .select(tenantSubject.tenant.id)
                 .from(tenantSubject)
@@ -77,6 +92,17 @@ public abstract class AbstractMultitenantJpaDao<T extends TenantOwnedEntity<KeyT
 
         // todo: we probably should be checking the active flag here too.
         String username = SecurityUtils.getLoggedInUser();
+
+        // SCHEDULER (demo/no-auth mode): return all tenant IDs
+        if (SCHEDULER.equals(username)) {
+            JPAQuery query = (JPAQuery) new JPAQuery(platformEntityManager)
+                    .select(tenantSubject.tenant.id)
+                    .from(tenantSubject)
+                    .distinct();
+            List<Long> allIds = query.fetch();
+            LOGGER.trace("SCHEDULER allowedIds (all tenants) = {}", allIds);
+            return allIds;
+        }
 
         JPAQuery query = (JPAQuery) new JPAQuery(platformEntityManager)
                 .select(tenantSubject.tenant.id)

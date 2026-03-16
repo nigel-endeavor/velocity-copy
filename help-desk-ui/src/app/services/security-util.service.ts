@@ -1,9 +1,17 @@
 import { Injectable } from '@angular/core';
-import { MsalService } from '@azure/msal-angular';
 import { AccountInfo } from '@azure/msal-browser';
-import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
+
+const DEMO_USER: AccountInfo = {
+  homeAccountId: 'demo-user',
+  environment: 'local',
+  tenantId: 'demo-tenant',
+  username: 'demo@local',
+  localAccountId: 'demo-local',
+  name: 'Demo User',
+  idTokenClaims: { roles: ['*'], aud: 'demo', tid: 'demo-tenant' }
+} as AccountInfo;
 
 @Injectable({
   providedIn: 'root'
@@ -14,29 +22,18 @@ export class SecurityUtilService {
   aboutSubject: Subject<any> = new Subject<any>();
 
   constructor(
-    private authService: MsalService,
     private httpClient: HttpClient
   ) { }
 
   getLoggedInUser(): AccountInfo {
-    return this.authService.instance.getAllAccounts()[0];
+    return DEMO_USER;
   }
 
-  userHasPermission(permission: string): boolean {
-    return this.getLoggedInUser().idTokenClaims!.roles!.includes(permission) || this.getLoggedInUser().idTokenClaims!.roles!.includes(Permissions.ADMIN);
+  userHasPermission(_permission: string): boolean {
+    return true;
   }
 
   getBearerToken(): string {
-    let localStorageKey = this.getLoggedInUser().homeAccountId
-      + '-login.windows.net-accesstoken-'
-      + this.getLoggedInUser().idTokenClaims!.aud
-      + '-'
-      + this.getLoggedInUser().idTokenClaims!.tid
-      + '-api://' + environment.azureClientId + '/qto--';
-    let accessToken = localStorage.getItem(localStorageKey);
-    if (accessToken) {
-      return JSON.parse(accessToken).secret;
-    }
     return '';
   }
 

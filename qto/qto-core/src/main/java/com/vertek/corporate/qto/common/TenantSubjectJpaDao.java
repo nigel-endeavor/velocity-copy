@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static com.vertek.corporate.qto.common.QTenant.tenant;
 import static com.vertek.corporate.qto.subject.QTenantSubject.tenantSubject;
 
 /**
@@ -31,6 +32,8 @@ public class TenantSubjectJpaDao extends AbstractJpaDao<TenantSubject, Long> {
 
     /**
      * Gets the currently selected Tenant.
+     * Demo mode: if no tenant is found for the current user, fall back to the
+     * first active tenant in the system.
      * @return the currently selected Tenant.
      */
     public Tenant getCurrentTenant() {
@@ -40,6 +43,16 @@ public class TenantSubjectJpaDao extends AbstractJpaDao<TenantSubject, Long> {
                 .where(tenantSubject.subject.emailAddress.eq(SecurityUtils.getLoggedInUser())
                         .and(tenantSubject.isSelected.isTrue()).and(tenantSubject.tenant.active.isTrue())))
                 .fetchOne();
+
+        // Demo mode fallback: if no selected tenant found, return first active tenant
+        if (selectedTenant == null) {
+            selectedTenant = (Tenant) ((JPAQuery) new JPAQuery(entityManager)
+                    .select(tenant)
+                    .from(tenant)
+                    .where(tenant.active.isTrue())
+                    .limit(1))
+                    .fetchOne();
+        }
 
         return selectedTenant;
     }

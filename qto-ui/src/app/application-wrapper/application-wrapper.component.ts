@@ -1,6 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { MsalService } from '@azure/msal-angular';
 import { SecurityUtilService } from '../services/security-util.service';
 import { isDemoModeEnabled } from '../features/demo-mode/demo-store.selectors'
 import { Store } from '@ngrx/store';
@@ -29,7 +28,6 @@ export class ApplicationWrapperComponent implements OnInit {
 
   constructor(
     private store: Store,
-    private authService: MsalService,
     public securityUtils: SecurityUtilService,
     public router: Router,
     public notificationService: NotificationService,
@@ -57,7 +55,7 @@ export class ApplicationWrapperComponent implements OnInit {
   }
 
   logout() {
-    this.authService.logout();
+    // no-op: auth removed
   }
 
   onWorklistClicked(): void {

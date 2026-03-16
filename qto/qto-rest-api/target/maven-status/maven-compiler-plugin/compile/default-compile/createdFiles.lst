@@ -48,6 +48,7 @@ com\vertek\corporate\qto\LookupTypeResource.class
 com\vertek\corporate\qto\FtdiOrderTypeResource.class
 com\vertek\corporate\qto\ServiceJeopResource.class
 com\vertek\corporate\qto\ActivationScheduleResource.class
+com\vertek\corporate\qto\commons\CORSResponseFilter.class
 com\vertek\corporate\qto\CompanyFileAttachmentResource.class
 com\vertek\corporate\qto\commons\JsonViews$Public.class
 com\vertek\corporate\qto\CompanyResource.class

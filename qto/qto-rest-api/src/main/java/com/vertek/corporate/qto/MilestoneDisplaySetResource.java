@@ -27,6 +27,9 @@ public class MilestoneDisplaySetResource {
             Permissions.INVENTORY_READ,
             Permissions.ORDER_READ}, logical = Logical.OR)
     public Response getDisplaySet(@QueryParam("displayGroup") final String displayGroup) {
+        if (displayGroup == null || displayGroup.isEmpty()) {
+            return Response.ok(java.util.Collections.emptyList()).build();
+        }
         MilestoneDisplaySet displaySet = manager.getByDisplayGroup(displayGroup);
         return Response.ok(displaySet).build();
     }

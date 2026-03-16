@@ -262,19 +262,18 @@ public abstract class AbstractLookupValueJpaDao<T extends LookupValue> extends A
                     LookupValue.class,
                     lookupValue.getMetadata());
             orderBy = new OrderSpecifier(criteria.getSortDirection(), pathBuilder.get(sortField));
-        } else {
+        } else if (!Strings.isNullOrEmpty(criteria.getTypeCode())) {
             LookupType type = ((JPAQuery<LookupType>) new JPAQuery(entityManager).from(lookupType)
                     .where(lookupType.typeCode.eq(criteria.getTypeCode())))
                     .fetchOne();
-            if (type.getSortStrategy() == 0) {
-                //this used to be lookupValue.value.asc(), but in most cases value and display are the same
-                //STATE_PROVINCE is one of the few lookups that has different values for value and display
-                //but sorting by display causes the states to be out of order (sorted by abbreviation)
-                orderBy = lookupValue.display.asc();
-            } else if (type.getSortStrategy() == 1) {
-                orderBy = lookupValue.sortSequence.asc();
-            } else if (type.getSortStrategy() == 2) {
-                orderBy = lookupValue.id.asc();
+            if (type != null) {
+                if (type.getSortStrategy() == 0) {
+                    orderBy = lookupValue.display.asc();
+                } else if (type.getSortStrategy() == 1) {
+                    orderBy = lookupValue.sortSequence.asc();
+                } else if (type.getSortStrategy() == 2) {
+                    orderBy = lookupValue.id.asc();
+                }
             }
         }
         return orderBy;

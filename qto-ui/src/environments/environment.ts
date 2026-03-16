@@ -4,9 +4,9 @@
 
 export const environment = {
   production: false,
-  appUrl: 'https://127.0.0.1:8443/qto/api',
-  wsUrl: 'ws://127.0.0.1:8080/qto',
-  publicUrl: 'http://127.0.0.1:8080/public',
+  appUrl: '/qto/api',
+  wsUrl: 'ws://127.0.0.1:7081/qto',
+  publicUrl: 'http://127.0.0.1:7081/public',
   baseHref: '/qto-ops/',
   //Azure Config
   azureClientId: '77dd2c9c-5d15-46ad-98d9-039c62d8ef9a',

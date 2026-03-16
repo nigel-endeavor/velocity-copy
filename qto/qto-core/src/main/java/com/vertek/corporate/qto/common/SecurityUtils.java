@@ -1,11 +1,12 @@
 package com.vertek.corporate.qto.common;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
 import org.apache.shiro.UnavailableSecurityManagerException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 
 /**
  * From platform.
@@ -48,9 +49,13 @@ public final class SecurityUtils {
             LOGGER.warn(ex.getMessage());
         }
 
-        return (loggedInUser == null)
-                ? ANON
-                : loggedInUser;
+        // When no principal is available (auth disabled), fall back to SCHEDULER
+        // which bypasses tenant/company filtering - suitable for demo environments.
+        if (loggedInUser == null) {
+            return SCHEDULER;
+        }
+
+        return loggedInUser;
     }
 
 

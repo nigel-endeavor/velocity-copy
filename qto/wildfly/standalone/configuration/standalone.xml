@@ -136,7 +136,7 @@
                     </security>
                 </datasource>
                 <datasource jndi-name="java:jboss/datasources/qto" pool-name="qto" enabled="true" use-java-context="true">
-                    <connection-url>jdbc:postgresql://localhost:5432/qto</connection-url>
+                    <connection-url>jdbc:postgresql://localhost:5432/qto-demo-104bf38</connection-url>
                     <driver>postgresql</driver>
                     <security>
                         <user-name>qto_user</user-name>
@@ -147,7 +147,7 @@
                     </validation>
                 </datasource>
                 <datasource jndi-name="java:jboss/datasources/qto-ddl" pool-name="qto-ddl" enabled="true" use-java-context="true">
-                    <connection-url>jdbc:postgresql://localhost:5432/qto</connection-url>
+                    <connection-url>jdbc:postgresql://localhost:5432/qto-demo-104bf38</connection-url>
                     <driver>postgresql</driver>
                     <security>
                         <user-name>qto_user</user-name>
@@ -552,7 +552,7 @@
     </interfaces>
     <socket-binding-group name="standard-sockets" default-interface="public" port-offset="${jboss.socket.binding.port-offset:0}">
         <socket-binding name="ajp" port="${jboss.ajp.port:8009}"/>
-        <socket-binding name="http" port="${jboss.http.port:8080}"/>
+        <socket-binding name="http" port="${jboss.http.port:7081}"/>
         <socket-binding name="https" port="${jboss.https.port:8443}"/>
         <socket-binding name="management-http" interface="management" port="${jboss.management.http.port:9990}"/>
         <socket-binding name="management-https" interface="management" port="${jboss.management.https.port:9993}"/>

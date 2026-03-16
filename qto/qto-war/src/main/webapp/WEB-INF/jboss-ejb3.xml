@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Disables all Message-Driven Beans for local development.
+  Remove this file (or set <active>true</active>) to re-enable JMS processing.
+-->
+<jboss:ejb-jar xmlns:jboss="http://www.jboss.com/xml/ns/javaee"
+               xmlns="http://java.sun.com/xml/ns/javaee"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xmlns:d="urn:delivery-active:1.0"
+               version="3.1"
+               impl-version="2.0">
+    <assembly-descriptor>
+        <d:delivery>
+            <ejb-name>CompanyMessageListener</ejb-name>
+            <d:active>false</d:active>
+        </d:delivery>
+        <d:delivery>
+            <ejb-name>DisconnectMultiEditListener</ejb-name>
+            <d:active>false</d:active>
+        </d:delivery>
+        <d:delivery>
+            <ejb-name>DisputeMultiEditListener</ejb-name>
+            <d:active>false</d:active>
+        </d:delivery>
+        <d:delivery>
+            <ejb-name>MultiDisputeListener</ejb-name>
+            <d:active>false</d:active>
+        </d:delivery>
+        <d:delivery>
+            <ejb-name>FileImportQueueListener</ejb-name>
+            <d:active>false</d:active>
+        </d:delivery>
+        <d:delivery>
+            <ejb-name>IntervalQueueListener</ejb-name>
+            <d:active>false</d:active>
+        </d:delivery>
+        <d:delivery>
+            <ejb-name>InvoiceChargeQueueListener</ejb-name>
+            <d:active>false</d:active>
+        </d:delivery>
+        <d:delivery>
+            <ejb-name>LocationMessageListener</ejb-name>
+            <d:active>false</d:active>
+        </d:delivery>
+        <d:delivery>
+            <ejb-name>QuoteProcessingFailureListener</ejb-name>
+            <d:active>false</d:active>
+        </d:delivery>
+        <d:delivery>
+            <ejb-name>QuoteProcessingListener</ejb-name>
+            <d:active>false</d:active>
+        </d:delivery>
+        <d:delivery>
+            <ejb-name>MultiMacdListener</ejb-name>
+            <d:active>false</d:active>
+        </d:delivery>
+        <d:delivery>
+            <ejb-name>ServiceMultiEditListener</ejb-name>
+            <d:active>false</d:active>
+        </d:delivery>
+    </assembly-descriptor>
+</jboss:ejb-jar>

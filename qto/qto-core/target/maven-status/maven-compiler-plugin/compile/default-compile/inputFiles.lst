@@ -149,6 +149,7 @@ C:\Users\nigel.arugay\Downloads\repository\velocity\qto\qto-core\src\main\java\c
 C:\Users\nigel.arugay\Downloads\repository\velocity\qto\qto-core\src\main\java\com\vertek\corporate\qto\message\MessageThreadJpaDao.java
 C:\Users\nigel.arugay\Downloads\repository\velocity\qto\qto-core\src\main\java\com\vertek\corporate\qto\interval\LocationIntervalInstance.java
 C:\Users\nigel.arugay\Downloads\repository\velocity\qto\qto-core\src\main\java\com\vertek\corporate\qto\invoicing\invoice\Invoice.java
+C:\Users\nigel.arugay\Downloads\repository\velocity\qto\qto-core\src\main\java\com\vertek\corporate\qto\authentication\DemoAllAccessRealm.java
 C:\Users\nigel.arugay\Downloads\repository\velocity\qto\qto-core\target\generated-sources\java\com\vertek\corporate\qto\service\snapshot\QServiceSnapshot.java
 C:\Users\nigel.arugay\Downloads\repository\velocity\qto\qto-core\src\main\java\com\vertek\corporate\qto\interceptors\TaskGroupInterceptor.java
 C:\Users\nigel.arugay\Downloads\repository\velocity\qto\qto-core\src\main\java\com\vertek\corporate\qto\service\snapshot\ServiceSnapshotManager.java
@@ -809,6 +810,7 @@ C:\Users\nigel.arugay\Downloads\repository\velocity\qto\qto-core\src\main\java\c
 C:\Users\nigel.arugay\Downloads\repository\velocity\qto\qto-core\target\generated-sources\java\com\vertek\corporate\qto\service\television\QTelevisionService.java
 C:\Users\nigel.arugay\Downloads\repository\velocity\qto\qto-core\target\generated-sources\java\com\vertek\corporate\qto\ftdi\QFtdiNote.java
 C:\Users\nigel.arugay\Downloads\repository\velocity\qto\qto-core\src\main\java\com\vertek\corporate\qto\attachment\ServiceFileAttachmentJpaDao.java
+C:\Users\nigel.arugay\Downloads\repository\velocity\qto\qto-core\src\main\java\com\vertek\corporate\qto\authentication\DemoAutoAuthFilter.java
 C:\Users\nigel.arugay\Downloads\repository\velocity\qto\qto-core\src\main\java\com\vertek\corporate\qto\customfield\field\CustomFieldTab.java
 C:\Users\nigel.arugay\Downloads\repository\velocity\qto\qto-core\src\main\java\com\vertek\corporate\qto\service\snapshot\package-info.java
 C:\Users\nigel.arugay\Downloads\repository\velocity\qto\qto-core\src\main\java\com\vertek\corporate\qto\custom\iss\parser\OutputRecordJpaDao.java

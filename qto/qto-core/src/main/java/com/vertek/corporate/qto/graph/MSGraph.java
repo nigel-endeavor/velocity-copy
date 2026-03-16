@@ -1,5 +1,17 @@
 package com.vertek.corporate.qto.graph;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.PostConstruct;
+import javax.ejb.Singleton;
+import javax.ejb.Startup;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.microsoft.graph.authentication.TokenCredentialAuthProvider;
@@ -9,17 +21,8 @@ import com.microsoft.graph.models.User;
 import com.microsoft.graph.requests.DirectoryObjectCollectionWithReferencesPage;
 import com.microsoft.graph.requests.GraphServiceClient;
 import com.microsoft.graph.requests.GroupCollectionPage;
-import okhttp3.Request;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import javax.annotation.PostConstruct;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import okhttp3.Request;
 
 @Startup
 @Singleton
@@ -41,6 +44,12 @@ public class MSGraph {
             String aadClientId = System.getProperty("aadClientId");
             String aadTenantId = System.getProperty("aadTenantId");
             String clientSecret = System.getProperty("aadClientSecret");
+
+            // Local dev: skip Azure AD if credentials are not configured
+            if (aadClientId == null || aadClientId.isBlank()) {
+                LOGGER.info("Azure AD disabled - aadClientId not configured, skipping group sync");
+                return java.util.Collections.emptyMap();
+            }
 
             //initialize the MS Graph client
             ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()

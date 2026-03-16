@@ -1,24 +1,22 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MsalGuard } from '@azure/msal-angular';
 import { ApplicationWrapperComponent } from './application-wrapper/application-wrapper.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
-import { PermissionGuard } from './guards/permission-guard';
 import { AdminComponent } from './components/admin/admin.component';
-import { AdminGuard } from './guards/admin-guard';
 import { NetworkInventoryComponent } from './network-inventory/network-inventory.component';
 import { CustomersComponent } from './components/customers/customers.component';
 import { NewOrderWizardComponent } from './components/new-order-wizard/wizard/new-order-wizard.component';
 import { ChangeTenantComponent } from './components/change-tenant/change-tenant.component';
-import { ChangeTenantGuard } from './guards/change-tenant-guard';
 import { OrderCreateGuard } from './guards/order-create-guard';
 import { FileImportGuard } from './guards/file-import-guard';
+import { AdminGuard } from './guards/admin-guard';
+import { ChangeTenantGuard } from './guards/change-tenant-guard';
 
 const routes: Routes = [
-  { path: '', component: LandingPageComponent, canActivate: [MsalGuard] },
+  { path: '', component: LandingPageComponent },
   { path: 'code', redirectTo: '', },
   {
-    path: '', canActivate: [MsalGuard, PermissionGuard], children: [
+    path: '', children: [
 
       { path: 'services',
         loadChildren: () => import('./features/service-worklist/service-worklist.module').then(m => m.ServiceWorklistModule)

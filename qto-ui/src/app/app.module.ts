@@ -13,10 +13,8 @@ import { NoteComponent } from './components/note/note.component';
 import { JeopsComponent } from './components/jeops/jeops.component';
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 import { AttachmentsComponent } from './components/attachments/attachments.component';
-import { MsalInterceptor, MsalModule, MsalRedirectComponent } from '@azure/msal-angular';
-import { InteractionType, PublicClientApplication } from '@azure/msal-browser';
-import { environment } from '../environments/environment';
 import { PermissionGuard } from './guards/permission-guard';
+import { environment } from '../environments/environment';
 import { ErrorDialogComponent } from './components/error-dialog/error-dialog.component';
 import { GlobalErrorHandler } from './services/global-error-handler';
 import { AddressesComponent } from './components/addresses/addresses.component';
@@ -117,24 +115,6 @@ declare const toastr: Toastr;
     MatTableModule,
     MatDialogModule,
     MatCardModule,
-    MsalModule.forRoot(new PublicClientApplication({
-        auth: {
-            clientId: environment.azureClientId,
-            authority: environment.azureAuthority,
-            redirectUri: environment.azureRedirectUri,
-            postLogoutRedirectUri: window.location.protocol + '//' + window.location.host + environment.baseHref
-        },
-        cache: {
-            cacheLocation: 'localStorage',
-        }
-    }), {
-        interactionType: InteractionType.Redirect
-    }, {
-        interactionType: InteractionType.Redirect,
-        protectedResourceMap: new Map([
-            [environment.appUrl + '/*', ['api://' + environment.azureClientId + '/qto']]
-        ]),
-    }),
     LocalStoreModule.forRoot(),
     StoreModule.forRoot({
       [demoStoreFeatureKey]: demoStoreReducer,
@@ -199,11 +179,10 @@ declare const toastr: Toastr;
       useClass: DemoInterceptor,
       multi: true,
     },
-    { provide: HTTP_INTERCEPTORS, useClass: MsalInterceptor, multi: true },
     { provide: ErrorHandler, useClass: GlobalErrorHandler },
     { provide: TOASTR_TOKEN, useValue: toastr },
     { provide: APP_BASE_HREF, useValue: environment.baseHref }
   ],
-  bootstrap: [AppComponent, MsalRedirectComponent]
+  bootstrap: [AppComponent]
 })
 export class AppModule {}

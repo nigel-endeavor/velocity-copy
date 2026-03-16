@@ -44,6 +44,9 @@ public class ActivationAttemptResource extends AbstractResource {
             Permissions.INVENTORY_READ,
             Permissions.ORDER_READ}, logical = Logical.OR)
     public Response getAttempts(@QueryParam("serviceId") final Long serviceId) {
+        if (serviceId == null) {
+            return Response.ok(java.util.Collections.emptyList()).build();
+        }
         List<ActivationAttempt> attempts = manager.findByServiceId(serviceId);
         return Response.ok(attempts).build();
     }

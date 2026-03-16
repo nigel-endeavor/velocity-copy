@@ -31,7 +31,7 @@ spring:
 
 # Server Configuration
 server:
-  port: 8080
+  port: 7081
   servlet:
     context-path: /qto
   tomcat:

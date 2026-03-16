@@ -1,10 +1,8 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
 import { ErrorDialogComponent } from './components/error-dialog/error-dialog.component';
 import { ErrorDialogService } from './components/error-dialog/error-dialog.service';
 import { NotificationService } from './services/notification.service';
 import { SecurityUtilService } from './services/security-util.service';
-import { take, filter } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatLegacyDialog, MatLegacyDialogModule, MatLegacyDialogRef } from '@angular/material/legacy-dialog';
@@ -22,8 +20,6 @@ export class AppComponent implements OnInit, AfterViewInit {
   @ViewChild('errorDialog') errorDialogRef: ErrorDialogComponent;
 
   constructor(
-    private authService: MsalService, //initializes the MSAL service
-    private msalBroadCastService: MsalBroadcastService,
     private errorDialogService: ErrorDialogService,
     private securityUtils: SecurityUtilService,
     private notificationService: NotificationService,
@@ -32,39 +28,29 @@ export class AppComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
-    this.msalBroadCastService.msalSubject$.pipe(
-      filter(msalSubject => msalSubject.eventType === 'msal:acquireTokenSuccess'),
-      take(1))
-      .subscribe(() => {
-        //Most app initialization should be done here, after the user has been authenticated
-        try {
-          let token = this.securityUtils.getBearerToken();
-          this.notificationService.connect(token);
+    try {
+      let token = this.securityUtils.getBearerToken();
+      this.notificationService.connect(token);
 
-          //load about.json if not already loaded
-          if (!this.securityUtils.about) {
-            this.securityUtils.loadAppAbout();
-            this.securityUtils.aboutSubject.subscribe(() => { this.checkForNewRelease(); });
-          } else {
-            this.checkForNewRelease();
-          }
-          this.companyConfigService.getValue('TELECOM_CLIENT').subscribe((res: { value: string; }) => {
-            if (res && res.value) {
-              localStorage.setItem('TELECOM_CLIENT',JSON.parse(res.value.toLowerCase()));
-            }
-          });
-          this.companyConfigService.getValue('CYBER_SECURITY_CLIENT').subscribe((res: { value: string; }) => {
-            if (res && res.value) {
-              localStorage.setItem('CYBER_SECURITY_CLIENT', JSON.parse(res.value.toLowerCase()));
-            }
-          });
-
-        } catch (error) {
-          console.error('failed to initialize notification service', error);
-        }
-
+      if (!this.securityUtils.about) {
+        this.securityUtils.loadAppAbout();
+        this.securityUtils.aboutSubject.subscribe(() => { this.checkForNewRelease(); });
+      } else {
+        this.checkForNewRelease();
       }
-    );
+      this.companyConfigService.getValue('TELECOM_CLIENT').subscribe((res: { value: string; }) => {
+        if (res && res.value) {
+          localStorage.setItem('TELECOM_CLIENT', JSON.parse(res.value.toLowerCase()));
+        }
+      });
+      this.companyConfigService.getValue('CYBER_SECURITY_CLIENT').subscribe((res: { value: string; }) => {
+        if (res && res.value) {
+          localStorage.setItem('CYBER_SECURITY_CLIENT', JSON.parse(res.value.toLowerCase()));
+        }
+      });
+    } catch (error) {
+      console.error('failed to initialize', error);
+    }
   }
 
   ngAfterViewInit(): void {

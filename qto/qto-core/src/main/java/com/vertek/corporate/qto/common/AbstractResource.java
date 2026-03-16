@@ -136,6 +136,10 @@ public abstract class AbstractResource<T extends BaseEntity<? extends Serializab
      */
     protected boolean isExport(final String format) {
         String accept = request.getHeader("Accept");
+        // Guard against null Accept header
+        if (accept == null) {
+            accept = "";
+        }
         return (XLSX.equalsIgnoreCase(format) || accept.contains(MediaTypes.MS_EXCEL_2007)
                 || XLS.equalsIgnoreCase(format) || accept.contains(MediaTypes.MS_EXCEL));
     }

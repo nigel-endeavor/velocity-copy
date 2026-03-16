@@ -1,15 +1,10 @@
 <jboss-deployment-structure xmlns="urn:jboss:deployment-structure:1.2">
-    <deployment>
-        <dependencies>
-            <!-- Required for Apache Shiro 1.x (javax.servlet.Filter) on WildFly 27+ (Jakarta EE) -->
-            <module name="javax.servlet.api" export="true"/>
-            <module name="javax.annotation.api" export="true"/>
-        </dependencies>
+<!--    <deployment>-->
 <!--        <exclusions>-->
 <!--            <module name="com.fasterxml.jackson.core.jackson-core" />-->
 <!--            <module name="com.fasterxml.jackson.core.jackson-databind" />-->
 <!--            <module name="com.fasterxml.jackson.jaxrs.jackson-jaxrs-json-provider" />-->
 <!--            <module name="org.jboss.resteasy.resteasy-jackson2-provider" />-->
 <!--        </exclusions>-->
-    </deployment>
+<!--    </deployment>-->
 </jboss-deployment-structure>
