@@ -13,6 +13,7 @@ buildNumber.properties
 # Gradle
 .gradle/
 build/
+out/
 !gradle/wrapper/gradle-wrapper.jar
 
 # WildFly / JBoss
@@ -37,6 +38,7 @@ tmp/
 *.iml
 *.iws
 *.ipr
+*.class
 .vscode/
 .settings/
 .project
@@ -74,6 +76,7 @@ Thumbs.db
 *.zip
 *.tar.gz
 *.rar
+qto/qto-core/target/classes/**/*.class
 
 # Logs
 logs/
@@ -91,3 +94,6 @@ coverage/
 
 # Claude Code
 .claude/
+
+qto/qto-core/target/classes/com/vertek/corporate/qto/EmailUtility.class
+qto/qto-core/target/classes/com/vertek/corporate/qto/EmailUtility.class

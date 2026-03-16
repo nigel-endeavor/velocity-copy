@@ -19,7 +19,7 @@
         <module>qto-help-desk</module>
         <module>qto-rest-api</module>
         <module>qto-war</module>
-        <module>qto-spring-boot-app</module>
+        <!-- qto-spring-boot-app uses Gradle, not Maven - excluded from reactor -->
     </modules>
     
     <properties>

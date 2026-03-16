@@ -28,3 +28,4 @@ target/
 
 # Application
 application-local.yml
+.class
