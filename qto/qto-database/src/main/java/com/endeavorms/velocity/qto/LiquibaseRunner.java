@@ -1,23 +1,24 @@
 package com.endeavorms.velocity.qto;
 
+import java.sql.Connection;
+
+import javax.sql.DataSource;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.stereotype.Component;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 import liquibase.Liquibase;
 import liquibase.database.Database;
 import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.resource.ClassLoaderResourceAccessor;
 import liquibase.resource.ResourceAccessor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.stereotype.Component;
-
-import jakarta.annotation.PostConstruct;
-import jakarta.annotation.PreDestroy;
-import javax.sql.DataSource;
-import java.sql.Connection;
 
 
 /**
@@ -31,7 +32,7 @@ public class LiquibaseRunner {
     protected static final Logger LOGGER = LoggerFactory.getLogger(LiquibaseRunner.class);
 
     /** The relative path from the src/main/resources directory of the master changelog file.*/
-    protected String masterChangeLogFile = "database/changelog-master.xml";
+    protected String masterChangeLogFile = "database/postgresql-baseline.xml";
 
     /** QTO DDL Datasource. In Spring Boot, configure datasource and inject by name if needed. */
     @Autowired(required = false)

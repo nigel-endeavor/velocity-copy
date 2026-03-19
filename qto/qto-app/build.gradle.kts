@@ -12,5 +12,4 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
 
     runtimeOnly("org.postgresql:postgresql")
-    runtimeOnly("com.mysql:mysql-connector-j")
 }

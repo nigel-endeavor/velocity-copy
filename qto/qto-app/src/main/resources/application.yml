@@ -4,23 +4,25 @@ spring:
   application:
     name: qto
   datasource:
-    url: jdbc:mysql://localhost:3307/qto?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=UTF-8
+    url: jdbc:postgresql://localhost:5433/qto-main
     username: qto_user
     password: changeme
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     show-sql: false
     properties:
       hibernate:
         format_sql: true
   liquibase:
-    enabled: false
+    change-log: classpath:database/postgresql-baseline.xml
+    enabled: true
   autoconfigure:
     exclude:
       - org.springframework.boot.autoconfigure.jms.JmsAutoConfiguration
       - org.springframework.boot.autoconfigure.jms.artemis.ArtemisAutoConfiguration
+      - org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration
 
 server:
-  port: 8080
+  port: 8081
