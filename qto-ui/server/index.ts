@@ -8,8 +8,8 @@
 import { Elysia } from 'elysia';
 import { cors } from '@elysiajs/cors';
 
-const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:8080';
-const API_BASE = `${BACKEND_URL}/qto/api`;
+const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:8081';
+const API_BASE = `${BACKEND_URL}/api`;
 const PORT = parseInt(process.env.BFF_PORT || '3000', 10);
 
 /**

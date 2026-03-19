@@ -40,7 +40,11 @@ export const fetchServices = createAsyncThunk(
       });
 
       const response = await apiClient.get(`/services?${params.toString()}`);
-      return response.data;
+      const data = response.data as { collection?: unknown[]; total?: number; items?: unknown[]; totalItems?: number };
+      return {
+        items: data.collection || data.items || [],
+        totalItems: data.total ?? data.totalItems ?? 0,
+      };
     } catch {
       // Use mock data in development when API fails
       console.log('API failed, using mock data');

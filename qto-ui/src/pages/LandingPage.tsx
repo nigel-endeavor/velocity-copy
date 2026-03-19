@@ -1,36 +1,61 @@
 import { useEffect, useState } from 'react';
-import { statusService, StatusResponse } from '../services/statusService';
+import { environment } from '../config/environment';
+
+interface BackendStatus {
+  connected: boolean;
+  message: string;
+  endpoint: string;
+  responseTime?: number;
+}
 
 export const LandingPage = () => {
-  const [status, setStatus] = useState<StatusResponse | null>(null);
+  const [status, setStatus] = useState<BackendStatus | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchStatus = async () => {
+    const checkBackend = async () => {
+      const start = performance.now();
       try {
         setLoading(true);
-        const data = await statusService.getStatus();
-        setStatus(data);
-        setError(null);
+        const res = await fetch(`${environment.appUrl}/services?page=0&size=1`);
+        const elapsed = Math.round(performance.now() - start);
+        if (res.ok) {
+          setStatus({
+            connected: true,
+            message: `Backend responding (${res.status})`,
+            endpoint: `${environment.appUrl}/services`,
+            responseTime: elapsed,
+          });
+        } else {
+          setStatus({
+            connected: false,
+            message: `Backend returned ${res.status} ${res.statusText}`,
+            endpoint: `${environment.appUrl}/services`,
+            responseTime: elapsed,
+          });
+        }
       } catch (err) {
-        setError('Failed to fetch status');
-        console.error(err);
+        setStatus({
+          connected: false,
+          message: err instanceof Error ? err.message : 'Network request failed',
+          endpoint: `${environment.appUrl}/services`,
+        });
       } finally {
         setLoading(false);
       }
     };
 
-    fetchStatus();
+    checkBackend();
   }, []);
 
   const handlePing = async () => {
+    const start = performance.now();
     try {
-      const pingData = await statusService.ping();
-      alert(`Ping response: ${pingData.message}`);
+      const res = await fetch(`${environment.appUrl}/services?page=0&size=1`);
+      const elapsed = Math.round(performance.now() - start);
+      alert(`Ping: ${res.status} in ${elapsed}ms`);
     } catch (err) {
-      alert('Ping failed');
-      console.error(err);
+      alert(`Ping failed: ${err instanceof Error ? err.message : 'Unknown error'}`);
     }
   };
 
@@ -55,42 +80,30 @@ export const LandingPage = () => {
 
           {loading ? (
             <div className="flex items-center justify-center py-8">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
-            </div>
-          ) : error ? (
-            <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-              <p className="text-red-800">{error}</p>
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
             </div>
           ) : status ? (
             <div className="bg-gray-50 rounded-lg p-6 space-y-3">
               <div className="flex items-start">
-                <span className="font-semibold text-gray-700 w-32">Application:</span>
-                <span className="text-gray-900">{status.application}</span>
-              </div>
-              <div className="flex items-start">
-                <span className="font-semibold text-gray-700 w-32">Version:</span>
-                <span className="text-gray-900">{status.version}</span>
-              </div>
-              <div className="flex items-start">
                 <span className="font-semibold text-gray-700 w-32">Status:</span>
-                <span
-                  className={`font-bold ${
-                    status.status === 'OPERATIONAL'
-                      ? 'text-green-600'
-                      : 'text-red-600'
-                  }`}
-                >
-                  {status.status}
+                <span className={`font-bold ${status.connected ? 'text-green-600' : 'text-red-600'}`}>
+                  {status.connected ? 'CONNECTED' : 'DISCONNECTED'}
                 </span>
-              </div>
-              <div className="flex items-start">
-                <span className="font-semibold text-gray-700 w-32">Phase:</span>
-                <span className="text-gray-900">{status.phase}</span>
               </div>
               <div className="flex items-start">
                 <span className="font-semibold text-gray-700 w-32">Message:</span>
                 <span className="text-gray-900">{status.message}</span>
               </div>
+              <div className="flex items-start">
+                <span className="font-semibold text-gray-700 w-32">Endpoint:</span>
+                <span className="text-gray-900">{status.endpoint}</span>
+              </div>
+              {status.responseTime !== undefined && (
+                <div className="flex items-start">
+                  <span className="font-semibold text-gray-700 w-32">Latency:</span>
+                  <span className="text-gray-900">{status.responseTime}ms</span>
+                </div>
+              )}
             </div>
           ) : null}
         </div>
@@ -99,7 +112,7 @@ export const LandingPage = () => {
         <div className="flex justify-center">
           <button
             onClick={handlePing}
-            className="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium shadow-md hover:shadow-lg"
+            className="px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium shadow-md hover:shadow-lg"
           >
             Test Ping
           </button>

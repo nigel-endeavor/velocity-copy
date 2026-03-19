@@ -218,7 +218,7 @@ function ViewToggle({
         onClick={() => onChange('table')}
         className={`px-4 py-2 text-sm font-medium rounded-l-lg transition-colors ${
           viewMode === 'table'
-            ? 'bg-primary-600 text-white'
+            ? 'bg-primary text-primary-foreground'
             : 'text-gray-700 hover:bg-gray-50'
         }`}
       >
@@ -230,7 +230,7 @@ function ViewToggle({
         onClick={() => onChange('card')}
         className={`px-4 py-2 text-sm font-medium rounded-r-lg transition-colors ${
           viewMode === 'card'
-            ? 'bg-primary-600 text-white'
+            ? 'bg-primary text-primary-foreground'
             : 'text-gray-700 hover:bg-gray-50'
         }`}
       >

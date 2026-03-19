@@ -98,7 +98,7 @@ export function TablePagination({
             <select
               value={pageSize}
               onChange={(e) => onPageSizeChange(Number(e.target.value))}
-              className="border-gray-300 rounded-md text-sm focus:ring-primary-500 focus:border-primary-500"
+              className="border-gray-300 rounded-md text-sm focus:ring-primary focus:border-primary"
             >
               {pageSizeOptions.map((size) => (
                 <option key={size} value={size}>
@@ -145,7 +145,7 @@ export function TablePagination({
                   onClick={() => onPageChange(pageNum)}
                   className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
                     isCurrent
-                      ? 'z-10 bg-primary-50 border-primary-500 text-primary-600'
+                      ? 'z-10 bg-primary/10 border-primary text-primary'
                       : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
                   }`}
                 >

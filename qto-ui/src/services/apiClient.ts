@@ -1,8 +1,4 @@
-import { PublicClientApplication } from '@azure/msal-browser';
-import { msalConfig, tokenRequest } from '../config/msal.config';
 import { environment } from '../config/environment';
-
-const msalInstance = new PublicClientApplication(msalConfig);
 
 interface RequestConfig {
   method: string;
@@ -26,21 +22,8 @@ class ApiClient {
   }
 
   private async getAuthToken(): Promise<string | null> {
-    const accounts = msalInstance.getAllAccounts();
-
-    if (accounts.length > 0) {
-      try {
-        const response = await msalInstance.acquireTokenSilent({
-          ...tokenRequest,
-          account: accounts[0],
-        });
-        return response.accessToken;
-      } catch (error) {
-        console.error('Token acquisition failed:', error);
-        return null;
-      }
-    }
-
+    // MSAL token acquisition disabled for local development
+    // In production, this would acquire tokens via MSAL
     return null;
   }
 

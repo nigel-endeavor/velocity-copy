@@ -11,7 +11,6 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    include: ['@azure/msal-browser', '@azure/msal-react'],
     esbuildOptions: {
       target: 'esnext',
     },
@@ -19,13 +18,13 @@ export default defineConfig({
   server: {
     port: 4200,
     proxy: {
-      '/qto/api': {
-        target: 'http://localhost:8080',
+      '/api': {
+        target: 'http://localhost:8081',
         changeOrigin: true,
         secure: false,
       },
-      '/qto/actuator': {
-        target: 'http://localhost:8080',
+      '/actuator': {
+        target: 'http://localhost:8081',
         changeOrigin: true,
       },
     },

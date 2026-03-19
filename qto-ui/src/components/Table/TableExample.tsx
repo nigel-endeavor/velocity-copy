@@ -51,8 +51,8 @@ export function TableExample() {
       render: (value) => (
         <div className="flex items-center">
           <div className="flex-shrink-0 h-10 w-10">
-            <div className="h-10 w-10 rounded-full bg-primary-100 flex items-center justify-center">
-              <span className="text-primary-700 font-medium text-sm">
+            <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+              <span className="text-primary font-medium text-sm">
                 {String(value).charAt(0)}
               </span>
             </div>
@@ -164,8 +164,8 @@ export function TableExample() {
   const renderCard = (user: SampleUser) => (
     <div className="p-4">
       <div className="flex items-center mb-3">
-        <div className="h-12 w-12 rounded-full bg-primary-100 flex items-center justify-center">
-          <span className="text-primary-700 font-medium">{user.name.charAt(0)}</span>
+        <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+          <span className="text-primary font-medium">{user.name.charAt(0)}</span>
         </div>
         <div className="ml-3">
           <h3 className="text-lg font-semibold text-gray-900">{user.name}</h3>
@@ -204,7 +204,7 @@ export function TableExample() {
         </div>
         <button
           onClick={handleRefresh}
-          className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+          className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
         >
           Refresh Data
         </button>
@@ -214,7 +214,7 @@ export function TableExample() {
       <div className="mb-6 grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="bg-white p-4 rounded-lg shadow">
           <div className="text-sm text-gray-600">Selected Rows</div>
-          <div className="text-2xl font-bold text-primary-600">{selectedRows.size}</div>
+          <div className="text-2xl font-bold text-primary">{selectedRows.size}</div>
         </div>
         <div className="bg-white p-4 rounded-lg shadow">
           <div className="text-sm text-gray-600">Total Items</div>

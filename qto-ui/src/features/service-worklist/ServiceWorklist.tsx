@@ -54,7 +54,7 @@ export function ServiceWorklist() {
       render: (value, row) => (
         <a
           href={`#/services/${row.id}`}
-          className="text-primary-600 hover:text-primary-700 font-medium"
+          className="text-primary hover:text-primary/80 font-medium"
         >
           {value}
         </a>

@@ -61,7 +61,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             ${
               hasError
                 ? 'border-red-300 focus:ring-red-500 focus:border-red-500'
-                : 'border-gray-300 focus:ring-primary-500 focus:border-primary-500'
+                : 'border-gray-300 focus:ring-primary focus:border-primary'
             }
             ${props.disabled ? 'bg-gray-100 cursor-not-allowed' : 'bg-white'}
             ${className}

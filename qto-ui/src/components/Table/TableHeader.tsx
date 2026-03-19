@@ -63,7 +63,7 @@ export function TableHeader<T = Record<string, unknown>>({
                 }
               }}
               onChange={(e) => onSelectAll?.(e.target.checked)}
-              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded cursor-pointer"
+              className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded cursor-pointer"
             />
           </th>
         )}
@@ -105,7 +105,7 @@ function SortIcon({ direction }: { direction?: 'asc' | 'desc' }) {
   if (direction === 'asc') {
     return (
       <svg
-        className="w-4 h-4 text-primary-600"
+        className="w-4 h-4 text-primary"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -123,7 +123,7 @@ function SortIcon({ direction }: { direction?: 'asc' | 'desc' }) {
   if (direction === 'desc') {
     return (
       <svg
-        className="w-4 h-4 text-primary-600"
+        className="w-4 h-4 text-primary"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"

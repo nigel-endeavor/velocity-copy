@@ -91,7 +91,7 @@ export function TableRow<T = Record<string, unknown>>({
             type="checkbox"
             checked={selected}
             onChange={(e) => onSelect?.(e.target.checked)}
-            className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded cursor-pointer"
+            className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded cursor-pointer"
           />
         </td>
       )}
