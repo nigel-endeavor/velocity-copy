@@ -50,6 +50,8 @@ import OrderGeneral from './components/OrderGeneral';
 import OrderTechnical from './components/OrderTechnical';
 import OrderBilling from './components/OrderBilling';
 import OrderFinancial from './components/OrderFinancial';
+import OrderSummary from './components/OrderSummary';
+import OrderContacts from './components/OrderContacts';
 import LocationList from './components/LocationList';
 
 
@@ -279,6 +281,12 @@ export default function OrderDetails() {
             </Tabs>
           </CardContent>
         </Card>
+
+        {/* Summary & Contacts */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+          <OrderSummary />
+          <OrderContacts />
+        </div>
 
         {/* Locations and Services */}
         <Card>

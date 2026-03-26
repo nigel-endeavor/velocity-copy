@@ -1,20 +1,21 @@
 package com.endeavorms.velocity.qto.report;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DashboardSearchCriteria {
 
-    private List<String> tenantNames;
+    private List<String> tenantNames = new ArrayList<>();
 
-    private List<String> masterCompanyNames;
+    private List<String> masterCompanyNames = new ArrayList<>();
 
-    private List<String> companyNames;
+    private List<String> companyNames = new ArrayList<>();
 
-    private List<String> serviceTypes;
+    private List<String> serviceTypes = new ArrayList<>();
 
-    private List<String> providers;
+    private List<String> providers = new ArrayList<>();
 
-    private List<String> serviceBilledTos;
+    private List<String> serviceBilledTos = new ArrayList<>();
 
     public List<String> getTenantNames() {
         return tenantNames;

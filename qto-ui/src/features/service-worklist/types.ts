@@ -3,27 +3,11 @@
  * Type definitions for service worklist feature
  */
 
-export interface Service {
-  id: number;
-  serviceId: string;
-  customerName: string;
-  locationName: string;
-  serviceType: string;
-  status: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED';
-  bandwidth: string;
-  orderDate: string;
-  dueDate: string;
-  assignedTo: string;
-  priority: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
-  notes: string;
-}
-
 export interface ServiceSearchCriteria {
-  customerName?: string;
+  companyName?: string;
   serviceType?: string;
   status?: string;
-  priority?: string;
-  assignedTo?: string;
+  projectManager?: string;
   fromDate?: string;
   toDate?: string;
   page?: number;
@@ -33,12 +17,10 @@ export interface ServiceSearchCriteria {
 }
 
 export interface ServiceWorklistState {
-  services: Service[];
   loading: boolean;
   error: string | null;
   searchCriteria: ServiceSearchCriteria;
   selectedServices: Set<number>;
-  totalItems: number;
   currentPage: number;
   pageSize: number;
 }

@@ -45,7 +45,7 @@ public class Surcharge extends AbstractMasterCustomerOwnedEntity {
     @Column(name = "invoice_charge_id")
     private Long invoiceChargeId;
     /** Calculated flag indicating whether the surcharge is part of a finalized invoice. */
-    @Formula("(select case when i.invoice_status = 'Final' then 1 else 0 end" +
+    @Formula("(select case when i.invoice_status = 'Final' then true else false end" +
             " from surcharge s" +
             "          left join invoice_charge ic on ic.invoice_charge_id = s.invoice_charge_id" +
             "          left join invoice i on i.invoice_id = ic.invoice_id" +

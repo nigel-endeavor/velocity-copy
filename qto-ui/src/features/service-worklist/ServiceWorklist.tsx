@@ -3,79 +3,80 @@
  * Main page for viewing and managing services
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { Table, Column, Input, Select, Button, Modal } from '@/components';
-import { Service, ServiceSearchCriteria } from './types';
+import { ServiceView, useListServiceViewsQuery } from '@/services/api/serviceViewsApi';
 import {
-  fetchServices,
-  exportServices,
-  setSearchCriteria,
   setSelectedServices,
   clearSelectedServices,
   setPage,
   setPageSize,
-  selectServices,
-  selectLoading,
-  selectError,
-  selectSearchCriteria,
   selectSelectedServices,
-  selectTotalItems,
   selectCurrentPage,
   selectPageSize,
 } from './serviceWorklistSlice';
 
 export function ServiceWorklist() {
   const dispatch = useAppDispatch();
-  const services = useAppSelector(selectServices);
-  const loading = useAppSelector(selectLoading);
-  const error = useAppSelector(selectError);
-  const searchCriteria = useAppSelector(selectSearchCriteria);
   const selectedServices = useAppSelector(selectSelectedServices);
-  const totalItems = useAppSelector(selectTotalItems);
   const currentPage = useAppSelector(selectCurrentPage);
   const pageSize = useAppSelector(selectPageSize);
 
   const [showExportModal, setShowExportModal] = useState(false);
-  const [localCriteria, setLocalCriteria] = useState<ServiceSearchCriteria>(searchCriteria);
+  const [companyFilter, setCompanyFilter] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
+  const [typeFilter, setTypeFilter] = useState('');
 
-  // Load services on mount and when search criteria changes
-  useEffect(() => {
-    dispatch(fetchServices(searchCriteria));
-  }, [dispatch, searchCriteria]);
+  // Calculate offset from page and pageSize
+  const offset = (currentPage - 1) * pageSize;
 
-  // Define table columns
-  const columns: Column<Service>[] = [
+  // Fetch service views via RTK Query
+  const { data, isLoading, error } = useListServiceViewsQuery({ offset, limit: pageSize });
+
+  const services = data?.collection ?? [];
+  const totalItems = data?.total ?? 0;
+
+  // Client-side filtering (backend search criteria can be added later)
+  const filteredServices = services.filter((s) => {
+    if (companyFilter && !s.companyName?.toLowerCase().includes(companyFilter.toLowerCase())) return false;
+    if (statusFilter && s.status !== statusFilter) return false;
+    if (typeFilter && s.type !== typeFilter) return false;
+    return true;
+  });
+
+  // Define table columns matching ServiceView entity fields
+  const columns: Column<ServiceView>[] = [
     {
-      id: 'serviceId',
+      id: 'clientServiceId',
       label: 'Service ID',
-      accessor: 'serviceId',
+      accessor: 'clientServiceId',
       sortable: true,
       render: (value, row) => (
         <a
           href={`#/services/${row.id}`}
           className="text-primary hover:text-primary/80 font-medium"
         >
-          {value}
+          {value || `SVC-${row.id}`}
         </a>
       ),
     },
     {
-      id: 'customerName',
+      id: 'companyName',
       label: 'Customer',
-      accessor: 'customerName',
+      accessor: 'companyName',
       sortable: true,
     },
     {
-      id: 'locationName',
+      id: 'address',
       label: 'Location',
-      accessor: 'locationName',
+      accessor: 'address',
       sortable: true,
     },
     {
-      id: 'serviceType',
+      id: 'type',
       label: 'Type',
-      accessor: 'serviceType',
+      accessor: 'type',
       sortable: true,
     },
     {
@@ -84,89 +85,58 @@ export function ServiceWorklist() {
       accessor: 'status',
       sortable: true,
       render: (value) => {
-        const colors = {
-          PENDING: 'bg-yellow-100 text-yellow-800',
-          IN_PROGRESS: 'bg-blue-100 text-blue-800',
-          COMPLETED: 'bg-green-100 text-green-800',
-          CANCELLED: 'bg-red-100 text-red-800',
-        };
+        if (!value) return null;
+        const statusLower = value.toLowerCase();
+        let colorClass = 'bg-gray-100 text-gray-800';
+        if (statusLower.includes('progress') || statusLower.includes('active')) {
+          colorClass = 'bg-blue-100 text-blue-800';
+        } else if (statusLower.includes('complete') || statusLower.includes('done')) {
+          colorClass = 'bg-green-100 text-green-800';
+        } else if (statusLower.includes('cancel') || statusLower.includes('disconnect')) {
+          colorClass = 'bg-red-100 text-red-800';
+        } else if (statusLower.includes('hold') || statusLower.includes('pending')) {
+          colorClass = 'bg-yellow-100 text-yellow-800';
+        }
         return (
-          <span className={`px-2 py-1 rounded-full text-xs font-medium ${colors[value as keyof typeof colors]}`}>
-            {value.replace('_', ' ')}
-          </span>
-        );
-      },
-    },
-    {
-      id: 'priority',
-      label: 'Priority',
-      accessor: 'priority',
-      sortable: true,
-      render: (value) => {
-        const colors = {
-          LOW: 'text-gray-600',
-          MEDIUM: 'text-blue-600',
-          HIGH: 'text-orange-600',
-          CRITICAL: 'text-red-600',
-        };
-        return (
-          <span className={`font-medium ${colors[value as keyof typeof colors]}`}>
+          <span className={`px-2 py-1 rounded-full text-xs font-medium ${colorClass}`}>
             {value}
           </span>
         );
       },
     },
     {
-      id: 'bandwidth',
+      id: 'speed',
       label: 'Bandwidth',
-      accessor: 'bandwidth',
+      accessor: 'speed',
     },
     {
-      id: 'orderDate',
-      label: 'Order Date',
-      accessor: 'orderDate',
+      id: 'projectManager',
+      label: 'Project Manager',
+      accessor: 'projectManager',
       sortable: true,
-      render: (value) => new Date(value).toLocaleDateString(),
     },
     {
-      id: 'dueDate',
-      label: 'Due Date',
-      accessor: 'dueDate',
+      id: 'provider',
+      label: 'Provider',
+      accessor: 'provider',
+    },
+    {
+      id: 'mrc',
+      label: 'MRC',
+      accessor: 'mrc',
+      render: (value) => value != null ? `$${Number(value).toLocaleString()}` : '',
+    },
+    {
+      id: 'statusAge',
+      label: 'Status Age',
+      accessor: 'statusAge',
       sortable: true,
-      render: (value) => new Date(value).toLocaleDateString(),
-    },
-    {
-      id: 'assignedTo',
-      label: 'Assigned To',
-      accessor: 'assignedTo',
+      render: (value) => value != null ? `${value} days` : '',
     },
   ];
 
-  // Handle search
-  const handleSearch = () => {
-    dispatch(setSearchCriteria(localCriteria));
-  };
-
-  // Handle clear filters
-  const handleClearFilters = () => {
-    const clearedCriteria: ServiceSearchCriteria = {
-      page: 1,
-      pageSize: pageSize,
-      sortBy: 'orderDate',
-      sortOrder: 'desc',
-    };
-    setLocalCriteria(clearedCriteria);
-    dispatch(setSearchCriteria(clearedCriteria));
-  };
-
   // Handle export
   const handleExport = () => {
-    const serviceIds = Array.from(selectedServices);
-    if (serviceIds.length === 0) {
-      alert('Please select services to export');
-      return;
-    }
-    dispatch(exportServices(serviceIds));
     setShowExportModal(false);
   };
 
@@ -180,33 +150,34 @@ export function ServiceWorklist() {
   };
 
   // Handle row click
-  const handleRowClick = (service: Service) => {
+  const handleRowClick = (service: ServiceView) => {
     window.location.hash = `/services/${service.id}`;
+  };
+
+  const handleClearFilters = () => {
+    setCompanyFilter('');
+    setStatusFilter('');
+    setTypeFilter('');
   };
 
   const statusOptions = [
     { value: '', label: 'All Statuses' },
-    { value: 'PENDING', label: 'Pending' },
-    { value: 'IN_PROGRESS', label: 'In Progress' },
-    { value: 'COMPLETED', label: 'Completed' },
-    { value: 'CANCELLED', label: 'Cancelled' },
-  ];
-
-  const priorityOptions = [
-    { value: '', label: 'All Priorities' },
-    { value: 'LOW', label: 'Low' },
-    { value: 'MEDIUM', label: 'Medium' },
-    { value: 'HIGH', label: 'High' },
-    { value: 'CRITICAL', label: 'Critical' },
+    { value: 'In Progress', label: 'In Progress' },
+    { value: 'Complete', label: 'Complete' },
+    { value: 'On Hold', label: 'On Hold' },
+    { value: 'Cancelled', label: 'Cancelled' },
   ];
 
   const serviceTypeOptions = [
     { value: '', label: 'All Types' },
-    { value: 'INTERNET', label: 'Internet' },
-    { value: 'VOICE', label: 'Voice' },
-    { value: 'DATA', label: 'Data' },
-    { value: 'CLOUD', label: 'Cloud' },
+    { value: 'DIA', label: 'DIA' },
+    { value: 'Broadband', label: 'Broadband' },
+    { value: 'Ethernet', label: 'Ethernet' },
+    { value: 'MPLS', label: 'MPLS' },
+    { value: 'Voice', label: 'Voice' },
   ];
+
+  const errorMessage = error ? ('status' in error ? `Error ${error.status}` : error.message) : null;
 
   return (
     <div className="space-y-6">
@@ -237,7 +208,7 @@ export function ServiceWorklist() {
       </div>
 
       {/* Error Alert */}
-      {error && (
+      {errorMessage && (
         <div className="bg-red-50 border border-red-200 rounded-lg p-4">
           <div className="flex">
             <div className="flex-shrink-0">
@@ -246,7 +217,7 @@ export function ServiceWorklist() {
               </svg>
             </div>
             <div className="ml-3">
-              <p className="text-sm text-red-800">{error}</p>
+              <p className="text-sm text-red-800">{errorMessage}</p>
             </div>
           </div>
         </div>
@@ -259,29 +230,22 @@ export function ServiceWorklist() {
           <Input
             label="Customer Name"
             placeholder="Search by customer..."
-            value={localCriteria.customerName || ''}
-            onChange={(e) => setLocalCriteria({ ...localCriteria, customerName: e.target.value })}
+            value={companyFilter}
+            onChange={(e) => setCompanyFilter(e.target.value)}
             fullWidth
           />
           <Select
             label="Service Type"
             options={serviceTypeOptions}
-            value={localCriteria.serviceType || ''}
-            onChange={(e) => setLocalCriteria({ ...localCriteria, serviceType: e.target.value })}
+            value={typeFilter}
+            onChange={(e) => setTypeFilter(e.target.value)}
             fullWidth
           />
           <Select
             label="Status"
             options={statusOptions}
-            value={localCriteria.status || ''}
-            onChange={(e) => setLocalCriteria({ ...localCriteria, status: e.target.value })}
-            fullWidth
-          />
-          <Select
-            label="Priority"
-            options={priorityOptions}
-            value={localCriteria.priority || ''}
-            onChange={(e) => setLocalCriteria({ ...localCriteria, priority: e.target.value })}
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
             fullWidth
           />
         </div>
@@ -289,17 +253,14 @@ export function ServiceWorklist() {
           <Button variant="secondary" onClick={handleClearFilters}>
             Clear Filters
           </Button>
-          <Button variant="primary" onClick={handleSearch}>
-            Search
-          </Button>
         </div>
       </div>
 
       {/* Services Table */}
       <Table
-        data={services}
+        data={filteredServices}
         columns={columns}
-        loading={loading}
+        loading={isLoading}
         emptyMessage="No services found. Try adjusting your search criteria."
         selectable
         selectionMode="multiple"

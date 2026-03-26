@@ -136,13 +136,14 @@ public class Location extends AbstractMasterCustomerOwnedEntity {
     private String recordSource;
 
     @OneToMany(fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.JOIN)
     @JoinColumn(name = "location_id", referencedColumnName = "location_id")
     @Where(clause = "marked_for_deletion = false")
     @OrderBy("linked_bundled_parent_id DESC, linked_bundled_parent DESC, sortOrder ASC, id ASC")
     private List<Service> services = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.EAGER)
-    @Fetch(value = FetchMode.SUBSELECT)
+    @Fetch(value = FetchMode.JOIN)
     @JoinColumn(name = "location_id", referencedColumnName = "location_id")
     @Where(clause = "current_inventory = true and marked_for_deletion = false")
     @OrderBy("linked_bundled_parent_id DESC, linked_bundled_parent DESC, inventorySortOrder ASC, id ASC")

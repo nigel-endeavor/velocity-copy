@@ -111,7 +111,7 @@ public class Order extends AbstractMasterCustomerOwnedEntity {
     private boolean isCurrentInventory;
 
     @OneToMany(fetch = FetchType.EAGER)
-    @Fetch(value = FetchMode.SUBSELECT)
+    @Fetch(value = FetchMode.JOIN)
     @JoinColumn(name = "order_id", referencedColumnName = "order_id")
     @Where(clause = "marked_for_deletion = false")
     @OrderBy("sortOrder ASC, id ASC")
@@ -128,7 +128,7 @@ public class Order extends AbstractMasterCustomerOwnedEntity {
     @Formula("(Select mi.milestone_date from order_milestone_instance om "
             + " left join milestone_instance mi on om.milestone_instance_id = mi.milestone_instance_id "
             + " left join milestone m on mi.milestone_id = m.milestone_id "
-            + " where m.milestone_code = 'CREATED' and mi.historic = 0 "
+            + " where m.milestone_code = 'CREATED' and mi.historic = false "
             + "and om.order_id = order_id "
             + " limit 1)")
     private Date createdDate;

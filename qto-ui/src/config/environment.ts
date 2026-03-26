@@ -22,9 +22,9 @@ const isTest = import.meta.env.MODE === 'test';
  */
 const developmentEnv: Environment = {
   production: false,
-  appUrl: import.meta.env.VITE_API_URL || '/api',
-  wsUrl: import.meta.env.VITE_WS_URL || 'ws://localhost:8081',
-  publicUrl: import.meta.env.VITE_PUBLIC_URL || 'http://localhost:8081/public',
+  appUrl: import.meta.env.VITE_API_URL || '/qto/api',
+  wsUrl: import.meta.env.VITE_WS_URL || 'ws://localhost:8085',
+  publicUrl: import.meta.env.VITE_PUBLIC_URL || 'http://localhost:8085/public',
   baseHref: '/qto-ops/',
 };
 
@@ -33,9 +33,9 @@ const developmentEnv: Environment = {
  */
 const testEnv: Environment = {
   production: false,
-  appUrl: import.meta.env.VITE_API_URL || '/api',
-  wsUrl: import.meta.env.VITE_WS_URL || 'ws://localhost:8081',
-  publicUrl: import.meta.env.VITE_PUBLIC_URL || 'http://localhost:8081/public',
+  appUrl: import.meta.env.VITE_API_URL || '/qto/api',
+  wsUrl: import.meta.env.VITE_WS_URL || 'ws://localhost:8085',
+  publicUrl: import.meta.env.VITE_PUBLIC_URL || 'http://localhost:8085/public',
   baseHref: '/qto-ops/',
 };
 

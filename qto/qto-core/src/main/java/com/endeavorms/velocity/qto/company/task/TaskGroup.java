@@ -43,12 +43,11 @@ public class TaskGroup extends AbstractMasterCustomerOwnedEntity {
     @OrderBy("sort_order")
     private List<Task> tasks;
 
-    @Formula("(SELECT REPLACE(GROUP_CONCAT(t.value ORDER BY t.sort_order), ',', ', ') FROM task t" +
-            " WHERE t.task_group_id = task_group_id" +
-            " ORDER BY t.sort_order)")
+    @Formula("(SELECT STRING_AGG(t.value, ', ' ORDER BY t.sort_order) FROM task t" +
+            " WHERE t.task_group_id = task_group_id)")
     private String taskNames;
 
-    @Formula("(SELECT REPLACE(GROUP_CONCAT(c.company_name), ',', ', ') FROM company c " +
+    @Formula("(SELECT STRING_AGG(c.company_name, ', ') FROM company c " +
             "WHERE c.task_group_id = task_group_id)")
     private String usedBy;
 

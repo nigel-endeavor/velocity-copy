@@ -1,6 +1,5 @@
 /**
  * Location List Component
- *
  * Displays accordion list of locations with nested services
  */
 

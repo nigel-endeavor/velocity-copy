@@ -16,7 +16,7 @@ import jakarta.persistence.Table;
  * @since 1.5.0 - 11/29/12 3:01 PM
  */
 @Entity
-@Table(name = "tenant")
+@Table(name = "tenant", schema = "platform")
 @JsonIgnoreProperties("tenantSubjectList")
 public class Tenant extends StandardVersionedBaseEntity {
 

@@ -6,7 +6,17 @@
 
 import { baseApi } from './baseApi';
 import { Order } from '@/shared/types/models';
-import { PaginatedResult, BaseSearchCriteria } from '@/shared/types/common';
+import { BaseSearchCriteria } from '@/shared/types/common';
+
+/**
+ * Backend PaginatedResult format (Java backend)
+ */
+export interface BackendPaginatedResult<T> {
+  collection: T[];
+  offset: number;
+  limit: number;
+  total: number;
+}
 
 /**
  * Order Search Criteria
@@ -35,18 +45,33 @@ export const ordersApi = baseApi.injectEndpoints({
     }),
 
     /**
-     * Search orders
+     * List orders with pagination
      */
-    searchOrders: builder.query<PaginatedResult<Order>, OrderSearchCriteria>({
-      query: (criteria) => ({
-        url: '/orders/search',
-        method: 'POST',
-        body: criteria,
-      }),
+    listOrders: builder.query<BackendPaginatedResult<Order>, { offset?: number; limit?: number }>({
+      query: ({ offset = 0, limit = 25 } = {}) => `/orders?offset=${offset}&limit=${limit}`,
       providesTags: (result) =>
         result
           ? [
-              ...result.content.map(({ id }) => ({ type: 'Order' as const, id })),
+              ...result.collection.map(({ id }) => ({ type: 'Order' as const, id })),
+              { type: 'Order', id: 'LIST' },
+            ]
+          : [{ type: 'Order', id: 'LIST' }],
+    }),
+
+    /**
+     * Search orders (uses list endpoint with params)
+     */
+    searchOrders: builder.query<BackendPaginatedResult<Order>, OrderSearchCriteria>({
+      query: (criteria) => {
+        const params = new URLSearchParams();
+        if (criteria.pageNumber != null) params.set('offset', String((criteria.pageNumber) * (criteria.pageSize || 25)));
+        if (criteria.pageSize != null) params.set('limit', String(criteria.pageSize));
+        return `/orders?${params.toString()}`;
+      },
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.collection.map(({ id }) => ({ type: 'Order' as const, id })),
               { type: 'Order', id: 'LIST' },
             ]
           : [{ type: 'Order', id: 'LIST' }],
@@ -123,6 +148,7 @@ export const ordersApi = baseApi.injectEndpoints({
  */
 export const {
   useGetOrderQuery,
+  useListOrdersQuery,
   useSearchOrdersQuery,
   useCreateOrderMutation,
   useUpdateOrderMutation,

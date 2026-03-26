@@ -8,6 +8,11 @@ spring:
     username: qto_user
     password: changeme
     driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      connection-timeout: 60000
+      idle-timeout: 600000
+      max-lifetime: 1800000
   jpa:
     hibernate:
       ddl-auto: update
@@ -17,12 +22,16 @@ spring:
         format_sql: true
   liquibase:
     change-log: classpath:database/postgresql-baseline.xml
-    enabled: true
+    enabled: false
   autoconfigure:
     exclude:
       - org.springframework.boot.autoconfigure.jms.JmsAutoConfiguration
       - org.springframework.boot.autoconfigure.jms.artemis.ArtemisAutoConfiguration
-      - org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration
 
 server:
-  port: 8081
+  port: 8085
+  servlet:
+    context-path: /qto
+  error:
+    include-message: always
+    include-stacktrace: on_param

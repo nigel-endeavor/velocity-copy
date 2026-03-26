@@ -8,6 +8,17 @@ export * from './baseApi';
 export * from './ordersApi';
 export * from './servicesApi';
 export * from './locationsApi';
+export * from './quotesApi';
+export * from './locationInventoryViewsApi';
+export * from './serviceInventoryViewsApi';
+export * from './companyViewsApi';
+export * from './companiesApi';
+export * from './contactsApi';
+export * from './invoicesApi';
+export * from './invoiceChargesApi';
+export * from './disputesApi';
+export * from './disputeViewsApi';
+export * from './wipViewsApi';
 
 // Re-export hooks
 export {
@@ -41,3 +52,12 @@ export {
   useSaveLocationMutation,
   useDeleteLocationMutation,
 } from './locationsApi';
+
+export {
+  useGetWipServicesQuery,
+  useGetWipServiceJeopsQuery,
+  useGetWipLocationJeopsQuery,
+  useGetMonthlySpendQuery,
+  useGetIncrementalNetworkSpendQuery,
+  useGetUnbillableNetworkExpenseAccrualQuery,
+} from './wipViewsApi';

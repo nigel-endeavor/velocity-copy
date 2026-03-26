@@ -150,29 +150,29 @@ public class LocationInventoryViewJpaDao extends AbstractMasterCustomerJpaDao<Lo
         expression = getContainsExpression(expression, locationInventoryView.parentCompanyClientId, criteria.getParentCompanyClientId());
         expression = getContainsExpression(expression, locationInventoryView.endCustomerClientId, criteria.getEndCustomerClientId());
         expression = getInExpression(expression, locationInventoryView.subOrderTypes, criteria.getSubOrderTypes());
-        if (!criteria.getCountServices().isEmpty()) {
+        if (criteria.getCountServices() != null && !criteria.getCountServices().isEmpty()) {
             expression = getNumericComparisonExpression(expression, locationInventoryView.countServices, criteria.getCountServices(),
                     new ArrayList<>(List.of(RangeType.EQ)));
         }
-        if (!criteria.getActiveServiceCount().isEmpty()) {
+        if (criteria.getActiveServiceCount() != null && !criteria.getActiveServiceCount().isEmpty()) {
             expression = getNumericComparisonExpression(expression, locationInventoryView.activeServiceCount, criteria.getActiveServiceCount(),
                     new ArrayList<>(List.of(RangeType.EQ)));
         }
         expression = getDateComparisonExpression(expression, locationInventoryView.inventoryAddedDate,
                 criteria.getInventoryAddedDate(), criteria.getInventoryAddedDateComparison());
-        if (!criteria.getMacdCount().isEmpty()) {
+        if (criteria.getMacdCount() != null && !criteria.getMacdCount().isEmpty()) {
             expression = getNumericComparisonExpression(expression, locationInventoryView.macdCount, criteria.getMacdCount(),
                     new ArrayList<>(List.of(RangeType.EQ)));
         }
-        if (!criteria.getParentCompanyId().isEmpty()) {
+        if (criteria.getParentCompanyId() != null && !criteria.getParentCompanyId().isEmpty()) {
             expression = getNumericComparisonExpression(expression, locationInventoryView.masterCustomerId, criteria.getParentCompanyId(),
                     new ArrayList<>(List.of(RangeType.EQ)));
         }
-        if (!criteria.getOpenDisputeMrc().isEmpty()) {
+        if (criteria.getOpenDisputeMrc() != null && !criteria.getOpenDisputeMrc().isEmpty()) {
             expression = getNumericComparisonExpression(expression, locationInventoryView.openDisputeMrc, criteria.getOpenDisputeMrc(),
                     new ArrayList<>(List.of(RangeType.EQ)));
         }
-        if (!criteria.getOpenDisputeNrc().isEmpty()) {
+        if (criteria.getOpenDisputeNrc() != null && !criteria.getOpenDisputeNrc().isEmpty()) {
             expression = getNumericComparisonExpression(expression, locationInventoryView.openDisputeNrc, criteria.getOpenDisputeNrc(),
                     new ArrayList<>(List.of(RangeType.EQ)));
         }
@@ -182,8 +182,10 @@ public class LocationInventoryViewJpaDao extends AbstractMasterCustomerJpaDao<Lo
 
         // Doing the services filter this way because for some reason if you use the getContainsExpression method it
         // returns the services all lowercase
-        for (String service : criteria.getServices()) {
-            expression = expression.and(locationInventoryView.services.like("%" + service.toLowerCase() + "%"));
+        if (criteria.getServices() != null) {
+            for (String service : criteria.getServices()) {
+                expression = expression.and(locationInventoryView.services.like("%" + service.toLowerCase() + "%"));
+            }
         }
 
         return expression;

@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 import path from 'path'
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   plugins: [react()],
   resolve: {
     alias: {
@@ -16,22 +16,22 @@ export default defineConfig({
     },
   },
   server: {
-    port: 4200,
+    port: 4202,
     proxy: {
-      '/api': {
-        target: 'http://localhost:8081',
+      '/qto/api': {
+        target: 'http://localhost:8085',
         changeOrigin: true,
         secure: false,
       },
-      '/actuator': {
-        target: 'http://localhost:8081',
+      '/qto/actuator': {
+        target: 'http://localhost:8085',
         changeOrigin: true,
       },
     },
   },
-  base: '/qto-ops/',
+  base: mode === 'production' ? '/qto-ops/' : '/',
   build: {
     outDir: 'dist',
     sourcemap: true,
   },
-})
+}))

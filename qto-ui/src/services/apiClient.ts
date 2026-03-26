@@ -35,6 +35,7 @@ class ApiClient {
 
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
+      'Accept': 'application/json',
       ...config.headers,
     };
 

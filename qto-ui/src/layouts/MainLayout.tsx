@@ -29,7 +29,31 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
                     isActive('/') ? 'bg-black/20' : 'hover:bg-black/10'
                   }`}
                 >
+                  Home
+                </Link>
+                <Link
+                  to="/dashboard"
+                  className={`px-3 py-2 rounded-lg transition-colors ${
+                    isActive('/dashboard') ? 'bg-black/20' : 'hover:bg-black/10'
+                  }`}
+                >
                   Dashboard
+                </Link>
+                <Link
+                  to="/orders"
+                  className={`px-3 py-2 rounded-lg transition-colors ${
+                    isActive('/orders') ? 'bg-black/20' : 'hover:bg-black/10'
+                  }`}
+                >
+                  Orders
+                </Link>
+                <Link
+                  to="/quotes"
+                  className={`px-3 py-2 rounded-lg transition-colors ${
+                    isActive('/quotes') ? 'bg-black/20' : 'hover:bg-black/10'
+                  }`}
+                >
+                  Quotes
                 </Link>
                 <Link
                   to="/services"
@@ -38,6 +62,38 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
                   }`}
                 >
                   Services
+                </Link>
+                <Link
+                  to="/inventory"
+                  className={`px-3 py-2 rounded-lg transition-colors ${
+                    isActive('/inventory') ? 'bg-black/20' : 'hover:bg-black/10'
+                  }`}
+                >
+                  Inventory
+                </Link>
+                <Link
+                  to="/customers"
+                  className={`px-3 py-2 rounded-lg transition-colors ${
+                    isActive('/customers') ? 'bg-black/20' : 'hover:bg-black/10'
+                  }`}
+                >
+                  Customers
+                </Link>
+                <Link
+                  to="/invoicing"
+                  className={`px-3 py-2 rounded-lg transition-colors ${
+                    isActive('/invoicing') ? 'bg-black/20' : 'hover:bg-black/10'
+                  }`}
+                >
+                  Invoicing
+                </Link>
+                <Link
+                  to="/expenses"
+                  className={`px-3 py-2 rounded-lg transition-colors ${
+                    isActive('/expenses') ? 'bg-black/20' : 'hover:bg-black/10'
+                  }`}
+                >
+                  Expenses
                 </Link>
               </div>
             </div>

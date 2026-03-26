@@ -42,6 +42,16 @@ export const locationsApi = baseApi.injectEndpoints({
         method: 'POST',
         body: criteria,
       }),
+      transformResponse: (response: { collection: Location[]; offset: number; limit: number; total: number }): PaginatedResult<Location> => ({
+        content: response.collection,
+        totalElements: response.total,
+        totalPages: Math.ceil(response.total / (response.limit || 25)),
+        pageNumber: Math.floor(response.offset / (response.limit || 25)),
+        pageSize: response.limit,
+        first: response.offset === 0,
+        last: response.offset + response.limit >= response.total,
+        empty: response.collection.length === 0,
+      }),
       providesTags: (result) =>
         result
           ? [

@@ -139,7 +139,7 @@ public abstract class AbstractJpaDao<T extends BaseEntity<KeyType>, KeyType exte
     }
 
     protected BooleanExpression getContainsExpression(final BooleanExpression expression, final StringPath path, final List<String> values) {
-        if (!values.isEmpty()) {
+        if (values != null && !values.isEmpty()) {
             BooleanBuilder containsExp = new BooleanBuilder();
             for (String value : values) {
                 if ("ISEMPTY".equals(value)) {
@@ -166,7 +166,7 @@ public abstract class AbstractJpaDao<T extends BaseEntity<KeyType>, KeyType exte
      * @return the updated expression.
      */
     protected BooleanExpression getInExpression(final BooleanExpression expression, final StringPath path, final List<String> values) {
-        if (!values.isEmpty()) {
+        if (values != null && !values.isEmpty()) {
             LinkedList<String> valuesCopy = new LinkedList<>(values);
             BooleanBuilder inExp = new BooleanBuilder();
             boolean hasIsEmpty = valuesCopy.contains("ISEMPTY");
@@ -221,6 +221,9 @@ public abstract class AbstractJpaDao<T extends BaseEntity<KeyType>, KeyType exte
                                                             List<Date> var3, List<DateRangeType> var4,
                                                             boolean stripTime) {
         BooleanExpression var5 = var1;
+        if (var3 == null || var4 == null) {
+            return var5;
+        }
         List<Date> dateList = new ArrayList<>(var3);
         if (var4 != null && var4.contains(DateRangeType.ISEMPTY)) {
             int index = var4.indexOf(DateRangeType.ISEMPTY);
@@ -402,6 +405,9 @@ public abstract class AbstractJpaDao<T extends BaseEntity<KeyType>, KeyType exte
 
     protected <A extends Number & Comparable<?>> BooleanExpression getNumericComparisonExpression(BooleanExpression var1, NumberExpression var2, List<A> var3, List<RangeType> var4) {
         BooleanExpression var5 = var1;
+        if (var3 == null || var4 == null) {
+            return var5;
+        }
         List<Number> numberList = new ArrayList<>(var3);
         List<RangeType> rangeTypeList = new ArrayList<>(var4);
         //if rangeTypeList contains RangeType.ISEMPTY, then numberList must contain a null value

@@ -34,6 +34,7 @@ const baseQuery = fetchBaseQuery({
     // }
 
     headers.set('Content-Type', 'application/json');
+    headers.set('Accept', 'application/json');
     return headers;
   },
   credentials: 'include', // Include cookies for session-based auth
@@ -88,12 +89,22 @@ export const baseApi = createApi({
   tagTypes: [
     'Order',
     'Service',
+    'ServiceView',
     'Location',
     'Invoice',
     'Dispute',
     'Customer',
     'User',
     'Configuration',
+    'Quote',
+    'LocationInventoryView',
+    'ServiceInventoryView',
+    'CompanyView',
+    'Company',
+    'Contact',
+    'InvoiceCharge',
+    'DisputeView',
+    'WipView',
   ],
   endpoints: () => ({}), // Endpoints will be injected by feature modules
 });

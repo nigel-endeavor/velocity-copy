@@ -1,6 +1,7 @@
 package com.endeavorms.velocity.qto;
 
 import com.endeavorms.velocity.qto.common.AbstractResource;
+import com.endeavorms.velocity.qto.common.PaginatedResult;
 import com.endeavorms.velocity.qto.order.Order;
 import com.endeavorms.velocity.qto.order.OrderManager;
 import com.endeavorms.velocity.qto.order.dto.OrderCreateDtoWrapper;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.inject.Inject;
@@ -33,6 +35,20 @@ public class OrderResource extends AbstractResource<Order> {
     @Inject
     private OrderManager manager;
 
+    @GetMapping
+    @PreAuthorize("hasAnyAuthority('inventory:read','order:read')")
+    public ResponseEntity<?> list(
+            @RequestParam(defaultValue = "0") final int offset,
+            @RequestParam(defaultValue = "25") final int limit) {
+        try {
+            PaginatedResult<Order> result = manager.list(offset, limit);
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            LOGGER.error("Error listing orders", e);
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
+    }
+
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('inventory:read','order:read')")
     public ResponseEntity<?> retrieve(@PathVariable("id") final Long id) {
@@ -40,9 +56,8 @@ public class OrderResource extends AbstractResource<Order> {
             Order retrieved = manager.retrieve(id);
             return ResponseEntity.ok(retrieved);
         } catch (Exception e) {
-            String errorMessage = "Access denied: contact a platform admin to view this client group.";
-            LOGGER.error(e.getMessage());
-            return ResponseEntity.internalServerError().body(errorMessage);
+            LOGGER.error("Error retrieving order " + id, e);
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 

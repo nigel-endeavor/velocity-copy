@@ -6,9 +6,6 @@
  */
 
 import { ReactNode } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
-// MSAL disabled for local development
-import { Box, CircularProgress } from '@mui/material';
 
 interface AuthGuardProps {
   children: ReactNode;
@@ -16,12 +13,8 @@ interface AuthGuardProps {
 
 /**
  * Auth Guard Component
- *
- * Usage:
- * <AuthGuard>
- *   <ProtectedComponent />
- * </AuthGuard>
  */
+export function AuthGuard({ children }: AuthGuardProps) {
   // Always allow access in local/dev mode
   return <>{children}</>;
 }
@@ -30,6 +23,7 @@ interface AuthGuardProps {
  * Loading Guard
  * Shows loading spinner while authentication state is being determined
  */
+export function LoadingGuard({ children }: AuthGuardProps) {
   // Always allow access in local/dev mode
   return <>{children}</>;
 }

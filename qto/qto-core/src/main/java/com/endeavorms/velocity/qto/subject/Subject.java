@@ -11,7 +11,7 @@ import jakarta.persistence.Table;
 import java.util.Date;
 
 @Entity
-@Table(name = "subject")
+@Table(name = "subject", schema = "platform")
 public class Subject extends StandardVersionedBaseEntity {
 
     @Id

@@ -17,7 +17,7 @@ public class ServiceFileAttachment extends FileAttachment {
     @Column(name = "service_id")
     private Long serviceId;
 
-    @Formula("(SELECT CONCAT(s.service_type, IF(s.provider IS NULL OR s.provider = '', '', CONCAT(': ', s.provider))) FROM service s WHERE s.service_id = service_id)")
+    @Formula("(SELECT CONCAT(s.service_type, CASE WHEN s.provider IS NULL OR s.provider = '' THEN '' ELSE CONCAT(': ', s.provider) END) FROM service s WHERE s.service_id = service_id)")
     private String serviceDisplayText;
 
     public Long getServiceId() {

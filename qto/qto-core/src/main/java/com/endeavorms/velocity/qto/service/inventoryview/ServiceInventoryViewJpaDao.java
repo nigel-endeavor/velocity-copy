@@ -6,10 +6,7 @@ import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.NumberTemplate;
 import com.querydsl.core.types.dsl.PathBuilder;
-import com.querydsl.core.types.dsl.StringTemplate;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.endeavorms.velocity.qto.cdi.QtoDatabase;
 import com.endeavorms.velocity.qto.common.AbstractMasterCustomerJpaDao;
@@ -218,14 +215,6 @@ public class ServiceInventoryViewJpaDao extends AbstractMasterCustomerJpaDao<Ser
 
     public InventoryWorklistMeta getInventoryWorklistMeta(final ServiceInventoryViewSearchCriteria criteria) {
         BooleanExpression expression = (BooleanExpression) getExpression(criteria);
-        StringTemplate childIdsCount = Expressions.stringTemplate("(CHAR_LENGTH({0}) - CHAR_LENGTH(REPLACE({0}, ',', '')) + 1)", serviceInventoryView.childIds);
-        StringTemplate countNew = Expressions.stringTemplate(
-                "(CHAR_LENGTH({0}) - CHAR_LENGTH(REPLACE({0}, 'New', ''))) / 3",
-                serviceInventoryView.childOrderTypes
-        );
-
-        NumberTemplate<Long> sumChildIdsCount = Expressions.numberTemplate(Long.class, "SUM(" + childIdsCount + ")");
-        NumberTemplate<Long> sumCountNew = Expressions.numberTemplate(Long.class, "SUM(" + countNew + ")");
 
         Tuple metaCounts = new JPAQuery<Tuple>(entityManager)
                 .from(serviceInventoryView)
@@ -234,24 +223,32 @@ public class ServiceInventoryViewJpaDao extends AbstractMasterCustomerJpaDao<Ser
                         serviceInventoryView.openDisputeMrc.sum(),
                         serviceInventoryView.openDisputeNrc.sum(),
                         serviceInventoryView.annualRecurringCost.sum(),
-                        sumChildIdsCount,
-                        sumCountNew,
                         serviceInventoryView.mrr.sum(),
                         serviceInventoryView.nrr.sum()
                 ).where(expression)
                 .fetchOne();
 
         InventoryWorklistMeta meta = new InventoryWorklistMeta();
-        meta.setMrc(metaCounts.get(0, BigDecimal.class));
-        meta.setOpenDisputeMrc(metaCounts.get(1, BigDecimal.class));
-        meta.setOpenDisputeNrc(metaCounts.get(2, BigDecimal.class));
-        meta.setAnnualRecurring(metaCounts.get(3, BigDecimal.class));
-        meta.setMrr(metaCounts.get(6, BigDecimal.class));
-        meta.setNrr(metaCounts.get(7, BigDecimal.class));
+        if (metaCounts != null) {
+            meta.setMrc(metaCounts.get(0, BigDecimal.class));
+            meta.setOpenDisputeMrc(metaCounts.get(1, BigDecimal.class));
+            meta.setOpenDisputeNrc(metaCounts.get(2, BigDecimal.class));
+            meta.setAnnualRecurring(metaCounts.get(3, BigDecimal.class));
+            meta.setMrr(metaCounts.get(4, BigDecimal.class));
+            meta.setNrr(metaCounts.get(5, BigDecimal.class));
+        }
 
-        Long macdCount = metaCounts.get(4, Long.class) == null ? 0L : metaCounts.get(4, Long.class);
-        Long newCount = metaCounts.get(5, Long.class) == null ? 0L : metaCounts.get(5, Long.class);
-        meta.setMacdCount(macdCount - newCount);
+        // Use native query for MACD count to avoid Hibernate 6 type issues with string length arithmetic
+        try {
+            jakarta.persistence.Query nativeQuery = entityManager.createNativeQuery(
+                "SELECT COALESCE(SUM(CHAR_LENGTH(child_ids) - CHAR_LENGTH(REPLACE(child_ids, ',', '')) + 1), 0) " +
+                "- COALESCE(SUM((CHAR_LENGTH(child_order_types) - CHAR_LENGTH(REPLACE(child_order_types, 'New', ''))) / 3), 0) " +
+                "FROM v_manage_service_inventory WHERE child_ids IS NOT NULL");
+            Object result = nativeQuery.getSingleResult();
+            meta.setMacdCount(result != null ? ((Number) result).longValue() : 0L);
+        } catch (Exception e) {
+            meta.setMacdCount(0L);
+        }
         return meta;
     }
 

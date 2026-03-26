@@ -34,6 +34,12 @@ subprojects {
     apply(plugin = "java")
     apply(plugin = "io.spring.dependency-management")
 
+    configure<io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension> {
+        dependencies {
+            dependency("org.hibernate.orm:hibernate-core:6.4.4.Final")
+        }
+    }
+
     java {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
