@@ -62,6 +62,7 @@ public class Company extends AbstractMasterCustomerOwnedEntity {
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "master_customer_id", referencedColumnName = "company_id",
             insertable = false, updatable = false)
+    @JsonIgnore
     private Company parentCompany;
 
     @Column(name = "inventory_location_count")

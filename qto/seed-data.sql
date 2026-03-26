@@ -394,4 +394,221 @@ ON CONFLICT (company_subject_id) DO NOTHING;
 -- Master customers need master_customer_id set to self for WIP view join
 UPDATE company SET master_customer_id = company_id WHERE company_type = 'MASTER_CUSTOMER' AND master_customer_id IS NULL;
 
+-- ============================
+-- 16. Phase A: Fix boolean/financial NULLs (prevents NPE in Location/Order @PostLoad)
+-- ============================
+-- Location primitive booleans (Hibernate can't map NULL → primitive boolean)
+UPDATE location SET marked_for_deletion = false WHERE marked_for_deletion IS NULL;
+UPDATE location SET eligible_for_inventory = false WHERE eligible_for_inventory IS NULL;
+UPDATE location SET final_update = false WHERE final_update IS NULL;
+UPDATE location SET current_inventory = false WHERE current_inventory IS NULL;
+
+-- Order primitive booleans
+UPDATE orders SET current_inventory = false WHERE current_inventory IS NULL;
+UPDATE orders SET final_update = false WHERE final_update IS NULL;
+UPDATE orders SET eligible_for_inventory = false WHERE eligible_for_inventory IS NULL;
+
+-- Company primitive booleans
+UPDATE company SET duplicated_master_customer_details = false WHERE duplicated_master_customer_details IS NULL;
+UPDATE company SET automated_emails_enabled = false WHERE automated_emails_enabled IS NULL;
+
+-- Service financial BigDecimals (NULL causes NPE in Location.@PostLoad BigDecimal::add)
+UPDATE service SET service_icb = 0 WHERE service_icb IS NULL;
+UPDATE service SET service_osp = 0 WHERE service_osp IS NULL;
+UPDATE service SET early_termination_fee = 0 WHERE early_termination_fee IS NULL;
+UPDATE service SET annual_recurring_cost = 0 WHERE annual_recurring_cost IS NULL;
+
+-- MilestoneInstance.historic (primitive boolean, needed for Order.@Formula createdDate)
+UPDATE milestone_instance SET historic = false WHERE historic IS NULL;
+
+-- ============================
+-- 17. Phase B: Fix record_source & order_type (Services page filter)
+-- ============================
+-- ServiceViewJpaDao filter: recordSource.ne('Inventory Import') excludes NULLs in PostgreSQL
+UPDATE service SET record_source = 'Manual Entry' WHERE record_source IS NULL;
+UPDATE service SET order_type = 'New Install' WHERE order_type IS NULL;
+
+-- ============================
+-- 18. Phase C: Inventory Data (Network Inventory page)
+-- ============================
+-- Mark completed order locations as current inventory
+UPDATE location SET current_inventory = true WHERE location_id IN (7, 8);
+
+-- Set client_location_id for all locations (needed by inventory views)
+UPDATE location SET client_location_id = 'LOC-' || LPAD(location_id::text, 4, '0') WHERE client_location_id IS NULL;
+
+-- Additional inventory locations for Acme and FinServ
+INSERT INTO location (location_id, version, tenant_id, master_customer_id, order_id, location_name, address_1, city, state_province, postal_code, country, location_status, active, current_inventory, marked_for_deletion, eligible_for_inventory, final_update, client_location_id, last_update_by, last_update_date)
+VALUES
+  (11, 0, 1, 1, 1, 'Acme Inventory Site',    '110 Inventory Rd',  'New York',  'NY', '10002', 'US', 'Complete', true, true, false, true, false, 'LOC-0011', 'devuser@endeavorms.com', NOW()),
+  (12, 0, 1, 3, 5, 'FinServ Inventory Hub',  '310 Finance Blvd',  'Chicago',   'IL', '60602', 'US', 'Complete', true, true, false, true, false, 'LOC-0012', 'devuser@endeavorms.com', NOW())
+ON CONFLICT (location_id) DO NOTHING;
+
+-- Inventory services (record_source = 'Inventory Import' so they appear in inventory, NOT in service worklist)
+INSERT INTO service (service_id, version, tenant_id, master_customer_id, order_id, location_id, service_type, service_status, service_description, provider, service_mrc, service_nrc, service_mrr, service_nrr, service_icb, service_osp, early_termination_fee, annual_recurring_cost, download_speed, upload_speed, active, current_inventory, marked_for_deletion, record_source, order_type, service_billed_to, auto_renewal, bill_to_location, billable, bundled, co_terminus, eligible_for_inventory, eligible_for_update, expedite_order, final_update, has_icb, has_osp, ignore_for_renewals, linked, linked_bundled_parent, managed_service, production_impacting, update_client, last_update_by, last_update_date)
+VALUES
+  (13, 0, 1, 1, 1, 11, 'DIA',       'Complete', 'Inventory DIA - Acme',       'Lumen',       1800.00, 350.00, 2200.00,  450.00, 0, 0, 0, 21600.00, '1000 Mbps', '1000 Mbps', true, true, false, 'Inventory Import', 'New Install', 'Customer', false, false, true, false, false, true, false, false, false, false, false, false, false, false, false, false, false, 'devuser@endeavorms.com', NOW()),
+  (14, 0, 1, 1, 1, 11, 'Broadband', 'Complete', 'Inventory Broadband - Acme', 'Comcast',      120.00,   0.00,  160.00,    0.00, 0, 0, 0,  1440.00, '200 Mbps',   '20 Mbps',  true, true, false, 'Inventory Import', 'New Install', 'Customer', false, false, true, false, false, true, false, false, false, false, false, false, false, false, false, false, false, 'devuser@endeavorms.com', NOW()),
+  (15, 0, 1, 3, 5, 12, 'MPLS',      'Complete', 'Inventory MPLS - FinServ',   'AT&T',        4500.00, 800.00, 5400.00,  960.00, 0, 0, 0, 54000.00, '500 Mbps',  '500 Mbps',  true, true, false, 'Inventory Import', 'New Install', 'Customer', false, false, true, false, false, true, false, false, false, false, false, false, false, false, false, false, false, 'devuser@endeavorms.com', NOW()),
+  (16, 0, 1, 3, 5, 12, 'DIA',       'Complete', 'Inventory DIA - FinServ',    'CenturyLink', 3000.00, 600.00, 3600.00,  720.00, 0, 0, 0, 36000.00, '2000 Mbps', '2000 Mbps', true, true, false, 'Inventory Import', 'New Install', 'Customer', false, false, true, false, false, true, false, false, false, false, false, false, false, false, false, false, false, 'devuser@endeavorms.com', NOW())
+ON CONFLICT (service_id) DO NOTHING;
+
+-- Milestone instances for inventory services
+INSERT INTO milestone_instance (milestone_instance_id, version, tenant_id, milestone_id, milestone_date, historic)
+VALUES
+  (27, 0, 1, 1, '2025-01-10 09:00:00', false),
+  (28, 0, 1, 6, '2025-03-15 10:00:00', false),
+  (29, 0, 1, 1, '2025-01-10 09:00:00', false),
+  (30, 0, 1, 6, '2025-03-20 10:00:00', false),
+  (31, 0, 1, 1, '2025-02-01 09:00:00', false),
+  (32, 0, 1, 6, '2025-04-01 10:00:00', false),
+  (33, 0, 1, 1, '2025-02-01 09:00:00', false),
+  (34, 0, 1, 6, '2025-04-05 10:00:00', false)
+ON CONFLICT (milestone_instance_id) DO NOTHING;
+
+INSERT INTO service_milestone_instance (service_id, milestone_instance_id)
+VALUES
+  (13, 27), (13, 28), (14, 29), (14, 30),
+  (15, 31), (15, 32), (16, 33), (16, 34)
+ON CONFLICT DO NOTHING;
+
+-- ============================
+-- 19. Phase D: Populate company financial columns (Customers page)
+-- ============================
+-- Acme: inventory services 13,14 → MRC=1920, MRR=2360, NRR=450, 1 location
+UPDATE company SET
+  inventory_mrc = 1920.00, inventory_mrr = 2360.00, inventory_nrr = 450.00,
+  inventory_location_count = 1, account_manager = 2
+WHERE company_id = 1;
+
+-- TechNova: inventory services 8,9,10 → MRC=18300, MRR=22900, NRR=5500, 2 locations
+UPDATE company SET
+  inventory_mrc = 18300.00, inventory_mrr = 22900.00, inventory_nrr = 5500.00,
+  inventory_location_count = 2, account_manager = 3
+WHERE company_id = 2;
+
+-- FinServ: inventory services 15,16 → MRC=7500, MRR=9000, NRR=1680, 1 location
+UPDATE company SET
+  inventory_mrc = 7500.00, inventory_mrr = 9000.00, inventory_nrr = 1680.00,
+  inventory_location_count = 1, account_manager = 2
+WHERE company_id = 3;
+
+-- End customers inherit parent financials
+UPDATE company SET
+  inventory_mrc = 1920.00, inventory_mrr = 2360.00, inventory_nrr = 450.00,
+  inventory_location_count = 1, account_manager = 2
+WHERE company_id = 4;
+
+UPDATE company SET
+  inventory_mrc = 18300.00, inventory_mrr = 22900.00, inventory_nrr = 5500.00,
+  inventory_location_count = 2, account_manager = 3
+WHERE company_id = 5;
+
+-- ============================
+-- 20. Phase F: Sky-is-the-limit enrichment
+-- ============================
+-- Additional milestone types
+INSERT INTO milestone (milestone_id, version, milestone_name, milestone_code)
+VALUES
+  (10, 0, 'QA Check Open',           'QA_CHECK_OPEN'),
+  (11, 0, 'First Vendor Invoice',    'FIRST_VENDOR_INVOICE'),
+  (12, 0, 'Billing Review Complete', 'BILLING_REVIEW_COMPLETE'),
+  (13, 0, 'Returned to Order Group', 'RETURNED_TO_ORDER_GROUP'),
+  (14, 0, 'Returned to Sales',       'RETURNED_TO_SALES'),
+  (15, 0, 'On Hold',                 'ON_HOLD')
+ON CONFLICT (milestone_id) DO NOTHING;
+
+-- Richer milestone timeline data for in-progress services
+INSERT INTO milestone_instance (milestone_instance_id, version, tenant_id, milestone_id, milestone_date, historic)
+VALUES
+  -- Service 1: site survey + FOC + customer requested
+  (35, 0, 1, 2, '2025-10-01 09:00:00', false),
+  (36, 0, 1, 4, '2025-10-20 14:00:00', false),
+  (37, 0, 1, 7, '2025-09-25 10:00:00', false),
+  (38, 0, 1, 8, '2025-09-30 10:00:00', false),
+  -- Service 3: full pipeline
+  (39, 0, 1, 2, '2025-11-01 09:00:00', false),
+  (40, 0, 1, 3, '2025-10-10 10:00:00', false),
+  (41, 0, 1, 4, '2025-11-15 14:00:00', false),
+  (42, 0, 1, 9, '2025-11-10 10:00:00', false),
+  -- Service 5: QA check
+  (43, 0, 1, 2, '2025-09-01 09:00:00', false),
+  (44, 0, 1, 3, '2025-08-15 10:00:00', false),
+  (45, 0, 1, 4, '2025-09-20 14:00:00', false),
+  (46, 0, 1, 10, '2025-10-20 09:00:00', false),
+  -- Service 7: site survey
+  (47, 0, 1, 7, '2025-08-20 10:00:00', false),
+  (48, 0, 1, 8, '2025-08-25 10:00:00', false),
+  (49, 0, 1, 2, '2025-09-15 09:00:00', false),
+  (50, 0, 1, 4, '2025-10-01 14:00:00', false)
+ON CONFLICT (milestone_instance_id) DO NOTHING;
+
+INSERT INTO service_milestone_instance (service_id, milestone_instance_id)
+VALUES
+  (1, 35), (1, 36), (1, 37), (1, 38),
+  (3, 39), (3, 40), (3, 41), (3, 42),
+  (5, 43), (5, 44), (5, 45), (5, 46),
+  (7, 47), (7, 48), (7, 49), (7, 50)
+ON CONFLICT DO NOTHING;
+
+-- Location contacts (for LCON phone in v_manage_services)
+INSERT INTO location_contact (location_id, contact_id)
+VALUES
+  (1, 2), (2, 2), (3, 1), (4, 5), (5, 5), (7, 4), (8, 4), (9, 6), (10, 6)
+ON CONFLICT DO NOTHING;
+
+-- Mark some contacts as Customer LCON for v_manage_services resolution
+UPDATE contact SET role = 'Customer LCON' WHERE contact_id IN (2, 5);
+
+-- Service progress percentages
+UPDATE service SET progress_percentage = 75  WHERE service_id = 1;
+UPDATE service SET progress_percentage = 50  WHERE service_id = 2;
+UPDATE service SET progress_percentage = 80  WHERE service_id = 3;
+UPDATE service SET progress_percentage = 10  WHERE service_id = 4;
+UPDATE service SET progress_percentage = 85  WHERE service_id = 5;
+UPDATE service SET progress_percentage = 70  WHERE service_id = 6;
+UPDATE service SET progress_percentage = 60  WHERE service_id = 7;
+UPDATE service SET progress_percentage = 100 WHERE service_id IN (8, 9, 10, 13, 14, 15, 16);
+UPDATE service SET progress_percentage = 5   WHERE service_id IN (11, 12);
+
+-- Service status age (last_status_change for EXTRACT(DAY FROM NOW() - ...) in view)
+UPDATE service SET last_status_change = NOW() - INTERVAL '45 days'  WHERE service_id = 1;
+UPDATE service SET last_status_change = NOW() - INTERVAL '30 days'  WHERE service_id = 2;
+UPDATE service SET last_status_change = NOW() - INTERVAL '60 days'  WHERE service_id = 3;
+UPDATE service SET last_status_change = NOW() - INTERVAL '5 days'   WHERE service_id = 4;
+UPDATE service SET last_status_change = NOW() - INTERVAL '90 days'  WHERE service_id = 5;
+UPDATE service SET last_status_change = NOW() - INTERVAL '40 days'  WHERE service_id = 6;
+UPDATE service SET last_status_change = NOW() - INTERVAL '55 days'  WHERE service_id = 7;
+UPDATE service SET last_status_change = NOW() - INTERVAL '120 days' WHERE service_id IN (8, 9, 10);
+UPDATE service SET last_status_change = NOW() - INTERVAL '2 days'   WHERE service_id IN (11, 12);
+
+-- Project names
+UPDATE service SET project_name = 'Acme Network Upgrade 2026' WHERE order_id = 1;
+UPDATE service SET project_name = 'Acme Branch Expansion'     WHERE order_id = 2;
+UPDATE service SET project_name = 'TechNova Cloud Migration'  WHERE order_id IN (3, 4);
+UPDATE service SET project_name = 'FinServ DR Initiative'     WHERE order_id = 5;
+
+-- Service sub-statuses
+UPDATE service SET service_sub_status = 'Awaiting FOC'       WHERE service_id = 1;
+UPDATE service SET service_sub_status = 'Pending Install'    WHERE service_id = 2;
+UPDATE service SET service_sub_status = 'Testing'            WHERE service_id = 3;
+UPDATE service SET service_sub_status = 'Order Placed'       WHERE service_id = 4;
+UPDATE service SET service_sub_status = 'QA Review'          WHERE service_id = 5;
+UPDATE service SET service_sub_status = 'Configuration'      WHERE service_id = 6;
+UPDATE service SET service_sub_status = 'Site Survey'        WHERE service_id = 7;
+UPDATE service SET service_sub_status = 'Active'             WHERE service_id IN (8, 9, 10, 13, 14, 15, 16);
+UPDATE service SET service_sub_status = 'Awaiting Approval'  WHERE service_id IN (11, 12);
+
+-- Order client project managers
+UPDATE orders SET client_project_manager = 'John Doe'   WHERE order_id IN (1, 2);
+UPDATE orders SET client_project_manager = 'Alice Chen'  WHERE order_id IN (3, 4);
+UPDATE orders SET client_project_manager = 'Sarah Lee'   WHERE order_id = 5;
+
+-- Reset sequences for new data
+SELECT setval('location_location_id_seq', (SELECT MAX(location_id) FROM location));
+SELECT setval('service_service_id_seq', (SELECT MAX(service_id) FROM service));
+SELECT setval('milestone_milestone_id_seq', (SELECT MAX(milestone_id) FROM milestone));
+SELECT setval('milestone_instance_milestone_instance_id_seq', (SELECT MAX(milestone_instance_id) FROM milestone_instance));
+SELECT setval('company_subject_company_subject_id_seq', (SELECT MAX(company_subject_id) FROM company_subject));
+
 COMMIT;

@@ -7,8 +7,7 @@
 -- ============================================================================
 
 -- v_subject: maps subject_id to display info
-DROP TABLE IF EXISTS v_subject CASCADE;
-DROP VIEW IF EXISTS v_subject;
+DROP VIEW IF EXISTS v_subject CASCADE;
 CREATE VIEW v_subject AS
 SELECT s.subject_id,
        s.username,
@@ -19,8 +18,7 @@ SELECT s.subject_id,
 FROM platform.subject s;
 
 -- v_tenant: maps tenant_id to tenant info
-DROP TABLE IF EXISTS v_tenant CASCADE;
-DROP VIEW IF EXISTS v_tenant;
+DROP VIEW IF EXISTS v_tenant CASCADE;
 CREATE VIEW v_tenant AS
 SELECT t.tenant_id,
        t.name,
@@ -29,8 +27,7 @@ SELECT t.tenant_id,
 FROM platform.tenant t;
 
 -- v_service_milestone_instance: service milestone lookup
-DROP TABLE IF EXISTS v_service_milestone_instance CASCADE;
-DROP VIEW IF EXISTS v_service_milestone_instance;
+DROP VIEW IF EXISTS v_service_milestone_instance CASCADE;
 CREATE VIEW v_service_milestone_instance AS
 SELECT smi.service_id,
        mi.milestone_instance_id,
@@ -43,8 +40,7 @@ JOIN milestone_instance mi ON smi.milestone_instance_id = mi.milestone_instance_
 JOIN milestone m ON mi.milestone_id = m.milestone_id;
 
 -- v_location_milestone_instance: location milestone lookup
-DROP TABLE IF EXISTS v_location_milestone_instance CASCADE;
-DROP VIEW IF EXISTS v_location_milestone_instance;
+DROP VIEW IF EXISTS v_location_milestone_instance CASCADE;
 CREATE VIEW v_location_milestone_instance AS
 SELECT lmi.location_id,
        mi.milestone_instance_id,
@@ -65,7 +61,7 @@ JOIN milestone m ON mi.milestone_id = m.milestone_id;
 -- Backs the ServiceView JPA entity and /api/serviceViews REST endpoint.
 
 -- Drop table if Hibernate auto-created it (ddl-auto: update creates TABLE, not VIEW)
-DROP TABLE IF EXISTS v_manage_services CASCADE;
+DROP VIEW IF EXISTS v_manage_services CASCADE;
 -- Drop view if it already exists
 DROP VIEW IF EXISTS v_manage_services;
 
@@ -91,8 +87,8 @@ SELECT
   s.service_status,
   s.service_billed_to,
   s.service_sub_status,
-  COALESCE(o.provisioner::text, 'Unassigned') AS provisioner,
-  COALESCE(o.qa_manager::text, 'Unassigned') AS qa_manager,
+  COALESCE((SELECT display_name FROM v_subject WHERE subject_id = o.provisioner), 'Unassigned') AS provisioner,
+  COALESCE((SELECT display_name FROM v_subject WHERE subject_id = o.qa_manager), 'Unassigned') AS qa_manager,
   o.client_project_manager AS project_manager,
   s.provider,
   s.client_service_id,
@@ -103,36 +99,39 @@ SELECT
   s.progress_percentage,
   s.project_name,
   s.record_source,
-  NULL::timestamp AS customer_requested_install,
-  NULL::timestamp AS site_survey_submit,
-  NULL::timestamp AS site_survey_due,
-  NULL::timestamp AS provider_order_submitted,
-  NULL::timestamp AS network_provider_foc,
-  NULL::timestamp AS data_provisioning_complete,
-  NULL::timestamp AS created,
-  NULL::timestamp AS qa_check_open,
-  NULL::timestamp AS first_vendor_invoice,
-  NULL::timestamp AS returned_to_order_group,
-  NULL::timestamp AS returned_to_sales,
-  NULL::timestamp AS billing_review_complete,
-  NULL::timestamp AS access_circuit_foc,
-  NULL::timestamp AS on_hold,
+  (SELECT MAX(smi.milestone_date) FROM v_service_milestone_instance smi WHERE smi.service_id = s.service_id AND smi.milestone_code = 'CUSTOMER_REQUESTED_INSTALL') AS customer_requested_install,
+  (SELECT MAX(smi.milestone_date) FROM v_service_milestone_instance smi WHERE smi.service_id = s.service_id AND smi.milestone_code = 'SITE_SURVEY_SUBMIT') AS site_survey_submit,
+  (SELECT MAX(smi.milestone_date) FROM v_service_milestone_instance smi WHERE smi.service_id = s.service_id AND smi.milestone_code = 'SITE_SURVEY_DUE') AS site_survey_due,
+  (SELECT MAX(smi.milestone_date) FROM v_service_milestone_instance smi WHERE smi.service_id = s.service_id AND smi.milestone_code = 'PROVIDER_ORDER_SUBMITTED') AS provider_order_submitted,
+  (SELECT MAX(smi.milestone_date) FROM v_service_milestone_instance smi WHERE smi.service_id = s.service_id AND smi.milestone_code = 'NETWORK_PROVIDER_FOC') AS network_provider_foc,
+  (SELECT MAX(smi.milestone_date) FROM v_service_milestone_instance smi WHERE smi.service_id = s.service_id AND smi.milestone_code = 'DATA_PROVISIONING_COMPLETE') AS data_provisioning_complete,
+  (SELECT MAX(smi.milestone_date) FROM v_service_milestone_instance smi WHERE smi.service_id = s.service_id AND smi.milestone_code = 'CREATED') AS created,
+  (SELECT MAX(smi.milestone_date) FROM v_service_milestone_instance smi WHERE smi.service_id = s.service_id AND smi.milestone_code = 'QA_CHECK_OPEN') AS qa_check_open,
+  (SELECT MAX(smi.milestone_date) FROM v_service_milestone_instance smi WHERE smi.service_id = s.service_id AND smi.milestone_code = 'FIRST_VENDOR_INVOICE') AS first_vendor_invoice,
+  (SELECT MAX(smi.milestone_date) FROM v_service_milestone_instance smi WHERE smi.service_id = s.service_id AND smi.milestone_code = 'RETURNED_TO_ORDER_GROUP') AS returned_to_order_group,
+  (SELECT MAX(smi.milestone_date) FROM v_service_milestone_instance smi WHERE smi.service_id = s.service_id AND smi.milestone_code = 'RETURNED_TO_SALES') AS returned_to_sales,
+  (SELECT MAX(smi.milestone_date) FROM v_service_milestone_instance smi WHERE smi.service_id = s.service_id AND smi.milestone_code = 'BILLING_REVIEW_COMPLETE') AS billing_review_complete,
+  (SELECT MAX(smi.milestone_date) FROM v_service_milestone_instance smi WHERE smi.service_id = s.service_id AND smi.milestone_code = 'ACCESS_CIRCUIT_FOC') AS access_circuit_foc,
+  (SELECT MAX(smi.milestone_date) FROM v_service_milestone_instance smi WHERE smi.service_id = s.service_id AND smi.milestone_code = 'ON_HOLD') AS on_hold,
   s.follow_up_date,
-  NULL::text AS greatest_milestone_name,
-  NULL::timestamp AS greatest_milestone_date,
+  gm.greatest_milestone_name,
+  gm.greatest_milestone_date,
   l.client_location_type,
   l.client_location_info,
-  NULL::text AS lcon_phone,
+  (SELECT c2.phone FROM contact c2 JOIN location_contact lc ON c2.contact_id = lc.contact_id
+   WHERE c2.role = 'Customer LCON' AND lc.location_id = l.location_id
+   ORDER BY c2.last_update_date DESC NULLS LAST LIMIT 1) AS lcon_phone,
   l.level_of_effort,
-  COALESCE(o.vertek_project_manager::text, 'Unassigned') AS vertek_project_manager,
+  COALESCE((SELECT display_name FROM v_subject WHERE subject_id = o.vertek_project_manager), 'Unassigned') AS vertek_project_manager,
   c.company_name,
   c.company_id AS company_id,
   pc.company_name AS parent_company_name,
   pc.company_id AS master_customer_id,
   CONCAT(COALESCE(s.download_speed, ''), '/', COALESCE(s.upload_speed, '')) AS speed,
   s.service_type,
-  false AS show_jeop_icon,
-  false AS show_note_icon,
+  CASE WHEN EXISTS (SELECT 1 FROM service_note sn JOIN note n ON sn.note_id = n.note_id
+       JOIN jeop_instance ji ON ji.jeop_instance_id = n.note_id WHERE false) THEN true ELSE false END AS show_jeop_icon,
+  CASE WHEN EXISTS (SELECT 1 FROM service_note sn WHERE sn.service_id = s.service_id) THEN true ELSE false END AS show_note_icon,
   CASE WHEN s.order_type LIKE '%Disconnect%' THEN true ELSE false END AS show_open_disconnect_icon,
   CASE WHEN s.order_type LIKE '%Move%' OR s.order_type LIKE '%Add%' OR s.order_type LIKE '%Change%' THEN true ELSE false END AS show_open_mac_icon,
   COALESCE(EXTRACT(DAY FROM NOW() - s.last_status_change)::integer, 0) AS status_age,
@@ -141,7 +140,8 @@ SELECT
   s.active,
   NULL::text AS open_jeop,
   NULL::text AS open_jeop_responsibilites,
-  NULL::text AS latest_note,
+  (SELECT SUBSTRING(n.note, 1, 500) FROM note n JOIN service_note sn ON n.note_id = sn.note_id
+   WHERE sn.service_id = s.service_id ORDER BY n.note_id DESC LIMIT 1) AS latest_note,
   s.linked,
   s.bundled,
   s.linked_bundled_parent,
@@ -151,13 +151,21 @@ JOIN location l ON s.location_id = l.location_id
 JOIN orders o ON s.order_id = o.order_id
 JOIN company c ON o.company_id = c.company_id
 LEFT JOIN company pc ON c.master_customer_id = pc.company_id
+LEFT JOIN LATERAL (
+  SELECT smi.milestone_name AS greatest_milestone_name,
+         smi.milestone_date AS greatest_milestone_date
+  FROM v_service_milestone_instance smi
+  WHERE smi.service_id = s.service_id
+  ORDER BY smi.milestone_instance_id DESC
+  LIMIT 1
+) gm ON true
 WHERE s.current_inventory = false AND s.marked_for_deletion = false;
 
 -- ============================================================================
 -- v_manage_disputes: Dispute Worklist view
 -- Backs DisputeView JPA entity and /api/disputeViews REST endpoint.
 -- ============================================================================
-DROP TABLE IF EXISTS v_manage_disputes CASCADE;
+DROP VIEW IF EXISTS v_manage_disputes CASCADE;
 DROP VIEW IF EXISTS v_manage_disputes;
 
 CREATE VIEW v_manage_disputes AS
@@ -237,7 +245,7 @@ WHERE s.marked_for_deletion = false;
 -- v_company: Company/Customer view
 -- Backs CompanyView JPA entity and /api/companyViews REST endpoint.
 -- ============================================================================
-DROP TABLE IF EXISTS v_company CASCADE;
+DROP VIEW IF EXISTS v_company CASCADE;
 DROP VIEW IF EXISTS v_company;
 
 CREATE VIEW v_company AS
@@ -317,7 +325,7 @@ JOIN v_tenant t ON t.tenant_id = c.tenant_id;
 -- v_manage_service_inventory: Service Inventory view
 -- Backs ServiceInventoryView JPA entity and /api/serviceInventoryViews REST endpoint.
 -- ============================================================================
-DROP TABLE IF EXISTS v_manage_service_inventory CASCADE;
+DROP VIEW IF EXISTS v_manage_service_inventory CASCADE;
 DROP VIEW IF EXISTS v_manage_service_inventory;
 
 CREATE VIEW v_manage_service_inventory AS
@@ -433,7 +441,7 @@ WHERE s.current_inventory = true AND s.marked_for_deletion = false;
 -- v_manage_location_inventory: Location Inventory view
 -- Backs LocationInventoryView JPA entity and /api/locationInventoryViews REST endpoint.
 -- ============================================================================
-DROP TABLE IF EXISTS v_manage_location_inventory CASCADE;
+DROP VIEW IF EXISTS v_manage_location_inventory CASCADE;
 DROP VIEW IF EXISTS v_manage_location_inventory;
 
 CREATE VIEW v_manage_location_inventory AS
@@ -576,7 +584,7 @@ WHERE l.current_inventory = true AND l.marked_for_deletion = false;
 -- ============================================================================
 
 -- v_wip_service: WIP service view for dashboard financials and expense accrual
-DROP TABLE IF EXISTS v_wip_service CASCADE;
+DROP VIEW IF EXISTS v_wip_service CASCADE;
 DROP VIEW IF EXISTS v_wip_service;
 
 CREATE VIEW v_wip_service AS
@@ -624,7 +632,7 @@ JOIN service s ON l.location_id = s.location_id
 WHERE s.marked_for_deletion = FALSE;
 
 -- v_wip_service_jeop: Service jeopardy view for WIP dashboard
-DROP TABLE IF EXISTS v_wip_service_jeop CASCADE;
+DROP VIEW IF EXISTS v_wip_service_jeop CASCADE;
 DROP VIEW IF EXISTS v_wip_service_jeop;
 
 CREATE VIEW v_wip_service_jeop AS
@@ -667,7 +675,7 @@ JOIN jeop_instance ji ON sji.jeop_instance_id = ji.jeop_instance_id
 WHERE s.marked_for_deletion = FALSE;
 
 -- v_wip_location_jeop: Location jeopardy view for WIP dashboard
-DROP TABLE IF EXISTS v_wip_location_jeop CASCADE;
+DROP VIEW IF EXISTS v_wip_location_jeop CASCADE;
 DROP VIEW IF EXISTS v_wip_location_jeop;
 
 CREATE VIEW v_wip_location_jeop AS
@@ -703,7 +711,7 @@ JOIN jeop_instance ji ON lji.jeop_instance_id = ji.jeop_instance_id
 WHERE l.marked_for_deletion = FALSE;
 
 -- v_provider_intervals: Provider install/survey interval view for Providers dashboard
-DROP TABLE IF EXISTS v_provider_intervals CASCADE;
+DROP VIEW IF EXISTS v_provider_intervals CASCADE;
 DROP VIEW IF EXISTS v_provider_intervals;
 
 CREATE VIEW v_provider_intervals AS
@@ -751,7 +759,7 @@ WHERE s.marked_for_deletion = FALSE;
 
 -- v_activation_attempts: Activation attempt view for Activations dashboard
 -- NOTE: Uses PostgreSQL-compatible EXTRACT instead of MySQL MONTH()/YEAR()/TIMESTAMPDIFF()
-DROP TABLE IF EXISTS v_activation_attempts CASCADE;
+DROP VIEW IF EXISTS v_activation_attempts CASCADE;
 DROP VIEW IF EXISTS v_activation_attempts;
 
 CREATE VIEW v_activation_attempts AS

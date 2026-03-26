@@ -136,14 +136,13 @@ public class Location extends AbstractMasterCustomerOwnedEntity {
     private String recordSource;
 
     @OneToMany(fetch = FetchType.EAGER)
-    @Fetch(value = FetchMode.JOIN)
     @JoinColumn(name = "location_id", referencedColumnName = "location_id")
     @Where(clause = "marked_for_deletion = false")
     @OrderBy("linked_bundled_parent_id DESC, linked_bundled_parent DESC, sortOrder ASC, id ASC")
     private List<Service> services = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.EAGER)
-    @Fetch(value = FetchMode.JOIN)
+    @Fetch(value = FetchMode.SUBSELECT)
     @JoinColumn(name = "location_id", referencedColumnName = "location_id")
     @Where(clause = "current_inventory = true and marked_for_deletion = false")
     @OrderBy("linked_bundled_parent_id DESC, linked_bundled_parent DESC, inventorySortOrder ASC, id ASC")
@@ -308,47 +307,38 @@ public class Location extends AbstractMasterCustomerOwnedEntity {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         this.inventoryAnnualRecurringCost = filteredInventoryServices.stream().map(Service::getAnnualRecurringCost)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-        // Calculate commissionable MRC, NRC, and ARC, use a common collection to avoid duplicate code
-        List<Service> services = null;
-        if (this.isCurrentInventory) {
-            services = filteredInventoryServices;
-        } else {
-            services = filteredServices;
-        }
-        this.commissionableMrc = services.stream().map(Service :: getBrokerageInfo)
+        // Calculate commissionable and brokerage totals from a single brokerage list.
+        List<Service> servicesForTotals = this.isCurrentInventory ? filteredInventoryServices : filteredServices;
+        List<ServiceBrokerage> brokerages = servicesForTotals.stream()
+                .map(Service::getBrokerageInfo)
                 .filter(Objects::nonNull)
+                .toList();
+
+        this.commissionableMrc = brokerages.stream()
                 .map(ServiceBrokerage::getCommissionableMrc)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-        this.commissionableNrc = services.stream().map(Service :: getBrokerageInfo)
-                .filter(Objects::nonNull)
+        this.commissionableNrc = brokerages.stream()
                 .map(ServiceBrokerage::getCommissionableNrc)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-        this.commissionableArc = services.stream().map(Service :: getBrokerageInfo)
-                .filter(Objects::nonNull)
+        this.commissionableArc = brokerages.stream()
                 .map(ServiceBrokerage::getCommissionableArc)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-        this.grossProfitMrcOverride = services.stream().map(Service :: getBrokerageInfo)
-                .filter(Objects::nonNull)
+        this.grossProfitMrcOverride = brokerages.stream()
                 .map(ServiceBrokerage::getGrossProfitMrcOverride)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-        this.grossProfitOverride = services.stream().map(Service :: getBrokerageInfo)
-                .filter(Objects::nonNull)
+        this.grossProfitOverride = brokerages.stream()
                 .map(ServiceBrokerage::getGrossProfitOverride)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-        this.repGrossProfitProduction = services.stream().map(Service :: getBrokerageInfo)
-                .filter(Objects::nonNull)
+        this.repGrossProfitProduction = brokerages.stream()
                 .map(ServiceBrokerage::getRepGrossProfitProduction)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-        this.totalContractValue = services.stream().map(Service :: getBrokerageInfo)
-                .filter(Objects::nonNull)
+        this.totalContractValue = brokerages.stream()
                 .map(ServiceBrokerage::getTotalContractValue)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-        this.upliftMrc = services.stream().map(Service :: getBrokerageInfo)
-                .filter(Objects::nonNull)
+        this.upliftMrc = brokerages.stream()
                 .map(ServiceBrokerage::getUpliftMrc)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-        this.subaccountMrc = services.stream().map(Service :: getBrokerageInfo)
-                .filter(Objects::nonNull)
+        this.subaccountMrc = brokerages.stream()
                 .map(ServiceBrokerage::getSubaccountMrc)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }

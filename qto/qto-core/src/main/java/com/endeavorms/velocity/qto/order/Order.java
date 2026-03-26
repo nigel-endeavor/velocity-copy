@@ -111,7 +111,7 @@ public class Order extends AbstractMasterCustomerOwnedEntity {
     private boolean isCurrentInventory;
 
     @OneToMany(fetch = FetchType.EAGER)
-    @Fetch(value = FetchMode.JOIN)
+    @Fetch(value = FetchMode.SUBSELECT)
     @JoinColumn(name = "order_id", referencedColumnName = "order_id")
     @Where(clause = "marked_for_deletion = false")
     @OrderBy("sortOrder ASC, id ASC")
