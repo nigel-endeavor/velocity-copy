@@ -88,6 +88,7 @@ export const baseApi = createApi({
   baseQuery: baseQueryWithInterceptor,
   tagTypes: [
     'Order',
+    'OrderView',
     'Service',
     'ServiceView',
     'Location',

@@ -5,7 +5,7 @@
  */
 
 import { baseApi } from './baseApi';
-import { Order } from '@/shared/types/models';
+import { Order, OrderListItem } from '@/shared/types/models';
 import { BaseSearchCriteria } from '@/shared/types/common';
 
 /**
@@ -140,6 +140,30 @@ export const ordersApi = baseApi.injectEndpoints({
       query: () => '/orders/count-by-status',
       providesTags: [{ type: 'Order', id: 'STATS' }],
     }),
+
+    /**
+     * List order views — fast paginated list backed by v_manage_orders DB view.
+     * Replaces the slow full-entity listOrders for the orders list page.
+     */
+    listOrderViews: builder.query<
+      BackendPaginatedResult<OrderListItem>,
+      { offset?: number; limit?: number; search?: string }
+    >({
+      query: ({ offset = 0, limit = 25, search } = {}) => {
+        const params = new URLSearchParams();
+        params.set('offset', String(offset));
+        params.set('limit', String(limit));
+        if (search && search.trim()) params.set('search', search.trim());
+        return `/orderViews?${params.toString()}`;
+      },
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.collection.map(({ id }) => ({ type: 'OrderView' as const, id })),
+              { type: 'OrderView', id: 'LIST' },
+            ]
+          : [{ type: 'OrderView', id: 'LIST' }],
+    }),
   }),
 });
 
@@ -155,6 +179,7 @@ export const {
   useSaveOrderMutation,
   useDeleteOrderMutation,
   useGetOrderCountByStatusQuery,
+  useListOrderViewsQuery,
 } = ordersApi;
 
 export default ordersApi;

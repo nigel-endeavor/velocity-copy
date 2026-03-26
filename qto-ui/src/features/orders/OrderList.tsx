@@ -5,12 +5,12 @@
  * Mirrors Angular's order list/worklist functionality
  */
 
-import { useState, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Plus, Search, X } from 'lucide-react';
 import DataTable, { DataTableColumn } from '@/shared/components/DataTable/DataTable';
-import { useListOrdersQuery } from '@/services/api/ordersApi';
-import { Order } from '@/shared/types/models';
+import { useListOrderViewsQuery } from '@/services/api/ordersApi';
+import { OrderListItem } from '@/shared/types/models';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
@@ -49,30 +49,29 @@ export default function OrderList() {
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(25);
   const [searchText, setSearchText] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
   const [sortBy, setSortBy] = useState<string>('id');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
-  const { data, isLoading, error, refetch } = useListOrdersQuery({
+  // Debounce: wait 300ms after the user stops typing before sending to the server
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchText);
+      setPage(0); // reset to first page on new search
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [searchText]);
+
+  const { data, isLoading, error, refetch } = useListOrderViewsQuery({
     offset: page * pageSize,
     limit: pageSize,
+    search: debouncedSearch || undefined,
   });
 
   const orders = data?.collection || [];
   const totalElements = data?.total || 0;
 
-  // Client-side filter (backend doesn't support search yet)
-  const filteredOrders = useMemo(() => {
-    if (!searchText.trim()) return orders;
-    const lower = searchText.toLowerCase();
-    return orders.filter(o =>
-      (o.clientOrderId && o.clientOrderId.toLowerCase().includes(lower)) ||
-      (o.status && o.status.toLowerCase().includes(lower)) ||
-      (o.company?.name && o.company.name.toLowerCase().includes(lower)) ||
-      String(o.id).includes(lower)
-    );
-  }, [orders, searchText]);
-
-  const columns: DataTableColumn<Order>[] = [
+  const columns: DataTableColumn<OrderListItem>[] = [
     {
       id: 'id',
       label: 'Order ID',
@@ -96,11 +95,9 @@ export default function OrderList() {
       sortable: true,
     },
     {
-      id: 'company',
+      id: 'companyName',
       label: 'Customer',
       sortable: true,
-      format: (company: Order['company']) => company?.name || '—',
-      exportFormat: (company: Order['company']) => company?.name || '',
     },
     {
       id: 'status',
@@ -116,13 +113,13 @@ export default function OrderList() {
       sortable: true,
     },
     {
-      id: 'locations',
+      id: 'locationCount',
       label: 'Locations',
       sortable: false,
       align: 'center',
       width: 100,
-      format: (locations: Order['locations']) => locations?.length || 0,
-      exportFormat: (locations: Order['locations']) => locations?.length || 0,
+      format: (value: number) => value ?? 0,
+      exportFormat: (value: number) => value ?? 0,
     },
     {
       id: 'mrc',
@@ -187,7 +184,7 @@ export default function OrderList() {
       {/* Data Table */}
       <DataTable
         columns={columns}
-        data={filteredOrders}
+        data={orders}
         loading={isLoading}
         error={error ? 'Failed to load orders' : null}
         sortBy={sortBy}

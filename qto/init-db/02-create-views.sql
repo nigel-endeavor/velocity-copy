@@ -817,3 +817,48 @@ JOIN (
 JOIN orders o ON l.order_id = o.order_id
 JOIN company c ON o.company_id = c.company_id
 WHERE s.marked_for_deletion = FALSE;
+
+-- ============================================================================
+-- v_manage_orders: Fast order list view — avoids loading the full entity graph.
+-- Single aggregated query replaces the EAGER Location → Service chain.
+-- Backed by OrderView.java, served from /api/orderViews.
+-- ============================================================================
+DROP VIEW IF EXISTS v_manage_orders CASCADE;
+
+CREATE VIEW v_manage_orders AS
+SELECT
+    o.order_id,
+    o.version,
+    o.tenant_id,
+    o.master_customer_id,
+    o.client_order_id,
+    o.order_status,
+    o.last_update_date,
+    o.quote_id,
+    c.company_name,
+    c.company_id,
+    COUNT(DISTINCT l.location_id)                                                    AS location_count,
+    COALESCE(SUM(s.service_mrc) FILTER (
+        WHERE s.record_source IS DISTINCT FROM 'Inventory Import'
+          AND s.marked_for_deletion = FALSE), 0)                                     AS mrc,
+    COALESCE(SUM(s.service_nrc) FILTER (
+        WHERE s.record_source IS DISTINCT FROM 'Inventory Import'
+          AND s.marked_for_deletion = FALSE), 0)                                     AS nrc,
+    (SELECT c2.company_name
+     FROM   company c2
+     WHERE  c2.tenant_id    = o.tenant_id
+       AND  c2.company_type = 'Vertek Client'
+     LIMIT  1)                                                                        AS vertek_client,
+    (SELECT mi.milestone_date
+     FROM   order_milestone_instance om
+     LEFT   JOIN milestone_instance mi ON om.milestone_instance_id = mi.milestone_instance_id
+     LEFT   JOIN milestone m           ON mi.milestone_id          = m.milestone_id
+     WHERE  m.milestone_code = 'CREATED'
+       AND  mi.historic      = false
+       AND  om.order_id      = o.order_id
+     LIMIT  1)                                                                        AS created_date
+FROM   orders   o
+LEFT   JOIN company  c ON c.company_id  = o.company_id
+LEFT   JOIN location l ON l.order_id    = o.order_id    AND l.marked_for_deletion = false
+LEFT   JOIN service  s ON s.location_id = l.location_id
+GROUP  BY o.order_id, c.company_id, c.company_name;

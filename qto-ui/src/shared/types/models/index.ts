@@ -20,7 +20,7 @@ export type { Contact } from './contact.model';
 export type { Company } from './company.model';
 export type { Service } from './service.model';
 export type { Location } from './location.model';
-export type { Order, OrderContact } from './order.model';
+export type { Order, OrderContact, OrderListItem } from './order.model';
 
 // Constants (formerly enums)
 export { ContactType } from './contact.model';

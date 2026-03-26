@@ -59,6 +59,25 @@ export interface Order extends BaseModel {
 }
 
 /**
+ * Order List Item — lightweight type backed by v_manage_orders view.
+ * Used by /api/orderViews for the orders list page (fast, single SQL query).
+ */
+export interface OrderListItem {
+  id: number;
+  clientOrderId: string;
+  companyName: string;
+  companyId: number;
+  status: string;
+  vertekClient?: string;
+  locationCount: number;
+  mrc: number;
+  nrc: number;
+  createdDate?: string;
+  lastUpdateDate?: string;
+  quoteId?: string;
+}
+
+/**
  * Order Validation Schema
  */
 export const orderSchema = z.object({
