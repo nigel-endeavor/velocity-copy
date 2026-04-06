@@ -23,9 +23,10 @@ ON CONFLICT (tenant_subject_id) DO NOTHING;
 -- Platform company (master customer in platform schema)
 INSERT INTO platform.company (company_id, version, tenant_id, company_active, business_sector, company_name, company_type, company_uuid)
 VALUES
-  (1, 0, 1, true, 'Telecom', 'Acme Corporation', 'MASTER_CUSTOMER', 'acme-corp-uuid'),
-  (2, 0, 1, true, 'Technology', 'TechNova Inc', 'MASTER_CUSTOMER', 'technova-uuid'),
-  (3, 0, 1, true, 'Finance', 'FinServ Global', 'MASTER_CUSTOMER', 'finserv-uuid')
+  (100, 0, 1, true, 'Telecom', 'Endeavor Vertek', 'Vertek Client', 'vertek-client-uuid'),
+  (1, 0, 1, true, 'Telecom', 'Acme Corporation', 'Master Customer', 'acme-corp-uuid'),
+  (2, 0, 1, true, 'Technology', 'TechNova Inc', 'Master Customer', 'technova-uuid'),
+  (3, 0, 1, true, 'Finance', 'FinServ Global', 'Master Customer', 'finserv-uuid')
 ON CONFLICT (company_id) DO NOTHING;
 
 -- ============================
@@ -33,11 +34,12 @@ ON CONFLICT (company_id) DO NOTHING;
 -- ============================
 INSERT INTO company (company_id, version, tenant_id, master_customer_id, company_active, client_id, company_name, address_1, city, state_province, postal_code, country, company_type)
 VALUES
-  (1, 0, 1, NULL, true, 'ACME-001', 'Acme Corporation', '100 Main St', 'New York', 'NY', '10001', 'US', 'MASTER_CUSTOMER'),
-  (2, 0, 1, NULL, true, 'TECH-001', 'TechNova Inc', '200 Innovation Blvd', 'San Francisco', 'CA', '94105', 'US', 'MASTER_CUSTOMER'),
-  (3, 0, 1, NULL, true, 'FIN-001', 'FinServ Global', '300 Wall Street', 'Chicago', 'IL', '60601', 'US', 'MASTER_CUSTOMER'),
-  (4, 0, 1, 1, true, 'ACME-SUB-001', 'Acme East Division', '101 East Ave', 'Boston', 'MA', '02101', 'US', 'END_CUSTOMER'),
-  (5, 0, 1, 2, true, 'TECH-SUB-001', 'TechNova Cloud Div', '201 Cloud Way', 'Seattle', 'WA', '98101', 'US', 'END_CUSTOMER')
+  (100, 0, 1, NULL, true, 'VERTEK-001', 'Endeavor Vertek', '1 Endeavor Place', 'Charlotte', 'NC', '28202', 'US', 'Vertek Client'),
+  (1, 0, 1, NULL, true, 'ACME-001', 'Acme Corporation', '100 Main St', 'New York', 'NY', '10001', 'US', 'Master Customer'),
+  (2, 0, 1, NULL, true, 'TECH-001', 'TechNova Inc', '200 Innovation Blvd', 'San Francisco', 'CA', '94105', 'US', 'Master Customer'),
+  (3, 0, 1, NULL, true, 'FIN-001', 'FinServ Global', '300 Wall Street', 'Chicago', 'IL', '60601', 'US', 'Master Customer'),
+  (4, 0, 1, 1, true, 'ACME-SUB-001', 'Acme East Division', '101 East Ave', 'Boston', 'MA', '02101', 'US', 'End Customer'),
+  (5, 0, 1, 2, true, 'TECH-SUB-001', 'TechNova Cloud Div', '201 Cloud Way', 'Seattle', 'WA', '98101', 'US', 'End Customer')
 ON CONFLICT (company_id) DO NOTHING;
 
 -- ============================
