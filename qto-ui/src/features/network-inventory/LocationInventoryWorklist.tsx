@@ -3,7 +3,7 @@
  * Displays locations in inventory with service counts, financials, and dispute info
  */
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { Search, X } from 'lucide-react';
 import { format } from 'date-fns';
 
@@ -14,8 +14,8 @@ import {
 } from '@/services/api/locationInventoryViewsApi';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { PageToolbar } from '@/components/layout/PageScaffold';
 
 export default function LocationInventoryWorklist() {
   const [offset, setOffset] = useState(0);
@@ -33,10 +33,10 @@ export default function LocationInventoryWorklist() {
     setOffset(0);
   }, []);
 
-  const formatCurrency = (value: any) =>
+  const formatCurrency = (value: number | null | undefined) =>
     value != null ? `$${Number(value).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '$0.00';
 
-  const formatDate = (value: any) =>
+  const formatDate = (value: string | null | undefined) =>
     value ? format(new Date(value), 'MM/dd/yyyy') : '';
 
   const columns: DataTableColumn<LocationInventoryView>[] = [
@@ -76,41 +76,53 @@ export default function LocationInventoryWorklist() {
     { id: 'subOrderTypes', label: 'Sub Order Type', width: 120 },
   ];
 
+  const filteredLocations = useMemo(() => {
+    const query = search.trim().toLowerCase();
+    const rows = data?.collection || [];
+
+    if (!query) {
+      return rows;
+    }
+
+    return rows.filter((location) =>
+      [location.clientLocationId, location.companyName, location.parentCompanyName, location.address, location.services]
+        .filter(Boolean)
+        .some((value) => value.toLowerCase().includes(query))
+    );
+  }, [data?.collection, search]);
+
   return (
-    <div className="mt-4">
-      <Card className="mb-4">
-        <CardContent className="p-4">
-          <div className="flex gap-4 items-center">
-            <Input
-              placeholder="Search locations..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="max-w-sm"
-            />
-            <Button onClick={() => refetch()}>
-              <Search className="mr-2 h-4 w-4" />
-              Search
-            </Button>
-            <Button variant="outline" onClick={() => { setSearch(''); setOffset(0); }}>
-              <X className="mr-2 h-4 w-4" />
-              Clear
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+    <div className="mt-4 space-y-4">
+      <PageToolbar>
+        <Input
+          placeholder="Search locations..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="h-11 max-w-sm rounded-xl border-slate-200 bg-white shadow-none"
+        />
+        <Button className="h-11 rounded-xl" onClick={() => refetch()}>
+          <Search className="mr-2 h-4 w-4" />
+          Refresh
+        </Button>
+        <Button className="h-11 rounded-xl" variant="outline" onClick={() => { setSearch(''); setOffset(0); }}>
+          <X className="mr-2 h-4 w-4" />
+          Clear
+        </Button>
+        <span className="app-page-toolbar-note">{filteredLocations.length} location records on this page.</span>
+      </PageToolbar>
 
       <DataTable
         columns={columns}
-        data={data?.collection || []}
+        data={filteredLocations}
         loading={isLoading}
         error={error ? 'Failed to load location inventory' : null}
         page={Math.floor(offset / pageSize)}
         pageSize={pageSize}
-        totalElements={data?.total || 0}
+        totalElements={search ? filteredLocations.length : data?.total || 0}
         onPageChange={handlePageChange}
         onPageSizeChange={handlePageSizeChange}
         onRefresh={refetch}
-        title={`${data?.total || 0} Locations`}
+        title={`${search ? filteredLocations.length : data?.total || 0} Locations`}
         exportFileName="location-inventory"
         exportEnabled
       />

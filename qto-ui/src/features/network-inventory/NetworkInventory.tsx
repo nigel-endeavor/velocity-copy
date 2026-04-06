@@ -4,25 +4,34 @@
  */
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { AppPage, PageHeader } from '@/components/layout/PageScaffold';
 import LocationInventoryWorklist from './LocationInventoryWorklist';
 import ServiceInventoryWorklist from './ServiceInventoryWorklist';
 
 export default function NetworkInventory() {
   return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold mb-6">Network Inventory</h1>
-      <Tabs defaultValue="locations">
-        <TabsList>
-          <TabsTrigger value="locations">Locations</TabsTrigger>
-          <TabsTrigger value="services">Services</TabsTrigger>
+    <AppPage>
+      <PageHeader
+        eyebrow="Inventory intelligence"
+        title="Network Inventory"
+        description="Review site and service inventory through the same balanced shell used in delivery, finance, and customer operations."
+        stats={[
+          { label: 'Views', value: '2', detail: 'Location and service inventory', tone: 'brand' },
+          { label: 'Coverage', value: 'Full', detail: 'Financials, status, disputes, and contracts', tone: 'warm' },
+        ]}
+      />
+      <Tabs className="min-h-0" defaultValue="locations">
+        <TabsList className="app-tablist">
+          <TabsTrigger className="app-tab-trigger" value="locations">Locations</TabsTrigger>
+          <TabsTrigger className="app-tab-trigger" value="services">Services</TabsTrigger>
         </TabsList>
-        <TabsContent value="locations">
+        <TabsContent className="min-h-0" value="locations">
           <LocationInventoryWorklist />
         </TabsContent>
-        <TabsContent value="services">
+        <TabsContent className="min-h-0" value="services">
           <ServiceInventoryWorklist />
         </TabsContent>
       </Tabs>
-    </div>
+    </AppPage>
   );
 }

@@ -3,7 +3,7 @@
  * Displays services in inventory with financials, contract info, and dispute data
  */
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { Search, X } from 'lucide-react';
 import { format } from 'date-fns';
 
@@ -14,8 +14,8 @@ import {
 } from '@/services/api/serviceInventoryViewsApi';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { PageToolbar } from '@/components/layout/PageScaffold';
 
 export default function ServiceInventoryWorklist() {
   const [offset, setOffset] = useState(0);
@@ -33,10 +33,10 @@ export default function ServiceInventoryWorklist() {
     setOffset(0);
   }, []);
 
-  const formatCurrency = (value: any) =>
+  const formatCurrency = (value: number | null | undefined) =>
     value != null ? `$${Number(value).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '$0.00';
 
-  const formatDate = (value: any) =>
+  const formatDate = (value: string | null | undefined) =>
     value ? format(new Date(value), 'MM/dd/yyyy') : '';
 
   const columns: DataTableColumn<ServiceInventoryView>[] = [
@@ -86,41 +86,53 @@ export default function ServiceInventoryWorklist() {
     { id: 'disputeTypes', label: 'Dispute Type', width: 120 },
   ];
 
+  const filteredServices = useMemo(() => {
+    const query = search.trim().toLowerCase();
+    const rows = data?.collection || [];
+
+    if (!query) {
+      return rows;
+    }
+
+    return rows.filter((service) =>
+      [service.clientServiceId, service.provider, service.companyName, service.parentCompanyName, service.address]
+        .filter(Boolean)
+        .some((value) => value.toLowerCase().includes(query))
+    );
+  }, [data?.collection, search]);
+
   return (
-    <div className="mt-4">
-      <Card className="mb-4">
-        <CardContent className="p-4">
-          <div className="flex gap-4 items-center">
-            <Input
-              placeholder="Search services..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="max-w-sm"
-            />
-            <Button onClick={() => refetch()}>
-              <Search className="mr-2 h-4 w-4" />
-              Search
-            </Button>
-            <Button variant="outline" onClick={() => { setSearch(''); setOffset(0); }}>
-              <X className="mr-2 h-4 w-4" />
-              Clear
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+    <div className="mt-4 space-y-4">
+      <PageToolbar>
+        <Input
+          placeholder="Search services..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="h-11 max-w-sm rounded-xl border-slate-200 bg-white shadow-none"
+        />
+        <Button className="h-11 rounded-xl" onClick={() => refetch()}>
+          <Search className="mr-2 h-4 w-4" />
+          Refresh
+        </Button>
+        <Button className="h-11 rounded-xl" variant="outline" onClick={() => { setSearch(''); setOffset(0); }}>
+          <X className="mr-2 h-4 w-4" />
+          Clear
+        </Button>
+        <span className="app-page-toolbar-note">{filteredServices.length} service records on this page.</span>
+      </PageToolbar>
 
       <DataTable
         columns={columns}
-        data={data?.collection || []}
+        data={filteredServices}
         loading={isLoading}
         error={error ? 'Failed to load service inventory' : null}
         page={Math.floor(offset / pageSize)}
         pageSize={pageSize}
-        totalElements={data?.total || 0}
+        totalElements={search ? filteredServices.length : data?.total || 0}
         onPageChange={handlePageChange}
         onPageSizeChange={handlePageSizeChange}
         onRefresh={refetch}
-        title={`${data?.total || 0} Services`}
+        title={`${search ? filteredServices.length : data?.total || 0} Services`}
         exportFileName="service-inventory"
         exportEnabled
       />

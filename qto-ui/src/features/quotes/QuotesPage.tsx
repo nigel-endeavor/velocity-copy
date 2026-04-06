@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { AppPage, PageHeader, PageToolbar } from '@/components/layout/PageScaffold';
 import { useListQuotesQuery } from '@/services/api/quotesApi';
 
 const NEW_QUOTE_URL = 'https://cw.connectbase.com/#/login';
@@ -54,50 +55,66 @@ export default function QuotesPage() {
     );
   }, [data?.collection, search]);
 
-  return (
-    <div className="p-6 space-y-4">
-      {/* Page Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">Quote Management</h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            {total} quote{total !== 1 ? 's' : ''} total
-          </p>
-        </div>
-        <div className="flex gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => refetch()}
-            disabled={isFetching}
-          >
-            <RefreshCw className={`h-4 w-4 mr-2 ${isFetching ? 'animate-spin' : ''}`} />
-            Refresh
-          </Button>
-          <Button
-            size="sm"
-            onClick={() => window.open(NEW_QUOTE_URL, '_blank', 'noopener,noreferrer')}
-          >
-            <ExternalLink className="h-4 w-4 mr-2" />
-            New Quote
-          </Button>
-        </div>
-      </div>
+  const processedCount = filtered.filter((quote) => Boolean(quote.handledTime)).length;
 
-      {/* Search */}
-      <div className="relative max-w-sm">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-        <Input
-          placeholder="Search quotes..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="pl-9"
-        />
-      </div>
+  return (
+    <AppPage>
+      <PageHeader
+        eyebrow="Commercial pipeline"
+        title="Quote Management"
+        description="Keep sales intake, provider responses, and quote handling in a compact surface designed for fast scanning."
+        actions={
+          <>
+            <Button
+              className="h-11 rounded-xl"
+              variant="outline"
+              onClick={() => refetch()}
+              disabled={isFetching}
+            >
+              <RefreshCw className={`mr-2 h-4 w-4 ${isFetching ? 'animate-spin' : ''}`} />
+              Refresh
+            </Button>
+            <Button
+              className="h-11 rounded-xl"
+              onClick={() => window.open(NEW_QUOTE_URL, '_blank', 'noopener,noreferrer')}
+            >
+              <ExternalLink className="mr-2 h-4 w-4" />
+              New Quote
+            </Button>
+          </>
+        }
+        stats={[
+          {
+            label: 'Quote count',
+            value: total.toLocaleString(),
+            detail: `${filtered.length} visible`,
+            tone: 'brand',
+          },
+          {
+            label: 'Processed',
+            value: processedCount.toString(),
+            detail: `${filtered.length - processedCount} pending`,
+            tone: 'warm',
+          },
+        ]}
+      />
+
+      <PageToolbar>
+        <div className="relative min-w-[18rem] flex-1 max-w-md">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            placeholder="Search quotes..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="h-11 rounded-xl border-slate-200 bg-white pl-9 shadow-none"
+          />
+        </div>
+        <span className="app-page-toolbar-note">Search the active quote slice instantly by account, number, user, or provider.</span>
+      </PageToolbar>
 
       {/* Table */}
-      <Card>
-        <CardHeader className="pb-2">
+      <Card className="app-table-panel overflow-hidden border-slate-200 shadow-none">
+        <CardHeader className="border-b border-slate-200/80 pb-3">
           <CardTitle className="text-base flex items-center gap-2">
             <FileText className="h-4 w-4" />
             Quotes
@@ -116,7 +133,7 @@ export default function QuotesPage() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b bg-muted/50">
+                  <tr className="border-b bg-slate-50/80">
                     <th className="text-left px-4 py-3 font-medium">ID</th>
                     <th className="text-left px-4 py-3 font-medium">Quote #</th>
                     <th className="text-left px-4 py-3 font-medium">Vendor Quote ID</th>
@@ -132,7 +149,7 @@ export default function QuotesPage() {
                   {filtered.map((quote, idx) => (
                     <tr
                       key={quote.id}
-                      className={`border-b hover:bg-muted/30 transition-colors ${idx % 2 === 1 ? 'bg-muted/10' : ''}`}
+                      className={`border-b transition-colors hover:bg-slate-50/80 ${idx % 2 === 1 ? 'bg-slate-50/30' : ''}`}
                     >
                       <td className="px-4 py-3 font-mono text-xs">{quote.id}</td>
                       <td className="px-4 py-3">{quote.quoteNumber ?? '—'}</td>
@@ -210,6 +227,6 @@ export default function QuotesPage() {
           </div>
         </div>
       )}
-    </div>
+    </AppPage>
   );
 }

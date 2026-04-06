@@ -15,8 +15,8 @@ import {
 } from '@/services/api/invoicesApi';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { AppPage, PageHeader, PageToolbar } from '@/components/layout/PageScaffold';
 
 export default function InvoicingPage() {
   const navigate = useNavigate();
@@ -40,10 +40,10 @@ export default function InvoicingPage() {
     refetch();
   }, [refetch]);
 
-  const formatCurrency = (value: any) =>
+  const formatCurrency = (value: number | null | undefined) =>
     value != null ? `$${Number(value).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '$0.00';
 
-  const formatDate = (value: any) =>
+  const formatDate = (value: string | null | undefined) =>
     value ? format(new Date(value), 'MM/dd/yyyy') : '';
 
   const getStatusVariant = (status: string) => {
@@ -89,31 +89,48 @@ export default function InvoicingPage() {
     { id: 'generatedDate', label: 'Generated Date', sortable: true, width: 130, format: formatDate },
   ];
 
-  return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold mb-6">Invoicing</h1>
+  const invoiceStats = [
+    {
+      label: 'Invoices',
+      value: (data?.total || 0).toLocaleString(),
+      detail: search ? 'Search narrowed' : 'All invoice records',
+      tone: 'brand' as const,
+    },
+    {
+      label: 'Page size',
+      value: pageSize.toString(),
+      detail: `${Math.floor(offset / pageSize) + 1} active`,
+      tone: 'warm' as const,
+    },
+  ];
 
-      <Card className="mb-4">
-        <CardContent className="p-4">
-          <div className="flex gap-4 items-center">
-            <Input
-              placeholder="Search invoices..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-              className="max-w-sm"
-            />
-            <Button onClick={handleSearch}>
-              <Search className="mr-2 h-4 w-4" />
-              Search
-            </Button>
-            <Button variant="outline" onClick={() => { setSearch(''); setOffset(0); }}>
-              <X className="mr-2 h-4 w-4" />
-              Clear
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+  return (
+    <AppPage>
+      <PageHeader
+        eyebrow="Billing visibility"
+        title="Invoicing"
+        description="Search finalized and in-flight invoices with the same table rhythm used across operations and finance views."
+        stats={invoiceStats}
+      />
+
+      <PageToolbar>
+        <Input
+          placeholder="Search invoices..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+          className="h-11 max-w-sm rounded-xl border-slate-200 bg-white shadow-none"
+        />
+        <Button className="h-11 rounded-xl" onClick={handleSearch}>
+          <Search className="mr-2 h-4 w-4" />
+          Search
+        </Button>
+        <Button className="h-11 rounded-xl" variant="outline" onClick={() => { setSearch(''); setOffset(0); }}>
+          <X className="mr-2 h-4 w-4" />
+          Clear
+        </Button>
+        <span className="app-page-toolbar-note">Use Enter for fast query submission.</span>
+      </PageToolbar>
 
       <DataTable
         columns={columns}
@@ -130,6 +147,6 @@ export default function InvoicingPage() {
         exportFileName="invoices"
         exportEnabled
       />
-    </div>
+    </AppPage>
   );
 }

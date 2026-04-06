@@ -4,25 +4,34 @@
  */
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { AppPage, PageHeader } from '@/components/layout/PageScaffold';
 import MasterCustomersWorklist from './MasterCustomersWorklist';
 import EndCustomersWorklist from './EndCustomersWorklist';
 
 export default function CustomersPage() {
   return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold mb-6">Customer Management</h1>
-      <Tabs defaultValue="master">
-        <TabsList>
-          <TabsTrigger value="master">Master Customers</TabsTrigger>
-          <TabsTrigger value="end">End Customers</TabsTrigger>
+    <AppPage>
+      <PageHeader
+        eyebrow="Account visibility"
+        title="Customer Management"
+        description="Switch between parent and end-customer worklists without losing consistent spacing, hierarchy, or table rhythm."
+        stats={[
+          { label: 'Views', value: '2', detail: 'Master and end customers', tone: 'brand' },
+          { label: 'Mode', value: 'Tabbed', detail: 'Shared search and export surfaces', tone: 'warm' },
+        ]}
+      />
+      <Tabs className="min-h-0" defaultValue="master">
+        <TabsList className="app-tablist">
+          <TabsTrigger className="app-tab-trigger" value="master">Master Customers</TabsTrigger>
+          <TabsTrigger className="app-tab-trigger" value="end">End Customers</TabsTrigger>
         </TabsList>
-        <TabsContent value="master">
+        <TabsContent className="min-h-0" value="master">
           <MasterCustomersWorklist />
         </TabsContent>
-        <TabsContent value="end">
+        <TabsContent className="min-h-0" value="end">
           <EndCustomersWorklist />
         </TabsContent>
       </Tabs>
-    </div>
+    </AppPage>
   );
 }

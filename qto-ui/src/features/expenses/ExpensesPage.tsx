@@ -7,7 +7,6 @@
  */
 
 import { useMemo } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Table,
   TableBody,
@@ -26,8 +25,7 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { useGetUnbillableNetworkExpenseAccrualQuery } from '@/services/api/wipViewsApi';
-
-const COLORS = ['#dc2626', '#f59e0b', '#2563eb', '#16a34a', '#8b5cf6', '#06b6d4'];
+import { AlertTriangle, Building2, ReceiptText } from 'lucide-react';
 
 function formatCurrency(val: number) {
   return `$${val.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
@@ -60,120 +58,151 @@ export default function ExpensesPage() {
       .sort((a, b) => b.accrual - a.accrual);
   }, [expenses]);
 
+  const topCompanies = byCompany.slice(0, 5);
+
   if (isLoading) {
     return (
-      <div className="p-6">
-        <h1 className="text-3xl font-bold mb-6">Manage Expenses</h1>
+      <div className="app-page">
+        <div className="app-page-header">
+          <div>
+            <p className="dashboard-kicker">Operations finance</p>
+            <h1 className="app-page-title">Manage Expenses</h1>
+          </div>
+        </div>
         <div className="flex justify-center p-12 text-muted-foreground">Loading expense data...</div>
       </div>
     );
   }
 
   return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold mb-6">Manage Expenses</h1>
-
-      {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <Card>
-          <CardContent className="pt-6">
-            <div className="text-2xl font-bold text-red-600">{formatCurrency(totalAccrual)}</div>
-            <p className="text-sm text-muted-foreground">Total Open Expense Accrual</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-6">
-            <div className="text-2xl font-bold">{expenses.length}</div>
-            <p className="text-sm text-muted-foreground">Unbilled Services</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-6">
-            <div className="text-2xl font-bold">{byProvider.length}</div>
-            <p className="text-sm text-muted-foreground">Providers with Accruals</p>
-          </CardContent>
-        </Card>
+    <div className="app-page">
+      <div className="app-page-header">
+        <div>
+          <p className="dashboard-kicker">Operations finance</p>
+          <h1 className="app-page-title">Manage Expenses</h1>
+          <p className="app-page-subtitle">Expense accrual monitoring with accents balanced into the core blue system.</p>
+        </div>
+        <span className="dashboard-pill">Accruals overview</span>
       </div>
 
-      {/* Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Expense Accrual by Provider</CardTitle>
-          </CardHeader>
-          <CardContent>
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+        <div className="app-stat-card">
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <p className="dashboard-kicker text-rose-500">Open accrual</p>
+              <div className="mt-3 text-[2rem] font-extrabold tracking-[-0.03em] text-rose-600">{formatCurrency(totalAccrual)}</div>
+              <p className="mt-1 text-sm text-slate-500">Total open expense accrual</p>
+            </div>
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-rose-50 text-rose-500">
+              <AlertTriangle className="h-5 w-5" />
+            </div>
+          </div>
+        </div>
+        <div className="app-stat-card">
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <p className="dashboard-kicker text-orange-500">Unbilled services</p>
+              <div className="mt-3 text-[2rem] font-extrabold tracking-[-0.03em] text-slate-900">{expenses.length}</div>
+              <p className="mt-1 text-sm text-slate-500">Services currently accruing expense</p>
+            </div>
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-orange-50 text-orange-500">
+              <ReceiptText className="h-5 w-5" />
+            </div>
+          </div>
+        </div>
+        <div className="app-stat-card">
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <p className="dashboard-kicker text-sky-500">Providers</p>
+              <div className="mt-3 text-[2rem] font-extrabold tracking-[-0.03em] text-slate-900">{byProvider.length}</div>
+              <p className="mt-1 text-sm text-slate-500">Providers contributing to accruals</p>
+            </div>
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-sky-50 text-sky-500">
+              <Building2 className="h-5 w-5" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid min-h-0 grid-cols-1 gap-4 xl:grid-cols-2">
+        <div className="app-chart-panel">
+          <div className="mb-3">
+            <h2 className="font-heading text-lg font-bold tracking-[-0.02em] text-slate-900">Expense Accrual by Provider</h2>
+            <p className="text-sm text-slate-500">Primary exposure concentrated by provider.</p>
+          </div>
+          <div className="h-[240px] rounded-xl bg-slate-50/70 p-2">
             {byProvider.length === 0 ? (
-              <p className="text-muted-foreground text-sm">No expense accrual data.</p>
+              <p className="text-sm text-slate-500">No expense accrual data.</p>
             ) : (
-              <ResponsiveContainer width="100%" height={300}>
+              <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={byProvider}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="name" tick={{ fontSize: 12 }} />
                   <YAxis tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} />
-                  <Tooltip formatter={(value: number) => [formatCurrency(value), 'Accrual']} />
-                  <Bar dataKey="accrual" fill="#dc2626" radius={[4, 4, 0, 0]} />
+                  <Tooltip />
+                  <Bar dataKey="accrual" fill="#e02424" radius={[8, 8, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             )}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Expense Accrual by Company</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {byCompany.length === 0 ? (
-              <p className="text-muted-foreground text-sm">No expense accrual data.</p>
+        <div className="app-chart-panel">
+          <div className="mb-3">
+            <h2 className="font-heading text-lg font-bold tracking-[-0.02em] text-slate-900">Expense Accrual by Company</h2>
+            <p className="text-sm text-slate-500">Company exposure using the orange accent as a secondary signal.</p>
+          </div>
+          <div className="h-[240px] rounded-xl bg-slate-50/70 p-2">
+            {topCompanies.length === 0 ? (
+              <p className="text-sm text-slate-500">No expense accrual data.</p>
             ) : (
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={byCompany} layout="vertical">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={topCompanies} layout="vertical">
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis type="number" tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} />
                   <YAxis type="category" dataKey="name" width={120} tick={{ fontSize: 12 }} />
-                  <Tooltip formatter={(value: number) => [formatCurrency(value), 'Accrual']} />
-                  <Bar dataKey="accrual" fill="#f59e0b" radius={[0, 4, 4, 0]} />
+                  <Tooltip />
+                  <Bar dataKey="accrual" fill="#f59e0b" radius={[0, 8, 8, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             )}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
 
-      {/* Detail Table */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Open Expense Accrual Detail</CardTitle>
-        </CardHeader>
-        <CardContent>
+      <div className="app-table-panel min-h-0 flex-1">
+        <div className="border-b border-slate-200 px-5 py-4">
+          <h2 className="font-heading text-lg font-bold tracking-[-0.02em] text-slate-900">Open Expense Accrual Detail</h2>
+        </div>
+        <div className="px-5 py-4 min-h-0">
           {expenses.length === 0 ? (
-            <p className="text-muted-foreground text-sm">No unbillable expense accrual data.</p>
+            <p className="text-sm text-slate-500">No unbillable expense accrual data.</p>
           ) : (
-            <div className="overflow-x-auto max-h-[400px] overflow-y-auto">
+            <div className="max-h-[calc(100vh-26rem)] overflow-x-auto overflow-y-auto rounded-xl border border-slate-200">
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Company</TableHead>
-                    <TableHead>Location</TableHead>
-                    <TableHead>Provider</TableHead>
-                    <TableHead>Type</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead className="text-right">MRC</TableHead>
-                    <TableHead>Billed To</TableHead>
-                    <TableHead>Data Prov. Complete</TableHead>
+                    <TableHead className="text-[11px] uppercase tracking-[0.18em] text-slate-500">Company</TableHead>
+                    <TableHead className="text-[11px] uppercase tracking-[0.18em] text-slate-500">Location</TableHead>
+                    <TableHead className="text-[11px] uppercase tracking-[0.18em] text-slate-500">Provider</TableHead>
+                    <TableHead className="text-[11px] uppercase tracking-[0.18em] text-slate-500">Type</TableHead>
+                    <TableHead className="text-[11px] uppercase tracking-[0.18em] text-slate-500">Status</TableHead>
+                    <TableHead className="text-right text-[11px] uppercase tracking-[0.18em] text-slate-500">MRC</TableHead>
+                    <TableHead className="text-[11px] uppercase tracking-[0.18em] text-slate-500">Billed To</TableHead>
+                    <TableHead className="text-[11px] uppercase tracking-[0.18em] text-slate-500">Data Prov. Complete</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {expenses.map((s) => (
                     <TableRow key={s.serviceId}>
-                      <TableCell className="text-sm">{s.companyName}</TableCell>
-                      <TableCell className="text-sm">{s.locationName}</TableCell>
-                      <TableCell className="text-sm">{s.provider}</TableCell>
-                      <TableCell className="text-sm">{s.serviceType}</TableCell>
-                      <TableCell className="text-sm">{s.serviceStatus}</TableCell>
-                      <TableCell className="text-sm text-right">{formatCurrency(s.serviceMrc || 0)}</TableCell>
-                      <TableCell className="text-sm">{s.serviceBilledTo}</TableCell>
-                      <TableCell className="text-sm">
+                      <TableCell className="text-sm text-slate-700">{s.companyName}</TableCell>
+                      <TableCell className="text-sm text-slate-700">{s.locationName}</TableCell>
+                      <TableCell className="text-sm text-slate-700">{s.provider}</TableCell>
+                      <TableCell className="text-sm text-slate-700">{s.serviceType}</TableCell>
+                      <TableCell className="text-sm text-slate-700">{s.serviceStatus}</TableCell>
+                      <TableCell className="text-right text-sm font-semibold text-slate-900">{formatCurrency(s.serviceMrc || 0)}</TableCell>
+                      <TableCell className="text-sm text-slate-700">{s.serviceBilledTo}</TableCell>
+                      <TableCell className="text-sm text-slate-700">
                         {s.dataProvisioningCompleteDate
                           ? new Date(s.dataProvisioningCompleteDate).toLocaleDateString()
                           : '-'}
@@ -184,8 +213,8 @@ export default function ExpensesPage() {
               </Table>
             </div>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 }

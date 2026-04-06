@@ -179,14 +179,14 @@ export default function DataTable<T extends Record<string, any>>({
   const totalPages = totalElements ? Math.ceil(totalElements / pageSize) : 0;
 
   return (
-    <Card className="w-full">
+    <Card className="app-table-panel w-full overflow-hidden border-slate-200 shadow-none">
       {/* Toolbar */}
       {(title || toolbarActions || onRefresh || onFilter || exportEnabled) && (
         <CardHeader className={cn(
-          "flex flex-row items-center justify-between space-y-0 pb-4",
+          "flex flex-row flex-wrap items-center justify-between gap-3 space-y-0 border-b border-slate-200/80 px-5 py-4",
           numSelected > 0 && "bg-primary/10"
         )}>
-          <CardTitle>
+          <CardTitle className="text-base font-semibold text-slate-900">
             {numSelected > 0 ? `${numSelected} selected` : title}
           </CardTitle>
           <div className="flex items-center gap-2">
@@ -210,17 +210,17 @@ export default function DataTable<T extends Record<string, any>>({
         </CardHeader>
       )}
 
-      <CardContent>
+      <CardContent className="p-0">
         {/* Error */}
         {error && (
-          <div className="p-4 mb-4 text-sm text-red-800 bg-red-50 rounded-lg border border-red-200" role="alert">
+          <div className="mx-5 mt-5 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800" role="alert">
             {error}
           </div>
         )}
 
         {/* Loading */}
         {loading && (
-          <div className="flex justify-center items-center min-h-[200px]">
+          <div className="flex min-h-[240px] items-center justify-center px-5 py-8">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
           </div>
         )}
@@ -228,7 +228,7 @@ export default function DataTable<T extends Record<string, any>>({
         {/* Table */}
         {!loading && !error && (
           <>
-            <div className="rounded-md border">
+            <div className="rounded-none border-0">
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -245,6 +245,7 @@ export default function DataTable<T extends Record<string, any>>({
                       <TableHead
                         key={String(column.id)}
                         className={cn(
+                          'h-11 bg-slate-50/80 px-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500',
                           column.align === 'right' && 'text-right',
                           column.align === 'center' && 'text-center'
                         )}
@@ -287,7 +288,7 @@ export default function DataTable<T extends Record<string, any>>({
                         <TableRow
                           key={String(rowId)}
                           data-state={isSelected && "selected"}
-                          className={cn(selectable && "cursor-pointer")}
+                          className={cn('hover:bg-slate-50/80', selectable && "cursor-pointer")}
                           onClick={() => selectable && handleSelectRow(rowId)}
                         >
                           {selectable && (
@@ -305,6 +306,7 @@ export default function DataTable<T extends Record<string, any>>({
                               <TableCell
                                 key={String(column.id)}
                                 className={cn(
+                                  'px-4 py-3.5 text-sm text-slate-700',
                                   column.align === 'right' && 'text-right',
                                   column.align === 'center' && 'text-center'
                                 )}
@@ -323,7 +325,7 @@ export default function DataTable<T extends Record<string, any>>({
 
             {/* Pagination */}
             {(onPageChange || onPageSizeChange) && (
-              <div className="flex items-center justify-between px-2 py-4">
+              <div className="flex flex-wrap items-center justify-between gap-3 border-t border-slate-200/80 px-5 py-4">
                 <div className="flex items-center gap-2">
                   <p className="text-sm text-muted-foreground">
                     Rows per page:

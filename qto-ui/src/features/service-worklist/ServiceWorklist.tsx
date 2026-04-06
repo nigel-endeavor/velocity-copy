@@ -7,6 +7,7 @@ import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { Table, Column, Input, Select, Button, Modal } from '@/components';
 import { ServiceView, useListServiceViewsQuery } from '@/services/api/serviceViewsApi';
+import { AppPage, PageHeader } from '@/components/layout/PageScaffold';
 import {
   setSelectedServices,
   clearSelectedServices,
@@ -180,36 +181,48 @@ export function ServiceWorklist() {
   const errorMessage = error ? ('status' in error ? `Error ${error.status}` : error.message) : null;
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Service Worklist</h1>
-          <p className="mt-1 text-sm text-gray-500">
-            Manage and track service orders
-          </p>
-        </div>
-        <div className="flex space-x-3">
-          <Button
-            variant="secondary"
-            onClick={() => dispatch(clearSelectedServices())}
-            disabled={selectedServices.size === 0}
-          >
-            Clear Selection ({selectedServices.size})
-          </Button>
-          <Button
-            variant="primary"
-            onClick={() => setShowExportModal(true)}
-            disabled={selectedServices.size === 0}
-          >
-            Export Selected
-          </Button>
-        </div>
-      </div>
+    <AppPage>
+      <PageHeader
+        eyebrow="Delivery operations"
+        title="Service Worklist"
+        description="Track provisioning status, ownership, and provider execution from one viewport-contained workspace."
+        actions={
+          <>
+            <Button
+              variant="secondary"
+              onClick={() => dispatch(clearSelectedServices())}
+              disabled={selectedServices.size === 0}
+            >
+              Clear Selection ({selectedServices.size})
+            </Button>
+            <Button
+              variant="primary"
+              onClick={() => setShowExportModal(true)}
+              disabled={selectedServices.size === 0}
+            >
+              Export Selected
+            </Button>
+          </>
+        }
+        stats={[
+          {
+            label: 'Services in view',
+            value: totalItems.toLocaleString(),
+            detail: `${filteredServices.length} visible now`,
+            tone: 'brand',
+          },
+          {
+            label: 'Selection',
+            value: selectedServices.size.toString(),
+            detail: 'Ready for export',
+            tone: selectedServices.size > 0 ? 'warm' : 'neutral',
+          },
+        ]}
+      />
 
       {/* Error Alert */}
       {errorMessage && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+        <div className="rounded-2xl border border-red-200 bg-red-50 p-4">
           <div className="flex">
             <div className="flex-shrink-0">
               <svg className="h-5 w-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
@@ -224,8 +237,14 @@ export function ServiceWorklist() {
       )}
 
       {/* Search Filters */}
-      <div className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Search Filters</h2>
+      <div className="app-surface p-5">
+        <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <h2 className="text-lg font-semibold text-slate-900">Filters</h2>
+            <p className="mt-1 text-sm text-slate-500">Refine the current service page by customer, lifecycle status, or service type.</p>
+          </div>
+          <span className="app-page-toolbar-note">Pagination remains inside the content frame.</span>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <Input
             label="Customer Name"
@@ -301,6 +320,6 @@ export function ServiceWorklist() {
           Do you want to continue?
         </p>
       </Modal>
-    </div>
+    </AppPage>
   );
 }

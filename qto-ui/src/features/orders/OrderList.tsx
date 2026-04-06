@@ -13,6 +13,7 @@ import { useListOrderViewsQuery } from '@/services/api/ordersApi';
 import { OrderListItem } from '@/shared/types/models';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { AppPage, PageHeader, PageToolbar } from '@/components/layout/PageScaffold';
 
 /**
  * Status badge color mapping
@@ -146,42 +147,59 @@ export default function OrderList() {
     setSortOrder(order);
   };
 
+  const headerStats = [
+    {
+      label: 'Orders in view',
+      value: totalElements.toLocaleString(),
+      detail: debouncedSearch ? 'Filtered results' : 'Full active list',
+      tone: 'brand' as const,
+    },
+    {
+      label: 'Rows per page',
+      value: pageSize.toString(),
+      detail: `Page ${page + 1}`,
+      tone: 'warm' as const,
+    },
+  ];
+
   return (
-    <div className="space-y-4">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">Orders</h1>
-          <p className="text-muted-foreground">
-            Manage telecom orders, locations, and services
-          </p>
+    <AppPage>
+      <PageHeader
+        eyebrow="Order operations"
+        title="Orders"
+        description="Manage telecom orders, locations, and service delivery without losing the current operational context."
+        actions={
+          <Button className="h-11 rounded-xl" onClick={() => navigate('/orders/new')}>
+            <Plus className="mr-2 h-4 w-4" />
+            New Order
+          </Button>
+        }
+        stats={headerStats}
+      />
+
+      <PageToolbar>
+        <div className="relative min-w-[18rem] flex-1">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            placeholder="Search orders by ID, customer, status..."
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+            className="h-11 rounded-xl border-slate-200 bg-white pl-10 pr-10 shadow-none"
+          />
+          {searchText && (
+            <button
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              onClick={() => setSearchText('')}
+            >
+              <X className="h-4 w-4" />
+            </button>
+          )}
         </div>
-        <Button onClick={() => navigate('/orders/new')}>
-          <Plus className="mr-2 h-4 w-4" />
-          New Order
-        </Button>
-      </div>
+        <span className="app-page-toolbar-note">
+          {debouncedSearch ? `Searching for “${debouncedSearch}”` : 'Server-backed list view'}
+        </span>
+      </PageToolbar>
 
-      {/* Search Bar */}
-      <div className="relative max-w-md">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-        <Input
-          placeholder="Search orders by ID, customer, status..."
-          value={searchText}
-          onChange={(e) => setSearchText(e.target.value)}
-          className="pl-10 pr-8"
-        />
-        {searchText && (
-          <button
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-            onClick={() => setSearchText('')}
-          >
-            <X className="h-4 w-4" />
-          </button>
-        )}
-      </div>
-
-      {/* Data Table */}
       <DataTable
         columns={columns}
         data={orders}
@@ -203,6 +221,6 @@ export default function OrderList() {
         exportFileName="orders"
         exportEnabled
       />
-    </div>
+    </AppPage>
   );
 }
