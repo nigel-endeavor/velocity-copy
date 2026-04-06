@@ -10,7 +10,6 @@
  */
 
 import { useMemo } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   BarChart,
   Bar,
@@ -26,8 +25,10 @@ import {
 } from 'recharts';
 import { useGetWipServicesQuery } from '@/services/api/wipViewsApi';
 import type { WipServiceView } from '@/services/api/wipViewsApi';
+import { Clock3, Sparkles, Workflow } from 'lucide-react';
+import { DashboardDataSurface, DashboardMetricCard, DashboardPanel } from '../components/DashboardPrimitives';
 
-const COLORS = ['#16a34a', '#dc2626', '#f59e0b', '#2563eb', '#8b5cf6'];
+const COLORS = ['#2baa7b', '#ef5b93', '#ffb84d', '#118ad3', '#8e61c9'];
 
 function computeActivationMetrics(services: WipServiceView[]) {
   let completed = 0;
@@ -75,59 +76,59 @@ export default function ActivationsTab() {
 
   const activationMetrics = useMemo(() => computeActivationMetrics(services), [services]);
   const eventLengthByType = useMemo(() => computeEventLengthByType(services), [services]);
+  const completedValue = activationMetrics.find((metric) => metric.name === 'Completed')?.value ?? 0;
+  const activeValue = activationMetrics.find((metric) => metric.name === 'In Progress')?.value ?? 0;
 
   if (isLoading) {
     return <div className="flex justify-center p-12 text-muted-foreground">Loading activation data...</div>;
   }
 
   return (
-    <div className="space-y-6 mt-4">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Activation Success Rate */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Activation Status Distribution</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {activationMetrics.length === 0 ? (
-              <p className="text-muted-foreground text-sm">No activation data available.</p>
-            ) : (
-              <ResponsiveContainer width="100%" height={300}>
-                <PieChart>
-                  <Pie data={activationMetrics} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={100} label>
-                    {activationMetrics.map((_, i) => (
-                      <Cell key={i} fill={COLORS[i % COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <Tooltip />
-                  <Legend />
-                </PieChart>
-              </ResponsiveContainer>
-            )}
-          </CardContent>
-        </Card>
+    <div className="mt-4 space-y-6">
+      <div className="grid gap-4 md:grid-cols-3">
+        <DashboardMetricCard label="Completed" value={completedValue} caption="Activation-ready services that have fully closed." icon={Sparkles} tone="green" />
+        <DashboardMetricCard label="In progress" value={activeValue} caption="Activation events still underway or staging." icon={Workflow} tone="amber" />
+        <DashboardMetricCard label="Service types" value={eventLengthByType.length} caption="Activation duration buckets represented in the chart." icon={Clock3} tone="brand" />
+      </div>
 
-        {/* Activation Event Length */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Avg Activation Duration by Service Type (Days)</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {eventLengthByType.length === 0 ? (
-              <p className="text-muted-foreground text-sm">No activation event data available.</p>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <DashboardPanel title="Activation status distribution" description="Share of completed, in-progress, and not-started activations.">
+            {activationMetrics.length === 0 ? (
+              <p className="text-sm text-slate-500">No activation data available.</p>
             ) : (
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={eventLengthByType} layout="vertical">
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis type="number" allowDecimals={false} />
-                  <YAxis type="category" dataKey="name" width={120} tick={{ fontSize: 12 }} />
-                  <Tooltip formatter={(value: number, name: string) => [name === 'avgDays' ? `${value} days` : value, name === 'avgDays' ? 'Avg Days' : 'Count']} />
-                  <Bar dataKey="avgDays" fill="#f59e0b" radius={[0, 4, 4, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
+              <DashboardDataSurface>
+                <ResponsiveContainer width="100%" height={300}>
+                  <PieChart>
+                    <Pie data={activationMetrics} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={100} label>
+                      {activationMetrics.map((_, i) => (
+                        <Cell key={i} fill={COLORS[i % COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                    <Legend />
+                  </PieChart>
+                </ResponsiveContainer>
+              </DashboardDataSurface>
             )}
-          </CardContent>
-        </Card>
+        </DashboardPanel>
+
+        <DashboardPanel title="Activation duration by service type" description="Average days between provisioning completion and activation outcome.">
+            {eventLengthByType.length === 0 ? (
+              <p className="text-sm text-slate-500">No activation event data available.</p>
+            ) : (
+              <DashboardDataSurface>
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart data={eventLengthByType} layout="vertical">
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis type="number" allowDecimals={false} />
+                    <YAxis type="category" dataKey="name" width={120} tick={{ fontSize: 12 }} />
+                    <Tooltip />
+                    <Bar dataKey="avgDays" fill="#ffb84d" radius={[0, 10, 10, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </DashboardDataSurface>
+            )}
+        </DashboardPanel>
       </div>
     </div>
   );

@@ -7,7 +7,6 @@
  */
 
 import { useMemo } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   LineChart,
   Line,
@@ -19,6 +18,8 @@ import {
   Legend,
 } from 'recharts';
 import { useGetWipServicesQuery } from '@/services/api/wipViewsApi';
+import { Activity, CheckCircle2, Gauge } from 'lucide-react';
+import { DashboardDataSurface, DashboardMetricCard, DashboardPanel } from '../components/DashboardPrimitives';
 
 function computeDeliveryIntervals(services: { dataProvisioningCompleteDate: string | null; completeDate: string | null }[]) {
   const now = new Date();
@@ -26,7 +27,6 @@ function computeDeliveryIntervals(services: { dataProvisioningCompleteDate: stri
 
   for (let i = 5; i >= 0; i--) {
     const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
-    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
     const label = d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
 
     const monthServices = services.filter((s) => {
@@ -71,53 +71,28 @@ export default function KpiTab() {
   }
 
   return (
-    <div className="space-y-6 mt-4">
-      {/* Summary Cards */}
+    <div className="mt-4 space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card>
-          <CardContent className="pt-6">
-            <div className="text-2xl font-bold">{totalComplete}</div>
-            <p className="text-sm text-muted-foreground">Completed Services</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-6">
-            <div className="text-2xl font-bold">{totalInProgress}</div>
-            <p className="text-sm text-muted-foreground">In Progress</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-6">
-            <div className="text-2xl font-bold">{wipServices.length}</div>
-            <p className="text-sm text-muted-foreground">Total Services</p>
-          </CardContent>
-        </Card>
+        <DashboardMetricCard label="Completed" value={totalComplete} caption="Services that reached completion." icon={CheckCircle2} tone="green" />
+        <DashboardMetricCard label="In progress" value={totalInProgress} caption="Active items still moving through delivery." icon={Activity} tone="cyan" />
+        <DashboardMetricCard label="Total tracked" value={wipServices.length} caption="The full KPI dataset for this reporting window." icon={Gauge} tone="brand" />
       </div>
 
-      {/* Network Delivery Interval */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Network Delivery Interval (Avg Business Days)</CardTitle>
-        </CardHeader>
-        <CardContent>
+      <DashboardPanel title="Network delivery interval" description="Average delivery days and completion volume over the last six months.">
+        <DashboardDataSurface>
           <ResponsiveContainer width="100%" height={350}>
             <LineChart data={deliveryData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="month" tick={{ fontSize: 12 }} />
               <YAxis allowDecimals={false} label={{ value: 'Avg Days', angle: -90, position: 'insideLeft' }} />
-              <Tooltip
-                formatter={(value: number, name: string) => [
-                  name === 'avgDays' ? `${value} days` : value,
-                  name === 'avgDays' ? 'Avg Delivery Days' : 'Services Completed',
-                ]}
-              />
+              <Tooltip />
               <Legend />
-              <Line type="monotone" dataKey="avgDays" name="Avg Delivery Days" stroke="#2563eb" strokeWidth={2} dot={{ r: 5 }} />
-              <Line type="monotone" dataKey="count" name="Services Completed" stroke="#16a34a" strokeWidth={2} dot={{ r: 4 }} strokeDasharray="5 5" />
+              <Line type="monotone" dataKey="avgDays" name="Avg Delivery Days" stroke="#118ad3" strokeWidth={3} dot={{ r: 5, fill: '#118ad3' }} />
+              <Line type="monotone" dataKey="count" name="Services Completed" stroke="#2baa7b" strokeWidth={2.5} dot={{ r: 4, fill: '#2baa7b' }} strokeDasharray="6 5" />
             </LineChart>
           </ResponsiveContainer>
-        </CardContent>
-      </Card>
+        </DashboardDataSurface>
+      </DashboardPanel>
     </div>
   );
 }

@@ -51,11 +51,34 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        shell: {
+          DEFAULT: "hsl(var(--shell))",
+          foreground: "hsl(var(--shell-foreground))",
+        },
+        panel: {
+          DEFAULT: "hsl(var(--panel))",
+          muted: "hsl(var(--panel-muted))",
+          strong: "hsl(var(--panel-strong))",
+        },
+        brand: "hsl(var(--brand))",
+        pop: "hsl(var(--pop))",
+        coral: "hsl(var(--coral))",
+        sun: "hsl(var(--sun))",
+        success: "hsl(var(--success))",
+      },
+      fontFamily: {
+        body: ['var(--font-body)'],
+        heading: ['var(--font-heading)'],
+        mono: ['var(--font-mono)'],
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      boxShadow: {
+        card: '0 24px 48px -28px rgba(18, 38, 63, 0.34)',
+        float: '0 28px 70px -34px rgba(16, 37, 58, 0.52)',
       },
       keyframes: {
         "accordion-down": {

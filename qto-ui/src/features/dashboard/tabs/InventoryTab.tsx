@@ -7,8 +7,6 @@
  * - New Inventory (recently added to inventory)
  */
 
-import { useMemo } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   LineChart,
   Line,
@@ -23,6 +21,8 @@ import {
 } from 'recharts';
 import { useGetWipServicesQuery, useGetMonthlySpendQuery } from '@/services/api/wipViewsApi';
 import type { WipServiceView } from '@/services/api/wipViewsApi';
+import { Boxes, ChartNoAxesColumn, PackageCheck } from 'lucide-react';
+import { DashboardDataSurface, DashboardMetricCard, DashboardPanel } from '../components/DashboardPrimitives';
 
 function formatCurrency(val: number) {
   return `$${val.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
@@ -83,89 +83,61 @@ export default function InventoryTab() {
   const inventoryServices = allServices.filter((s) => s.currentInventory);
   const totalMrc = inventoryServices.reduce((sum, s) => sum + (s.serviceMrc || 0), 0);
 
-  const valuation = useMemo(() => computeInventoryValuation(allServices), [allServices]);
-  const counts = useMemo(() => computeInventoryCounts(allServices), [allServices]);
-  const newInventory = useMemo(() => computeNewInventory(allServices), [allServices]);
+  const valuation = computeInventoryValuation(allServices);
+  const counts = computeInventoryCounts(allServices);
+  const newInventory = computeNewInventory(allServices);
 
   if (isLoading) {
     return <div className="flex justify-center p-12 text-muted-foreground">Loading inventory data...</div>;
   }
 
   return (
-    <div className="space-y-6 mt-4">
-      {/* Summary Cards */}
+    <div className="mt-4 space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card>
-          <CardContent className="pt-6">
-            <div className="text-2xl font-bold">{inventoryServices.length}</div>
-            <p className="text-sm text-muted-foreground">Total Inventory Services</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-6">
-            <div className="text-2xl font-bold">{formatCurrency(totalMrc)}</div>
-            <p className="text-sm text-muted-foreground">Total Monthly MRC</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-6">
-            <div className="text-2xl font-bold">{monthlySpend.length}</div>
-            <p className="text-sm text-muted-foreground">Services with Spend Data</p>
-          </CardContent>
-        </Card>
+        <DashboardMetricCard label="Inventory services" value={inventoryServices.length} caption="Active services currently flagged as inventory." icon={Boxes} tone="green" />
+        <DashboardMetricCard label="Monthly MRC" value={formatCurrency(totalMrc)} caption="Recurring value represented by the current inventory set." icon={ChartNoAxesColumn} tone="brand" />
+        <DashboardMetricCard label="Spend records" value={monthlySpend.length} caption="Inventory-adjacent records with monthly spend data." icon={PackageCheck} tone="violet" />
       </div>
 
-      {/* Inventory Valuation by Provider */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Inventory Valuation by Provider (MRC)</CardTitle>
-        </CardHeader>
-        <CardContent>
+      <DashboardPanel title="Inventory valuation by provider" description="Recurring monthly value of inventory by provider.">
           {valuation.length === 0 ? (
-            <p className="text-muted-foreground text-sm">No inventory service data available.</p>
+            <p className="text-sm text-slate-500">No inventory service data available.</p>
           ) : (
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={valuation}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" tick={{ fontSize: 12 }} />
-                <YAxis tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} />
-                <Tooltip formatter={(value: number) => [formatCurrency(value), 'MRC']} />
-                <Bar dataKey="mrc" fill="#2563eb" radius={[4, 4, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          )}
-        </CardContent>
-      </Card>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Inventory Counts by Type */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Inventory Counts by Service Type</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {counts.length === 0 ? (
-              <p className="text-muted-foreground text-sm">No inventory data available.</p>
-            ) : (
+            <DashboardDataSurface>
               <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={counts}>
+                <BarChart data={valuation}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="name" tick={{ fontSize: 12 }} />
-                  <YAxis allowDecimals={false} />
+                  <YAxis tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} />
                   <Tooltip />
-                  <Bar dataKey="count" fill="#16a34a" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="mrc" fill="#118ad3" radius={[10, 10, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
-            )}
-          </CardContent>
-        </Card>
+            </DashboardDataSurface>
+          )}
+      </DashboardPanel>
 
-        {/* New Inventory by Month */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">New Inventory by Month</CardTitle>
-          </CardHeader>
-          <CardContent>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <DashboardPanel title="Inventory counts by service type" description="Service-type mix for current inventory holdings.">
+            {counts.length === 0 ? (
+              <p className="text-sm text-slate-500">No inventory data available.</p>
+            ) : (
+              <DashboardDataSurface>
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart data={counts}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" tick={{ fontSize: 12 }} />
+                    <YAxis allowDecimals={false} />
+                    <Tooltip />
+                    <Bar dataKey="count" fill="#2baa7b" radius={[10, 10, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </DashboardDataSurface>
+            )}
+        </DashboardPanel>
+
+        <DashboardPanel title="New inventory by month" description="Monthly service additions and associated recurring value.">
+          <DashboardDataSurface>
             <ResponsiveContainer width="100%" height={300}>
               <LineChart data={newInventory}>
                 <CartesianGrid strokeDasharray="3 3" />
@@ -174,12 +146,12 @@ export default function InventoryTab() {
                 <YAxis yAxisId="right" orientation="right" tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} />
                 <Tooltip />
                 <Legend />
-                <Line yAxisId="left" type="monotone" dataKey="count" name="Services" stroke="#8b5cf6" strokeWidth={2} dot={{ r: 4 }} />
-                <Line yAxisId="right" type="monotone" dataKey="mrc" name="MRC" stroke="#f59e0b" strokeWidth={2} dot={{ r: 4 }} />
+                <Line yAxisId="left" type="monotone" dataKey="count" name="Services" stroke="#8e61c9" strokeWidth={3} dot={{ r: 4, fill: '#8e61c9' }} />
+                <Line yAxisId="right" type="monotone" dataKey="mrc" name="MRC" stroke="#ffb84d" strokeWidth={3} dot={{ r: 4, fill: '#ffb84d' }} />
               </LineChart>
             </ResponsiveContainer>
-          </CardContent>
-        </Card>
+          </DashboardDataSurface>
+        </DashboardPanel>
       </div>
     </div>
   );
