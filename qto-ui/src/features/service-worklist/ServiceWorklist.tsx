@@ -58,7 +58,7 @@ export function ServiceWorklist() {
           href={`#/services/${row.id}`}
           className="text-primary hover:text-primary/80 font-medium"
         >
-          {value || `SVC-${row.id}`}
+          {String(value || `SVC-${row.id}`)}
         </a>
       ),
     },
@@ -87,7 +87,7 @@ export function ServiceWorklist() {
       sortable: true,
       render: (value) => {
         if (!value) return null;
-        const statusLower = value.toLowerCase();
+        const statusLower = String(value).toLowerCase();
         let colorClass = 'bg-gray-100 text-gray-800';
         if (statusLower.includes('progress') || statusLower.includes('active')) {
           colorClass = 'bg-blue-100 text-blue-800';
@@ -100,7 +100,7 @@ export function ServiceWorklist() {
         }
         return (
           <span className={`px-2 py-1 rounded-full text-xs font-medium ${colorClass}`}>
-            {value}
+            {String(value)}
           </span>
         );
       },
@@ -284,7 +284,7 @@ export function ServiceWorklist() {
         selectable
         selectionMode="multiple"
         selectedRows={selectedServices}
-        onSelectionChange={(selected) => dispatch(setSelectedServices(selected))}
+        onSelectionChange={(selected) => dispatch(setSelectedServices(selected as Set<number>))}
         rowId="id"
         pagination={{
           currentPage,

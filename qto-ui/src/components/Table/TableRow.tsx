@@ -105,7 +105,7 @@ export function TableRow<T = Record<string, unknown>>({
             className={`${densityClasses[density]} text-sm text-gray-900`}
             style={{ textAlign: column.align }}
           >
-            {content}
+            {content as React.ReactNode}
           </td>
         );
       })}

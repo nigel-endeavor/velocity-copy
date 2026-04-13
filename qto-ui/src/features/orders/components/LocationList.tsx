@@ -29,7 +29,7 @@ import { formatLocationAddress } from '@/shared/types/models/location.model';
 export default function LocationList() {
   const dispatch = useAppDispatch();
   const { canWrite } = usePermissions();
-  const canEdit = canWrite('order-write');
+  const canEdit = canWrite('order');
 
   const locations = useAppSelector(selectOrderLocations);
   const expandedLocations = useAppSelector(selectExpandedLocations);

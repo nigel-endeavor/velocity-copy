@@ -24,3 +24,18 @@ export interface ServiceWorklistState {
   currentPage: number;
   pageSize: number;
 }
+
+export interface Service {
+  id: number;
+  serviceId: string;
+  customerName: string;
+  locationName: string;
+  serviceType: string;
+  status: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED';
+  bandwidth: string;
+  orderDate: string;
+  dueDate: string;
+  assignedTo: string;
+  priority: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
+  notes: string;
+}

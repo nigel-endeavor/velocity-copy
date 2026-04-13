@@ -65,7 +65,7 @@ export default function OrderDetails() {
 
   // Permissions
   const { canWrite } = usePermissions();
-  const canEdit = canWrite('order-write');
+  const canEdit = canWrite('order');
 
   // Redux state
   const order = useAppSelector(selectOrder);

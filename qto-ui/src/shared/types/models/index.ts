@@ -10,6 +10,7 @@ export * from './base.model';
 // Core Models
 export * from './contact.model';
 export * from './company.model';
+export * from './lookup.model';
 export * from './service.model';
 export * from './location.model';
 export * from './order.model';
@@ -18,6 +19,7 @@ export * from './order.model';
 export type { BaseModel } from './base.model';
 export type { Contact } from './contact.model';
 export type { Company } from './company.model';
+export type { LookupType, LookupValue } from './lookup.model';
 export type { Service } from './service.model';
 export type { Location } from './location.model';
 export type { Order, OrderContact, OrderListItem } from './order.model';

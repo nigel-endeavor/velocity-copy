@@ -27,6 +27,7 @@ public class DevAuthFilter extends OncePerRequestFilter {
     private static final List<SimpleGrantedAuthority> ALL_AUTHORITIES = List.of(
             new SimpleGrantedAuthority("*"),
             new SimpleGrantedAuthority("admin"),
+            new SimpleGrantedAuthority("user"),
             new SimpleGrantedAuthority("order:read"),
             new SimpleGrantedAuthority("order:write"),
             new SimpleGrantedAuthority("order:create"),
@@ -39,7 +40,9 @@ public class DevAuthFilter extends OncePerRequestFilter {
             new SimpleGrantedAuthority("dispute:write"),
             new SimpleGrantedAuthority("file-import"),
             new SimpleGrantedAuthority("tenant-admin"),
-            new SimpleGrantedAuthority("change-tenant")
+            new SimpleGrantedAuthority("change-tenant"),
+            new SimpleGrantedAuthority("lookup-admin"),
+            new SimpleGrantedAuthority("admin:lookups")
     );
 
     @Override

@@ -5,13 +5,11 @@
  */
 
 import { useState, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Search, X } from 'lucide-react';
 import { format } from 'date-fns';
 
 import { DataTable, type DataTableColumn } from '@/shared/components/DataTable';
-import { useSearchDisputesQuery } from '@/services/api/disputesApi';
-import type { Dispute } from '@/shared/types/models';
+import { useSearchDisputesQuery, type Dispute } from '@/services/api/disputesApi';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -44,8 +42,6 @@ interface SearchCriteria {
  * Disputes Worklist Component
  */
 export default function DisputesWorklist() {
-  const navigate = useNavigate();
-
   // Search criteria
   const [criteria, setCriteria] = useState<SearchCriteria>({
     pageNumber: 0,
@@ -88,16 +84,6 @@ export default function DisputesWorklist() {
     setCriteria((prev) => ({ ...prev, pageSize, pageNumber: 0 }));
   }, []);
 
-  // Handle row click
-  const handleRowClick = useCallback(
-    (dispute: Dispute) => {
-      if (dispute.orderId) {
-        navigate(`/orders/${dispute.orderId}`);
-      }
-    },
-    [navigate]
-  );
-
   // Get status variant
   const getStatusVariant = (status: string): 'default' | 'success' | 'warning' | 'info' | 'destructive' => {
     switch (status) {
@@ -118,50 +104,21 @@ export default function DisputesWorklist() {
     }
   };
 
-  // Get priority variant
-  const getPriorityVariant = (priority: string): 'default' | 'success' | 'warning' | 'info' | 'destructive' => {
-    switch (priority) {
-      case 'Critical':
-      case 'High':
-        return 'destructive';
-      case 'Medium':
-        return 'warning';
-      case 'Low':
-        return 'info';
-      default:
-        return 'default';
-    }
-  };
-
   // Table columns
   const columns: DataTableColumn<Dispute>[] = [
     {
-      id: 'disputeId',
+      id: 'id',
       label: 'Dispute ID',
       sortable: true,
       width: 120,
     },
     {
-      id: 'orderId',
-      label: 'Order ID',
-      sortable: true,
-      width: 120,
-      format: (_value, row) => (
-        <span
-          className="text-primary cursor-pointer hover:underline"
-          onClick={() => handleRowClick(row)}
-        >
-          {row.orderId}
-        </span>
-      ),
-      exportFormat: (_value, row) => row.orderId || '',
-    },
-    {
       id: 'serviceId',
       label: 'Service ID',
       sortable: true,
-      width: 150,
+      width: 140,
       format: (value) => value || 'N/A',
+      exportFormat: (value) => value || '',
     },
     {
       id: 'disputeType',
@@ -170,7 +127,7 @@ export default function DisputesWorklist() {
       width: 150,
     },
     {
-      id: 'status',
+      id: 'disputeStatus',
       label: 'Status',
       sortable: true,
       width: 150,
@@ -182,20 +139,16 @@ export default function DisputesWorklist() {
       exportFormat: (value) => value || 'Unknown',
     },
     {
-      id: 'priority',
-      label: 'Priority',
+      id: 'disputeAssignment',
+      label: 'Assignment',
       sortable: true,
-      width: 120,
-      format: (value) => (
-        <Badge variant={getPriorityVariant(value || '')}>
-          {value || 'Normal'}
-        </Badge>
-      ),
-      exportFormat: (value) => value || 'Normal',
+      width: 160,
+      format: (value) => value || 'Unassigned',
+      exportFormat: (value) => value || 'Unassigned',
     },
     {
-      id: 'amount',
-      label: 'Amount',
+      id: 'amountDisputedMrc',
+      label: 'MRC Amount',
       sortable: true,
       width: 120,
       align: 'right',
@@ -203,8 +156,17 @@ export default function DisputesWorklist() {
       exportFormat: (value) => value || 0,
     },
     {
-      id: 'createdDate',
-      label: 'Created Date',
+      id: 'amountDisputedNrc',
+      label: 'NRC Amount',
+      sortable: true,
+      width: 120,
+      align: 'right',
+      format: (value) => `$${(value || 0).toFixed(2)}`,
+      exportFormat: (value) => value || 0,
+    },
+    {
+      id: 'openDate',
+      label: 'Opened',
       sortable: true,
       width: 140,
       format: (value) =>
@@ -213,8 +175,8 @@ export default function DisputesWorklist() {
         value ? format(new Date(value), 'MM/dd/yyyy') : '',
     },
     {
-      id: 'resolvedDate',
-      label: 'Resolved Date',
+      id: 'disputeClosedDate',
+      label: 'Closed',
       sortable: true,
       width: 140,
       format: (value) =>

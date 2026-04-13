@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { Search, X } from 'lucide-react';
 
 import { DataTable, type DataTableColumn } from '@/shared/components/DataTable';
-import { useSearchLocationsQuery } from '@/services/api/locationsApi';
+import { useSearchLocationsQuery, type LocationSearchCriteria } from '@/services/api/locationsApi';
 import type { Location } from '@/shared/types/models';
 import { formatLocationAddress } from '@/shared/types/models/location.model';
 import { Button } from '@/components/ui/button';
@@ -29,8 +29,8 @@ import {
  */
 interface SearchCriteria {
   keyword?: string;
-  orderId?: string;
-  companyId?: string;
+  orderId?: number;
+  companyId?: number;
   clientLocationId?: string;
   status?: string;
   city?: string;
@@ -55,7 +55,8 @@ export default function LocationsWorklist() {
   });
 
   // Fetch locations
-  const { data, isLoading, error, refetch } = useSearchLocationsQuery(criteria);
+  const queryCriteria: LocationSearchCriteria = criteria;
+  const { data, isLoading, error, refetch } = useSearchLocationsQuery(queryCriteria);
 
   // Handle search
   const handleSearch = useCallback(() => {
@@ -200,8 +201,13 @@ export default function LocationsWorklist() {
             <div className="col-span-12 md:col-span-2">
               <Input
                 placeholder="Order ID"
-                value={criteria.orderId || ''}
-                onChange={(e) => setCriteria({ ...criteria, orderId: e.target.value })}
+                value={criteria.orderId?.toString() || ''}
+                onChange={(e) =>
+                  setCriteria({
+                    ...criteria,
+                    orderId: e.target.value ? Number(e.target.value) : undefined,
+                  })
+                }
                 onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
               />
             </div>

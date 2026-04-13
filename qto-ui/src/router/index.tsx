@@ -13,6 +13,12 @@ import InvoicingPage from '../features/invoicing/InvoicingPage';
 import InvoiceDetail from '../features/invoicing/InvoiceDetail';
 import ExpensesPage from '../features/expenses/ExpensesPage';
 import DashboardPage from '../features/dashboard/DashboardPage';
+import ActivationsWorklist from '../features/activations-worklist/ActivationsWorklist';
+import DisconnectsWorklist from '../features/disconnects-worklist/DisconnectsWorklist';
+import DisputesWorklist from '../features/disputes-worklist/DisputesWorklist';
+import LocationsWorklist from '../features/locations-worklist/LocationsWorklist';
+import LookupTypes from '../features/configuration/LookupTypes';
+import LookupValues from '../features/configuration/LookupValues';
 // MSAL disabled for local development
 
 export const router = createHashRouter([
@@ -27,6 +33,22 @@ export const router = createHashRouter([
       {
         path: 'services',
         element: <ServiceWorklist />,
+      },
+      {
+        path: 'activations',
+        element: <ActivationsWorklist />,
+      },
+      {
+        path: 'disconnects',
+        element: <DisconnectsWorklist />,
+      },
+      {
+        path: 'disputes',
+        element: <DisputesWorklist />,
+      },
+      {
+        path: 'locations',
+        element: <LocationsWorklist />,
       },
       {
         path: 'orders',
@@ -67,6 +89,14 @@ export const router = createHashRouter([
       {
         path: 'expenses',
         element: <ExpensesPage />,
+      },
+      {
+        path: 'configuration',
+        element: <LookupTypes />,
+      },
+      {
+        path: 'configuration/:typeId',
+        element: <LookupValues />,
       },
       {
         path: 'dashboard',

@@ -6,28 +6,14 @@
  */
 
 import { ReactNode } from 'react';
-import { Navigate } from 'react-router-dom';
-import { Box, Typography, Button } from '@mui/material';
 import { usePermissions, Permission } from '../hooks/usePermissions';
 
 interface PermissionGuardProps {
   children: ReactNode;
   requiredPermissions: Permission[];
-  requireAll?: boolean; // If true, user must have ALL permissions; if false, user needs ANY permission
+  requireAll?: boolean;
 }
 
-/**
- * Permission Guard Component
- *
- * Usage:
- * <PermissionGuard requiredPermissions={['order-write']}>
- *   <OrderEditComponent />
- * </PermissionGuard>
- *
- * <PermissionGuard requiredPermissions={['admin', 'order-write']} requireAll={false}>
- *   <OrderManagementComponent />
- * </PermissionGuard>
- */
 export function PermissionGuard({
   children,
   requiredPermissions,
@@ -64,36 +50,29 @@ export function AdminGuard({ children }: { children: ReactNode }) {
  */
 function ForbiddenPage({ requiredPermissions }: { requiredPermissions: Permission[] }) {
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      justifyContent="center"
-      alignItems="center"
-      minHeight="100vh"
-      textAlign="center"
-      p={3}
-    >
-      <Typography variant="h1" color="error" gutterBottom>
-        403
-      </Typography>
-      <Typography variant="h5" gutterBottom>
-        Access Forbidden
-      </Typography>
-      <Typography variant="body1" color="text.secondary" paragraph>
-        You do not have permission to access this page.
-      </Typography>
-      <Typography variant="body2" color="text.secondary" paragraph>
+    <div className="flex min-h-screen flex-col items-center justify-center p-6 text-center">
+      <h1 className="text-6xl font-bold text-red-500">403</h1>
+      <h2 className="mt-4 text-xl font-semibold text-slate-900">Access Forbidden</h2>
+      <p className="mt-2 text-slate-600">You do not have permission to access this page.</p>
+      <p className="mt-1 text-sm text-slate-500">
         Required permissions: {requiredPermissions.join(', ')}
-      </Typography>
-      <Box mt={2}>
-        <Button variant="contained" color="primary" href="/" sx={{ mr: 2 }}>
+      </p>
+      <div className="mt-6 flex gap-3">
+        <a
+          href="/"
+          className="inline-flex items-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary/90"
+        >
           Go to Home
-        </Button>
-        <Button variant="outlined" onClick={() => window.history.back()}>
+        </a>
+        <button
+          type="button"
+          onClick={() => window.history.back()}
+          className="inline-flex items-center rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+        >
           Go Back
-        </Button>
-      </Box>
-    </Box>
+        </button>
+      </div>
+    </div>
   );
 }
 

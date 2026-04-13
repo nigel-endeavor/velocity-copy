@@ -10,7 +10,7 @@ import { Search, X } from 'lucide-react';
 import { format } from 'date-fns';
 
 import { DataTable, type DataTableColumn } from '@/shared/components/DataTable';
-import { useSearchServicesQuery } from '@/services/api/servicesApi';
+import { useSearchServicesQuery, type ServiceSearchCriteria } from '@/services/api/servicesApi';
 import type { Service } from '@/shared/types/models';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -29,8 +29,8 @@ import {
  */
 interface SearchCriteria {
   keyword?: string;
-  orderId?: string;
-  companyId?: string;
+  orderId?: number;
+  companyId?: number;
   provider?: string;
   status?: string;
   orderType?: string; // Filter for disconnect types
@@ -55,7 +55,8 @@ export default function DisconnectsWorklist() {
   });
 
   // Fetch services
-  const { data, isLoading, error, refetch } = useSearchServicesQuery(criteria);
+  const queryCriteria: ServiceSearchCriteria = criteria;
+  const { data, isLoading, error, refetch } = useSearchServicesQuery(queryCriteria);
 
   // Handle search
   const handleSearch = useCallback(() => {
@@ -210,8 +211,13 @@ export default function DisconnectsWorklist() {
             <div className="col-span-12 md:col-span-2">
               <Input
                 placeholder="Order ID"
-                value={criteria.orderId || ''}
-                onChange={(e) => setCriteria({ ...criteria, orderId: e.target.value })}
+                value={criteria.orderId?.toString() || ''}
+                onChange={(e) =>
+                  setCriteria({
+                    ...criteria,
+                    orderId: e.target.value ? Number(e.target.value) : undefined,
+                  })
+                }
                 onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
               />
             </div>
@@ -246,8 +252,13 @@ export default function DisconnectsWorklist() {
             <div className="col-span-12 md:col-span-2">
               <Input
                 placeholder="Company ID"
-                value={criteria.companyId || ''}
-                onChange={(e) => setCriteria({ ...criteria, companyId: e.target.value })}
+                value={criteria.companyId?.toString() || ''}
+                onChange={(e) =>
+                  setCriteria({
+                    ...criteria,
+                    companyId: e.target.value ? Number(e.target.value) : undefined,
+                  })
+                }
                 onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
               />
             </div>

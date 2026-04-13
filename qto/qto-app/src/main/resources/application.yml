@@ -4,7 +4,7 @@ spring:
   application:
     name: qto
   datasource:
-    url: jdbc:postgresql://localhost:5433/qto-main
+    url: jdbc:postgresql://localhost:5432/qto-main
     username: qto_user
     password: changeme
     driver-class-name: org.postgresql.Driver

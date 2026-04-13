@@ -59,7 +59,7 @@ export function TableHeader<T = Record<string, unknown>>({
               checked={allSelected}
               ref={(input) => {
                 if (input) {
-                  input.indeterminate = !allSelected && someSelected;
+                  input.indeterminate = !allSelected && !!someSelected;
                 }
               }}
               onChange={(e) => onSelectAll?.(e.target.checked)}

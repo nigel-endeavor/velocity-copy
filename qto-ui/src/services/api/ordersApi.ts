@@ -79,8 +79,9 @@ export const ordersApi = baseApi.injectEndpoints({
 
     /**
      * Create new order
+     * Accepts Partial<Order> for simple updates or a wrapper DTO ({ dtoList }) for the wizard flow.
      */
-    createOrder: builder.mutation<Order, Partial<Order>>({
+    createOrder: builder.mutation<Order, Partial<Order> | Record<string, unknown>>({
       query: (order) => ({
         url: '/orders',
         method: 'POST',

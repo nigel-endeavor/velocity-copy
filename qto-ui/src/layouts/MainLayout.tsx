@@ -2,15 +2,20 @@ import { ReactNode, useMemo } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import type { LucideIcon } from 'lucide-react';
 import {
+  Activity,
+  AlertTriangle,
   Bell,
   Briefcase,
   ClipboardList,
   FileText,
   House,
   LayoutDashboard,
+  MapPin,
   Package,
   ReceiptText,
   Search,
+  Settings2,
+  Unplug,
   Users,
   Wallet,
 } from 'lucide-react';
@@ -42,10 +47,15 @@ const navigationGroups: { title: string; items: NavItem[] }[] = [
     title: 'Operations',
     items: [
       { label: 'Services', path: '/services', icon: Briefcase },
+      { label: 'Activations', path: '/activations', icon: Activity },
+      { label: 'Disconnects', path: '/disconnects', icon: Unplug },
+      { label: 'Disputes', path: '/disputes', icon: AlertTriangle },
+      { label: 'Locations', path: '/locations', icon: MapPin },
       { label: 'Inventory', path: '/inventory', icon: Package },
       { label: 'Customers', path: '/customers', icon: Users },
       { label: 'Invoicing', path: '/invoicing', icon: ReceiptText },
       { label: 'Expenses', path: '/expenses', icon: Wallet },
+      { label: 'Configuration', path: '/configuration', icon: Settings2 },
     ],
   },
 ];

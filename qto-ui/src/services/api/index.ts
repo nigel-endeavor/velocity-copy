@@ -9,6 +9,7 @@ export * from './ordersApi';
 export * from './servicesApi';
 export * from './locationsApi';
 export * from './quotesApi';
+export * from './configurationApi';
 export * from './locationInventoryViewsApi';
 export * from './serviceInventoryViewsApi';
 export * from './companyViewsApi';
